@@ -1,0 +1,7 @@
+{
+    "name": "test/test",
+    "license": "proprietary",
+    "version": "1.0.2",
+    "type": "library",
+    "description": "For testing purposes only"
+}

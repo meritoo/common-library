@@ -1,0 +1,34 @@
+{
+    "name": "meritoo/common-library",
+    "description": "Useful classes, methods, extensions etc.",
+    "license": "MIT",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "Meritoo.pl",
+            "email": "github@meritoo.pl",
+            "homepage": "http://www.meritoo.pl"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "doctrine/orm": "^2.5",
+        "gedmo/doctrine-extensions": "^2.4",
+        "symfony/http-foundation": "^3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8 || ^5.0",
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpmd/phpmd": "^2.6",
+        "sebastian/phpcpd": "^3.0",
+        "pdepend/pdepend": "^2.5",
+        "phploc/phploc": "^3.0",
+        "friendsofphp/php-cs-fixer": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Meritoo\\Common\\": "src/Meritoo/Common/",
+            "Meritoo\\Common\\Tests\\": "tests/Meritoo/Common/Tests/"
+        }
+    }
+}
