@@ -3,20 +3,7 @@ Useful classes, methods, extensions etc.
 
 ## Installation
 
-#### Composer
-
-1. Open ```composer.json``` and add address of repository in ```repositories``` section:
-
-    ```json
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "git@github.com:meritoo/common-library.git"
-		}
-	]
-	```
-
-2. Run [Composer](https://getcomposer.org) to install new package:
+Run [Composer](https://getcomposer.org) to install new package:
 
     ```bash
     $ composer require meritoo/common-library
