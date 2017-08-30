@@ -8,8 +8,8 @@
 
 namespace Meritoo\Common\Utilities;
 
-use Meritoo\Common\Exception\IncorrectColorHexLengthException;
-use Meritoo\Common\Exception\InvalidColorHexValueException;
+use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
+use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 
 /**
  * Useful regular expressions methods

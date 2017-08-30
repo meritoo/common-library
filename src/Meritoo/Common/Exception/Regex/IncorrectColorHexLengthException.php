@@ -6,15 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Exception;
+namespace Meritoo\Common\Exception\Regex;
 
 /**
- * An exception used while given hexadecimal value of color is incorrect
+ * An exception used while length of given hexadecimal value of color is incorrect
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class InvalidColorHexValueException extends \Exception
+class IncorrectColorHexLengthException extends \Exception
 {
     /**
      * Class constructor
@@ -23,7 +23,10 @@ class InvalidColorHexValueException extends \Exception
      */
     public function __construct($color)
     {
-        $message = sprintf('Hexadecimal value of color \'%s\' is incorrect. Is there everything ok?', $color);
+        $template = 'Length of hexadecimal value of color \'%s\' is incorrect. It\'s %d, but it should be 3 or 6.'
+            . ' Is there everything ok?';
+
+        $message = sprintf($template, $color, strlen($color));
         parent::__construct($message);
     }
 }

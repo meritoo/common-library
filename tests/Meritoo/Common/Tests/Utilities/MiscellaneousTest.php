@@ -9,8 +9,8 @@
 namespace Meritoo\Common\Tests\Utilities;
 
 use Generator;
-use Meritoo\Common\Exception\IncorrectColorHexLengthException;
-use Meritoo\Common\Exception\InvalidColorHexValueException;
+use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
+use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Utilities\Locale;
 use Meritoo\Common\Utilities\Miscellaneous;
 use Meritoo\Common\Utilities\TestCase;
