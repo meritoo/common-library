@@ -11,7 +11,7 @@ namespace Meritoo\Common\Tests\Utilities;
 use DateInterval;
 use DateTime;
 use Generator;
-use Meritoo\Common\Exception\Date\IncorrectDatePartException;
+use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
 use Meritoo\Common\Utilities\Date;
 use Meritoo\Common\Utilities\TestCase;
 
@@ -218,7 +218,7 @@ class DateTest extends TestCase
      */
     public function testGetDayOfWeekIncorrectValues($year, $month, $day)
     {
-        $this->expectException(IncorrectDatePartException::class);
+        $this->expectException(UnknownDatePartTypeException::class);
         self::assertEmpty(Date::getDayOfWeek($year, $month, $day));
     }
 

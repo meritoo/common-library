@@ -10,6 +10,7 @@ namespace Meritoo\Common\Utilities;
 
 use DateTime;
 use Generator;
+use PHPUnit_Framework_TestCase;
 
 /**
  * Test case with common methods and data providers
@@ -17,7 +18,7 @@ use Generator;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Provides an empty value

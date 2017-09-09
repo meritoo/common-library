@@ -10,6 +10,7 @@ namespace Meritoo\Common\Tests\Type;
 
 use Generator;
 use Meritoo\Common\Type\DatePartType;
+use PHPUnit_Framework_TestCase;
 
 /**
  * Tests of the type of date part, e.g. "year"
@@ -17,7 +18,7 @@ use Meritoo\Common\Type\DatePartType;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class DatePartTypeTest extends \PHPUnit_Framework_TestCase
+class DatePartTypeTest extends PHPUnit_Framework_TestCase
 {
     public function testGetAll()
     {

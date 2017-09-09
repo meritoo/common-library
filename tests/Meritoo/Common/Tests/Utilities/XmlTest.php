@@ -9,6 +9,7 @@
 namespace Meritoo\Common\Tests\Utilities;
 
 use Meritoo\Common\Utilities\Xml;
+use PHPUnit_Framework_TestCase;
 use SimpleXMLElement;
 
 /**
@@ -17,7 +18,7 @@ use SimpleXMLElement;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends PHPUnit_Framework_TestCase
 {
     private $simpleXml;
     private $advancedXml;
