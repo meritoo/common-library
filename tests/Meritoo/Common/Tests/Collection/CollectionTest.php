@@ -10,8 +10,8 @@ namespace Meritoo\Common\Tests\Collection;
 
 use ArrayIterator;
 use Meritoo\Common\Collection\Collection;
-use PHPUnit_Framework_TestCase;
-use ReflectionClass;
+use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of the collection of elements
@@ -19,7 +19,7 @@ use ReflectionClass;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class CollectionTest extends PHPUnit_Framework_TestCase
+class CollectionTest extends TestCase
 {
     /**
      * An empty collection
@@ -306,12 +306,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
     public function testExistsVisibilityAndArguments()
     {
-        $reflection = new ReflectionClass(Collection::class);
-        $method = $reflection->getMethod('exists');
-
-        self::assertTrue($method->isPrivate());
-        self::assertEquals(1, $method->getNumberOfParameters());
-        self::assertEquals(1, $method->getNumberOfRequiredParameters());
+        $this->verifyMethodVisibilityAndArguments(Collection::class, 'exists', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 
     /**

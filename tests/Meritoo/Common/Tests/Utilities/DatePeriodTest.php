@@ -10,9 +10,9 @@ namespace Meritoo\Common\Tests\Utilities;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\DatePeriod;
 use Meritoo\Common\Utilities\TestCase;
-use ReflectionClass;
 
 /**
  * Tests of date's period
@@ -24,12 +24,7 @@ class DatePeriodTest extends TestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        $reflection = new ReflectionClass(DatePeriod::class);
-        $constructor = $reflection->getConstructor();
-
-        self::assertTrue($constructor->isPublic());
-        self::assertEquals(2, $constructor->getNumberOfParameters());
-        self::assertEquals(0, $constructor->getNumberOfRequiredParameters());
+        $this->verifyConstructorVisibilityAndArguments(DatePeriod::class, OopVisibilityType::IS_PUBLIC, 2, 0);
     }
 
     /**
