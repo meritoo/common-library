@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Meritoo Common Library" basedir="." default="build:main" phingVersion="2.14.0">
+<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
     <!--
     The AutoloaderTask is required to load binaries installed by Composer.
     The "autoloaderpath" attribute of this task is not required, because it's default value is: vendor/autoload.php.

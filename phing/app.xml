@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Meritoo Common Library" basedir="." default="build:main" phingVersion="2.14.0">
+<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
     <!-- Properties -->
     <if>
         <available file="phing/properties" property="custom.properties.available"/>
