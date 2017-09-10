@@ -10,7 +10,11 @@ namespace Meritoo\Common\Utilities;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
+use Meritoo\Common\Type\OopVisibilityType;
 use PHPUnit_Framework_TestCase;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Test case with common methods and data providers
@@ -106,5 +110,90 @@ class TestCase extends PHPUnit_Framework_TestCase
         }
 
         return sprintf('%s/../../../../data/tests/%s%s', __DIR__, $fileName, $directoryPath);
+    }
+
+    /**
+     * Verifies visibility and arguments of method
+     *
+     * @param string                  $classNamespace         Namespace of class that contains method to verify
+     * @param string|ReflectionMethod $method                 Name of method or just the method to verify
+     * @param string                  $visibilityType         Expected visibility of verified method. One of
+     *                                                        OopVisibilityType class constants.
+     * @param int                     $argumentsCount         (optional) Expected count/amount of arguments of the
+     *                                                        verified method
+     * @param int                     $requiredArgumentsCount (optional) Expected count/amount of required arguments
+     *                                                        of the verified method
+     * @throws UnknownOopVisibilityTypeException
+     *
+     * Attention. 2nd argument, the $method, may be:
+     * - string - name of the method
+     * - instance of ReflectionMethod - just the method (provided by ReflectionClass::getMethod() method)
+     */
+    protected function verifyMethodVisibilityAndArguments(
+        $classNamespace,
+        $method,
+        $visibilityType,
+        $argumentsCount = 0,
+        $requiredArgumentsCount = 0
+    ) {
+        /*
+         * Type of visibility is correct?
+         */
+        if (!(new OopVisibilityType())->isCorrectType($visibilityType)) {
+            throw new UnknownOopVisibilityTypeException($visibilityType);
+        }
+
+        $reflection = new ReflectionClass($classNamespace);
+
+        /*
+         * Name of method provided only?
+         * Let's find instance of the method (based on reflection)
+         */
+        if (!$method instanceof ReflectionMethod) {
+            $method = $reflection->getMethod($method);
+        }
+
+        switch ($visibilityType) {
+            case OopVisibilityType::IS_PUBLIC:
+                static::assertTrue($method->isPublic());
+                break;
+
+            case OopVisibilityType::IS_PROTECTED:
+                static::assertTrue($method->isProtected());
+                break;
+
+            case OopVisibilityType::IS_PRIVATE:
+                static::assertTrue($method->isPrivate());
+                break;
+        }
+
+        static::assertEquals($argumentsCount, $method->getNumberOfParameters());
+        static::assertEquals($requiredArgumentsCount, $method->getNumberOfRequiredParameters());
+    }
+
+    /**
+     * Verifies visibility and arguments of class constructor
+     *
+     * @param string $classNamespace         Namespace of class that contains method to verify
+     * @param string $visibilityType         Expected visibility of verified method. One of OopVisibilityType class
+     *                                       constants.
+     * @param int    $argumentsCount         (optional) Expected count/amount of arguments of the verified method
+     * @param int    $requiredArgumentsCount (optional) Expected count/amount of required arguments of the verified
+     *                                       method
+     * @throws UnknownOopVisibilityTypeException
+     */
+    protected function verifyConstructorVisibilityAndArguments(
+        $classNamespace,
+        $visibilityType,
+        $argumentsCount = 0,
+        $requiredArgumentsCount = 0
+    ) {
+        /*
+         * Let's grab the constructor
+         */
+        $reflection = new ReflectionClass($classNamespace);
+        $method = $reflection->getConstructor();
+
+        return $this->verifyMethodVisibilityAndArguments($classNamespace, $method, $visibilityType, $argumentsCount, $requiredArgumentsCount);
     }
 }
