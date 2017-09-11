@@ -12,7 +12,7 @@
          bootstrap="./vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="Meritoo's Common Library Test Suite">
+        <testsuite name="Meritoo Package - Main Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
