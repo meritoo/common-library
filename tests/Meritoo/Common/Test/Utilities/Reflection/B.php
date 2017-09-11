@@ -6,15 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Tests\Utilities\Reflection;
+namespace Meritoo\Common\Test\Utilities\Reflection;
 
 /**
- * The E trait.
+ * The B class.
  * Used for testing the Reflection class.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-trait E
+class B extends A
 {
 }

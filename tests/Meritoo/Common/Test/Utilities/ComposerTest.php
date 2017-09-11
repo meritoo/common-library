@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Tests\Utilities;
+namespace Meritoo\Common\Test\Utilities;
 
 use Meritoo\Common\Utilities\Composer;
 use Meritoo\Common\Utilities\TestCase;

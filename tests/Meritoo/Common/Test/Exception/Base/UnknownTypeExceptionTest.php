@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Tests\Exception\Base;
+namespace Meritoo\Common\Test\Exception\Base;
 
 use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Type\Base\BaseType;

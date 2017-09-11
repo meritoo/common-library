@@ -28,7 +28,7 @@
     "autoload": {
         "psr-4": {
             "Meritoo\\Common\\": "src/Meritoo/Common/",
-            "Meritoo\\Common\\Tests\\": "tests/Meritoo/Common/Tests/"
+            "Meritoo\\Common\\Test\\": "tests/Meritoo/Common/Test/"
         }
     }
 }

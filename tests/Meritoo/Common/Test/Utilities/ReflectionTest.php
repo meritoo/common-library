@@ -6,18 +6,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Tests\Utilities;
+namespace Meritoo\Common\Test\Utilities;
 
 use DateTime;
 use Generator;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
-use Meritoo\Common\Tests\Utilities\Reflection\A;
-use Meritoo\Common\Tests\Utilities\Reflection\B;
-use Meritoo\Common\Tests\Utilities\Reflection\C;
-use Meritoo\Common\Tests\Utilities\Reflection\D;
-use Meritoo\Common\Tests\Utilities\Reflection\E;
+use Meritoo\Common\Test\Utilities\Reflection\A;
+use Meritoo\Common\Test\Utilities\Reflection\B;
+use Meritoo\Common\Test\Utilities\Reflection\C;
+use Meritoo\Common\Test\Utilities\Reflection\D;
+use Meritoo\Common\Test\Utilities\Reflection\E;
 use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Common\Utilities\TestCase;
 
@@ -88,7 +88,7 @@ class ReflectionTest extends TestCase
         /*
          * Existing class
          */
-        self::assertEquals('Meritoo\Common\Tests\Utilities', Reflection::getClassNamespace(self::class));
+        self::assertEquals('Meritoo\Common\Test\Utilities', Reflection::getClassNamespace(self::class));
         self::assertEquals(DateTime::class, Reflection::getClassNamespace(new DateTime()));
 
         self::assertEquals(DateTime::class, Reflection::getClassNamespace([

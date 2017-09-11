@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Tests\Collection;
+namespace Meritoo\Common\Test\Collection;
 
 use ArrayIterator;
 use Meritoo\Common\Collection\Collection;

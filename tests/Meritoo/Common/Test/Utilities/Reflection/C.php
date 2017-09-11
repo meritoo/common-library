@@ -6,21 +6,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Tests\Utilities\Reflection;
+namespace Meritoo\Common\Test\Utilities\Reflection;
 
 /**
- * The A class.
+ * The C class.
  * Used for testing the Reflection class.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class A
+class C extends B
 {
-    use E;
-
-    protected function lorem()
+    public function getPositive()
     {
-        return 'ipsum';
+        return true;
+    }
+
+    public function getNegative()
+    {
+        return false;
     }
 }

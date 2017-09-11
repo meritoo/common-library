@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Tests\Type;
+namespace Meritoo\Common\Test\Type;
 
 use Generator;
 use Meritoo\Common\Type\DatePartType;
