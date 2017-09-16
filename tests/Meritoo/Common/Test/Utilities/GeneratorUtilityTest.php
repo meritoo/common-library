@@ -8,8 +8,8 @@
 
 namespace Meritoo\Common\Test\Utilities;
 
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\GeneratorUtility;
-use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of the useful methods for the Generator class
@@ -17,7 +17,7 @@ use Meritoo\Common\Utilities\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class GeneratorUtilityTest extends TestCase
+class GeneratorUtilityTest extends BaseTestCase
 {
     public function testGetGeneratorElements()
     {

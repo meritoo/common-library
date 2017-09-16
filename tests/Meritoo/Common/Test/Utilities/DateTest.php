@@ -12,8 +12,8 @@ use DateInterval;
 use DateTime;
 use Generator;
 use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Date;
-use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of the Date methods (only static functions)
@@ -21,7 +21,7 @@ use Meritoo\Common\Utilities\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class DateTest extends TestCase
+class DateTest extends BaseTestCase
 {
     /**
      * @param mixed $value Empty value, e.g. ""

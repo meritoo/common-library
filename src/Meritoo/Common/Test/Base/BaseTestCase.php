@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Utilities;
+namespace Meritoo\Common\Test\Base;
 
 use DateTime;
 use Generator;
@@ -17,12 +17,12 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * Test case with common methods and data providers
+ * Base test case with common methods and data providers
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class TestCase extends PHPUnit_Framework_TestCase
+abstract class BaseTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Provides an empty value
@@ -109,7 +109,7 @@ class TestCase extends PHPUnit_Framework_TestCase
             $directoryPath = '/' . $directoryPath;
         }
 
-        return sprintf('%s/../../../../data/tests/%s%s', __DIR__, $fileName, $directoryPath);
+        return sprintf('%s/../../../../../data/tests/%s%s', __DIR__, $fileName, $directoryPath);
     }
 
     /**

@@ -8,8 +8,9 @@
 
 namespace Meritoo\Common\Test\Utilities;
 
+use Generator;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Composer;
-use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of the useful Composer-related methods
@@ -17,7 +18,7 @@ use Meritoo\Common\Utilities\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class ComposerTest extends TestCase
+class ComposerTest extends BaseTestCase
 {
     /**
      * Path of existing composer.json used as source of data for tests
@@ -60,7 +61,7 @@ class ComposerTest extends TestCase
     /**
      * Provides names and values of existing nodes
      *
-     * @return \Generator
+     * @return Generator
      */
     public function getExistingNode()
     {

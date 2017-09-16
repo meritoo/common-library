@@ -10,8 +10,8 @@ namespace Meritoo\Common\Test\Collection;
 
 use ArrayIterator;
 use Meritoo\Common\Collection\Collection;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
-use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of the collection of elements
@@ -19,7 +19,7 @@ use Meritoo\Common\Utilities\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class CollectionTest extends TestCase
+class CollectionTest extends BaseTestCase
 {
     /**
      * An empty collection

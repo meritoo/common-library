@@ -9,8 +9,8 @@
 namespace Meritoo\Common\Test\Utilities;
 
 use Generator;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\MimeTypes;
-use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of the useful methods for mime types of files
@@ -18,7 +18,7 @@ use Meritoo\Common\Utilities\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class MimeTypesTest extends TestCase
+class MimeTypesTest extends BaseTestCase
 {
     /**
      * @param mixed $mimeType Empty value, e.g. ""

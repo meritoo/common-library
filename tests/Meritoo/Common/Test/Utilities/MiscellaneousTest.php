@@ -11,9 +11,9 @@ namespace Meritoo\Common\Test\Utilities;
 use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Locale;
 use Meritoo\Common\Utilities\Miscellaneous;
-use Meritoo\Common\Utilities\TestCase;
 use stdClass;
 
 /**
@@ -22,7 +22,7 @@ use stdClass;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class MiscellaneousTest extends TestCase
+class MiscellaneousTest extends BaseTestCase
 {
     private $stringSmall;
     private $stringCommaSeparated;

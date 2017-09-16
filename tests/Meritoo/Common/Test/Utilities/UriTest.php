@@ -8,7 +8,7 @@
 
 namespace Meritoo\Common\Test\Utilities;
 
-use Meritoo\Common\Utilities\TestCase;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Uri;
 
 /**
@@ -17,7 +17,7 @@ use Meritoo\Common\Utilities\Uri;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class UriTest extends TestCase
+class UriTest extends BaseTestCase
 {
     public function testAddProtocolToUrl()
     {

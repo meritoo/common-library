@@ -9,8 +9,8 @@
 namespace Meritoo\Common\Test\Utilities;
 
 use Generator;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Locale;
-use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of the useful locale methods
@@ -18,7 +18,7 @@ use Meritoo\Common\Utilities\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class LocaleTest extends TestCase
+class LocaleTest extends BaseTestCase
 {
     /**
      * @param mixed $languageCode Empty value, e.g. ""

@@ -10,9 +10,9 @@ namespace Meritoo\Common\Test\Utilities;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\DatePeriod;
-use Meritoo\Common\Utilities\TestCase;
 
 /**
  * Tests of date's period
@@ -20,7 +20,7 @@ use Meritoo\Common\Utilities\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class DatePeriodTest extends TestCase
+class DatePeriodTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
