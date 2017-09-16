@@ -92,7 +92,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
     {
         yield['lets-test.doc'];
         yield['lorem/ipsum.jpg'];
-        yield['suprise/me/one/more/time.txt'];
+        yield['surprise/me/one/more/time.txt'];
     }
 
     /**
