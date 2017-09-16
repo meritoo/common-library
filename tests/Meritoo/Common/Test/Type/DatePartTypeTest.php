@@ -8,9 +8,8 @@
 
 namespace Meritoo\Common\Test\Type;
 
-use Generator;
+use Meritoo\Common\Test\Base\BaseTypeTestCase;
 use Meritoo\Common\Type\DatePartType;
-use PHPUnit_Framework_TestCase;
 
 /**
  * Tests of the type of date part, e.g. "year"
@@ -18,11 +17,14 @@ use PHPUnit_Framework_TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class DatePartTypeTest extends PHPUnit_Framework_TestCase
+class DatePartTypeTest extends BaseTypeTestCase
 {
-    public function testGetAll()
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAllExpectedTypes()
     {
-        $expectedTypes = [
+        return [
             'DAY'    => DatePartType::DAY,
             'HOUR'   => DatePartType::HOUR,
             'MINUTE' => DatePartType::MINUTE,
@@ -30,29 +32,20 @@ class DatePartTypeTest extends PHPUnit_Framework_TestCase
             'SECOND' => DatePartType::SECOND,
             'YEAR'   => DatePartType::YEAR,
         ];
-
-        $all = (new DatePartType())->getAll();
-        self::assertEquals($expectedTypes, $all);
     }
 
     /**
-     * @param string $toVerifyType Concrete type to verify (of given instance of type)
-     * @param bool   $isCorrect    Expected information if given type is correct
-     *
-     * @dataProvider provideConcreteType
+     * {@inheritdoc}
      */
-    public function testIsCorrectType($toVerifyType, $isCorrect)
+    protected function getTestedTypeInstance()
     {
-        $type = new DatePartType();
-        self::assertEquals($isCorrect, $type->isCorrectType($toVerifyType));
+        return new DatePartType();
     }
 
     /**
-     * Provides type of something for testing the isCorrectType() method
-     *
-     * @return Generator
+     * {@inheritdoc}
      */
-    public function provideConcreteType()
+    public function provideTypeToVerify()
     {
         yield[
             '',
