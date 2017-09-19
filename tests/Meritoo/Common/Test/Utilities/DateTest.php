@@ -454,8 +454,11 @@ class DateTest extends BaseTestCase
         $start = 1;
         $end = 100;
 
-        $intervalMinDate = (clone $startDate)->add(new DateInterval(sprintf('P%dD', $start)));
-        $intervalMaxDate = (clone $startDate)->add(new DateInterval(sprintf('P%dD', $end)));
+        $minDate = clone $startDate;
+        $maxDate = clone $startDate;
+
+        $intervalMinDate = $minDate->add(new DateInterval(sprintf('P%dD', $start)));
+        $intervalMaxDate = $maxDate->add(new DateInterval(sprintf('P%dD', $end)));
 
         $randomDate = Date::getRandomDate();
         self::assertTrue($randomDate >= $intervalMinDate && $randomDate <= $intervalMaxDate);
@@ -471,7 +474,9 @@ class DateTest extends BaseTestCase
     public function testGetRandomDateIncorrectEnd(DateTime $startDate, $start, $end)
     {
         $randomDate = Date::getRandomDate($startDate, $start, $end);
-        $intervalDate = (clone $startDate)->add(new DateInterval(sprintf('P%dD', $start)));
+
+        $cloned = clone $startDate;
+        $intervalDate = $cloned->add(new DateInterval(sprintf('P%dD', $start)));
 
         self::assertTrue($randomDate >= $intervalDate && $randomDate <= $intervalDate);
     }
@@ -487,8 +492,11 @@ class DateTest extends BaseTestCase
     {
         $randomDate = Date::getRandomDate($startDate, $start, $end);
 
-        $intervalMinDate = (clone $startDate)->add(new DateInterval(sprintf('P%dD', $start)));
-        $intervalMaxDate = (clone $startDate)->add(new DateInterval(sprintf('P%dD', $end)));
+        $minDate = clone $startDate;
+        $maxDate = clone $startDate;
+
+        $intervalMinDate = $minDate->add(new DateInterval(sprintf('P%dD', $start)));
+        $intervalMaxDate = $maxDate->add(new DateInterval(sprintf('P%dD', $end)));
 
         self::assertTrue($randomDate >= $intervalMinDate && $randomDate <= $intervalMaxDate);
     }
