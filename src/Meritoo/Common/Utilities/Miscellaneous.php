@@ -1473,4 +1473,37 @@ class Miscellaneous
 
         return $invertedColor;
     }
+
+    /**
+     * Returns project's root path.
+     * Looks for directory that contains composer.json.
+     *
+     * @return string
+     */
+    public static function getProjectRootPath()
+    {
+        $projectRootPath = '';
+
+        $fileName = 'composer.json';
+        $directoryPath = __DIR__;
+
+        /*
+         * Path of directory it's not the path of last directory?
+         */
+        while (DIRECTORY_SEPARATOR !== $directoryPath) {
+            $filePath = static::concatenatePaths($directoryPath, $fileName);
+
+            /*
+             * Is here file we are looking for?
+             * Maybe it's a project's root path
+             */
+            if (file_exists($filePath)) {
+                $projectRootPath = $directoryPath;
+            }
+
+            $directoryPath = dirname($directoryPath);
+        }
+
+        return $projectRootPath;
+    }
 }

@@ -742,6 +742,11 @@ class MiscellaneousTest extends BaseTestCase
         self::assertSame($expected, Miscellaneous::fillMissingZeros($number, $length, $before));
     }
 
+    public function testGetProjectRootPath()
+    {
+        self::assertNotEmpty(Miscellaneous::getProjectRootPath());
+    }
+
     /**
      * Provides string to convert characters to latin characters and not lower cased and not human-readable
      *
