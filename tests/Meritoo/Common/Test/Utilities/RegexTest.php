@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 class RegexTest extends TestCase
 {
     private $simpleText;
-
     private $camelCaseText;
 
     public function testGetCamelCaseParts()
