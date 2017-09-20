@@ -7,9 +7,9 @@ Common and useful classes, methods, exceptions etc.
 
 Run [Composer](https://getcomposer.org) to install this package in your project:
 
-    ```bash
-    $ composer require meritoo/common-library
-    ```
+```bash
+$ composer require meritoo/common-library
+```
 
 > How to install Composer: https://getcomposer.org/download
 
