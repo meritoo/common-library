@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Test\Utilities;
 
 use Meritoo\Common\Utilities\Arrays;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests of the useful arrays methods
@@ -17,7 +17,7 @@ use PHPUnit_Framework_TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class ArraysTest extends PHPUnit_Framework_TestCase
+class ArraysTest extends TestCase
 {
     private $simpleArray;
     private $simpleArrayWithKeys;

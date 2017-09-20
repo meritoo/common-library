@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Test\Utilities;
 
 use Meritoo\Common\Utilities\Bundle;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests of the useful methods for bundle
@@ -17,7 +17,7 @@ use PHPUnit_Framework_TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class BundleTest extends PHPUnit_Framework_TestCase
+class BundleTest extends TestCase
 {
     public function testGetBundleViewPathEmptyPathAndBundle()
     {

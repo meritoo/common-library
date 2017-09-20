@@ -10,7 +10,7 @@ namespace Meritoo\Common\Test\Type\Base;
 
 use Generator;
 use Meritoo\Common\Type\Base\BaseType;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests of the base / abstract type of something
@@ -18,7 +18,7 @@ use PHPUnit_Framework_TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class BaseTypeTest extends PHPUnit_Framework_TestCase
+class BaseTypeTest extends TestCase
 {
     /**
      * @param BaseType $type          Type of something

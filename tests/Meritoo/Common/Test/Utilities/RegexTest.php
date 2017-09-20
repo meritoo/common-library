@@ -8,13 +8,15 @@
 
 namespace Meritoo\Common\Utilities;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Tests of the useful regular expressions methods
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class RegexTest extends \PHPUnit_Framework_TestCase
+class RegexTest extends TestCase
 {
     private $simpleText;
 

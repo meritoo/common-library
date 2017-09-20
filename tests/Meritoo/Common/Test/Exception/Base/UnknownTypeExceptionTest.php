@@ -10,7 +10,7 @@ namespace Meritoo\Common\Test\Exception\Base;
 
 use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Type\Base\BaseType;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests of the exception used while type of something is unknown
@@ -18,7 +18,7 @@ use PHPUnit_Framework_TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class UnknownTypeExceptionTest extends PHPUnit_Framework_TestCase
+class UnknownTypeExceptionTest extends TestCase
 {
     public function testWithoutException()
     {
