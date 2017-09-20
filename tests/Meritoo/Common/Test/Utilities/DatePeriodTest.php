@@ -15,7 +15,7 @@ use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\DatePeriod;
 
 /**
- * Tests of date's period
+ * Tests of date's period.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -110,7 +110,7 @@ class DatePeriodTest extends BaseTestCase
     }
 
     /**
-     * Provides the start and end date of date period
+     * Provides the start and end date of date period.
      *
      * @return Generator
      */
@@ -143,7 +143,7 @@ class DatePeriodTest extends BaseTestCase
     }
 
     /**
-     * Provides incorrect period
+     * Provides incorrect period.
      *
      * @return Generator
      */
@@ -155,7 +155,7 @@ class DatePeriodTest extends BaseTestCase
     }
 
     /**
-     * Provides period to verify
+     * Provides period to verify.
      *
      * @return Generator
      */
@@ -173,7 +173,7 @@ class DatePeriodTest extends BaseTestCase
     }
 
     /**
-     * Provides period and incorrect format of date to verify
+     * Provides period and incorrect format of date to verify.
      *
      * @return Generator
      */
@@ -199,7 +199,7 @@ class DatePeriodTest extends BaseTestCase
     }
 
     /**
-     * Provides period and format of date to verify
+     * Provides period and format of date to verify.
      *
      * @return Generator
      */

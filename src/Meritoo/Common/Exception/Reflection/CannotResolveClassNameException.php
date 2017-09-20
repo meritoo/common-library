@@ -11,7 +11,7 @@ namespace Meritoo\Common\Exception\Reflection;
 use Exception;
 
 /**
- * An exception used while name of class or trait cannot be resolved
+ * An exception used while name of class or trait cannot be resolved.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -19,7 +19,7 @@ use Exception;
 class CannotResolveClassNameException extends Exception
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param array|object|string $source   Source of the class's / trait's name. It cane be an array of objects,
      *                                      namespaces, object or namespace.
@@ -36,7 +36,7 @@ class CannotResolveClassNameException extends Exception
         }
 
         if (is_scalar($source)) {
-            $value = sprintf(' %s', (string)$source);
+            $value = sprintf(' %s', (string) $source);
         }
 
         $template = 'Name of %s from given \'%s\'%s cannot be resolved. Is there everything ok?';

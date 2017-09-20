@@ -13,7 +13,7 @@ use Meritoo\Common\Type\Base\BaseType;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Tests of the base / abstract type of something
+ * Tests of the base / abstract type of something.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -45,7 +45,7 @@ class BaseTypeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides type of something for testing the getAll() method
+     * Provides type of something for testing the getAll() method.
      *
      * @return Generator
      */
@@ -66,7 +66,7 @@ class BaseTypeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides type of something for testing the isCorrectType() method
+     * Provides type of something for testing the isCorrectType() method.
      *
      * @return Generator
      */
@@ -177,7 +177,7 @@ class BaseTypeTest extends PHPUnit_Framework_TestCase
 }
 
 /**
- * Empty type of something used for testing
+ * Empty type of something used for testing.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -187,7 +187,7 @@ class TestEmptyType extends BaseType
 }
 
 /**
- * Type of something used for testing
+ * Type of something used for testing.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

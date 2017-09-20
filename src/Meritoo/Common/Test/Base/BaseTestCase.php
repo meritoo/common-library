@@ -17,7 +17,7 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * Base test case with common methods and data providers
+ * Base test case with common methods and data providers.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -25,7 +25,7 @@ use ReflectionMethod;
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Provides an empty value
+     * Provides an empty value.
      *
      * @return Generator
      */
@@ -40,7 +40,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides boolean value
+     * Provides boolean value.
      *
      * @return Generator
      */
@@ -51,7 +51,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides instance of DateTime class
+     * Provides instance of DateTime class.
      *
      * @return Generator
      */
@@ -64,7 +64,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides relative / compound format of DateTime
+     * Provides relative / compound format of DateTime.
      *
      * @return Generator
      */
@@ -84,7 +84,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides path of not existing file, e.g. "lorem/ipsum.jpg"
+     * Provides path of not existing file, e.g. "lorem/ipsum.jpg".
      *
      * @return Generator
      */
@@ -101,19 +101,20 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
      *
      * @param string $fileName      Name of file
      * @param string $directoryPath (optional) Path of directory containing the file
+     *
      * @return string
      */
     public function getFilePathToTests($fileName, $directoryPath = '')
     {
         if (!empty($directoryPath)) {
-            $directoryPath = '/' . $directoryPath;
+            $directoryPath = '/'.$directoryPath;
         }
 
         return sprintf('%s/../../../../../data/tests/%s%s', __DIR__, $fileName, $directoryPath);
     }
 
     /**
-     * Verifies visibility and arguments of method
+     * Verifies visibility and arguments of method.
      *
      * @param string                  $classNamespace         Namespace of class that contains method to verify
      * @param string|ReflectionMethod $method                 Name of method or just the method to verify
@@ -123,6 +124,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
      *                                                        verified method
      * @param int                     $requiredArgumentsCount (optional) Expected count/amount of required arguments
      *                                                        of the verified method
+     *
      * @throws UnknownOopVisibilityTypeException
      *
      * Attention. 2nd argument, the $method, may be:
@@ -156,14 +158,17 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
         switch ($visibilityType) {
             case OopVisibilityType::IS_PUBLIC:
                 static::assertTrue($method->isPublic());
+
                 break;
 
             case OopVisibilityType::IS_PROTECTED:
                 static::assertTrue($method->isProtected());
+
                 break;
 
             case OopVisibilityType::IS_PRIVATE:
                 static::assertTrue($method->isPrivate());
+
                 break;
         }
 
@@ -172,7 +177,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Verifies visibility and arguments of class constructor
+     * Verifies visibility and arguments of class constructor.
      *
      * @param string $classNamespace         Namespace of class that contains method to verify
      * @param string $visibilityType         Expected visibility of verified method. One of OopVisibilityType class
@@ -180,6 +185,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase
      * @param int    $argumentsCount         (optional) Expected count/amount of arguments of the verified method
      * @param int    $requiredArgumentsCount (optional) Expected count/amount of required arguments of the verified
      *                                       method
+     *
      * @throws UnknownOopVisibilityTypeException
      */
     protected function verifyConstructorVisibilityAndArguments(

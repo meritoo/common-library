@@ -11,7 +11,7 @@ namespace Meritoo\Common\Utilities;
 use Generator;
 
 /**
- * Useful methods for the Generator class (only static functions)
+ * Useful methods for the Generator class (only static functions).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -19,9 +19,10 @@ use Generator;
 class GeneratorUtility
 {
     /**
-     * Returns elements of generator
+     * Returns elements of generator.
      *
      * @param Generator $generator The generator who elements should be returned
+     *
      * @return array
      */
     public static function getGeneratorElements(Generator $generator)

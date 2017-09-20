@@ -13,7 +13,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Locale;
 
 /**
- * Tests of the useful locale methods
+ * Tests of the useful locale methods.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -64,7 +64,7 @@ class LocaleTest extends BaseTestCase
     }
 
     /**
-     * Provides language and country code
+     * Provides language and country code.
      *
      * @return Generator
      */
@@ -100,7 +100,7 @@ class LocaleTest extends BaseTestCase
     }
 
     /**
-     * Provides category and language
+     * Provides category and language.
      *
      * @return Generator
      */

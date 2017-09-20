@@ -13,7 +13,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Composer;
 
 /**
- * Tests of the useful Composer-related methods
+ * Tests of the useful Composer-related methods.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -21,7 +21,7 @@ use Meritoo\Common\Utilities\Composer;
 class ComposerTest extends BaseTestCase
 {
     /**
-     * Path of existing composer.json used as source of data for tests
+     * Path of existing composer.json used as source of data for tests.
      *
      * @var string
      */
@@ -59,7 +59,7 @@ class ComposerTest extends BaseTestCase
     }
 
     /**
-     * Provides names and values of existing nodes
+     * Provides names and values of existing nodes.
      *
      * @return Generator
      */

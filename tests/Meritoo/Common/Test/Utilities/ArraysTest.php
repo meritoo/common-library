@@ -12,7 +12,7 @@ use Meritoo\Common\Utilities\Arrays;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Tests of the useful arrays methods
+ * Tests of the useful arrays methods.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -67,8 +67,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         self::assertEquals('', Arrays::values2csv($this->simpleArray));
 
         self::assertEquals("lorem,ipsum,dolor,sit,amet\n"
-            . "consectetur,adipiscing,elit\n"
-            . 'donec,sagittis,fringilla,eleifend', Arrays::values2csv($this->twoDimensionsArray));
+            ."consectetur,adipiscing,elit\n"
+            .'donec,sagittis,fringilla,eleifend', Arrays::values2csv($this->twoDimensionsArray));
     }
 
     public function testGetFirstKey()
@@ -175,7 +175,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     {
         $effect = [
             'nullam' => 'donec',
-            'x'      => [
+            'x' => [
                 'vitae' => [
                     'x' => 'quis',
                 ],
@@ -188,7 +188,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         self::assertEquals([
             'x' => 'sit',
-            4   => 'amet',
+            4 => 'amet',
         ], Arrays::replaceArrayKeys($this->simpleArray, '|[0-3]+|', 'x'));
     }
 
@@ -370,19 +370,19 @@ letsTest[2] = value_2;';
                 'lorem' => 0,
                 'ipsum' => 1,
                 'dolor' => 2,
-                'sit'   => 3,
-                'amet'  => 4,
+                'sit' => 3,
+                'amet' => 4,
             ],
             [
                 'consectetur' => 0,
-                'adipiscing'  => 1,
-                'elit'        => 2,
+                'adipiscing' => 1,
+                'elit' => 2,
             ],
             [
-                'donec'     => 0,
-                'sagittis'  => 1,
+                'donec' => 0,
+                'sagittis' => 1,
                 'fringilla' => 2,
-                'eleifend'  => 3,
+                'eleifend' => 3,
             ],
         ];
 
@@ -428,16 +428,16 @@ letsTest[2] = value_2;';
          */
         $array = [
             'light' => '#fff',
-            'dark'  => '#000',
+            'dark' => '#000',
         ];
 
         self::assertEquals($array, Arrays::string2array('light:#fff|dark:#000'));
         self::assertEquals($array, Arrays::string2array('light: #fff | dark: #000'));
 
         $array = [
-            'red'   => '#f00',
+            'red' => '#f00',
             'green' => '#0f0',
-            'blue'  => '#00f',
+            'blue' => '#00f',
         ];
 
         self::assertEquals($array, Arrays::string2array('red:#f00|green:#0f0|blue:#00f'));
@@ -489,12 +489,12 @@ letsTest[2] = value_2;';
 
         $keys16 = [
             'a' => 'lorem',
-            11  => 'amet',
+            11 => 'amet',
         ];
 
         $keys17 = [
             'a' => 'lorem',
-            11  => 'amet',
+            11 => 'amet',
             'c' => 'sit__',
         ];
 
@@ -518,16 +518,16 @@ letsTest[2] = value_2;';
          * Using default separator and other default arguments
          */
         $expected = [
-            'lorem.ipsum.dolor'        => 'sit',
-            'lorem.ipsum.diam.non'     => 'egestas',
-            'consectetur'              => 'adipiscing',
-            'mollis'                   => 1234,
-            2                          => [],
-            'sit.nullam'               => 'donec',
+            'lorem.ipsum.dolor' => 'sit',
+            'lorem.ipsum.diam.non' => 'egestas',
+            'consectetur' => 'adipiscing',
+            'mollis' => 1234,
+            2 => [],
+            'sit.nullam' => 'donec',
             'sit.aliquet.vitae.ligula' => 'quis',
-            'sit.0'                    => 'elit',
-            'amet.0'                   => 'iaculis',
-            'amet.1'                   => 'primis',
+            'sit.0' => 'elit',
+            'amet.0' => 'iaculis',
+            'amet.1' => 'primis',
         ];
 
         self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray));
@@ -537,16 +537,16 @@ letsTest[2] = value_2;';
          */
         $separator = ' -> ';
         $expected = [
-            sprintf('lorem%sipsum%sdolor', $separator, $separator)                     => 'sit',
-            sprintf('lorem%sipsum%sdiam%snon', $separator, $separator, $separator)     => 'egestas',
-            'consectetur'                                                              => 'adipiscing',
-            'mollis'                                                                   => 1234,
-            2                                                                          => [],
-            sprintf('sit%snullam', $separator)                                         => 'donec',
+            sprintf('lorem%sipsum%sdolor', $separator, $separator) => 'sit',
+            sprintf('lorem%sipsum%sdiam%snon', $separator, $separator, $separator) => 'egestas',
+            'consectetur' => 'adipiscing',
+            'mollis' => 1234,
+            2 => [],
+            sprintf('sit%snullam', $separator) => 'donec',
             sprintf('sit%saliquet%svitae%sligula', $separator, $separator, $separator) => 'quis',
-            sprintf('sit%s0', $separator)                                              => 'elit',
-            sprintf('amet%s0', $separator)                                             => 'iaculis',
-            sprintf('amet%s1', $separator)                                             => 'primis',
+            sprintf('sit%s0', $separator) => 'elit',
+            sprintf('amet%s0', $separator) => 'iaculis',
+            sprintf('amet%s1', $separator) => 'primis',
         ];
 
         self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray, $separator));
@@ -555,16 +555,16 @@ letsTest[2] = value_2;';
          * Special exception: do not use, stop recursive on the "diam" key
          */
         $expected = [
-            'lorem.ipsum.dolor'        => 'sit',
-            'consectetur'              => 'adipiscing',
-            'mollis'                   => 1234,
-            2                          => [],
-            'sit.nullam'               => 'donec',
+            'lorem.ipsum.dolor' => 'sit',
+            'consectetur' => 'adipiscing',
+            'mollis' => 1234,
+            2 => [],
+            'sit.nullam' => 'donec',
             'sit.aliquet.vitae.ligula' => 'quis',
-            'sit.0'                    => 'elit',
-            'amet.0'                   => 'iaculis',
-            'amet.1'                   => 'primis',
-            'lorem.ipsum.diam'         => [
+            'sit.0' => 'elit',
+            'amet.0' => 'iaculis',
+            'amet.1' => 'primis',
+            'lorem.ipsum.diam' => [
                 'non' => 'egestas',
             ],
         ];
@@ -579,17 +579,17 @@ letsTest[2] = value_2;';
          */
         $expected = [
             'lorem . ipsum . dolor' => 'sit',
-            'consectetur'           => 'adipiscing',
-            'mollis'                => 1234,
-            2                       => [],
-            'sit . nullam'          => 'donec',
-            'sit . 0'               => 'elit',
-            'amet . 0'              => 'iaculis',
-            'amet . 1'              => 'primis',
-            'lorem . ipsum . diam'  => [
+            'consectetur' => 'adipiscing',
+            'mollis' => 1234,
+            2 => [],
+            'sit . nullam' => 'donec',
+            'sit . 0' => 'elit',
+            'amet . 0' => 'iaculis',
+            'amet . 1' => 'primis',
+            'lorem . ipsum . diam' => [
                 'non' => 'egestas',
             ],
-            'sit . aliquet'         => [
+            'sit . aliquet' => [
                 'vitae' => [
                     'ligula' => 'quis',
                 ],
@@ -623,12 +623,12 @@ letsTest[2] = value_2;';
                 2,
                 3,
             ],
-            'primis > 0'                          => [
+            'primis > 0' => [
                 'in',
                 'faucibus',
                 'orci',
             ],
-            'primis > 1'                          => [
+            'primis > 1' => [
                 'luctus',
                 'et',
                 'ultrices',
@@ -653,14 +653,14 @@ letsTest[2] = value_2;';
          */
         $expected = [
             'lorem > ipsum > dolor' => 'sit',
-            'consectetur'           => 'adipiscing',
-            'mollis'                => 1234,
-            2                       => [],
-            'sit > nullam'          => 'donec',
-            'sit > 0'               => 'elit',
-            'amet > 0'              => 'iaculis',
-            'amet > 1'              => 'primis',
-            'lorem > ipsum > diam'  => [
+            'consectetur' => 'adipiscing',
+            'mollis' => 1234,
+            2 => [],
+            'sit > nullam' => 'donec',
+            'sit > 0' => 'elit',
+            'amet > 0' => 'iaculis',
+            'amet > 1' => 'primis',
+            'lorem > ipsum > diam' => [
                 'non' => 'egestas',
             ],
             'sit > aliquet > vitae' => [
@@ -679,7 +679,7 @@ letsTest[2] = value_2;';
          * Stop building of paths on these paths (verify paths only)
          */
         $expected = [
-            'ipsum > quis > vestibulum > porta-1'          => [
+            'ipsum > quis > vestibulum > porta-1' => [
                 'turpis',
                 'urna',
             ],
@@ -691,13 +691,13 @@ letsTest[2] = value_2;';
                     ],
                 ],
             ],
-            'ipsum > quis > vestibulum > porta-3 > 0'      => 1,
-            'ipsum > quis > vestibulum > porta-3 > 1'      => 2,
-            'ipsum > quis > vestibulum > porta-3 > 2'      => 3,
-            'primis > 0 > 0'                               => 'in',
-            'primis > 0 > 1'                               => 'faucibus',
-            'primis > 0 > 2'                               => 'orci',
-            'primis > 1'                                   => [
+            'ipsum > quis > vestibulum > porta-3 > 0' => 1,
+            'ipsum > quis > vestibulum > porta-3 > 1' => 2,
+            'ipsum > quis > vestibulum > porta-3 > 2' => 3,
+            'primis > 0 > 0' => 'in',
+            'primis > 0 > 1' => 'faucibus',
+            'primis > 0 > 2' => 'orci',
+            'primis > 1' => [
                 'luctus',
                 'et',
                 'ultrices',
@@ -716,7 +716,7 @@ letsTest[2] = value_2;';
          * Stop building of paths if path contains any of these part (verify part of paths only)
          */
         $expected = [
-            'ipsum > quis > vestibulum > porta-1'               => [
+            'ipsum > quis > vestibulum > porta-1' => [
                 'turpis',
                 'urna',
             ],
@@ -726,15 +726,15 @@ letsTest[2] = value_2;';
                     'aliquam',
                 ],
             ],
-            'ipsum > quis > vestibulum > porta-3 > 0'           => 1,
-            'ipsum > quis > vestibulum > porta-3 > 1'           => 2,
-            'ipsum > quis > vestibulum > porta-3 > 2'           => 3,
-            'primis > 0'                                        => [
+            'ipsum > quis > vestibulum > porta-3 > 0' => 1,
+            'ipsum > quis > vestibulum > porta-3 > 1' => 2,
+            'ipsum > quis > vestibulum > porta-3 > 2' => 3,
+            'primis > 0' => [
                 'in',
                 'faucibus',
                 'orci',
             ],
-            'primis > 1'                                        => [
+            'primis > 1' => [
                 'luctus',
                 'et',
                 'ultrices',
@@ -830,7 +830,7 @@ letsTest[2] = value_2;';
         ];
 
         $existingKeys = [
-            'simpleArray'         => [
+            'simpleArray' => [
                 1,
                 3,
                 4,
@@ -839,11 +839,11 @@ letsTest[2] = value_2;';
                 'dolor',
                 'amet',
             ],
-            'twoDimensionsArray'  => [
+            'twoDimensionsArray' => [
                 2,
                 3,
             ],
-            'complexArray'        => [
+            'complexArray' => [
                 'sit',
                 'aliquet',
                 'vitae',
@@ -883,7 +883,7 @@ letsTest[2] = value_2;';
                 2,
                 2,
             ],
-            'complexArray'       => [
+            'complexArray' => [
                 [
                     'lorem',
                     'ipsum',
@@ -989,22 +989,22 @@ letsTest[2] = value_2;';
          * Positive case - multi-dimensions array
          */
         $effect = [
-            'amet'        => [
+            'amet' => [
                 'iaculis',
                 'primis',
             ],
             'consectetur' => 'adipiscing',
-            'lorem'       => [
+            'lorem' => [
                 'ipsum' => [
                     'dolor' => 'sit',
-                    'diam'  => [
+                    'diam' => [
                         'non' => 'egestas',
                     ],
                 ],
             ],
-            'mollis'      => 1234,
-            'sit'         => [
-                'nullam'  => 'donec',
+            'mollis' => 1234,
+            'sit' => [
+                'nullam' => 'donec',
                 'aliquet' => [
                     'vitae' => [
                         'ligula' => 'quis',
@@ -1012,7 +1012,7 @@ letsTest[2] = value_2;';
                 ],
                 'elit',
             ],
-            2             => [],
+            2 => [],
         ];
 
         self::assertEquals($effect, Arrays::ksortRecursive($this->complexArray));
@@ -1021,23 +1021,23 @@ letsTest[2] = value_2;';
          * Positive case - multi-dimensions array - with options of ksort() function
          */
         $effect = [
-            2             => [],
-            'amet'        => [
+            2 => [],
+            'amet' => [
                 'iaculis',
                 'primis',
             ],
             'consectetur' => 'adipiscing',
-            'lorem'       => [
+            'lorem' => [
                 'ipsum' => [
                     'dolor' => 'sit',
-                    'diam'  => [
+                    'diam' => [
                         'non' => 'egestas',
                     ],
                 ],
             ],
-            'mollis'      => 1234,
-            'sit'         => [
-                'nullam'  => 'donec',
+            'mollis' => 1234,
+            'sit' => [
+                'nullam' => 'donec',
                 'aliquet' => [
                     'vitae' => [
                         'ligula' => 'quis',
@@ -1086,7 +1086,7 @@ letsTest[2] = value_2;';
                 'dolor',
                 'sit',
             ],
-            'amet'  => [
+            'amet' => [
                 'consectetur',
                 'adipiscing' => [
                     'elit' => [
@@ -1105,10 +1105,10 @@ letsTest[2] = value_2;';
                 'sit',
                 Arrays::POSITION_KEY_NAME => 1,
             ],
-            'amet'  => [
+            'amet' => [
                 'consectetur',
-                'adipiscing'              => [
-                    'elit'                    => [
+                'adipiscing' => [
+                    'elit' => [
                         'cras',
                         'quis',
                         'ligula',
@@ -1233,7 +1233,7 @@ letsTest[2] = value_2;';
 
         $sorted = [
             'dolor' => 'sit',
-            'amet'  => 'consectetur',
+            'amet' => 'consectetur',
             'Lorem' => 'ipsum',
         ];
 
@@ -1306,9 +1306,9 @@ letsTest[2] = value_2;';
          * An array with elements that contain separator
          */
         $array = [
-            'lorem' . $separator,
+            'lorem'.$separator,
             'ipsum',
-            $separator . 'dolor',
+            $separator.'dolor',
         ];
 
         self::assertEquals(implode($separator, [
@@ -1658,7 +1658,7 @@ letsTest[2] = value_2;';
     }
 
     /**
-     * Provides simple array to set/replace values with keys
+     * Provides simple array to set/replace values with keys.
      *
      * @return \Generator
      */
@@ -1691,14 +1691,14 @@ letsTest[2] = value_2;';
                 'Lorem' => 0,
                 'ipsum' => 1,
                 'dolor' => 2,
-                'sit'   => 3,
-                'amet'  => 4,
+                'sit' => 3,
+                'amet' => 4,
             ],
         ];
     }
 
     /**
-     * Provides an array with duplicated values to set/replace values with keys
+     * Provides an array with duplicated values to set/replace values with keys.
      *
      * @return \Generator
      */
@@ -1708,18 +1708,18 @@ letsTest[2] = value_2;';
             [
                 'lorem' => 'ipsum',
                 'dolor' => 'ipsum',
-                'sit'   => 'amet',
-                'diam'  => 'non',
-                'elit'  => 'non',
-                'in'    => 'non',
+                'sit' => 'amet',
+                'diam' => 'non',
+                'elit' => 'non',
+                'in' => 'non',
             ],
             [
                 'ipsum' => [
                     'lorem',
                     'dolor',
                 ],
-                'amet'  => 'sit',
-                'non'   => [
+                'amet' => 'sit',
+                'non' => [
                     'diam',
                     'elit',
                     'in',
@@ -1729,14 +1729,14 @@ letsTest[2] = value_2;';
 
         yield[
             [
-                'lorem'  => [
+                'lorem' => [
                     'diam' => 'non',
                     'elit' => 'non',
-                    'in'   => 'non',
+                    'in' => 'non',
                 ],
                 'dolor1' => 'ipsum',
                 'dolor2' => 'ipsum',
-                'sit'    => 'amet',
+                'sit' => 'amet',
             ],
             [
                 'lorem' => [
@@ -1750,7 +1750,7 @@ letsTest[2] = value_2;';
                     'dolor1',
                     'dolor2',
                 ],
-                'amet'  => 'sit',
+                'amet' => 'sit',
             ],
         ];
     }
@@ -1773,7 +1773,7 @@ letsTest[2] = value_2;';
         $this->simpleArrayWithKeys = [
             'Lorem' => 'ipsum',
             'dolor' => 'sit',
-            'amet'  => 'consectetur',
+            'amet' => 'consectetur',
         ];
 
         $this->twoDimensionsArray = [
@@ -1798,19 +1798,19 @@ letsTest[2] = value_2;';
         ];
 
         $this->complexArray = [
-            'lorem'       => [
+            'lorem' => [
                 'ipsum' => [
                     'dolor' => 'sit',
-                    'diam'  => [
+                    'diam' => [
                         'non' => 'egestas',
                     ],
                 ],
             ],
             'consectetur' => 'adipiscing',
-            'mollis'      => 1234,
-            2             => [],
-            'sit'         => [
-                'nullam'  => 'donec',
+            'mollis' => 1234,
+            2 => [],
+            'sit' => [
+                'nullam' => 'donec',
                 'aliquet' => [
                     'vitae' => [
                         'ligula' => 'quis',
@@ -1818,14 +1818,14 @@ letsTest[2] = value_2;';
                 ],
                 'elit',
             ],
-            'amet'        => [
+            'amet' => [
                 'iaculis',
                 'primis',
             ],
         ];
 
         $this->superComplexArray = [
-            'ipsum'  => [
+            'ipsum' => [
                 'quis' => [
                     'vestibulum' => [
                         'porta-1' => [

@@ -13,7 +13,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\MimeTypes;
 
 /**
- * Tests of the useful methods for mime types of files
+ * Tests of the useful methods for mime types of files.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -186,7 +186,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides not existing mime type
+     * Provides not existing mime type.
      *
      * @return Generator
      */
@@ -198,7 +198,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides mime type of non-image
+     * Provides mime type of non-image.
      *
      * @return Generator
      */
@@ -211,7 +211,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides mime type of image
+     * Provides mime type of image.
      *
      * @return Generator
      */
@@ -226,7 +226,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides existing mime type used to get single, one extension
+     * Provides existing mime type used to get single, one extension.
      *
      * @return Generator
      */
@@ -249,7 +249,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides existing mime type used to get multiple, more than one extension
+     * Provides existing mime type used to get multiple, more than one extension.
      *
      * @return Generator
      */
@@ -316,7 +316,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides not existing mime types
+     * Provides not existing mime types.
      *
      * @return Generator
      */
@@ -344,7 +344,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides mime types used to get extensions
+     * Provides mime types used to get extensions.
      *
      * @return Generator
      */
@@ -357,7 +357,7 @@ class MimeTypesTest extends BaseTestCase
             ],
             [
                 'application/x-7z-compressed' => '7z',
-                'application/json'            => 'json',
+                'application/json' => 'json',
             ],
         ];
 
@@ -374,12 +374,12 @@ class MimeTypesTest extends BaseTestCase
                     'nb',
                     'mb',
                 ],
-                'application/xml'         => [
+                'application/xml' => [
                     'xml',
                     'xsl',
                 ],
-                'audio/mp4'               => 'mp4a',
-                'video/mp4'               => [
+                'audio/mp4' => 'mp4a',
+                'video/mp4' => [
                     'mp4',
                     'mp4v',
                     'mpg4',
@@ -390,7 +390,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides mime types used to get extensions as upper case
+     * Provides mime types used to get extensions as upper case.
      *
      * @return Generator
      */
@@ -403,7 +403,7 @@ class MimeTypesTest extends BaseTestCase
             ],
             [
                 'application/x-7z-compressed' => '7Z',
-                'application/json'            => 'JSON',
+                'application/json' => 'JSON',
             ],
         ];
 
@@ -419,12 +419,12 @@ class MimeTypesTest extends BaseTestCase
                     'XML',
                     'XSL',
                 ],
-                'audio/mp4'       => 'MP4A',
-                'text/html'       => [
+                'audio/mp4' => 'MP4A',
+                'text/html' => [
                     'HTML',
                     'HTM',
                 ],
-                'video/mp4'       => [
+                'video/mp4' => [
                     'MP4',
                     'MP4V',
                     'MPG4',
@@ -435,7 +435,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides real file path to get mime type
+     * Provides real file path to get mime type.
      *
      * @return Generator
      */
@@ -453,7 +453,7 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * Provides real file path to get information if the file is an image
+     * Provides real file path to get information if the file is an image.
      *
      * @return Generator
      */

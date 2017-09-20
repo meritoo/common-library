@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Utilities;
 
 /**
- * Useful locale methods
+ * Useful locale methods.
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -17,12 +17,13 @@ namespace Meritoo\Common\Utilities;
 class Locale
 {
     /**
-     * Sets locale for given category using given language and country code
+     * Sets locale for given category using given language and country code.
      *
      * @param int    $category     Named constant specifying the category of the functions affected by the locale
      *                             setting. It's the same constant as required by setlocale() function.
      * @param string $languageCode Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
      * @param string $countryCode  (optional) Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
+     *
      * @return bool
      *
      * Available categories (values of $category argument):
@@ -36,7 +37,7 @@ class Locale
      */
     public static function setLocale($category, $languageCode, $countryCode = '')
     {
-        $category = (int)$category;
+        $category = (int) $category;
 
         if (is_string($languageCode)) {
             $languageCode = trim($languageCode);
@@ -63,11 +64,12 @@ class Locale
     }
 
     /**
-     * Returns long form of the locale
+     * Returns long form of the locale.
      *
      * @param string $languageCode Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
      * @param string $countryCode  (optional) Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
      * @param string $encoding     (optional) Encoding of the final locale
+     *
      * @return string
      *
      * Example:

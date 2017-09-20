@@ -12,7 +12,7 @@ use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Type\DatePartType;
 
 /**
- * An exception used while type of date part, e.g. "year", is unknown
+ * An exception used while type of date part, e.g. "year", is unknown.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -20,7 +20,7 @@ use Meritoo\Common\Type\DatePartType;
 class UnknownDatePartTypeException extends UnknownTypeException
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param string $unknownDatePart Type of date part, e.g. "year". One of DatePartType class constants.
      * @param string $value           Incorrect value

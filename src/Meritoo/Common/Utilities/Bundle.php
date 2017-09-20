@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Utilities;
 
 /**
- * Useful methods for bundle
+ * Useful methods for bundle.
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -17,11 +17,12 @@ namespace Meritoo\Common\Utilities;
 class Bundle
 {
     /**
-     * Returns path to view / template of given bundle
+     * Returns path to view / template of given bundle.
      *
      * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
      * @param string $bundleName Name of the bundle, e.g. "MyExtraBundle"
      * @param string $extension  (optional) Extension of the view / template
+     *
      * @return string|null
      */
     public static function getBundleViewPath($viewPath, $bundleName, $extension = 'html.twig')

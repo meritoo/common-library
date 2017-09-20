@@ -13,7 +13,7 @@ use DOMXPath;
 use SimpleXMLElement;
 
 /**
- * Useful XML-related methods (only static functions)
+ * Useful XML-related methods (only static functions).
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -26,6 +26,7 @@ class Xml
      *
      * @param SimpleXMLElement $element1 First element to merge
      * @param SimpleXMLElement $element2 Second element to merge
+     *
      * @return SimpleXMLElement
      */
     public static function mergeNodes(SimpleXMLElement $element1, SimpleXMLElement $element2)

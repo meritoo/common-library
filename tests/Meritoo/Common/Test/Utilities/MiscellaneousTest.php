@@ -17,7 +17,7 @@ use Meritoo\Common\Utilities\Miscellaneous;
 use stdClass;
 
 /**
- * Tests of the Miscellaneous methods (only static functions)
+ * Tests of the Miscellaneous methods (only static functions).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -30,7 +30,7 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetDirectoryContent()
     {
-        $directoryPath = __DIR__ . '/../';
+        $directoryPath = __DIR__.'/../';
         $filePath = __FILE__;
 
         self::assertNull(Miscellaneous::getDirectoryContent(null));
@@ -123,8 +123,8 @@ class MiscellaneousTest extends BaseTestCase
          */
         $uniqueFileName2 = Miscellaneous::getUniqueFileName($originalFileName);
 
-        $isCorrect1 = (bool)preg_match($pattern, $uniqueFileName1);
-        $isCorrect2 = (bool)preg_match($pattern, $uniqueFileName2);
+        $isCorrect1 = (bool) preg_match($pattern, $uniqueFileName1);
+        $isCorrect2 = (bool) preg_match($pattern, $uniqueFileName2);
 
         self::assertTrue($isCorrect1);
         self::assertTrue($isCorrect2);
@@ -345,8 +345,8 @@ class MiscellaneousTest extends BaseTestCase
     {
         $suffix = '...';
 
-        self::assertEquals('Lorem ipsum' . $suffix, Miscellaneous::substringToWord($this->stringCommaSeparated, 20));
-        self::assertEquals('Lorem ipsum dolor sit' . $suffix, Miscellaneous::substringToWord($this->stringCommaSeparated, 25));
+        self::assertEquals('Lorem ipsum'.$suffix, Miscellaneous::substringToWord($this->stringCommaSeparated, 20));
+        self::assertEquals('Lorem ipsum dolor sit'.$suffix, Miscellaneous::substringToWord($this->stringCommaSeparated, 25));
 
         self::assertEquals('Lorem ipsum dolor', Miscellaneous::substringToWord($this->stringCommaSeparated, 20, ''));
         self::assertEquals('Lorem ipsum dolor sit amet, consectetur', Miscellaneous::substringToWord($this->stringCommaSeparated, 40, ''));
@@ -368,26 +368,26 @@ class MiscellaneousTest extends BaseTestCase
         /*
          * Removing not directory
          */
-        $directoryPath = sys_get_temp_dir() . '/ipsum.txt';
+        $directoryPath = sys_get_temp_dir().'/ipsum.txt';
         touch($directoryPath);
         self::assertTrue(Miscellaneous::removeDirectory($directoryPath));
 
         /*
          * Removing simple directory
          */
-        $directoryPath = sys_get_temp_dir() . '/lorem/ipsum';
+        $directoryPath = sys_get_temp_dir().'/lorem/ipsum';
         mkdir($directoryPath, 0777, true);
         self::assertTrue(Miscellaneous::removeDirectory($directoryPath));
 
         /*
          * Removing more complex directory
          */
-        $directory1Path = sys_get_temp_dir() . '/lorem/ipsum';
-        $directory2Path = sys_get_temp_dir() . '/lorem/dolor/sit';
+        $directory1Path = sys_get_temp_dir().'/lorem/ipsum';
+        $directory2Path = sys_get_temp_dir().'/lorem/dolor/sit';
 
         mkdir($directory1Path, 0777, true);
         mkdir($directory2Path, 0777, true);
-        self::assertTrue(Miscellaneous::removeDirectory(sys_get_temp_dir() . '/lorem', false));
+        self::assertTrue(Miscellaneous::removeDirectory(sys_get_temp_dir().'/lorem', false));
     }
 
     /**
@@ -520,8 +520,8 @@ class MiscellaneousTest extends BaseTestCase
             'and/the/third',
         ];
 
-        self::assertEquals('/' . implode('/', $paths1), Miscellaneous::concatenatePaths($paths1));
-        self::assertEquals('/' . implode('/', $paths1), Miscellaneous::concatenatePaths($paths1[0], $paths1[1], $paths1[2]));
+        self::assertEquals('/'.implode('/', $paths1), Miscellaneous::concatenatePaths($paths1));
+        self::assertEquals('/'.implode('/', $paths1), Miscellaneous::concatenatePaths($paths1[0], $paths1[1], $paths1[2]));
 
         /*
          * For Windows operating system
@@ -721,7 +721,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides string to convert characters to latin characters and not lower cased and not human-readable
+     * Provides string to convert characters to latin characters and not lower cased and not human-readable.
      *
      * @return Generator
      */
@@ -816,7 +816,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides string to convert characters to latin characters and lower cased and human-readable
+     * Provides string to convert characters to latin characters and lower cased and human-readable.
      *
      * @return Generator
      */
@@ -911,7 +911,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides names of files
+     * Provides names of files.
      *
      * @return Generator
      */
@@ -939,7 +939,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides string to convert to camel case
+     * Provides string to convert to camel case.
      *
      * @return Generator
      */
@@ -965,7 +965,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides path used to remove the starting / beginning directory's separator
+     * Provides path used to remove the starting / beginning directory's separator.
      *
      * @return Generator
      */
@@ -1009,7 +1009,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides path used to remove the ending directory's separator
+     * Provides path used to remove the ending directory's separator.
      *
      * @return Generator
      */
@@ -1053,7 +1053,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides empty value used to fill missing zeros
+     * Provides empty value used to fill missing zeros.
      *
      * @return Generator
      */
@@ -1067,7 +1067,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * Provides number used to fill missing zeros
+     * Provides number used to fill missing zeros.
      *
      * @return Generator
      */

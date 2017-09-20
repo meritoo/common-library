@@ -12,7 +12,7 @@ use Exception;
 use Meritoo\Common\Utilities\Reflection;
 
 /**
- * An exception used while given class has no child classes
+ * An exception used while given class has no child classes.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -20,7 +20,7 @@ use Meritoo\Common\Utilities\Reflection;
 class MissingChildClassesException extends Exception
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param array|object|string $parentClass Class that hasn't child classes, but it should. An array of objects,
      *                                         strings, object or string.
@@ -28,7 +28,7 @@ class MissingChildClassesException extends Exception
     public function __construct($parentClass)
     {
         $template = 'The \'%s\' class requires one child class at least who will extend her (maybe is an abstract'
-            . ' class), but the child classes are missing. Did you forget to extend this class?';
+            .' class), but the child classes are missing. Did you forget to extend this class?';
 
         $parentClassName = Reflection::getClassName($parentClass);
         $message = sprintf($template, $parentClassName);

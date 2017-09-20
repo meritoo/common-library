@@ -13,7 +13,7 @@ use Meritoo\Common\Type\Base\BaseType;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Tests of the exception used while type of something is unknown
+ * Tests of the exception used while type of something is unknown.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -33,7 +33,7 @@ class UnknownTypeExceptionTest extends PHPUnit_Framework_TestCase
 }
 
 /**
- * Type of something (for testing purposes)
+ * Type of something (for testing purposes).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -46,7 +46,7 @@ class TestType extends BaseType
 }
 
 /**
- * An exception used while type of something is unknown (for testing purposes)
+ * An exception used while type of something is unknown (for testing purposes).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -54,7 +54,7 @@ class TestType extends BaseType
 class UnknownTestTypeException extends UnknownTypeException
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param int|string $unknownType The unknown type of something (for testing purposes)
      */
@@ -65,7 +65,7 @@ class UnknownTestTypeException extends UnknownTypeException
 }
 
 /**
- * Service used together with type of something (for testing purposes)
+ * Service used together with type of something (for testing purposes).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -73,9 +73,10 @@ class UnknownTestTypeException extends UnknownTypeException
 class TestService
 {
     /**
-     * Returns translated type (for testing purposes)
+     * Returns translated type (for testing purposes).
      *
      * @param string $type Type of something (for testing purposes)
+     *
      * @return string
      *
      * @throws UnknownTestTypeException

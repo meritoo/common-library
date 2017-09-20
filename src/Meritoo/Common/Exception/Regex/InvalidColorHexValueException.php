@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Exception\Regex;
 
 /**
- * An exception used while given hexadecimal value of color is invalid
+ * An exception used while given hexadecimal value of color is invalid.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -17,7 +17,7 @@ namespace Meritoo\Common\Exception\Regex;
 class InvalidColorHexValueException extends \Exception
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param string $color Invalid hexadecimal value of color
      */

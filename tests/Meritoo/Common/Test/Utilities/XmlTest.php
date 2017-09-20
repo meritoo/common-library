@@ -13,7 +13,7 @@ use PHPUnit_Framework_TestCase;
 use SimpleXMLElement;
 
 /**
- * Tests of the useful XML-related methods (only static functions)
+ * Tests of the useful XML-related methods (only static functions).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -32,7 +32,7 @@ class XmlTest extends PHPUnit_Framework_TestCase
         $element2 = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><employees />');
 
         $merged = Xml::mergeNodes($element1, $element2);
-        self::assertEquals('', (string)$merged);
+        self::assertEquals('', (string) $merged);
 
         /*
          * XMLs with data
@@ -41,7 +41,7 @@ class XmlTest extends PHPUnit_Framework_TestCase
         $element2 = new SimpleXMLElement($this->advancedXml);
 
         $merged = Xml::mergeNodes($element1, $element2);
-        self::assertEquals('John', (string)$merged->author[0]->first_name);
+        self::assertEquals('John', (string) $merged->author[0]->first_name);
     }
 
     /**

@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Utilities;
 
 /**
- * Useful uri methods (only static functions)
+ * Useful uri methods (only static functions).
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -17,9 +17,10 @@ namespace Meritoo\Common\Utilities;
 class Uri
 {
     /**
-     * Returns full uri string
+     * Returns full uri string.
      *
      * @param bool $withoutHost (optional) If is set to true, means that host / server name is omitted
+     *
      * @return string
      */
     public static function getFullUri($withoutHost = false)
@@ -30,13 +31,14 @@ class Uri
             return $effect;
         }
 
-        return self::getServerNameOrIp(true) . $effect;
+        return self::getServerNameOrIp(true).$effect;
     }
 
     /**
-     * Returns server name or IP address
+     * Returns server name or IP address.
      *
      * @param bool $withProtocol (optional) If is set to true, protocol name is included. Otherwise isn't.
+     *
      * @return string
      */
     public static function getServerNameOrIp($withProtocol = false)
@@ -44,14 +46,14 @@ class Uri
         $protocol = '';
 
         if ($withProtocol) {
-            $protocol .= self::getProtocolName() . '://';
+            $protocol .= self::getProtocolName().'://';
         }
 
-        return $protocol . Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_HOST');
+        return $protocol.Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_HOST');
     }
 
     /**
-     * Returns protocol name
+     * Returns protocol name.
      *
      * @return string
      */
@@ -76,7 +78,7 @@ class Uri
     }
 
     /**
-     * Returns http referer uri
+     * Returns http referer uri.
      *
      * @return string
      */
@@ -92,7 +94,7 @@ class Uri
     }
 
     /**
-     * Returns user's IP address
+     * Returns user's IP address.
      *
      * @return string
      */
@@ -102,10 +104,11 @@ class Uri
     }
 
     /**
-     * Returns name and version of user's web browser
+     * Returns name and version of user's web browser.
      *
      * @param bool $withVersion (optional) If is set to true, version of the browser is returned too. Otherwise -
      *                          name only.
+     *
      * @return string
      */
     public static function getUserWebBrowserName($withVersion = false)
@@ -114,9 +117,9 @@ class Uri
 
         $knownBrowsers = [
             'Firefox/([\d\.]+)$' => 'Mozilla Firefox',
-            'OPR/([\d\.]+)$'     => 'Opera',
-            'Chrome/([\d\.]+)$'  => 'Google Chrome',
-            'Safari/([\d\.]+)$'  => 'Apple Safari',
+            'OPR/([\d\.]+)$' => 'Opera',
+            'Chrome/([\d\.]+)$' => 'Google Chrome',
+            'Safari/([\d\.]+)$' => 'Apple Safari',
         ];
 
         foreach ($knownBrowsers as $pattern => $browserName) {
@@ -138,7 +141,7 @@ class Uri
     }
 
     /**
-     * Returns user's web browser information
+     * Returns user's web browser information.
      *
      * @return string
      *
@@ -164,7 +167,7 @@ class Uri
     }
 
     /**
-     * Returns name of user's operating system
+     * Returns name of user's operating system.
      *
      * @return string
      */
@@ -174,8 +177,8 @@ class Uri
 
         $knownSystems = [
             'Linux' => 'Linux',
-            'Win'   => 'Windows',
-            'Mac'   => 'Mac OS',
+            'Win' => 'Windows',
+            'Mac' => 'Mac OS',
         ];
 
         foreach ($knownSystems as $pattern => $systemName) {
@@ -191,7 +194,7 @@ class Uri
     }
 
     /**
-     * Returns information if running server is localhost
+     * Returns information if running server is localhost.
      *
      * @return bool
      */
@@ -207,9 +210,10 @@ class Uri
     }
 
     /**
-     * Returns information if given url is external, from another server / domain
+     * Returns information if given url is external, from another server / domain.
      *
      * @param string $url The url to check
+     *
      * @return bool
      */
     public static function isExternalUrl($url)
@@ -221,11 +225,12 @@ class Uri
     }
 
     /**
-     * Replenishes protocol in the given url
+     * Replenishes protocol in the given url.
      *
      * @param string $url      The url to check and replenish
      * @param string $protocol (optional) The protocol which is replenished. If is empty, protocol of current request
      *                         is used.
+     *
      * @return string
      */
     public static function replenishProtocol($url, $protocol = '')
@@ -264,11 +269,12 @@ class Uri
     }
 
     /**
-     * Returns url to resource secured by given htpasswd login and password
+     * Returns url to resource secured by given htpasswd login and password.
      *
      * @param string $url      A path / url to some resource, e.g. page, image, css file
      * @param string $user     (optional) User name used to log in
      * @param string $password (optional) User password used to log in
+     *
      * @return string
      */
     public static function getSecuredUrl($url, $user = '', $password = '')
@@ -280,7 +286,7 @@ class Uri
             $url = sprintf('/%s', $url);
         }
 
-        $url = $host . $url;
+        $url = $host.$url;
 
         if (!empty($user) && !empty($password)) {
             $url = sprintf('%s:%s@%s', $user, $password, $url);
@@ -295,13 +301,14 @@ class Uri
      *
      * @param string $url      Url string
      * @param string $protocol (optional) Protocol string
+     *
      * @return string
      */
     public static function addProtocolToUrl($url, $protocol = 'http')
     {
         $pattern = sprintf('/^%s.*/', $protocol);
 
-        if ((bool)preg_match($pattern, $url)) {
+        if ((bool) preg_match($pattern, $url)) {
             return $url;
         }
 

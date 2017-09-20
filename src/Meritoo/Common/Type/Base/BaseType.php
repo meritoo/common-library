@@ -20,14 +20,14 @@ use Meritoo\Common\Utilities\Reflection;
 abstract class BaseType
 {
     /**
-     * All types
+     * All types.
      *
      * @var array
      */
     private $all;
 
     /**
-     * Returns all types
+     * Returns all types.
      *
      * @return array
      */
@@ -41,9 +41,10 @@ abstract class BaseType
     }
 
     /**
-     * Returns information if given type is correct
+     * Returns information if given type is correct.
      *
      * @param string $type The type to check
+     *
      * @return bool
      */
     public function isCorrectType($type)

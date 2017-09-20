@@ -21,7 +21,7 @@ use ReflectionObject;
 use ReflectionProperty;
 
 /**
- * Useful reflection methods
+ * Useful reflection methods.
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -29,11 +29,12 @@ use ReflectionProperty;
 class Reflection
 {
     /**
-     * Returns names of methods for given class / object
+     * Returns names of methods for given class / object.
      *
      * @param object|string $class              The object or name of object's class
      * @param bool          $withoutInheritance (optional) If is set to true, only methods for given class are returned.
      *                                          Otherwise - all methods, with inherited methods too.
+     *
      * @return array
      */
     public static function getMethods($class, $withoutInheritance = false)
@@ -61,9 +62,10 @@ class Reflection
     }
 
     /**
-     * Returns constants of given class / object
+     * Returns constants of given class / object.
      *
      * @param object|string $class The object or name of object's class
+     *
      * @return array
      */
     public static function getConstants($class)
@@ -78,6 +80,7 @@ class Reflection
      * Values of constants should be integers.
      *
      * @param object|string $class The object or name of object's class
+     *
      * @return int|null
      */
     public static function getMaxNumberConstant($class)
@@ -100,10 +103,11 @@ class Reflection
     }
 
     /**
-     * Returns information if given class / object has given method
+     * Returns information if given class / object has given method.
      *
      * @param object|string $class  The object or name of object's class
      * @param string        $method Name of the method to find
+     *
      * @return bool
      */
     public static function hasMethod($class, $method)
@@ -114,10 +118,11 @@ class Reflection
     }
 
     /**
-     * Returns information if given class / object has given property
+     * Returns information if given class / object has given property.
      *
      * @param object|string $class    The object or name of object's class
      * @param string        $property Name of the property to find
+     *
      * @return bool
      */
     public static function hasProperty($class, $property)
@@ -128,10 +133,11 @@ class Reflection
     }
 
     /**
-     * Returns information if given class / object has given constant
+     * Returns information if given class / object has given constant.
      *
      * @param object|string $class    The object or name of object's class
      * @param string        $constant Name of the constant to find
+     *
      * @return bool
      */
     public static function hasConstant($class, $constant)
@@ -142,10 +148,11 @@ class Reflection
     }
 
     /**
-     * Returns value of given constant
+     * Returns value of given constant.
      *
      * @param object|string $class    The object or name of object's class
      * @param string        $constant Name of the constant that contains a value
+     *
      * @return mixed
      */
     public static function getConstantValue($class, $constant)
@@ -168,6 +175,7 @@ class Reflection
      *                         dot-separated, e.g. "invoice.user.email".
      * @param bool   $force    (optional) If is set to true, try to retrieve value even if the object doesn't have
      *                         property. Otherwise - not.
+     *
      * @return mixed
      */
     public static function getPropertyValue($object, $property, $force = false)
@@ -241,6 +249,7 @@ class Reflection
                         if ($class->hasMethod($method)) {
                             $value = $object->{$method}();
                             $valueFound = true;
+
                             break;
                         }
                     }
@@ -271,6 +280,7 @@ class Reflection
      * @param string                  $property Name of the property that contains a value
      * @param bool                    $force    (optional) If is set to true, try to retrieve value even if the
      *                                          object does not have property. Otherwise - not.
+     *
      * @return array
      */
     public static function getPropertyValues($objects, $property, $force = false)
@@ -294,11 +304,12 @@ class Reflection
     }
 
     /**
-     * Returns a class name for given source
+     * Returns a class name for given source.
      *
      * @param array|object|string $source           An array of objects, namespaces, object or namespace
      * @param bool                $withoutNamespace (optional) If is set to true, namespace is omitted. Otherwise -
      *                                              not, full name of class is returned, with namespace.
+     *
      * @return string|null
      */
     public static function getClassName($source, $withoutNamespace = false)
@@ -356,9 +367,10 @@ class Reflection
     }
 
     /**
-     * Returns namespace of class for given source
+     * Returns namespace of class for given source.
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
+     *
      * @return string
      */
     public static function getClassNamespace($source)
@@ -379,10 +391,11 @@ class Reflection
     }
 
     /**
-     * Returns information if given interface is implemented by given class / object
+     * Returns information if given interface is implemented by given class / object.
      *
      * @param array|object|string $source    An array of objects, namespaces, object or namespace
      * @param string              $interface The interface that should be implemented
+     *
      * @return bool
      */
     public static function isInterfaceImplemented($source, $interface)
@@ -394,10 +407,11 @@ class Reflection
     }
 
     /**
-     * Returns information if given child class is a subclass of given parent class
+     * Returns information if given child class is a subclass of given parent class.
      *
      * @param array|object|string $childClass  The child class. An array of objects, namespaces, object or namespace.
      * @param array|object|string $parentClass The parent class. An array of objects, namespaces, object or namespace.
+     *
      * @return bool
      */
     public static function isChildOfClass($childClass, $parentClass)
@@ -415,11 +429,12 @@ class Reflection
     }
 
     /**
-     * Returns given object properties
+     * Returns given object properties.
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
      * @param int                 $filter (optional) Filter of properties. Uses ReflectionProperty class constants.
      *                                    By default all properties are returned.
+     *
      * @return array|ReflectionProperty
      */
     public static function getProperties($source, $filter = null)
@@ -438,9 +453,10 @@ class Reflection
     }
 
     /**
-     * Returns a parent class
+     * Returns a parent class.
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
+     *
      * @return ReflectionClass
      */
     public static function getParentClass($source)
@@ -457,7 +473,9 @@ class Reflection
      *
      * @param array|object|string $class Class who child classes should be returned. An array of objects, strings,
      *                                   object or string.
+     *
      * @return array|null
+     *
      * @throws CannotResolveClassNameException
      */
     public static function getChildClasses($class)
@@ -512,6 +530,7 @@ class Reflection
      *
      * @param array|object|string $parentClass Class who child class should be returned. An array of objects,
      *                                         namespaces, object or namespace.
+     *
      * @return mixed
      *
      * @throws MissingChildClassesException
@@ -541,12 +560,13 @@ class Reflection
     }
 
     /**
-     * Returns property, the ReflectionProperty instance, of given object
+     * Returns property, the ReflectionProperty instance, of given object.
      *
      * @param array|object|string $class    An array of objects, namespaces, object or namespace
      * @param string              $property Name of the property
      * @param int                 $filter   (optional) Filter of properties. Uses ReflectionProperty class constants.
      *                                      By default all properties are allowed / processed.
+     *
      * @return null|ReflectionProperty
      */
     public static function getProperty($class, $property, $filter = null)
@@ -567,13 +587,15 @@ class Reflection
     }
 
     /**
-     * Returns information if given class / object uses / implements given trait
+     * Returns information if given class / object uses / implements given trait.
      *
      * @param array|object|string $class         An array of objects, namespaces, object or namespace
      * @param array|string        $trait         An array of strings or string
      * @param bool                $verifyParents If is set to true, parent classes are verified if they use given
      *                                           trait. Otherwise - not.
+     *
      * @return bool|null
+     *
      * @throws CannotResolveClassNameException
      */
     public static function usesTrait($class, $trait, $verifyParents = false)
@@ -616,6 +638,7 @@ class Reflection
      * If given class does not extend another, returns null.
      *
      * @param array|object|string $class An array of objects, namespaces, object or namespace
+     *
      * @return string|null
      */
     public static function getParentClassName($class)

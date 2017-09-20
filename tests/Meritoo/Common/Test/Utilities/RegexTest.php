@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Utilities;
 
 /**
- * Tests of the useful regular expressions methods
+ * Tests of the useful regular expressions methods.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

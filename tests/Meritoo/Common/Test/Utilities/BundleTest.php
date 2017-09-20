@@ -12,7 +12,7 @@ use Meritoo\Common\Utilities\Bundle;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Tests of the useful methods for bundle
+ * Tests of the useful methods for bundle.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

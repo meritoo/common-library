@@ -16,7 +16,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Date;
 
 /**
- * Tests of the Date methods (only static functions)
+ * Tests of the Date methods (only static functions).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -189,7 +189,7 @@ class DateTest extends BaseTestCase
 
     public function testGetCurrentDayOfWeek()
     {
-        self::assertRegExp('/^[0-6]{1}$/', (string)Date::getCurrentDayOfWeek());
+        self::assertRegExp('/^[0-6]{1}$/', (string) Date::getCurrentDayOfWeek());
     }
 
     public function testGetCurrentDayOfWeekName()
@@ -231,7 +231,7 @@ class DateTest extends BaseTestCase
      */
     public function testGetDayOfWeek($year, $month, $day)
     {
-        self::assertRegExp('/^[0-6]{1}$/', (string)Date::getDayOfWeek($year, $month, $day));
+        self::assertRegExp('/^[0-6]{1}$/', (string) Date::getDayOfWeek($year, $month, $day));
     }
 
     /**
@@ -260,10 +260,10 @@ class DateTest extends BaseTestCase
         $dateEnd = '2017-01-02';
 
         $effect = [
-            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
-            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
-            Date::DATE_DIFFERENCE_UNIT_DAYS    => 1,
-            Date::DATE_DIFFERENCE_UNIT_HOURS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_YEARS => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS => 1,
+            Date::DATE_DIFFERENCE_UNIT_HOURS => 0,
             Date::DATE_DIFFERENCE_UNIT_MINUTES => 0,
         ];
 
@@ -280,10 +280,10 @@ class DateTest extends BaseTestCase
          * Difference of 1 day (using the relative date format)
          */
         $effect = [
-            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
-            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
-            Date::DATE_DIFFERENCE_UNIT_DAYS    => 1,
-            Date::DATE_DIFFERENCE_UNIT_HOURS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_YEARS => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS => 1,
+            Date::DATE_DIFFERENCE_UNIT_HOURS => 0,
             Date::DATE_DIFFERENCE_UNIT_MINUTES => 0,
         ];
 
@@ -301,10 +301,10 @@ class DateTest extends BaseTestCase
         $dateEnd = '2017-01-02 14:15';
 
         $effect = [
-            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
-            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
-            Date::DATE_DIFFERENCE_UNIT_DAYS    => 1,
-            Date::DATE_DIFFERENCE_UNIT_HOURS   => 2,
+            Date::DATE_DIFFERENCE_UNIT_YEARS => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS => 1,
+            Date::DATE_DIFFERENCE_UNIT_HOURS => 2,
             Date::DATE_DIFFERENCE_UNIT_MINUTES => 15,
         ];
 
@@ -330,10 +330,10 @@ class DateTest extends BaseTestCase
         $dateEnd = '2017-02-11 16:30';
 
         $effect = [
-            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
-            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 1,
-            Date::DATE_DIFFERENCE_UNIT_DAYS    => 41,
-            Date::DATE_DIFFERENCE_UNIT_HOURS   => 4,
+            Date::DATE_DIFFERENCE_UNIT_YEARS => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS => 1,
+            Date::DATE_DIFFERENCE_UNIT_DAYS => 41,
+            Date::DATE_DIFFERENCE_UNIT_HOURS => 4,
             Date::DATE_DIFFERENCE_UNIT_MINUTES => 30,
         ];
 
@@ -362,10 +362,10 @@ class DateTest extends BaseTestCase
         $dateEnd = $dateStart;
 
         $effect = [
-            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
-            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
-            Date::DATE_DIFFERENCE_UNIT_DAYS    => 0,
-            Date::DATE_DIFFERENCE_UNIT_HOURS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_YEARS => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS => 0,
+            Date::DATE_DIFFERENCE_UNIT_HOURS => 0,
             Date::DATE_DIFFERENCE_UNIT_MINUTES => 0,
         ];
 
@@ -502,7 +502,7 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provides incorrect invalidCount of DateTime
+     * Provides incorrect invalidCount of DateTime.
      *
      * @return Generator
      */
@@ -552,7 +552,7 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provides invalid format of date
+     * Provides invalid format of date.
      *
      * @return Generator
      */
@@ -570,7 +570,7 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provide empty dates for date difference
+     * Provide empty dates for date difference.
      *
      * @return Generator
      */
@@ -598,7 +598,7 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provides incorrect values of year, month and day
+     * Provides incorrect values of year, month and day.
      *
      * @return Generator
      */
@@ -648,7 +648,7 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provides values of year, month and day
+     * Provides values of year, month and day.
      *
      * @return Generator
      */
@@ -698,7 +698,7 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provides data for the random date with incorrect end of random partition
+     * Provides data for the random date with incorrect end of random partition.
      *
      * @return Generator
      */
@@ -712,7 +712,7 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provides data for the random date
+     * Provides data for the random date.
      *
      * @return Generator
      */
