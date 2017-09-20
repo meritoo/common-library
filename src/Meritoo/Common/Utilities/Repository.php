@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Useful methods for repository
+ * Useful methods for repository.
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -20,7 +20,7 @@ use Doctrine\ORM\QueryBuilder;
 class Repository
 {
     /**
-     * Replenishes positions of given items
+     * Replenishes positions of given items.
      *
      * @param array $items  The items
      * @param bool  $asLast (optional) If is set to true, items are placed at the end. Otherwise - at the top.
@@ -55,10 +55,11 @@ class Repository
     }
 
     /**
-     * Returns extreme position (max or min) of given items
+     * Returns extreme position (max or min) of given items.
      *
      * @param array $items The items
      * @param bool  $max   (optional) If is set to true, maximum value is returned. Otherwise - minimum.
+     *
      * @return int
      */
     public static function getExtremePosition($items, $max = true)
@@ -93,6 +94,7 @@ class Repository
      * @param EntityRepository $repository Repository of the entity
      * @param string           $property   (optional) Name of property used by the ORDER BY clause
      * @param string           $direction  (optional) Direction used by the ORDER BY clause ("ASC" or "DESC")
+     *
      * @return QueryBuilder
      */
     public static function getEntityOrderedQueryBuilder(

@@ -14,7 +14,7 @@ use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
 use Meritoo\Common\Type\DatePartType;
 
 /**
- * Useful date methods
+ * Useful date methods.
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -66,6 +66,7 @@ class Date
      * The dates are returned in an array with indexes 'start' and 'end'.
      *
      * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
+     *
      * @return DatePeriod
      */
     public static function getDatesForPeriod($period)
@@ -160,10 +161,11 @@ class Date
     }
 
     /**
-     * Generates and returns random time (the hour, minute and second values)
+     * Generates and returns random time (the hour, minute and second values).
      *
      * @param string $format (optional) Format of returned value. A string acceptable by the DateTime::format()
      *                       method.
+     *
      * @return string|null
      */
     public static function generateRandomTime($format = 'H:i:s')
@@ -207,7 +209,7 @@ class Date
     }
 
     /**
-     * Returns current day of week
+     * Returns current day of week.
      *
      * @return int
      */
@@ -231,13 +233,14 @@ class Date
      * @param int $day   The day value
      *
      * @return int
+     *
      * @throws UnknownDatePartTypeException
      */
     public static function getDayOfWeek($year, $month, $day)
     {
-        $year = (int)$year;
-        $month = (int)$month;
-        $day = (int)$day;
+        $year = (int) $year;
+        $month = (int) $month;
+        $day = (int) $day;
 
         /*
          * Oops, incorrect year
@@ -277,7 +280,7 @@ class Date
     }
 
     /**
-     * Returns based on locale name of current weekday
+     * Returns based on locale name of current weekday.
      *
      * @return string
      */
@@ -293,11 +296,12 @@ class Date
     }
 
     /**
-     * Returns name of weekday based on locale
+     * Returns name of weekday based on locale.
      *
      * @param int $year  The year value
      * @param int $month The month value
      * @param int $day   The day value
+     *
      * @return string
      */
     public static function getDayOfWeekName($year, $month, $day)
@@ -338,6 +342,7 @@ class Date
      * @param int             $differenceUnit (optional) Unit of date difference. One of this class
      *                                        DATE_DIFFERENCE_UNIT_* constants. If is set to null all units are
      *                                        returned in the array.
+     *
      * @return array|int
      */
     public static function getDateDifference($dateStart, $dateEnd, $differenceUnit = null)
@@ -405,7 +410,7 @@ class Date
         }
 
         if ($differenceUnit === null || in_array($differenceUnit, $relatedUnits)) {
-            $days = (int)floor($dateDiff / $daySeconds);
+            $days = (int) floor($dateDiff / $daySeconds);
 
             /*
              * Difference between dates in days should be returned only?
@@ -428,7 +433,7 @@ class Date
         }
 
         if ($differenceUnit === null || in_array($differenceUnit, $relatedUnits)) {
-            $hours = (int)floor(($dateDiff - $daysInSeconds) / $hourSeconds);
+            $hours = (int) floor(($dateDiff - $daysInSeconds) / $hourSeconds);
 
             /*
              * Difference between dates in hours should be returned only?
@@ -451,7 +456,7 @@ class Date
         }
 
         if ($differenceUnit === null || $differenceUnit == self::DATE_DIFFERENCE_UNIT_MINUTES) {
-            $minutes = (int)floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
+            $minutes = (int) floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
 
             /*
              * Difference between dates in minutes should be returned only?
@@ -475,6 +480,7 @@ class Date
      * @param string   $intervalTemplate (optional) Template used to build date interval. It should contain "%d" as the
      *                                   placeholder which is replaced with a number that represents each iteration.
      *                                   Default: interval for days.
+     *
      * @return array
      */
     public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD')
@@ -500,7 +506,7 @@ class Date
             $matchCount = preg_match($intervalPattern, $intervalTemplate, $matches);
 
             if ($matchCount > 0 && (!empty($matches[1]) || !empty($matches[2]))) {
-                $datesCount = (int)$datesCount;
+                $datesCount = (int) $datesCount;
 
                 for ($index = 1; $index <= $datesCount; ++$index) {
                     $date = clone $startDate;
@@ -513,13 +519,14 @@ class Date
     }
 
     /**
-     * Returns random date based on given start date
+     * Returns random date based on given start date.
      *
      * @param DateTime $startDate        The start date. Start of the random date.
      * @param int      $start            (optional) Start of random partition
      * @param int      $end              (optional) End of random partition
      * @param string   $intervalTemplate (optional) Template used to build date interval. The placeholder is replaced
      *                                   with next, iterated value.
+     *
      * @return DateTime
      */
     public static function getRandomDate(DateTime $startDate = null, $start = 1, $end = 100, $intervalTemplate = 'P%sD')
@@ -528,8 +535,8 @@ class Date
             $startDate = new DateTime();
         }
 
-        $start = (int)$start;
-        $end = (int)$end;
+        $start = (int) $start;
+        $end = (int) $end;
 
         /*
          * Incorrect end of random partition?
@@ -556,6 +563,7 @@ class Date
      * @param string $dateFormat           (optional) Format of date used to verify if given value is actually a date.
      *                                     It should be format matched to the given value, e.g. "Y-m-d H:i" for
      *                                     "2015-01-01 10:00" value.
+     *
      * @return DateTime|bool
      */
     public static function getDateTime($value, $allowCompoundFormats = false, $dateFormat = 'Y-m-d')
@@ -658,12 +666,13 @@ class Date
     }
 
     /**
-     * Returns information if given value is valid date
+     * Returns information if given value is valid date.
      *
      * @param mixed $value                The value which maybe is a date
      * @param bool  $allowCompoundFormats (optional) If is set to true, the compound formats used to create an
      *                                    instance of DateTime class are allowed (e.g. "now", "last day of next
      *                                    month", "yyyy"). Otherwise - not and every incorrect value is refused.
+     *
      * @return bool
      */
     public static function isValidDate($value, $allowCompoundFormats = false)
@@ -672,9 +681,10 @@ class Date
     }
 
     /**
-     * Returns information if given format of date is valid
+     * Returns information if given format of date is valid.
      *
      * @param string $format The validated format of date
+     *
      * @return bool
      */
     public static function isValidDateFormat($format)

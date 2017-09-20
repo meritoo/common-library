@@ -6,7 +6,7 @@ use Generator;
 use Meritoo\Common\Type\Base\BaseType;
 
 /**
- * Base test case for the type of something
+ * Base test case for the type of something.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -14,7 +14,7 @@ use Meritoo\Common\Type\Base\BaseType;
 abstract class BaseTypeTestCase extends BaseTestCase
 {
     /**
-     * Verifies availability of all types
+     * Verifies availability of all types.
      */
     public function testAvailabilityOfAllTypes()
     {
@@ -25,7 +25,7 @@ abstract class BaseTypeTestCase extends BaseTestCase
     }
 
     /**
-     * Verifies whether given type is correct or not
+     * Verifies whether given type is correct or not.
      *
      * @param string $type     Type to verify
      * @param bool   $expected Information if given type is correct or not
@@ -38,21 +38,21 @@ abstract class BaseTypeTestCase extends BaseTestCase
     }
 
     /**
-     * Provides type to verify and information if it's correct
+     * Provides type to verify and information if it's correct.
      *
      * @return Generator
      */
     abstract public function provideTypeToVerify();
 
     /**
-     * Returns instance of the tested type
+     * Returns instance of the tested type.
      *
      * @return BaseType
      */
     abstract protected function getTestedTypeInstance();
 
     /**
-     * Returns all expected types of the tested type
+     * Returns all expected types of the tested type.
      *
      * @return array
      */

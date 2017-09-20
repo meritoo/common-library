@@ -12,7 +12,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\GeneratorUtility;
 
 /**
- * Tests of the useful methods for the Generator class
+ * Tests of the useful methods for the Generator class.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

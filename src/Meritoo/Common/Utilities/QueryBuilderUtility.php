@@ -15,7 +15,7 @@ use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Useful methods for query builder (the Doctrine's QueryBuilder class)
+ * Useful methods for query builder (the Doctrine's QueryBuilder class).
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -27,6 +27,7 @@ class QueryBuilderUtility
      * If null is returned, alias was not found.
      *
      * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
+     *
      * @return null|string
      */
     public static function getRootAlias(QueryBuilder $queryBuilder)
@@ -47,6 +48,7 @@ class QueryBuilderUtility
      *
      * @param QueryBuilder $queryBuilder The query builder to verify
      * @param string       $property     Name of property that maybe is joined
+     *
      * @return null|string
      */
     public static function getJoinedPropertyAlias(QueryBuilder $queryBuilder, $property)
@@ -75,13 +77,14 @@ class QueryBuilderUtility
     }
 
     /**
-     * Sets the WHERE criteria in given query builder
+     * Sets the WHERE criteria in given query builder.
      *
      * @param QueryBuilder $queryBuilder The query builder
      * @param array        $criteria     (optional) The criteria used in WHERE clause. It may simple array with pairs
      *                                   key-value or an array of arrays where second element of sub-array is the
      *                                   comparison operator. Example below.
      * @param string       $alias        (optional) Alias used in the query
+     *
      * @return QueryBuilder
      *
      * Example of the $criteria argument:
@@ -132,12 +135,13 @@ class QueryBuilderUtility
     }
 
     /**
-     * Deletes given entities
+     * Deletes given entities.
      *
      * @param EntityManager         $entityManager The entity manager
      * @param array|ArrayCollection $entities      The entities to delete
      * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects.
      *                                             Otherwise - not.
+     *
      * @return bool
      */
     public static function deleteEntities(EntityManager $entityManager, $entities, $flushDeleted = true)
@@ -171,6 +175,7 @@ class QueryBuilderUtility
      * @param QueryBuilder          $queryBuilder The query builder
      * @param array|ArrayCollection $parameters   Parameters to add. Collection of instances of
      *                                            Doctrine\ORM\Query\Parameter class or an array with key-value pairs.
+     *
      * @return QueryBuilder
      */
     public static function addParameters(QueryBuilder $queryBuilder, $parameters)

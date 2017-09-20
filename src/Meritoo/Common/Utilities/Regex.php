@@ -12,7 +12,7 @@ use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 
 /**
- * Useful regular expressions methods
+ * Useful regular expressions methods.
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -20,29 +20,30 @@ use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 class Regex
 {
     /**
-     * Patterns used to validate / verify values
+     * Patterns used to validate / verify values.
      *
      * @var array
      */
     private static $patterns = [
-        'email'            => '/[\w-]{2,}@[\w-]+\.[\w]{2,}+/',
-        'phone'            => '/^\+?[0-9 ]+$/',
-        'camelCasePart'    => '/([a-z]|[A-Z]){1}[a-z]*/',
-        'urlProtocol'      => '/^([a-z]+:\/\/)',
-        'urlDomain'        => '([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i',
-        'letterOrDigit'    => '/[a-zA-Z0-9]+/',
-        'htmlEntity'       => '/&[a-z0-9]+;/',
-        'fileName'         => '/.+\.\w+$/',
-        'isQuoted'         => '/^[\'"]{1}.+[\'"]{1}$/',
+        'email' => '/[\w-]{2,}@[\w-]+\.[\w]{2,}+/',
+        'phone' => '/^\+?[0-9 ]+$/',
+        'camelCasePart' => '/([a-z]|[A-Z]){1}[a-z]*/',
+        'urlProtocol' => '/^([a-z]+:\/\/)',
+        'urlDomain' => '([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i',
+        'letterOrDigit' => '/[a-zA-Z0-9]+/',
+        'htmlEntity' => '/&[a-z0-9]+;/',
+        'fileName' => '/.+\.\w+$/',
+        'isQuoted' => '/^[\'"]{1}.+[\'"]{1}$/',
         'windowsBasedPath' => '/^[A-Z]{1}:\\\.*$/',
-        'money'            => '/^[-+]?\d+([\.,]{1}\d*)?$/',
-        'color'            => '/^[a-f0-9]{6}$/i',
+        'money' => '/^[-+]?\d+([\.,]{1}\d*)?$/',
+        'color' => '/^[a-f0-9]{6}$/i',
     ];
 
     /**
-     * Returns information if given e-mail address is valid
+     * Returns information if given e-mail address is valid.
      *
      * @param string $email E-mail address to validate / verify
+     *
      * @return bool
      *
      * Examples:
@@ -58,13 +59,14 @@ class Regex
     {
         $pattern = self::getEmailPattern();
 
-        return (bool)preg_match($pattern, $email);
+        return (bool) preg_match($pattern, $email);
     }
 
     /**
-     * Returns information if given tax ID (in polish: NIP) is valid
+     * Returns information if given tax ID (in polish: NIP) is valid.
      *
      * @param string $taxidString Tax ID (NIP) string
+     *
      * @return bool
      */
     public static function isValidTaxid($taxidString)
@@ -99,40 +101,43 @@ class Regex
     }
 
     /**
-     * Returns information if given url address is valid
+     * Returns information if given url address is valid.
      *
      * @param string $url             The url to validate / verify
      * @param bool   $requireProtocol (optional) If is set to true, the protocol is required to be passed in the url.
      *                                Otherwise - not.
+     *
      * @return bool
      */
     public static function isValidUrl($url, $requireProtocol = false)
     {
         $pattern = self::getUrlPattern($requireProtocol);
 
-        return (bool)preg_match($pattern, $url);
+        return (bool) preg_match($pattern, $url);
     }
 
     /**
-     * Returns information if given phone number is valid
+     * Returns information if given phone number is valid.
      *
      * @param string $phoneNumber The phone number to validate / verify
+     *
      * @return bool
      */
     public static function isValidPhoneNumber($phoneNumber)
     {
         $pattern = self::getPhoneNumberPattern();
 
-        return (bool)preg_match($pattern, $phoneNumber);
+        return (bool) preg_match($pattern, $phoneNumber);
     }
 
     /**
-     * Returns array values that matches given pattern (or values that keys matches)
+     * Returns array values that matches given pattern (or values that keys matches).
      *
      * @param string $pattern       Pattern to match
      * @param array  $dataArray     The array
      * @param bool   $itsKeyPattern (optional) If is set to true, keys are checks if they match pattern. Otherwise -
      *                              values are checks.
+     *
      * @return array
      */
     public static function getArrayValuesByPattern($pattern, $dataArray, $itsKeyPattern = false)
@@ -157,7 +162,7 @@ class Regex
     }
 
     /**
-     * Filters array by given expression and column
+     * Filters array by given expression and column.
      *
      * Expression can be simple compare expression, like ' == 2', or regular expression.
      * Returns filtered array.
@@ -167,6 +172,7 @@ class Regex
      * @param string $filterExpression     Filter expression, e.g. '== 2' or '!= \'home\''
      * @param bool   $itsRegularExpression (optional) If is set to true, means that filter expression is a
      *                                     regular expression
+     *
      * @return array
      */
     public static function arrayFilter($array, $arrayColumnKey, $filterExpression, $itsRegularExpression = false)
@@ -182,7 +188,7 @@ class Regex
 
                     if ($itsRegularExpression) {
                         $matches = [];
-                        $pattern = '|' . $filterExpression . '|';
+                        $pattern = '|'.$filterExpression.'|';
                         $matchesCount = preg_match($pattern, $value, $matches);
 
                         $remove = $matchesCount == 0;
@@ -190,10 +196,10 @@ class Regex
                         if ($value == '') {
                             $value = '\'\'';
                         } elseif (is_string($value)) {
-                            $value = '\'' . $value . '\'';
+                            $value = '\''.$value.'\'';
                         }
 
-                        eval('$isTrue = ' . $value . $filterExpression . ';');
+                        eval('$isTrue = '.$value.$filterExpression.';');
 
                         /* @var bool $isTrue */
                         $remove = !$isTrue;
@@ -217,6 +223,7 @@ class Regex
      * @param string       $subject      The string to check
      * @param bool         $mustAllMatch (optional) If is set to true, $subject must match all $patterns. Otherwise -
      *                                   not.
+     *
      * @return bool
      */
     public static function pregMultiMatch($patterns, $subject, $mustAllMatch = false)
@@ -231,13 +238,14 @@ class Regex
 
             foreach ($patterns as $pattern) {
                 $matches = [];
-                $matched = (bool)preg_match_all($pattern, $subject, $matches);
+                $matched = (bool) preg_match_all($pattern, $subject, $matches);
 
                 if ($mustAllMatch) {
                     $effect = $effect && $matched;
                 } else {
                     if ($matched) {
                         $effect = $matched;
+
                         break;
                     }
                 }
@@ -248,11 +256,12 @@ class Regex
     }
 
     /**
-     * Returns string in human readable style generated from given camel case string / text
+     * Returns string in human readable style generated from given camel case string / text.
      *
      * @param string $string              The string / text to convert
      * @param bool   $applyUpperCaseFirst (optional) If is set to true, first word / element from the converted
      *                                    string is uppercased. Otherwise - not.
+     *
      * @return string
      */
     public static function camelCase2humanReadable($string, $applyUpperCaseFirst = false)
@@ -277,9 +286,10 @@ class Regex
     }
 
     /**
-     * Returns parts of given camel case string / text
+     * Returns parts of given camel case string / text.
      *
      * @param string $string The string / text to retrieve parts
+     *
      * @return array
      */
     public static function getCamelCaseParts($string)
@@ -292,11 +302,12 @@ class Regex
     }
 
     /**
-     * Returns simple, lowercase string generated from given camel case string / text
+     * Returns simple, lowercase string generated from given camel case string / text.
      *
      * @param string $string         The string / text to convert
      * @param string $separator      (optional) Separator used to concatenate parts of the string, e.g. '-' or '_'
      * @param bool   $applyLowercase (optional) If is set to true, returned string will be lowercased. Otherwise - not.
+     *
      * @return string
      */
     public static function camelCase2simpleLowercase($string, $separator = '', $applyLowercase = true)
@@ -315,7 +326,7 @@ class Regex
     }
 
     /**
-     * Returns pattern used to validate / verify or get e-mail address
+     * Returns pattern used to validate / verify or get e-mail address.
      *
      * @return string
      */
@@ -325,7 +336,7 @@ class Regex
     }
 
     /**
-     * Returns pattern used to validate / verify or get phone number
+     * Returns pattern used to validate / verify or get phone number.
      *
      * @return string
      */
@@ -335,7 +346,7 @@ class Regex
     }
 
     /**
-     * Returns pattern used to validate / verify or get camel case parts of string
+     * Returns pattern used to validate / verify or get camel case parts of string.
      *
      * @return string
      */
@@ -345,10 +356,11 @@ class Regex
     }
 
     /**
-     * Returns pattern used to validate / verify or get url address
+     * Returns pattern used to validate / verify or get url address.
      *
      * @param bool $requireProtocol (optional) If is set to true, the protocol is required to be passed in the url.
      *                              Otherwise - not.
+     *
      * @return string
      */
     public static function getUrlPattern($requireProtocol = false)
@@ -365,10 +377,11 @@ class Regex
     }
 
     /**
-     * Returns information if given path is sub-path of another path, e.g. path file is owned by path of directory
+     * Returns information if given path is sub-path of another path, e.g. path file is owned by path of directory.
      *
      * @param string $subPath Path to verify, probably sub-path
      * @param string $path    Main / parent path
+     *
      * @return bool
      */
     public static function isSubPathOf($subPath, $path)
@@ -395,11 +408,11 @@ class Regex
 
         $pattern = sprintf('/^%s.*/', $prepared);
 
-        return (bool)preg_match($pattern, $subPath);
+        return (bool) preg_match($pattern, $subPath);
     }
 
     /**
-     * Returns pattern used to validate / verify letter or digit
+     * Returns pattern used to validate / verify letter or digit.
      *
      * @return string
      */
@@ -409,62 +422,66 @@ class Regex
     }
 
     /**
-     * Returns information if given character is a letter or digit
+     * Returns information if given character is a letter or digit.
      *
      * @param string $char Character to check
+     *
      * @return bool
      */
     public static function isLetterOrDigit($char)
     {
         $pattern = self::getLetterOrDigitPattern();
 
-        return is_scalar($char) && (bool)preg_match($pattern, $char);
+        return is_scalar($char) && (bool) preg_match($pattern, $char);
     }
 
     /**
-     * Returns information if the string starts with given beginning / characters
+     * Returns information if the string starts with given beginning / characters.
      *
      * @param string $string    String to check
      * @param string $beginning The beginning of string, one or more characters
+     *
      * @return bool
      */
     public static function startsWith($string, $beginning)
     {
         if (!empty($string) && !empty($beginning)) {
             if (strlen($beginning) == 1 && !self::isLetterOrDigit($beginning)) {
-                $beginning = '\\' . $beginning;
+                $beginning = '\\'.$beginning;
             }
 
             $pattern = sprintf('|^%s|', $beginning);
 
-            return (bool)preg_match($pattern, $string);
+            return (bool) preg_match($pattern, $string);
         }
 
         return false;
     }
 
     /**
-     * Returns information if the string ends with given ending / characters
+     * Returns information if the string ends with given ending / characters.
      *
      * @param string $string String to check
      * @param string $ending The ending of string, one or more characters
+     *
      * @return bool
      */
     public static function endsWith($string, $ending)
     {
         if (strlen($ending) == 1 && !self::isLetterOrDigit($ending)) {
-            $ending = '\\' . $ending;
+            $ending = '\\'.$ending;
         }
 
-        return (bool)preg_match('|' . $ending . '$|', $string);
+        return (bool) preg_match('|'.$ending.'$|', $string);
     }
 
     /**
-     * Returns information if the string starts with directory's separator
+     * Returns information if the string starts with directory's separator.
      *
      * @param string $string    String that may contain a directory's separator at the start / beginning
      * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), system's
      *                          separator is used.
+     *
      * @return bool
      */
     public static function startsWithDirectorySeparator($string, $separator = '')
@@ -477,11 +494,12 @@ class Regex
     }
 
     /**
-     * Returns information if the string ends with directory's separator
+     * Returns information if the string ends with directory's separator.
      *
      * @param string $text      String that may contain a directory's separator at the end
      * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), system's
      *                          separator is used.
+     *
      * @return string
      */
     public static function endsWithDirectorySeparator($text, $separator = '')
@@ -494,19 +512,20 @@ class Regex
     }
 
     /**
-     * Returns information if uri contains parameter
+     * Returns information if uri contains parameter.
      *
      * @param string $uri           Uri string (e.g. $_SERVER['REQUEST_URI'])
      * @param string $parameterName Uri parameter name
+     *
      * @return bool
      */
     public static function isSetUriParameter($uri, $parameterName)
     {
-        return (bool)preg_match('|[?&]{1}' . $parameterName . '=|', $uri); // e.g. ?name=phil&type=4 -> '$type='
+        return (bool) preg_match('|[?&]{1}'.$parameterName.'=|', $uri); // e.g. ?name=phil&type=4 -> '$type='
     }
 
     /**
-     * Returns pattern used to validate / verify html entity
+     * Returns pattern used to validate / verify html entity.
      *
      * @return string
      */
@@ -516,36 +535,38 @@ class Regex
     }
 
     /**
-     * Returns information if the string contains html entities
+     * Returns information if the string contains html entities.
      *
      * @param string $string String to check
+     *
      * @return bool
      */
     public static function containsEntities($string)
     {
         $pattern = self::getHtmlEntityPattern();
 
-        return (bool)preg_match_all($pattern, $string);
+        return (bool) preg_match_all($pattern, $string);
     }
 
     /**
-     * Returns information if one string contains another string
+     * Returns information if one string contains another string.
      *
      * @param string $haystack The string to search in
      * @param string $needle   The string to be search for
+     *
      * @return bool
      */
     public static function contains($haystack, $needle)
     {
         if (strlen($needle) == 1 && !self::isLetterOrDigit($needle)) {
-            $needle = '\\' . $needle;
+            $needle = '\\'.$needle;
         }
 
-        return (bool)preg_match('|.*' . $needle . '.*|', $haystack);
+        return (bool) preg_match('|.*'.$needle.'.*|', $haystack);
     }
 
     /**
-     * Returns pattern used to validate / verify name of file
+     * Returns pattern used to validate / verify name of file.
      *
      * @return string
      */
@@ -559,17 +580,18 @@ class Regex
      * Verifies if given name contains a dot and an extension, e.g. "My File 001.jpg".
      *
      * @param string $fileName Name of file to check. It may be path of file also.
+     *
      * @return bool
      */
     public static function isFileName($fileName)
     {
         $pattern = self::getFileNamePattern();
 
-        return (bool)preg_match($pattern, $fileName);
+        return (bool) preg_match($pattern, $fileName);
     }
 
     /**
-     * Returns pattern used to validate / verify if value is quoted (by apostrophes or quotation marks)
+     * Returns pattern used to validate / verify if value is quoted (by apostrophes or quotation marks).
      *
      * @return string
      */
@@ -579,20 +601,21 @@ class Regex
     }
 
     /**
-     * Returns information if given value is quoted (by apostrophes or quotation marks)
+     * Returns information if given value is quoted (by apostrophes or quotation marks).
      *
      * @param mixed $value The value to check
+     *
      * @return bool
      */
     public static function isQuoted($value)
     {
         $pattern = self::getIsQuotedPattern();
 
-        return is_scalar($value) && (bool)preg_match($pattern, $value);
+        return is_scalar($value) && (bool) preg_match($pattern, $value);
     }
 
     /**
-     * Returns pattern used to validate / verify if given path is a Windows-based path, e.g. "C:\path\to\file.jpg"
+     * Returns pattern used to validate / verify if given path is a Windows-based path, e.g. "C:\path\to\file.jpg".
      *
      * @return string
      */
@@ -602,22 +625,24 @@ class Regex
     }
 
     /**
-     * Returns information if given path is a Windows-based path, e.g. "C:\path\to\file.jpg"
+     * Returns information if given path is a Windows-based path, e.g. "C:\path\to\file.jpg".
      *
      * @param string $path The path to verify
+     *
      * @return bool
      */
     public static function isWindowsBasedPath($path)
     {
         $pattern = self::getWindowsBasedPathPattern();
 
-        return (bool)preg_match($pattern, $path);
+        return (bool) preg_match($pattern, $path);
     }
 
     /**
-     * Returns information if given NIP number is valid
+     * Returns information if given NIP number is valid.
      *
      * @param string $nip A given NIP number
+     *
      * @return bool
      *
      * @see https://pl.wikipedia.org/wiki/NIP#Znaczenie_numeru
@@ -659,7 +684,7 @@ class Regex
     }
 
     /**
-     * Returns pattern used to validate / verify if given value is money-related value
+     * Returns pattern used to validate / verify if given value is money-related value.
      *
      * @return string
      */
@@ -669,16 +694,17 @@ class Regex
     }
 
     /**
-     * Returns information if given value is valid money-related value
+     * Returns information if given value is valid money-related value.
      *
      * @param mixed $value Value to verify
+     *
      * @return bool
      */
     public static function isValidMoneyValue($value)
     {
         $pattern = self::getMoneyPattern();
 
-        return (bool)preg_match($pattern, $value);
+        return (bool) preg_match($pattern, $value);
     }
 
     /**
@@ -688,6 +714,7 @@ class Regex
      * @param string $color          Color to verify
      * @param bool   $throwException (optional) If is set to true, throws an exception if given color is invalid
      *                               (default behaviour). Otherwise - not.
+     *
      * @return string|bool
      *
      * @throws IncorrectColorHexLengthException
@@ -711,7 +738,7 @@ class Regex
         }
 
         $pattern = self::$patterns['color'];
-        $match = (bool)preg_match($pattern, $color);
+        $match = (bool) preg_match($pattern, $color);
 
         if (!$match) {
             if ($throwException) {

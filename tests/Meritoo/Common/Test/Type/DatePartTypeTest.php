@@ -12,7 +12,7 @@ use Meritoo\Common\Test\Base\BaseTypeTestCase;
 use Meritoo\Common\Type\DatePartType;
 
 /**
- * Tests of the type of date part, e.g. "year"
+ * Tests of the type of date part, e.g. "year".
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -25,12 +25,12 @@ class DatePartTypeTest extends BaseTypeTestCase
     protected function getAllExpectedTypes()
     {
         return [
-            'DAY'    => DatePartType::DAY,
-            'HOUR'   => DatePartType::HOUR,
+            'DAY' => DatePartType::DAY,
+            'HOUR' => DatePartType::HOUR,
             'MINUTE' => DatePartType::MINUTE,
-            'MONTH'  => DatePartType::MONTH,
+            'MONTH' => DatePartType::MONTH,
             'SECOND' => DatePartType::SECOND,
-            'YEAR'   => DatePartType::YEAR,
+            'YEAR' => DatePartType::YEAR,
         ];
     }
 

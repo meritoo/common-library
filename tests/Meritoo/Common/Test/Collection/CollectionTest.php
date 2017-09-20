@@ -14,7 +14,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 
 /**
- * Tests of the collection of elements
+ * Tests of the collection of elements.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -22,21 +22,21 @@ use Meritoo\Common\Type\OopVisibilityType;
 class CollectionTest extends BaseTestCase
 {
     /**
-     * An empty collection
+     * An empty collection.
      *
      * @var Collection
      */
     private $emptyCollection;
 
     /**
-     * Simple collection
+     * Simple collection.
      *
      * @var Collection
      */
     private $simpleCollection;
 
     /**
-     * Elements of simple collection
+     * Elements of simple collection.
      *
      * @var array
      */

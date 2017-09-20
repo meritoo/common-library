@@ -12,7 +12,7 @@ use Exception;
 use Meritoo\Common\Utilities\Reflection;
 
 /**
- * An exception used while given class has more than one child class
+ * An exception used while given class has more than one child class.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -20,7 +20,7 @@ use Meritoo\Common\Utilities\Reflection;
 class TooManyChildClassesException extends Exception
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param array|object|string $parentClass  Class that has more than one child class, but it shouldn't. An array
      *                                          of objects, strings, object or string.
@@ -29,7 +29,7 @@ class TooManyChildClassesException extends Exception
     public function __construct($parentClass, array $childClasses)
     {
         $template = "The '%s' class requires one child class at most who will extend her, but more than one child"
-            . " class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";
+            ." class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";
 
         $parentClassName = Reflection::getClassName($parentClass);
         $message = sprintf($template, $parentClassName, implode("\n- ", $childClasses), $parentClassName);

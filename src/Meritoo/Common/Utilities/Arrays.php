@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Utilities;
 
 /**
- * Useful arrays methods
+ * Useful arrays methods.
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -17,7 +17,7 @@ namespace Meritoo\Common\Utilities;
 class Arrays
 {
     /**
-     * Name of the array's key used to store position of element of the array
+     * Name of the array's key used to store position of element of the array.
      *
      * @var string
      */
@@ -30,6 +30,7 @@ class Arrays
      * @param array      $array          Array data to be converted
      * @param string|int $arrayColumnKey (optional) Column name
      * @param string     $separator      (optional) Separator used in resultant string
+     *
      * @return string
      */
     public static function values2string(array $array, $arrayColumnKey = '', $separator = ',')
@@ -79,12 +80,13 @@ class Arrays
     }
 
     /**
-     * Converts given array to string with keys, e.g. abc=1&def=2 or abc="1" def="2"
+     * Converts given array to string with keys, e.g. abc=1&def=2 or abc="1" def="2".
      *
      * @param array  $array               Array data to be converted
      * @param string $separator           (optional) Separator used between name-value pairs in resultant string
      * @param string $valuesKeysSeparator (optional) Separator used between name and value in resultant string
      * @param string $valuesWrapper       (optional) Wrapper used to wrap values, e.g. double-quote: key="value"
+     *
      * @return string
      */
     public static function valuesKeys2string($array, $separator = ',', $valuesKeysSeparator = '=', $valuesWrapper = '')
@@ -101,7 +103,7 @@ class Arrays
                     $value = sprintf('%s%s%s', $valuesWrapper, $value, $valuesWrapper);
                 }
 
-                $effect .= $key . $valuesKeysSeparator . $value;
+                $effect .= $key.$valuesKeysSeparator.$value;
             }
         }
 
@@ -109,10 +111,11 @@ class Arrays
     }
 
     /**
-     * Converts given array's rows to csv string
+     * Converts given array's rows to csv string.
      *
      * @param array  $array     Array data to be converted. It have to be an array that represents database table.
      * @param string $separator (optional) Separator used in resultant string
+     *
      * @return string
      */
     public static function values2csv($array, $separator = ',')
@@ -145,12 +148,13 @@ class Arrays
     }
 
     /**
-     * Returns information if given element is the first one
+     * Returns information if given element is the first one.
      *
      * @param array $array          The array to get the first element of
      * @param mixed $element        The element to check / verify
      * @param bool  $firstLevelOnly (optional) If is set to true, first element is returned. Otherwise - totally
      *                              first element is returned (first of the First array).
+     *
      * @return bool
      */
     public static function isFirstElement(array $array, $element, $firstLevelOnly = true)
@@ -161,7 +165,7 @@ class Arrays
     }
 
     /**
-     * Returns the first element of given array
+     * Returns the first element of given array.
      *
      * It may be first element of given array or the totally first element from the all elements (first element of the
      * first array).
@@ -169,6 +173,7 @@ class Arrays
      * @param array $array          The array to get the first element of
      * @param bool  $firstLevelOnly (optional) If is set to true, first element is returned. Otherwise - totally
      *                              first element is returned (first of the first array).
+     *
      * @return mixed
      */
     public static function getFirstElement(array $array, $firstLevelOnly = true)
@@ -192,9 +197,10 @@ class Arrays
     }
 
     /**
-     * Returns first key of array
+     * Returns first key of array.
      *
      * @param array $array The array to get the first key of
+     *
      * @return mixed
      */
     public static function getFirstKey(array $array)
@@ -213,12 +219,13 @@ class Arrays
     }
 
     /**
-     * Returns information if given element is the last one
+     * Returns information if given element is the last one.
      *
      * @param array $array          The array to get the last element of
      * @param mixed $element        The element to check / verify
      * @param bool  $firstLevelOnly (optional) If is set to true, last element is returned. Otherwise - totally
      *                              last element is returned (last of the latest array).
+     *
      * @return bool
      */
     public static function isLastElement(array $array, $element, $firstLevelOnly = true)
@@ -229,7 +236,7 @@ class Arrays
     }
 
     /**
-     * Returns the last element of given array
+     * Returns the last element of given array.
      *
      * It may be last element of given array or the totally last element from the all elements (last element of the
      * latest array).
@@ -237,6 +244,7 @@ class Arrays
      * @param array $array          The array to get the last element of
      * @param bool  $firstLevelOnly (optional) If is set to true, last element is returned. Otherwise - totally
      *                              last element is returned (last of the latest array).
+     *
      * @return mixed
      */
     public static function getLastElement(array $array, $firstLevelOnly = true)
@@ -259,10 +267,11 @@ class Arrays
     }
 
     /**
-     * Returns breadcrumb (a path) to the last element of array
+     * Returns breadcrumb (a path) to the last element of array.
      *
      * @param array  $array     The array to get the breadcrumb
      * @param string $separator (optional) Separator used to stick the elements
+     *
      * @return string
      */
     public static function getLastElementBreadCrumb($array, $separator = '/')
@@ -281,13 +290,14 @@ class Arrays
             $crumb = $last;
         }
 
-        return $breadCrumb . $separator . $crumb;
+        return $breadCrumb.$separator.$crumb;
     }
 
     /**
-     * Returns the last row of array
+     * Returns the last row of array.
      *
      * @param array $array The array to get the last row of
+     *
      * @return mixed
      */
     public static function getLastRow(array $array)
@@ -322,11 +332,12 @@ class Arrays
     }
 
     /**
-     * Replaces array keys that match given pattern with new key name
+     * Replaces array keys that match given pattern with new key name.
      *
      * @param array  $dataArray     The array
      * @param string $oldKeyPattern Old key pattern
      * @param string $newKey        New key name
+     *
      * @return array
      */
     public static function replaceArrayKeys($dataArray, $oldKeyPattern, $newKey)
@@ -351,12 +362,13 @@ class Arrays
     }
 
     /**
-     * Generates JavaScript code for given PHP array
+     * Generates JavaScript code for given PHP array.
      *
      * @param array  $array           The array that should be generated to JavaScript
      * @param string $jsVariableName  (optional) Name of the variable that will be in generated JavaScript code
      * @param bool   $preserveIndexes (optional) If is set to true and $jsVariableName isn't empty, indexes also
      *                                will be added to the JavaScript code. Otherwise not.
+     *
      * @return string|null
      */
     public static function array2JavaScript(array $array, $jsVariableName = '', $preserveIndexes = false)
@@ -401,8 +413,8 @@ class Arrays
             if (is_array($value)) {
                 $variable = $index;
 
-                if (is_integer($index)) {
-                    $variable = 'value_' . $variable;
+                if (is_int($index)) {
+                    $variable = 'value_'.$variable;
                 }
 
                 $value = self::array2JavaScript($value, $variable, $preserveIndexes);
@@ -419,7 +431,7 @@ class Arrays
                         $effect .= "\n";
                     }
 
-                    $effect .= $value . "\n";
+                    $effect .= $value."\n";
                     $effect .= sprintf('%s[%s] = %s;', $jsVariableName, Miscellaneous::quoteValue($index), $variable);
 
                     if ($counter !== $arrayCount) {
@@ -452,9 +464,10 @@ class Arrays
     }
 
     /**
-     * Quotes (adds quotes) to elements of an array that are strings
+     * Quotes (adds quotes) to elements of an array that are strings.
      *
      * @param array $array The array to check for string values
+     *
      * @return array
      */
     public static function quoteStrings($array)
@@ -469,7 +482,7 @@ class Arrays
                     $value = self::quoteStrings($value);
                 } elseif (is_string($value)) {
                     if (!Regex::isQuoted($value)) {
-                        $value = '\'' . $value . '\'';
+                        $value = '\''.$value.'\'';
                     }
                 }
 
@@ -481,10 +494,11 @@ class Arrays
     }
 
     /**
-     * Removes marginal element (first or last)
+     * Removes marginal element (first or last).
      *
      * @param string|array $item The item which should be shortened
      * @param bool         $last (optional) If is set to true, last element is removed. Otherwise - first.
+     *
      * @return string|array
      */
     public static function removeMarginalElement($item, $last = true)
@@ -509,9 +523,10 @@ class Arrays
     }
 
     /**
-     * Returns last key of array
+     * Returns last key of array.
      *
      * @param array $array The array to get the last key of
+     *
      * @return mixed
      */
     public static function getLastKey(array $array)
@@ -522,10 +537,11 @@ class Arrays
     }
 
     /**
-     * Removes element / item of given array
+     * Removes element / item of given array.
      *
      * @param array $array The array that contains element / item which should be removed
      * @param mixed $item  The element / item which should be removed
+     *
      * @return bool|array
      */
     public static function removeElement(array $array, $item)
@@ -553,7 +569,7 @@ class Arrays
     }
 
     /**
-     * Removes items from given array starting at given element (before or after the element)
+     * Removes items from given array starting at given element (before or after the element).
      *
      * @param array $array  The array which contains items to remove
      * @param mixed $needle The element which is start point of deletion
@@ -605,6 +621,7 @@ class Arrays
      *                                      value will be used with it's key, because other will be overridden.
      *                                      Otherwise - values are preserved and keys assigned to that values are
      *                                      returned as an array.
+     *
      * @return array
      *
      * Example of $ignoreDuplicatedValues = false:
@@ -639,6 +656,7 @@ class Arrays
              */
             if (is_array($value)) {
                 $replaced[$key] = self::setKeysAsValues($value, $ignoreDuplicatedValues);
+
                 continue;
             }
 
@@ -666,10 +684,11 @@ class Arrays
     }
 
     /**
-     * Applies ksort() function recursively in the given array
+     * Applies ksort() function recursively in the given array.
      *
      * @param array $array     The array to sort
      * @param int   $sortFlags (optional) Options of ksort() function
+     *
      * @return array|null
      */
     public static function ksortRecursive(array &$array, $sortFlags = SORT_REGULAR)
@@ -695,9 +714,10 @@ class Arrays
     }
 
     /**
-     * Returns count / amount of elements that are not array
+     * Returns count / amount of elements that are not array.
      *
      * @param array $array The array to count
+     *
      * @return int|null
      */
     public static function getNonArrayElementsCount(array $array)
@@ -715,6 +735,7 @@ class Arrays
         foreach ($array as &$value) {
             if (is_array($value)) {
                 $count += self::getNonArrayElementsCount($value);
+
                 continue;
             }
 
@@ -725,7 +746,7 @@ class Arrays
     }
 
     /**
-     * Converts given string with special separators to array
+     * Converts given string with special separators to array.
      *
      * Example:
      * ~ string:
@@ -740,6 +761,7 @@ class Arrays
      * @param string $string              The string to be converted
      * @param string $separator           (optional) Separator used between name-value pairs in the string
      * @param string $valuesKeysSeparator (optional) Separator used between name and value in the string
+     *
      * @return array
      */
     public static function string2array($string, $separator = '|', $valuesKeysSeparator = ':')
@@ -770,11 +792,12 @@ class Arrays
     }
 
     /**
-     * Returns information if given keys exist in given array
+     * Returns information if given keys exist in given array.
      *
      * @param array $keys     The keys to find
      * @param array $array    The array which maybe contains keys
      * @param bool  $explicit (optional) If is set to true, all keys should exist in given array. Otherwise - not all.
+     *
      * @return bool
      */
     public static function areKeysInArray($keys, $array, $explicit = true)
@@ -812,7 +835,7 @@ class Arrays
     }
 
     /**
-     * Returns paths of the last elements
+     * Returns paths of the last elements.
      *
      * @param array        $array           The array with elements
      * @param string       $separator       (optional) Separator used in resultant strings. Default: ".".
@@ -820,6 +843,7 @@ class Arrays
      * @param string|array $stopIfMatchedBy (optional) Patterns of keys or paths that matched will stop the process
      *                                      of path building and including children of those keys or paths (recursive
      *                                      will not be used for keys in lower level of given array)
+     *
      * @return array
      *
      * Examples - $stopIfMatchedBy argument:
@@ -862,6 +886,7 @@ class Arrays
 
                         if (preg_match($pattern, $key) || preg_match($pattern, $path)) {
                             $stopRecursion = true;
+
                             break;
                         }
                     }
@@ -875,6 +900,7 @@ class Arrays
                  */
                 if (!is_array($value) || (is_array($value) && empty($value)) || $stopRecursion) {
                     $paths[$path] = $value;
+
                     continue;
                 }
 
@@ -892,9 +918,10 @@ class Arrays
     }
 
     /**
-     * Makes and returns an array for given variable
+     * Makes and returns an array for given variable.
      *
      * @param mixed $variable Variable that should be an array
+     *
      * @return array
      */
     public static function makeArray($variable)
@@ -907,12 +934,13 @@ class Arrays
     }
 
     /**
-     * Returns information if keys / indexes of given array are matched by given pattern
+     * Returns information if keys / indexes of given array are matched by given pattern.
      *
      * @param array  $array          The array to check
      * @param string $pattern        The pattern which keys / indexes should match, e.g. "\d+"
      * @param bool   $firstLevelOnly (optional) If is set to true, all keys / indexes are checked. Otherwise - from the
      *                               first level only.
+     *
      * @return bool
      */
     public static function areAllKeysMatchedByPattern($array, $pattern, $firstLevelOnly = false)
@@ -943,6 +971,7 @@ class Arrays
              */
             if (!preg_match($pattern, $key)) {
                 $areMatched = false;
+
                 break;
             }
 
@@ -960,11 +989,12 @@ class Arrays
 
     /**
      * Returns information if keys / indexes of given array are integers, in other words if the array contains
-     * zero-based keys / indexes
+     * zero-based keys / indexes.
      *
      * @param array $array          The array to check
      * @param bool  $firstLevelOnly (optional) If is set to true, all keys / indexes are checked. Otherwise - from the
      *                              first level only.
+     *
      * @return bool
      */
     public static function areAllKeysIntegers($array, $firstLevelOnly = false)
@@ -980,6 +1010,7 @@ class Arrays
      *
      * @param array $array The array which should contains a value
      * @param array $keys  Keys, path of keys, to find in given array
+     *
      * @return mixed
      *
      * Examples:
@@ -1029,6 +1060,7 @@ class Arrays
      *
      * @param array $array The array to check
      * @param array $keys  Keys, path of keys, to find in given array
+     *
      * @return bool
      *
      * Examples:
@@ -1079,6 +1111,7 @@ class Arrays
      *
      * @param array  $array The array which should contain values of the key
      * @param string $key   The key
+     *
      * @return array|null
      */
     public static function getAllValuesOfKey(array $array, $key)
@@ -1092,6 +1125,7 @@ class Arrays
         foreach ($array as $index => $value) {
             if ($index === $key) {
                 $values[] = $value;
+
                 continue;
             }
 
@@ -1108,7 +1142,7 @@ class Arrays
     }
 
     /**
-     * Sets positions for each element / child of given array and returns the array
+     * Sets positions for each element / child of given array and returns the array.
      *
      * Position for the 1st element / child of a parent is set to 1 and incremented for the next element and
      * so on. Each parent is treated as separate array, so its elements are treated as positioned at 1st level.
@@ -1117,6 +1151,7 @@ class Arrays
      * @param string $keyName       (optional) Name of key which will contain the position value
      * @param int    $startPosition (optional) Default, start value of the position for main / given array, not the
      *                              children
+     *
      * @return array
      */
     public static function setPositions(array $array, $keyName = self::POSITION_KEY_NAME, $startPosition = null)
@@ -1140,9 +1175,10 @@ class Arrays
     }
 
     /**
-     * Trims string values of given array and returns the new array
+     * Trims string values of given array and returns the new array.
      *
      * @param array $array The array which values should be trimmed
+     *
      * @return array
      */
     public static function trimRecursive(array $array)
@@ -1155,6 +1191,7 @@ class Arrays
             foreach ($array as $key => $value) {
                 if (is_array($value)) {
                     $effect[$key] = self::trimRecursive($value);
+
                     continue;
                 }
 
@@ -1210,6 +1247,7 @@ class Arrays
      *
      * @param array $array     An array to sort
      * @param array $keysOrder An array with keys of the 1st argument in proper / required order
+     *
      * @return array|null
      */
     public static function sortByCustomKeysOrder(array $array, array $keysOrder)
@@ -1251,7 +1289,7 @@ class Arrays
     }
 
     /**
-     * Returns smartly imploded string
+     * Returns smartly imploded string.
      *
      * Separators located at the beginning or end of elements are removed.
      * It's required to avoid problems with duplicated separator, e.g. "first//second/third", where separator is a
@@ -1259,6 +1297,7 @@ class Arrays
      *
      * @param array  $array     The array with elements to implode
      * @param string $separator Separator used to stick together elements of given array
+     *
      * @return string
      */
     public static function implodeSmart(array $array, $separator)
@@ -1289,11 +1328,12 @@ class Arrays
     }
 
     /**
-     * Returns information if given array is empty, iow. information if all elements of given array are empty
+     * Returns information if given array is empty, iow. information if all elements of given array are empty.
      *
      * @param array $array      The array to verify
      * @param bool  $strictNull (optional) If is set to true elements are verified if they are null. Otherwise - only
      *                          if they are empty (e.g. null, '', 0, array()).
+     *
      * @return bool
      */
     public static function areAllValuesEmpty(array $array, $strictNull = false)
@@ -1343,6 +1383,7 @@ class Arrays
      * @param array $array2     The 2nd array to verify
      * @param bool  $valuesOnly (optional) If is set to true, compares values only. Otherwise - keys and values
      *                          (default behaviour).
+     *
      * @return array
      */
     public static function arrayDiffRecursive(array $array1, array $array2, $valuesOnly = false)
@@ -1429,10 +1470,11 @@ class Arrays
     }
 
     /**
-     * Returns an index / key of given element in given array
+     * Returns an index / key of given element in given array.
      *
      * @param array $array   The array to verify
      * @param mixed $element The element who index / key is needed
+     *
      * @return bool|null|mixed
      */
     public static function getIndexOf(array $array, $element)
@@ -1455,12 +1497,13 @@ class Arrays
     }
 
     /**
-     * Returns an array with incremented indexes / keys
+     * Returns an array with incremented indexes / keys.
      *
      * @param array    $array         The array which indexes / keys should be incremented
      * @param int|null $startIndex    (optional) Index from which incrementation should be started. If not provided,
      *                                the first index / key will be used.
      * @param int      $incrementStep (optional) Value used for incrementation. The step of incrementation.
+     *
      * @return array
      */
     public static function incrementIndexes(array $array, $startIndex = null, $incrementStep = 1)
@@ -1511,10 +1554,11 @@ class Arrays
     }
 
     /**
-     * Returns next element of given array related to given element
+     * Returns next element of given array related to given element.
      *
      * @param array $array   The array with elements
      * @param mixed $element Element for who next element should be returned
+     *
      * @return null|mixed
      */
     public static function getNextElement(array $array, $element)
@@ -1523,10 +1567,11 @@ class Arrays
     }
 
     /**
-     * Returns previous element of given array related to given element
+     * Returns previous element of given array related to given element.
      *
      * @param array $array   The array with elements
      * @param mixed $element Element for who previous element should be returned
+     *
      * @return null|mixed
      */
     public static function getPreviousElement(array $array, $element)
@@ -1535,9 +1580,10 @@ class Arrays
     }
 
     /**
-     * Returns information if given array is a multi dimensional array
+     * Returns information if given array is a multi dimensional array.
      *
      * @param array $array The array to verify
+     *
      * @return bool|null
      */
     public static function isMultiDimensional(array $array)
@@ -1554,9 +1600,10 @@ class Arrays
     }
 
     /**
-     * Returns count of dimensions, maximum nesting level actually, in given array
+     * Returns count of dimensions, maximum nesting level actually, in given array.
      *
      * @param array $array The array to verify
+     *
      * @return int
      */
     public static function getDimensionsCount(array $array)
@@ -1581,11 +1628,12 @@ class Arrays
     }
 
     /**
-     * Returns neighbour (next or previous element) for given element
+     * Returns neighbour (next or previous element) for given element.
      *
      * @param array $array   The array with elements
      * @param mixed $element Element for who next element should be returned
      * @param bool  $next    (optional) If is set to true, returns next neighbour. Otherwise - previous.
+     *
      * @return mixed|null
      */
     private static function getNeighbour(array $array, $element, $next = true)

@@ -3,7 +3,7 @@
 namespace Meritoo\Common\Exception\Regex;
 
 /**
- * An exception used while url is invalid
+ * An exception used while url is invalid.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -11,7 +11,7 @@ namespace Meritoo\Common\Exception\Regex;
 class InvalidUrlException extends \Exception
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param string $url Invalid url
      */

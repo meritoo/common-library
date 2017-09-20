@@ -11,7 +11,7 @@ namespace Meritoo\Common\Utilities;
 use stdClass;
 
 /**
- * Useful Composer-related methods (only static functions)
+ * Useful Composer-related methods (only static functions).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -19,17 +19,18 @@ use stdClass;
 class Composer
 {
     /**
-     * Name of the Composer's main file with configuration in Json format
+     * Name of the Composer's main file with configuration in Json format.
      *
      * @var string
      */
     const FILE_NAME_MAIN = 'composer.json';
 
     /**
-     * Returns value from composer.json file
+     * Returns value from composer.json file.
      *
      * @param string $composerJsonPath Path of composer.json file
      * @param string $nodeName         Name of node who value should be returned
+     *
      * @return string|null
      */
     public static function getValue($composerJsonPath, $nodeName)

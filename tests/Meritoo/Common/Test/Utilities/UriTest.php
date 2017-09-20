@@ -12,7 +12,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Uri;
 
 /**
- * Tests of the useful uri methods (only static functions)
+ * Tests of the useful uri methods (only static functions).
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -58,7 +58,7 @@ class UriTest extends BaseTestCase
     }
 
     /**
-     * Provides urls to replenish protocol
+     * Provides urls to replenish protocol.
      *
      * @return \Generator
      */

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Transliterator;
 
 /**
- * Miscellaneous methods (only static functions)
+ * Miscellaneous methods (only static functions).
  *
  * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright  Meritoo.pl
@@ -21,13 +21,14 @@ use Transliterator;
 class Miscellaneous
 {
     /**
-     * Returns directory's content (names of directories and files)
+     * Returns directory's content (names of directories and files).
      *
      * @param string $directoryPath Path of directory who content should be returned
      * @param bool   $recursive     (optional) If is set to true, sub-directories are also searched for content.
      *                              Otherwise - only content of given directory is returned.
      * @param int    $maxFilesCount (optional) Maximum files that will be returned. If it's null, all files are
      *                              returned.
+     *
      * @return array|null
      */
     public static function getDirectoryContent($directoryPath, $recursive = false, $maxFilesCount = null)
@@ -76,8 +77,8 @@ class Miscellaneous
                         continue;
                     }
 
-                    if ($recursive && is_dir($directoryPath . $fileName)) {
-                        $content = self::getDirectoryContent($directoryPath . $fileName, true, $maxFilesCount - $count);
+                    if ($recursive && is_dir($directoryPath.$fileName)) {
+                        $content = self::getDirectoryContent($directoryPath.$fileName, true, $maxFilesCount - $count);
                     }
 
                     if ($content !== null) {
@@ -105,9 +106,10 @@ class Miscellaneous
     }
 
     /**
-     * Returns information if given path it's a file's path, if the path contains file name
+     * Returns information if given path it's a file's path, if the path contains file name.
      *
      * @param string $path The path to check
+     *
      * @return bool
      */
     public static function isFilePath($path)
@@ -118,15 +120,16 @@ class Miscellaneous
     }
 
     /**
-     * Converts checkbox value to boolean
+     * Converts checkbox value to boolean.
      *
      * @param string $checkboxValue Checkbox value
+     *
      * @return bool
      */
     public static function checkboxValue2Boolean($checkboxValue)
     {
         $mapping = [
-            'on'  => true,
+            'on' => true,
             'off' => false,
         ];
 
@@ -140,21 +143,23 @@ class Miscellaneous
     }
 
     /**
-     * Converts checkbox value to integer
+     * Converts checkbox value to integer.
      *
      * @param string $checkboxValue Checkbox value
+     *
      * @return int
      */
     public static function checkboxValue2Integer($checkboxValue)
     {
-        return (int)self::checkboxValue2Boolean($checkboxValue);
+        return (int) self::checkboxValue2Boolean($checkboxValue);
     }
 
     /**
-     * Returns name of file with given extension after verification if it contains the extension
+     * Returns name of file with given extension after verification if it contains the extension.
      *
      * @param string $fileName  The file name to verify
      * @param string $extension The extension to verify and include
+     *
      * @return string
      */
     public static function includeFileExtension($fileName, $extension)
@@ -167,10 +172,11 @@ class Miscellaneous
     }
 
     /**
-     * Returns file extension
+     * Returns file extension.
      *
      * @param string $fileName    File name
      * @param bool   $asLowerCase (optional) if true extension is returned as lowercase string
+     *
      * @return string
      */
     public static function getFileExtension($fileName, $asLowerCase = false)
@@ -190,9 +196,10 @@ class Miscellaneous
     }
 
     /**
-     * Returns file name from given path
+     * Returns file name from given path.
      *
      * @param string $path A path that contains file name
+     *
      * @return string
      */
     public static function getFileNameFromPath($path)
@@ -200,7 +207,7 @@ class Miscellaneous
         $matches = [];
         $pattern = sprintf('|([^\%s.]+\.[A-Za-z0-9.]+)$|', DIRECTORY_SEPARATOR);
 
-        if ((bool)preg_match($pattern, $path, $matches)) {
+        if ((bool) preg_match($pattern, $path, $matches)) {
             return $matches[1];
         }
 
@@ -208,11 +215,12 @@ class Miscellaneous
     }
 
     /**
-     * Returns unique name for file based on given original name
+     * Returns unique name for file based on given original name.
      *
      * @param string $originalFileName Original name of the file
      * @param int    $objectId         (optional) Object ID, the ID of database's row. May be included into the
      *                                 generated / unique name.
+     *
      * @return string
      */
     public static function getUniqueFileName($originalFileName, $objectId = 0)
@@ -260,16 +268,17 @@ class Miscellaneous
     }
 
     /**
-     * Returns file name without extension
+     * Returns file name without extension.
      *
      * @param string $fileName The file name
+     *
      * @return string
      */
     public static function getFileNameWithoutExtension($fileName)
     {
         $matches = [];
 
-        if (is_string($fileName) && (bool)preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
+        if (is_string($fileName) && (bool) preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
             return $matches[1];
         }
 
@@ -277,15 +286,16 @@ class Miscellaneous
     }
 
     /**
-     * Converts value to non-negative integer (element of the set {0, 1, 2, 3, ...})
+     * Converts value to non-negative integer (element of the set {0, 1, 2, 3, ...}).
      *
      * @param mixed $value               Value to convert
      * @param int   $negativeReplacement (optional) Replacement for negative value
+     *
      * @return int
      */
     public static function value2NonNegativeInteger($value, $negativeReplacement = 0)
     {
-        $effect = (int)$value;
+        $effect = (int) $value;
 
         if ($effect < 0) {
             return $negativeReplacement;
@@ -295,7 +305,7 @@ class Miscellaneous
     }
 
     /**
-     * Displays variable content as preformatted text (fixed-width font and preserves both spaces and line breaks)
+     * Displays variable content as preformatted text (fixed-width font and preserves both spaces and line breaks).
      *
      * If xdebug php module is loaded, displays variable using var_dump(), otherwise <pre>var_dump()</pre>.
      * You can pass as many variables as you wish.
@@ -323,9 +333,10 @@ class Miscellaneous
     }
 
     /**
-     * Returns information if given PHP module is compiled and loaded
+     * Returns information if given PHP module is compiled and loaded.
      *
      * @param string $phpModuleName PHP module name
+     *
      * @return bool
      */
     public static function isPhpModuleLoaded($phpModuleName)
@@ -336,13 +347,14 @@ class Miscellaneous
     }
 
     /**
-     * Converts given string characters to latin characters
+     * Converts given string characters to latin characters.
      *
      * @param string $string          String to convert
      * @param bool   $lowerCaseHuman  (optional) If is set to true, converted string is returned as lowercase and
      *                                human-readable. Otherwise - as original.
      * @param string $replacementChar (optional) Replacement character for all non-latin characters and uppercase
      *                                letters, if 2nd argument is set to true
+     *
      * @return string
      */
     public static function toLatin($string, $lowerCaseHuman = true, $replacementChar = '-')
@@ -394,11 +406,12 @@ class Miscellaneous
     }
 
     /**
-     * Returns unique string
+     * Returns unique string.
      *
      * @param string $prefix (optional) Prefix of the unique string. May be used while generating the unique
      *                       string simultaneously on several hosts at the same microsecond.
      * @param bool   $hashed (optional) If is set to true, the unique string is hashed additionally. Otherwise - not.
+     *
      * @return string
      */
     public static function getUniqueString($prefix = '', $hashed = false)
@@ -422,6 +435,7 @@ class Miscellaneous
      * @param string|array $replacement  The string or an array of strings to replace. It may be: string or an array
      *                                   of strings.
      * @param bool         $quoteStrings (optional) If is set to true, strings are surrounded with single quote sign
+     *
      * @return string
      *
      * Example:
@@ -475,7 +489,7 @@ class Miscellaneous
          */
         if ($searchIsString && $replacementIsString) {
             if ($quoteStrings) {
-                $replacement = '\'' . $replacement . '\'';
+                $replacement = '\''.$replacement.'\'';
             }
 
             $effect = str_replace($search, $replacement, $subject);
@@ -487,7 +501,7 @@ class Miscellaneous
          */
         if ($effect == $subject && ($bothAreStrings || $bothAreArrays)) {
             if ($quoteStrings && $replacementIsString) {
-                $replacement = '\'' . $replacement . '\'';
+                $replacement = '\''.$replacement.'\'';
             }
 
             /*
@@ -529,7 +543,7 @@ class Miscellaneous
                 if ($quoteStrings) {
                     foreach ($replacement as &$item) {
                         if (is_string($item)) {
-                            $item = '\'' . $item . '\'';
+                            $item = '\''.$item.'\'';
                         }
                     }
 
@@ -549,6 +563,7 @@ class Miscellaneous
 
                 if ($subjectIsArray) {
                     $effect[] = $subEffect;
+
                     continue;
                 }
 
@@ -560,11 +575,12 @@ class Miscellaneous
     }
 
     /**
-     * Returns new file name after adding prefix or suffix (or both of them) to the name
+     * Returns new file name after adding prefix or suffix (or both of them) to the name.
      *
      * @param string $fileName The file name
      * @param string $prefix   File name prefix
      * @param string $suffix   File name suffix
+     *
      * @return string
      */
     public static function getNewFileName($fileName, $prefix, $suffix)
@@ -582,7 +598,7 @@ class Miscellaneous
     }
 
     /**
-     * Returns operating system name PHP is running on
+     * Returns operating system name PHP is running on.
      *
      * @return string
      */
@@ -592,11 +608,12 @@ class Miscellaneous
     }
 
     /**
-     * Returns part of string preserving words
+     * Returns part of string preserving words.
      *
      * @param string $text      The string / text
      * @param int    $maxLength Maximum length of given string
      * @param string $suffix    (optional) The suffix to add at the end of string
+     *
      * @return string
      */
     public static function substringToWord($text, $maxLength, $suffix = '...')
@@ -623,13 +640,14 @@ class Miscellaneous
     }
 
     /**
-     * Breaks long text
+     * Breaks long text.
      *
      * @param string $text                   The text to check and break
      * @param int    $perLine                (optional) Characters count per line
      * @param string $separator              (optional) Separator that is placed beetwen lines
      * @param string $encoding               (optional) Character encoding. Used by mb_substr().
      * @param int    $proportionalAberration (optional) Proportional aberration for chars (percent value)
+     *
      * @return string
      */
     public static function breakLongText(
@@ -717,6 +735,7 @@ class Miscellaneous
      * @param string $directoryPath Directory path
      * @param bool   $contentOnly   (optional) If is set to true, only content of the directory is removed, not
      *                              directory. Otherwise - directory is removed too.
+     *
      * @return bool
      */
     public static function removeDirectory($directoryPath, $contentOnly = false)
@@ -734,7 +753,7 @@ class Miscellaneous
                 continue;
             }
 
-            if (!self::removeDirectory($directoryPath . DIRECTORY_SEPARATOR . $item)) {
+            if (!self::removeDirectory($directoryPath.DIRECTORY_SEPARATOR.$item)) {
                 return false;
             }
         }
@@ -747,21 +766,23 @@ class Miscellaneous
     }
 
     /**
-     * Returns information if value is decimal
+     * Returns information if value is decimal.
      *
      * @param mixed $value The value to check
+     *
      * @return bool
      */
     public static function isDecimal($value)
     {
-        return is_scalar($value) && floor($value) !== (float)$value;
+        return is_scalar($value) && floor($value) !== (float) $value;
     }
 
     /**
-     * Returns the string in camel case
+     * Returns the string in camel case.
      *
      * @param string $string    The string to convert e.g. this-is-eXamplE (return: thisIsExample)
      * @param string $separator (optional) Separator used to find parts of the string, e.g. '-' or ','
+     *
      * @return string
      */
     public static function getCamelCase($string, $separator = ' ')
@@ -787,10 +808,11 @@ class Miscellaneous
     }
 
     /**
-     * Make a string's first character lowercase
+     * Make a string's first character lowercase.
      *
      * @param string    $text          The text to get first character lowercase
      * @param bool|null $restLowercase (optional) Information that to do with rest of given string
+     *
      * @return string
      *
      * Values of the $restLowercase argument:
@@ -822,17 +844,18 @@ class Miscellaneous
             $first = mb_strtolower($effect[0]);
             $rest = mb_substr($effect, 1);
 
-            $effect = $first . $rest;
+            $effect = $first.$rest;
         }
 
         return $effect;
     }
 
     /**
-     * Make a string's first character uppercase
+     * Make a string's first character uppercase.
      *
      * @param string    $text          The text to get uppercase
      * @param bool|null $restLowercase (optional) Information that to do with rest of given string
+     *
      * @return string
      *
      * Values of the $restLowercase argument:
@@ -860,17 +883,18 @@ class Miscellaneous
             $first = mb_strtoupper($effect[0]);
             $rest = mb_substr($effect, 1);
 
-            $effect = $first . $rest;
+            $effect = $first.$rest;
         }
 
         return $effect;
     }
 
     /**
-     * Quotes given value with apostrophes or quotation marks
+     * Quotes given value with apostrophes or quotation marks.
      *
      * @param mixed $value         The value to quote
      * @param bool  $useApostrophe (optional) If is set to true, apostrophes are used. Otherwise - quotation marks.
+     *
      * @return string
      */
     public static function quoteValue($value, $useApostrophe = true)
@@ -889,9 +913,10 @@ class Miscellaneous
     }
 
     /**
-     * Returns size (of file or directory) in human readable format
+     * Returns size (of file or directory) in human readable format.
      *
      * @param int $sizeInBytes The size in bytes
+     *
      * @return string
      */
     public static function getHumanReadableSize($sizeInBytes)
@@ -907,7 +932,7 @@ class Miscellaneous
         $index = floor(log($sizeInBytes, 1024));
 
         $size = round($sizeInBytes / pow(1024, $index), 2);
-        $unit = $units[(int)$index];
+        $unit = $units[(int) $index];
 
         return sprintf('%s %s', $size, $unit);
     }
@@ -918,6 +943,7 @@ class Miscellaneous
      *
      * @param string $string    The string to check
      * @param string $separator The separator which divides elements of string
+     *
      * @return string
      */
     public static function getStringWithoutLastElement($string, $separator)
@@ -931,10 +957,11 @@ class Miscellaneous
     }
 
     /**
-     * Returns elements of given string divided by given separator
+     * Returns elements of given string divided by given separator.
      *
      * @param string $string    The string to check
      * @param string $separator The separator which divides elements of string
+     *
      * @return array
      */
     public static function getStringElements($string, $separator)
@@ -951,10 +978,11 @@ class Miscellaneous
     }
 
     /**
-     * Returns the last element of given string divided by given separator
+     * Returns the last element of given string divided by given separator.
      *
      * @param string $string    The string to check
      * @param string $separator The separator which divides elements of string
+     *
      * @return string|null
      */
     public static function getLastElementOfString($string, $separator)
@@ -979,6 +1007,7 @@ class Miscellaneous
      * If the string is empty, contains only spaces, e.g. " ", nothing is done and the original string is returned.
      *
      * @param string $string The string to trim
+     *
      * @return string
      */
     public static function trimSmart($string)
@@ -993,7 +1022,7 @@ class Miscellaneous
     }
 
     /**
-     * Returns concatenated given paths
+     * Returns concatenated given paths.
      *
      * The paths may be passed as:
      * - an array of paths / strings
@@ -1005,6 +1034,7 @@ class Miscellaneous
      *
      * @param string|array $paths Paths co concatenate. As described above: an array of paths / strings or strings
      *                            passed as following arguments.
+     *
      * @return string
      */
     public static function concatenatePaths($paths)
@@ -1067,6 +1097,7 @@ class Miscellaneous
              */
             if ($firstWindowsBased && empty($concatenated)) {
                 $concatenated = $path;
+
                 continue;
             }
 
@@ -1080,11 +1111,12 @@ class Miscellaneous
     }
 
     /**
-     * Removes the starting / beginning directory's separator
+     * Removes the starting / beginning directory's separator.
      *
      * @param string $text      Text that may contain a directory's separator at the start / beginning
      * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), separator
      *                          provided by operating system will be used.
+     *
      * @return string
      */
     public static function removeStartingDirectorySeparator($text, $separator = '')
@@ -1111,11 +1143,12 @@ class Miscellaneous
     }
 
     /**
-     * Removes the ending directory's separator
+     * Removes the ending directory's separator.
      *
      * @param string $text      Text that may contain a directory's separator at the end
      * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), system's
      *                          separator is used.
+     *
      * @return string
      */
     public static function removeEndingDirectorySeparator($text, $separator = '')
@@ -1142,11 +1175,12 @@ class Miscellaneous
     }
 
     /**
-     * Returns safely value of global variable, found in one of the global arrays / variables, e.g. $_GET
+     * Returns safely value of global variable, found in one of the global arrays / variables, e.g. $_GET.
      *
      * @param int    $globalSourceType Represents the global array / variable. One of constants: INPUT_GET, INPUT_POST,
      *                                 INPUT_COOKIE, INPUT_SERVER, or INPUT_ENV.
      * @param string $variableName     Name of the variable to return value
+     *
      * @return mixed
      */
     public static function getSafelyGlobalVariable($globalSourceType, $variableName)
@@ -1159,22 +1193,27 @@ class Miscellaneous
             switch ($globalSourceType) {
                 case INPUT_GET:
                     $globalSource = $_GET;
+
                     break;
 
                 case INPUT_POST:
                     $globalSource = $_POST;
+
                     break;
 
                 case INPUT_COOKIE:
                     $globalSource = $_COOKIE;
+
                     break;
 
                 case INPUT_SERVER:
                     $globalSource = $_SERVER;
+
                     break;
 
                 case INPUT_ENV:
                     $globalSource = $_ENV;
+
                     break;
             }
 
@@ -1191,7 +1230,7 @@ class Miscellaneous
     }
 
     /**
-     * Returns a CURL response with parsed HTTP headers as array with "headers", "cookies" and "content" keys
+     * Returns a CURL response with parsed HTTP headers as array with "headers", "cookies" and "content" keys.
      *
      * The headers and cookies are parsed and returned as an array, and an array of Cookie objects. Returned array looks
      * like this example:
@@ -1216,6 +1255,7 @@ class Miscellaneous
      *
      * @param string $response   the full content of response, including HTTP headers
      * @param int    $headerSize The length of HTTP headers in content
+     *
      * @return array
      */
     public static function getCurlResponseWithHeaders($response, $headerSize)
@@ -1263,6 +1303,7 @@ class Miscellaneous
                         if ($j === 0) {
                             $name = trim($param[0]);
                             $value = trim($param[1]);
+
                             continue;
                         }
 
@@ -1284,18 +1325,23 @@ class Miscellaneous
                         switch ($paramName) {
                             case 'expires':
                                 $expire = $paramValue;
+
                                 break;
                             case 'path':
                                 $path = $paramValue;
+
                                 break;
                             case 'domain':
                                 $domain = $paramValue;
+
                                 break;
                             case 'secure':
                                 $secure = $paramValue;
+
                                 break;
                             case 'httponly':
                                 $httpOnly = $paramValue;
+
                                 break;
                         }
                     }
@@ -1305,6 +1351,7 @@ class Miscellaneous
                      * I must skip to next header as cookies shouldn't be saved in "headers" array.
                      */
                     $cookies[] = new Cookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
+
                     continue;
                 }
 
@@ -1323,7 +1370,7 @@ class Miscellaneous
     }
 
     /**
-     * Adds missing the "0" characters to given number until given length is reached
+     * Adds missing the "0" characters to given number until given length is reached.
      *
      * Example:
      * - number: 201
@@ -1336,6 +1383,7 @@ class Miscellaneous
      * @param mixed $number Number for who the "0" characters should be inserted
      * @param int   $length Wanted length of final number
      * @param bool  $before (optional) If false, 0 characters will be inserted after given number
+     *
      * @return string
      */
     public static function fillMissingZeros($number, $length, $before = true)
@@ -1357,22 +1405,24 @@ class Miscellaneous
 
         for ($i = ($length - $textLength); 0 < $i; --$i) {
             if ($before) {
-                $text = '0' . $text;
+                $text = '0'.$text;
+
                 continue;
             }
 
-            $text = $text . '0';
+            $text = $text.'0';
         }
 
         return $text;
     }
 
     /**
-     * Returns information if given value is located in interval between given utmost left and right values
+     * Returns information if given value is located in interval between given utmost left and right values.
      *
      * @param int|float $value Value to verify
      * @param int|float $left  Left utmost value of interval
      * @param int|float $right Right utmost value of interval
+     *
      * @return bool
      */
     public static function isBetween($value, $left, $right)
@@ -1385,6 +1435,7 @@ class Miscellaneous
      * If it's an object, full class name is returned.
      *
      * @param mixed $variable Variable who type should be returned
+     *
      * @return string
      */
     public static function getType($variable)
@@ -1403,11 +1454,12 @@ class Miscellaneous
      * @param int  $colorComponent Color's component to verify. Decimal value, e.g. 255.
      * @param bool $asHexadecimal  (optional) If is set to true, hexadecimal value is returned (default behaviour).
      *                             Otherwise - decimal.
+     *
      * @return int|string
      */
     public static function getValidColorComponent($colorComponent, $asHexadecimal = true)
     {
-        $colorComponent = (int)$colorComponent;
+        $colorComponent = (int) $colorComponent;
 
         if ($colorComponent < 0 || $colorComponent > 255) {
             $colorComponent = 0;
@@ -1427,9 +1479,10 @@ class Miscellaneous
     }
 
     /**
-     * Returns inverted value of color for given color
+     * Returns inverted value of color for given color.
      *
      * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
+     *
      * @return string
      */
     public static function getInvertedColor($color)

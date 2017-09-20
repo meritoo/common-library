@@ -22,7 +22,7 @@ use Meritoo\Common\Test\Utilities\Reflection\E;
 use Meritoo\Common\Utilities\Reflection;
 
 /**
- * Tests of the useful reflection methods
+ * Tests of the useful reflection methods.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -217,7 +217,7 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * Provides invalid class and trait
+     * Provides invalid class and trait.
      *
      * @return Generator
      */

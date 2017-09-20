@@ -20,84 +20,84 @@ use DateTime;
 class DatePeriod
 {
     /**
-     * The period constant: last month
+     * The period constant: last month.
      *
      * @var int
      */
     const LAST_MONTH = 4;
 
     /**
-     * The period constant: last week
+     * The period constant: last week.
      *
      * @var int
      */
     const LAST_WEEK = 1;
 
     /**
-     * The period constant: last year
+     * The period constant: last year.
      *
      * @var int
      */
     const LAST_YEAR = 7;
 
     /**
-     * The period constant: next month
+     * The period constant: next month.
      *
      * @var int
      */
     const NEXT_MONTH = 6;
 
     /**
-     * The period constant: next week
+     * The period constant: next week.
      *
      * @var int
      */
     const NEXT_WEEK = 3;
 
     /**
-     * The period constant: next year
+     * The period constant: next year.
      *
      * @var int
      */
     const NEXT_YEAR = 9;
 
     /**
-     * The period constant: this month
+     * The period constant: this month.
      *
      * @var int
      */
     const THIS_MONTH = 5;
 
     /**
-     * The period constant: this week
+     * The period constant: this week.
      *
      * @var int
      */
     const THIS_WEEK = 2;
 
     /**
-     * The period constant: this year
+     * The period constant: this year.
      *
      * @var int
      */
     const THIS_YEAR = 8;
 
     /**
-     * The start date of period
+     * The start date of period.
      *
      * @var DateTime
      */
     private $startDate;
 
     /**
-     * The end date of period
+     * The end date of period.
      *
      * @var DateTime
      */
     private $endDate;
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param DateTime $startDate (optional) The start date of period
      * @param DateTime $endDate   (optional) The end date of period
@@ -109,9 +109,10 @@ class DatePeriod
     }
 
     /**
-     * Returns information if given period is correct
+     * Returns information if given period is correct.
      *
      * @param int $period The period to verify
+     *
      * @return bool
      */
     public static function isCorrectPeriod($period)
@@ -120,10 +121,11 @@ class DatePeriod
     }
 
     /**
-     * Returns formatted one of the period's date: start date or end date
+     * Returns formatted one of the period's date: start date or end date.
      *
      * @param string $format    Format used to format the date
      * @param bool   $startDate (optional) If is set to true, start date is formatted. Otherwise - end date.
+     *
      * @return string
      */
     public function getFormattedDate($format, $startDate = true)
@@ -148,7 +150,7 @@ class DatePeriod
     }
 
     /**
-     * Returns the end date of period
+     * Returns the end date of period.
      *
      * @return DateTime
      */
@@ -158,9 +160,10 @@ class DatePeriod
     }
 
     /**
-     * Sets the end date of period
+     * Sets the end date of period.
      *
      * @param DateTime $endDate (optional) The end date of period
+     *
      * @return $this
      */
     public function setEndDate(DateTime $endDate = null)
@@ -171,7 +174,7 @@ class DatePeriod
     }
 
     /**
-     * Returns the start date of period
+     * Returns the start date of period.
      *
      * @return DateTime
      */
@@ -181,9 +184,10 @@ class DatePeriod
     }
 
     /**
-     * Sets the start date of period
+     * Sets the start date of period.
      *
      * @param DateTime $startDate (optional) The start date of period
+     *
      * @return $this
      */
     public function setStartDate(DateTime $startDate = null)
