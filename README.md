@@ -5,7 +5,7 @@ Common and useful classes, methods, exceptions etc.
 
 ## Installation
 
-Run [Composer](https://getcomposer.org) to install new package:
+Run [Composer](https://getcomposer.org) to install this package in your project:
 
     ```bash
     $ composer require meritoo/common-library
