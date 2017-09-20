@@ -503,16 +503,35 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals('lorem ipsum', Miscellaneous::trimSmart(' lorem ipsum     '));
     }
 
-    public function testConcatenatePaths()
+    /**
+     * @param mixed $emptyPaths Empty paths co concatenate
+     * @dataProvider provideEmptyValue
+     */
+    public function testConcatenatePathsWithEmptyPaths($emptyPaths)
+    {
+        self::assertEquals('', Miscellaneous::concatenatePaths($emptyPaths));
+    }
+
+    public function testConcatenatePathsWithOneEmptyPath()
+    {
+        $paths = [
+            'first/directory',
+            'second/one',
+            '',
+            'and/the/third',
+        ];
+
+        $concatenated = Miscellaneous::concatenatePaths($paths);
+        unset($paths[2]);
+        $imploded = implode('/', $paths);
+
+        self::assertEquals('/' . $imploded, $concatenated);
+    }
+
+    public function testConcatenatePathsInNixOs()
     {
         /*
-         * Common cases
-         */
-        self::assertEquals('', Miscellaneous::concatenatePaths(null));
-        self::assertEquals('', Miscellaneous::concatenatePaths([]));
-
-        /*
-         * *nix operating system
+         * For *nix operating system
          */
         $paths1 = [
             'first/directory',
@@ -522,7 +541,10 @@ class MiscellaneousTest extends BaseTestCase
 
         self::assertEquals('/' . implode('/', $paths1), Miscellaneous::concatenatePaths($paths1));
         self::assertEquals('/' . implode('/', $paths1), Miscellaneous::concatenatePaths($paths1[0], $paths1[1], $paths1[2]));
+    }
 
+    public function testConcatenatePathsInWindowsOs()
+    {
         /*
          * For Windows operating system
          */

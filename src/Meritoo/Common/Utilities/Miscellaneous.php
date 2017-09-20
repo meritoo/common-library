@@ -1032,6 +1032,8 @@ class Miscellaneous
         $separator = DIRECTORY_SEPARATOR;
 
         foreach ($paths as $path) {
+            $path = trim($path);
+
             /*
              * Empty paths are useless
              */
