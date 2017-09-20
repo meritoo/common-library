@@ -84,7 +84,7 @@ class Regex
             $taxid = preg_replace('/[\s-]/', '', $taxidString);
             $sum = 0;
 
-            if (strlen($taxid) == 10 && is_numeric($taxid)) {
+            if (10 == strlen($taxid) && is_numeric($taxid)) {
                 for ($x = 0; $x <= 8; ++$x) {
                     $sum += $taxid[$x] * $weights[$x];
                 }
@@ -185,9 +185,9 @@ class Regex
                         $pattern = '|' . $filterExpression . '|';
                         $matchesCount = preg_match($pattern, $value, $matches);
 
-                        $remove = $matchesCount == 0;
+                        $remove = 0 == $matchesCount;
                     } else {
-                        if ($value == '') {
+                        if ('' == $value) {
                             $value = '\'\'';
                         } elseif (is_string($value)) {
                             $value = '\'' . $value . '\'';
@@ -431,7 +431,7 @@ class Regex
     public static function startsWith($string, $beginning)
     {
         if (!empty($string) && !empty($beginning)) {
-            if (strlen($beginning) == 1 && !self::isLetterOrDigit($beginning)) {
+            if (1 == strlen($beginning) && !self::isLetterOrDigit($beginning)) {
                 $beginning = '\\' . $beginning;
             }
 
@@ -452,7 +452,7 @@ class Regex
      */
     public static function endsWith($string, $ending)
     {
-        if (strlen($ending) == 1 && !self::isLetterOrDigit($ending)) {
+        if (1 == strlen($ending) && !self::isLetterOrDigit($ending)) {
             $ending = '\\' . $ending;
         }
 
@@ -537,7 +537,7 @@ class Regex
      */
     public static function contains($haystack, $needle)
     {
-        if (strlen($needle) == 1 && !self::isLetterOrDigit($needle)) {
+        if (1 == strlen($needle) && !self::isLetterOrDigit($needle)) {
             $needle = '\\' . $needle;
         }
 
@@ -653,7 +653,7 @@ class Regex
         }
 
         $modulo = $sum % 11;
-        $numberControl = ($modulo == 10) ? 0 : $modulo;
+        $numberControl = (10 == $modulo) ? 0 : $modulo;
 
         return $numberControl == $nip[9];
     }
@@ -698,10 +698,10 @@ class Regex
         $color = Miscellaneous::replace($color, '/#/', '');
         $length = strlen($color);
 
-        if ($length === 3) {
+        if (3 === $length) {
             $color = Miscellaneous::replace($color, '/(.)(.)(.)/', '$1$1$2$2$3$3');
         } else {
-            if ($length !== 6) {
+            if (6 !== $length) {
                 if ($throwException) {
                     throw new IncorrectColorHexLengthException($color);
                 }

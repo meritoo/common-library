@@ -33,7 +33,7 @@ abstract class BaseType
      */
     public function getAll()
     {
-        if ($this->all === null) {
+        if (null === $this->all) {
             $this->all = Reflection::getConstants($this);
         }
 

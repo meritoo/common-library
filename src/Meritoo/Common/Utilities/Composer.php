@@ -59,7 +59,7 @@ class Composer
          * Unknown data from the composer.json file or there is no node with given name?
          * Nothing to do
          */
-        if ($data === null || !isset($data->{$nodeName})) {
+        if (null === $data || !isset($data->{$nodeName})) {
             return null;
         }
 

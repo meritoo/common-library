@@ -31,14 +31,14 @@ class Repository
     {
         $position = self::getExtremePosition($items, $asLast);
 
-        if ($position === null && $force) {
+        if (null === $position && $force) {
             $position = 0;
         }
 
-        if ($position !== null && !empty($items)) {
+        if (null !== $position && !empty($items)) {
             foreach ($items as $item) {
                 if (method_exists($item, 'getPosition')) {
-                    if ($item->getPosition() === null) {
+                    if (null === $item->getPosition()) {
                         if ($asLast) {
                             ++$position;
                         } else {

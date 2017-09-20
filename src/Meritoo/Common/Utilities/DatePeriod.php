@@ -140,7 +140,7 @@ class DatePeriod
         /*
          * Unknown date or format is invalid?
          */
-        if ($date === null || !Date::isValidDateFormat($format)) {
+        if (null === $date || !Date::isValidDateFormat($format)) {
             return '';
         }
 

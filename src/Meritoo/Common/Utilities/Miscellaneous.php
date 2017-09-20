@@ -65,7 +65,7 @@ class Miscellaneous
 
         if (!empty($directoryContent)) {
             foreach ($directoryContent as $fileName) {
-                if ($fileName != '.' && $fileName != '..') {
+                if ('.' != $fileName && '..' != $fileName) {
                     $content = null;
 
                     if (!empty($startFileName) && !$startFileFound) {
@@ -80,7 +80,7 @@ class Miscellaneous
                         $content = self::getDirectoryContent($directoryPath . $fileName, true, $maxFilesCount - $count);
                     }
 
-                    if ($content !== null) {
+                    if (null !== $content) {
                         $files[$fileName] = $content;
 
                         if (!empty($maxFilesCount)) {
@@ -365,7 +365,7 @@ class Miscellaneous
          * Oops, cannot instantiate converter
          * Nothing to do
          */
-        if ($converter === null) {
+        if (null === $converter) {
             return '';
         }
 
@@ -460,7 +460,7 @@ class Miscellaneous
          * Value to find is neither a string nor an array OR it's an empty string?
          * Nothing to do
          */
-        if ((!$searchIsString && !$searchIsArray) || ($searchIsString && strlen($search) == 0)) {
+        if ((!$searchIsString && !$searchIsArray) || ($searchIsString && 0 == strlen($search))) {
             return $effect;
         }
 
@@ -612,7 +612,7 @@ class Miscellaneous
             $effect = mb_substr($text, 0, $maxLength, 'utf-8');
             $lastSpacePosition = mb_strrpos($effect, ' ', 'utf-8');
 
-            if ($lastSpacePosition !== false) {
+            if (false !== $lastSpacePosition) {
                 $effect = mb_substr($effect, 0, $lastSpacePosition, 'utf-8');
             }
 
@@ -730,7 +730,7 @@ class Miscellaneous
         }
 
         foreach (scandir($directoryPath) as $item) {
-            if ($item == '.' || $item == '..') {
+            if ('.' == $item || '..' == $item) {
                 continue;
             }
 
@@ -776,7 +776,7 @@ class Miscellaneous
         foreach ($members as $key => $value) {
             $value = mb_strtolower($value);
 
-            if ($key == 0) {
+            if (0 == $key) {
                 $effect .= self::lowercaseFirst($value);
             } else {
                 $effect .= self::uppercaseFirst($value);
@@ -812,7 +812,7 @@ class Miscellaneous
 
         if ($restLowercase) {
             $effect = mb_strtolower($effect);
-        } elseif ($restLowercase === false) {
+        } elseif (false === $restLowercase) {
             $effect = mb_strtoupper($effect);
         }
 
@@ -850,7 +850,7 @@ class Miscellaneous
 
         if ($restLowercase) {
             $effect = mb_strtolower($effect);
-        } elseif ($restLowercase === false) {
+        } elseif (false === $restLowercase) {
             $effect = mb_strtoupper($effect);
         }
 
@@ -1153,7 +1153,7 @@ class Miscellaneous
     {
         $value = filter_input($globalSourceType, $variableName);
 
-        if ($value === null) {
+        if (null === $value) {
             $globalSource = null;
 
             switch ($globalSourceType) {
@@ -1178,7 +1178,7 @@ class Miscellaneous
                     break;
             }
 
-            if ($globalSource !== null && isset($globalSource[$variableName])) {
+            if (null !== $globalSource && isset($globalSource[$variableName])) {
                 $value = $globalSource[$variableName];
 
                 if (!ini_get('magic_quotes_gpc')) {
@@ -1232,7 +1232,7 @@ class Miscellaneous
             /*
              * First line is only HTTP status and is unneeded so skip it
              */
-            if ($i === 0) {
+            if (0 === $i) {
                 continue;
             }
 
@@ -1242,7 +1242,7 @@ class Miscellaneous
                 /*
                  * If the header is a "set-cookie" let's save it to "cookies" array
                  */
-                if ($key === 'Set-Cookie') {
+                if ('Set-Cookie' === $key) {
                     $cookieParameters = explode(';', $value);
 
                     $name = '';
@@ -1260,7 +1260,7 @@ class Miscellaneous
                          * First parameter will be always a cookie name and it's value. It is not needed to run
                          * further actions for them, so save the values and move to next parameter.
                          */
-                        if ($j === 0) {
+                        if (0 === $j) {
                             $name = trim($param[0]);
                             $value = trim($param[1]);
                             continue;
@@ -1416,7 +1416,7 @@ class Miscellaneous
         if ($asHexadecimal) {
             $hexadecimal = dechex($colorComponent);
 
-            if (strlen($hexadecimal) == 1) {
+            if (1 == strlen($hexadecimal)) {
                 return sprintf('0%s', $hexadecimal, $hexadecimal);
             }
 

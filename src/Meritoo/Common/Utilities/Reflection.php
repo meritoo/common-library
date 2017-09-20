@@ -201,7 +201,7 @@ class Reflection
              * Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
              * 2016-11-07
              */
-            if ($object !== null) {
+            if (null !== $object) {
                 unset($exploded[0]);
 
                 $property = implode('.', $exploded);
@@ -246,7 +246,7 @@ class Reflection
                     }
                 }
 
-                if (!$valueFound && $reflectionProperty !== null) {
+                if (!$valueFound && null !== $reflectionProperty) {
                     /*
                      * Oops, we have got exception.
                      *
@@ -285,7 +285,7 @@ class Reflection
         foreach ($objects as $entity) {
             $value = self::getPropertyValue($entity, $property, $force);
 
-            if ($value !== null) {
+            if (null !== $value) {
                 $values[] = $value;
             }
         }
@@ -345,7 +345,7 @@ class Reflection
         if ($withoutNamespace) {
             $classOnly = Miscellaneous::getLastElementOfString($name, '\\');
 
-            if ($classOnly !== null) {
+            if (null !== $classOnly) {
                 $name = $classOnly;
             }
 
@@ -427,7 +427,7 @@ class Reflection
         $className = self::getClassName($source);
         $reflection = new ReflectionClass($className);
 
-        if ($filter === null) {
+        if (null === $filter) {
             $filter = ReflectionProperty::IS_PRIVATE
                 + ReflectionProperty::IS_PROTECTED
                 + ReflectionProperty::IS_PUBLIC
@@ -477,7 +477,7 @@ class Reflection
         /*
          * Oops, cannot resolve class
          */
-        if ($className === null) {
+        if (null === $className) {
             throw new CannotResolveClassNameException($class);
         }
 
@@ -603,7 +603,7 @@ class Reflection
         if (!$uses && $verifyParents) {
             $parentClassName = self::getParentClassName($className);
 
-            if ($parentClassName !== null) {
+            if (null !== $parentClassName) {
                 return self::usesTrait($parentClassName, $trait, true);
             }
         }
@@ -624,7 +624,7 @@ class Reflection
         $reflection = new ReflectionClass($className);
         $parentClass = $reflection->getParentClass();
 
-        if ($parentClass === null || $parentClass === false) {
+        if (null === $parentClass || false === $parentClass) {
             return null;
         }
 

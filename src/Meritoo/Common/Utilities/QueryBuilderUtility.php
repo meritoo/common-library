@@ -108,7 +108,7 @@ class QueryBuilderUtility
                 $compareOperator = '=';
 
                 if (is_array($value) && !empty($value)) {
-                    if (count($value) == 2) {
+                    if (2 == count($value)) {
                         $compareOperator = $value[1];
                     }
 
@@ -117,7 +117,7 @@ class QueryBuilderUtility
 
                 $predicate = sprintf('%s.%s %s :%s', $alias, $column, $compareOperator, $column);
 
-                if ($value === null) {
+                if (null === $value) {
                     $predicate = $queryBuilder->expr()->isNull(sprintf('%s.%s', $alias, $column));
                     unset($criteria[$column]);
                 } else {

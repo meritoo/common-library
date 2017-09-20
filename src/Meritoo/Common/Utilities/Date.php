@@ -129,10 +129,10 @@ class Date
                     $dateStart = new DateTime();
                     $dateEnd = new DateTime();
 
-                    if ($period == DatePeriod::LAST_YEAR || $period == DatePeriod::NEXT_YEAR) {
+                    if (DatePeriod::LAST_YEAR == $period || DatePeriod::NEXT_YEAR == $period) {
                         $yearDifference = 1;
 
-                        if ($period == DatePeriod::LAST_YEAR) {
+                        if (DatePeriod::LAST_YEAR == $period) {
                             $yearDifference *= -1;
                         }
 
@@ -148,7 +148,7 @@ class Date
                     break;
             }
 
-            if ($dateStart !== null && $dateEnd !== null) {
+            if (null !== $dateStart && null !== $dateEnd) {
                 $dateStart->setTime(0, 0, 0);
                 $dateEnd->setTime(23, 59, 59);
 
@@ -311,7 +311,7 @@ class Date
 
         $encoding = mb_detect_encoding($name);
 
-        if ($encoding === false) {
+        if (false === $encoding) {
             $name = mb_convert_encoding($name, 'UTF-8', 'ISO-8859-2');
         }
 
@@ -378,46 +378,46 @@ class Date
             self::DATE_DIFFERENCE_UNIT_MINUTES,
         ];
 
-        if ($differenceUnit === null || $differenceUnit == self::DATE_DIFFERENCE_UNIT_YEARS) {
+        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_YEARS == $differenceUnit) {
             $diff = $dateEnd->diff($dateStart);
 
             /*
              * Difference between dates in years should be returned only?
              */
-            if ($differenceUnit == self::DATE_DIFFERENCE_UNIT_YEARS) {
+            if (self::DATE_DIFFERENCE_UNIT_YEARS == $differenceUnit) {
                 return $diff->y;
             }
 
             $difference[self::DATE_DIFFERENCE_UNIT_YEARS] = $diff->y;
         }
 
-        if ($differenceUnit === null || $differenceUnit == self::DATE_DIFFERENCE_UNIT_MONTHS) {
+        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MONTHS == $differenceUnit) {
             $diff = $dateEnd->diff($dateStart);
 
             /*
              * Difference between dates in months should be returned only?
              */
-            if ($differenceUnit == self::DATE_DIFFERENCE_UNIT_MONTHS) {
+            if (self::DATE_DIFFERENCE_UNIT_MONTHS == $differenceUnit) {
                 return $diff->m;
             }
 
             $difference[self::DATE_DIFFERENCE_UNIT_MONTHS] = $diff->m;
         }
 
-        if ($differenceUnit === null || in_array($differenceUnit, $relatedUnits)) {
+        if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits)) {
             $days = (int)floor($dateDiff / $daySeconds);
 
             /*
              * Difference between dates in days should be returned only?
              */
-            if ($differenceUnit == self::DATE_DIFFERENCE_UNIT_DAYS) {
+            if (self::DATE_DIFFERENCE_UNIT_DAYS == $differenceUnit) {
                 return $days;
             }
 
             /*
              * All units should be returned?
              */
-            if ($differenceUnit === null) {
+            if (null === $differenceUnit) {
                 $difference[self::DATE_DIFFERENCE_UNIT_DAYS] = $days;
             }
 
@@ -427,20 +427,20 @@ class Date
             $daysInSeconds = $days * $daySeconds;
         }
 
-        if ($differenceUnit === null || in_array($differenceUnit, $relatedUnits)) {
+        if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits)) {
             $hours = (int)floor(($dateDiff - $daysInSeconds) / $hourSeconds);
 
             /*
              * Difference between dates in hours should be returned only?
              */
-            if ($differenceUnit == self::DATE_DIFFERENCE_UNIT_HOURS) {
+            if (self::DATE_DIFFERENCE_UNIT_HOURS == $differenceUnit) {
                 return $hours;
             }
 
             /*
              * All units should be returned?
              */
-            if ($differenceUnit === null) {
+            if (null === $differenceUnit) {
                 $difference[self::DATE_DIFFERENCE_UNIT_HOURS] = $hours;
             }
 
@@ -450,13 +450,13 @@ class Date
             $hoursInSeconds = $hours * $hourSeconds;
         }
 
-        if ($differenceUnit === null || $differenceUnit == self::DATE_DIFFERENCE_UNIT_MINUTES) {
+        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MINUTES == $differenceUnit) {
             $minutes = (int)floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
 
             /*
              * Difference between dates in minutes should be returned only?
              */
-            if ($differenceUnit == self::DATE_DIFFERENCE_UNIT_MINUTES) {
+            if (self::DATE_DIFFERENCE_UNIT_MINUTES == $differenceUnit) {
                 return $minutes;
             }
 
@@ -524,7 +524,7 @@ class Date
      */
     public static function getRandomDate(DateTime $startDate = null, $start = 1, $end = 100, $intervalTemplate = 'P%sD')
     {
-        if ($startDate === null) {
+        if (null === $startDate) {
             $startDate = new DateTime();
         }
 
@@ -590,7 +590,7 @@ class Date
                  */
                 $dateFromFormat = DateTime::createFromFormat($dateFormat, $value);
 
-                if ($dateFromFormat === false) {
+                if (false === $dateFromFormat) {
                     /*
                      * Nothing to do more, because:
                      * a) instance of the DateTime was created
