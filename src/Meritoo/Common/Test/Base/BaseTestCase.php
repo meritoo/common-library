@@ -12,6 +12,7 @@ use DateTime;
 use Generator;
 use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Miscellaneous;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -105,11 +106,16 @@ abstract class BaseTestCase extends TestCase
      */
     public function getFilePathToTests($fileName, $directoryPath = '')
     {
-        if (!empty($directoryPath)) {
-            $directoryPath = '/' . $directoryPath;
-        }
+        $rootPath = Miscellaneous::getProjectRootPath();
 
-        return sprintf('%s/../../../../../data/tests/%s%s', __DIR__, $fileName, $directoryPath);
+        $paths = [
+            $rootPath,
+            'data/tests',
+            $directoryPath,
+            $fileName,
+        ];
+
+        return Miscellaneous::concatenatePaths($paths);
     }
 
     /**
