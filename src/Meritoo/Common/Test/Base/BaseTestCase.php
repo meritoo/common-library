@@ -135,7 +135,7 @@ abstract class BaseTestCase extends TestCase
      * - string - name of the method
      * - instance of ReflectionMethod - just the method (provided by ReflectionClass::getMethod() method)
      */
-    protected function verifyMethodVisibilityAndArguments(
+    protected static function assertMethodVisibilityAndArguments(
         $classNamespace,
         $method,
         $visibilityType,
@@ -188,7 +188,7 @@ abstract class BaseTestCase extends TestCase
      *                                       method
      * @throws UnknownOopVisibilityTypeException
      */
-    protected function verifyConstructorVisibilityAndArguments(
+    protected static function assertConstructorVisibilityAndArguments(
         $classNamespace,
         $visibilityType,
         $argumentsCount = 0,
@@ -200,7 +200,7 @@ abstract class BaseTestCase extends TestCase
         $reflection = new ReflectionClass($classNamespace);
         $method = $reflection->getConstructor();
 
-        return $this->verifyMethodVisibilityAndArguments($classNamespace, $method, $visibilityType, $argumentsCount, $requiredArgumentsCount);
+        return static::assertMethodVisibilityAndArguments($classNamespace, $method, $visibilityType, $argumentsCount, $requiredArgumentsCount);
     }
 
     /**

@@ -24,7 +24,7 @@ class DatePeriodTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        $this->verifyConstructorVisibilityAndArguments(DatePeriod::class, OopVisibilityType::IS_PUBLIC, 2, 0);
+        static::assertConstructorVisibilityAndArguments(DatePeriod::class, OopVisibilityType::IS_PUBLIC, 2, 0);
     }
 
     /**

@@ -306,7 +306,7 @@ class CollectionTest extends BaseTestCase
 
     public function testExistsVisibilityAndArguments()
     {
-        $this->verifyMethodVisibilityAndArguments(Collection::class, 'exists', OopVisibilityType::IS_PRIVATE, 1, 1);
+        static::assertMethodVisibilityAndArguments(Collection::class, 'exists', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 
     /**
