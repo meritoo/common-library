@@ -17,4 +17,10 @@ namespace Meritoo\Common\Test\Utilities\Reflection;
  */
 class B extends A
 {
+    protected $name = 'Lorem Ipsum';
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

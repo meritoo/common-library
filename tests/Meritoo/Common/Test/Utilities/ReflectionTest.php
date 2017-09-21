@@ -20,6 +20,7 @@ use Meritoo\Common\Test\Utilities\Reflection\C;
 use Meritoo\Common\Test\Utilities\Reflection\D;
 use Meritoo\Common\Test\Utilities\Reflection\E;
 use Meritoo\Common\Utilities\Reflection;
+use ReflectionProperty;
 
 /**
  * Tests of the useful reflection methods
@@ -176,11 +177,11 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetMethods()
     {
-        self::assertEquals(0, count(Reflection::getMethods(B::class, true)));
-        self::assertEquals(1, count(Reflection::getMethods(B::class)));
-        self::assertEquals(1, count(Reflection::getMethods(A::class)));
+        self::assertEquals(1, count(Reflection::getMethods(B::class, true)));
+        self::assertEquals(3, count(Reflection::getMethods(B::class)));
+        self::assertEquals(2, count(Reflection::getMethods(A::class)));
         self::assertEquals(2, count(Reflection::getMethods(C::class, true)));
-        self::assertEquals(3, count(Reflection::getMethods(C::class)));
+        self::assertEquals(5, count(Reflection::getMethods(C::class)));
     }
 
     /**
@@ -219,6 +220,23 @@ class ReflectionTest extends BaseTestCase
         self::assertTrue(Reflection::usesTrait(B::class, E::class, true));
         self::assertTrue(Reflection::usesTrait(C::class, E::class, true));
         self::assertFalse(Reflection::usesTrait(D::class, E::class, true));
+    }
+
+    public function testGetProperties()
+    {
+        self::assertCount(1, Reflection::getProperties(B::class));
+    }
+
+    public function testGetPropertiesUsingFilter()
+    {
+        self::assertCount(1, Reflection::getProperties(B::class, ReflectionProperty::IS_PROTECTED));
+        self::assertCount(0, Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE));
+        self::assertCount(1, Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE, true));
+    }
+
+    public function testGetPropertiesWithParents()
+    {
+        self::assertCount(2, Reflection::getProperties(B::class, null, true));
     }
 
     /**

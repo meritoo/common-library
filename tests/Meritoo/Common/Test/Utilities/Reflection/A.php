@@ -19,8 +19,15 @@ class A
 {
     use E;
 
+    private $count = 1;
+
     protected function lorem()
     {
         return 'ipsum';
+    }
+
+    protected function getCount()
+    {
+        return $this->count;
     }
 }

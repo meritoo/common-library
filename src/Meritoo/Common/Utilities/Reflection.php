@@ -417,12 +417,14 @@ class Reflection
     /**
      * Returns given object properties
      *
-     * @param array|object|string $source An array of objects, namespaces, object or namespace
-     * @param int                 $filter (optional) Filter of properties. Uses ReflectionProperty class constants.
-     *                                    By default all properties are returned.
+     * @param array|object|string $source         An array of objects, namespaces, object or namespace
+     * @param int                 $filter         (optional) Filter of properties. Uses ReflectionProperty class
+     *                                            constants. By default all properties are returned.
+     * @param bool                $includeParents (optional) If is set to true, properties of parent classes are
+     *                                            included (recursively). Otherwise - not.
      * @return array|ReflectionProperty
      */
-    public static function getProperties($source, $filter = null)
+    public static function getProperties($source, $filter = null, $includeParents = false)
     {
         $className = self::getClassName($source);
         $reflection = new ReflectionClass($className);
@@ -434,14 +436,26 @@ class Reflection
                 + ReflectionProperty::IS_STATIC;
         }
 
-        return $reflection->getProperties($filter);
+        $properties = $reflection->getProperties($filter);
+        $parentProperties = [];
+
+        if ($includeParents) {
+            $parent = self::getParentClass($source);
+
+            if (false !== $parent) {
+                $parentClass = $parent->getName();
+                $parentProperties = self::getProperties($parentClass, $filter, $includeParents);
+            }
+        }
+
+        return array_merge($properties, $parentProperties);
     }
 
     /**
-     * Returns a parent class
+     * Returns a parent class or false if there is no parent class
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
-     * @return ReflectionClass
+     * @return ReflectionClass|bool
      */
     public static function getParentClass($source)
     {
