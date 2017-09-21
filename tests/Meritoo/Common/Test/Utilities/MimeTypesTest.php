@@ -20,6 +20,11 @@ use Meritoo\Common\Utilities\MimeTypes;
  */
 class MimeTypesTest extends BaseTestCase
 {
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(MimeTypes::class);
+    }
+
     /**
      * @param mixed $mimeType Empty value, e.g. ""
      * @dataProvider provideEmptyValue

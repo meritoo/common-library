@@ -29,6 +29,11 @@ use Meritoo\Common\Utilities\Reflection;
  */
 class ReflectionTest extends BaseTestCase
 {
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Reflection::class);
+    }
+
     /**
      * @param mixed $invalidClass Empty value, e.g. ""
      * @dataProvider provideEmptyValue

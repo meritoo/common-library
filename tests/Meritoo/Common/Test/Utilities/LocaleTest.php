@@ -20,6 +20,11 @@ use Meritoo\Common\Utilities\Locale;
  */
 class LocaleTest extends BaseTestCase
 {
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Locale::class);
+    }
+
     /**
      * @param mixed $languageCode Empty value, e.g. ""
      * @dataProvider provideEmptyValue

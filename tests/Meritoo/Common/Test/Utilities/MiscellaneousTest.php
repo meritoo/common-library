@@ -28,6 +28,11 @@ class MiscellaneousTest extends BaseTestCase
     private $stringCommaSeparated;
     private $stringDotSeparated;
 
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Miscellaneous::class);
+    }
+
     public function testGetDirectoryContent()
     {
         $directoryPath = __DIR__ . '/../';

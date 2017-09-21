@@ -27,6 +27,11 @@ class ComposerTest extends BaseTestCase
      */
     private $composerJsonPath;
 
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Composer::class);
+    }
+
     /**
      * @param string $composerJsonPath Empty value, e.g. ""
      * @dataProvider provideEmptyValue

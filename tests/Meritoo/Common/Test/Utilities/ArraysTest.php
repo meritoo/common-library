@@ -8,8 +8,8 @@
 
 namespace Meritoo\Common\Test\Utilities;
 
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Arrays;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Tests of the useful arrays methods
@@ -17,13 +17,18 @@ use PHPUnit\Framework\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class ArraysTest extends TestCase
+class ArraysTest extends BaseTestCase
 {
     private $simpleArray;
     private $simpleArrayWithKeys;
     private $twoDimensionsArray;
     private $complexArray;
     private $superComplexArray;
+
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Arrays::class);
+    }
 
     public function testValues2string()
     {

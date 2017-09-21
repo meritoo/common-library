@@ -180,7 +180,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * Verifies visibility and arguments of class constructor
      *
-     * @param string $classNamespace         Namespace of class that contains method to verify
+     * @param string $classNamespace         Namespace of class that contains constructor to verify
      * @param string $visibilityType         Expected visibility of verified method. One of OopVisibilityType class
      *                                       constants.
      * @param int    $argumentsCount         (optional) Expected count/amount of arguments of the verified method
@@ -201,5 +201,21 @@ abstract class BaseTestCase extends TestCase
         $method = $reflection->getConstructor();
 
         return $this->verifyMethodVisibilityAndArguments($classNamespace, $method, $visibilityType, $argumentsCount, $requiredArgumentsCount);
+    }
+
+    /**
+     * Asserts that class with given namespace has no constructor
+     *
+     * @param string $classNamespace Namespace of class that contains constructor to verify
+     */
+    protected static function assertHasNoConstructor($classNamespace)
+    {
+        /*
+         * Let's grab the constructor
+         */
+        $reflection = new ReflectionClass($classNamespace);
+        $constructor = $reflection->getConstructor();
+
+        static::assertNull($constructor);
     }
 }

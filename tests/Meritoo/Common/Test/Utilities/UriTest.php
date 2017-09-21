@@ -19,6 +19,11 @@ use Meritoo\Common\Utilities\Uri;
  */
 class UriTest extends BaseTestCase
 {
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Uri::class);
+    }
+
     public function testAddProtocolToUrl()
     {
         $http = 'http';

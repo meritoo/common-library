@@ -8,8 +8,8 @@
 
 namespace Meritoo\Common\Test\Utilities;
 
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Bundle;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Tests of the useful methods for bundle
@@ -17,8 +17,13 @@ use PHPUnit\Framework\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class BundleTest extends TestCase
+class BundleTest extends BaseTestCase
 {
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Bundle::class);
+    }
+
     public function testGetBundleViewPathEmptyPathAndBundle()
     {
         self::assertNull(Bundle::getBundleViewPath('', ''));

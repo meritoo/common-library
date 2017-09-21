@@ -8,7 +8,7 @@
 
 namespace Meritoo\Common\Utilities;
 
-use PHPUnit\Framework\TestCase;
+use Meritoo\Common\Test\Base\BaseTestCase;
 
 /**
  * Tests of the useful regular expressions methods
@@ -16,10 +16,15 @@ use PHPUnit\Framework\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class RegexTest extends TestCase
+class RegexTest extends BaseTestCase
 {
     private $simpleText;
     private $camelCaseText;
+
+    public function verifyConstructor()
+    {
+        static::assertHasNoConstructor(Regex::class);
+    }
 
     public function testGetCamelCaseParts()
     {
