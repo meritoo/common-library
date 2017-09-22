@@ -16,7 +16,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Date;
 
 /**
- * Tests of the Date methods (only static functions)
+ * Test case of the Date methods (only static functions)
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

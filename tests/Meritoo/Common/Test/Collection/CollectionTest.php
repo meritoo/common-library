@@ -14,7 +14,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 
 /**
- * Tests of the collection of elements
+ * Test case of the collection of elements
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

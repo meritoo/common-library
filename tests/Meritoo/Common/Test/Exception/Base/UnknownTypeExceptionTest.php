@@ -13,7 +13,7 @@ use Meritoo\Common\Type\Base\BaseType;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Tests of the exception used while type of something is unknown
+ * Test case of the exception used while type of something is unknown
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

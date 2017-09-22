@@ -13,7 +13,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\MimeTypes;
 
 /**
- * Tests of the useful methods for mime types of files
+ * Test case of the useful methods for mime types of files
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

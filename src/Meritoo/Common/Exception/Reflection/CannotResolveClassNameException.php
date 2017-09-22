@@ -21,7 +21,7 @@ class CannotResolveClassNameException extends Exception
     /**
      * Class constructor
      *
-     * @param array|object|string $source   Source of the class's / trait's name. It cane be an array of objects,
+     * @param array|object|string $source   Source of the class's / trait's name. It can be an array of objects,
      *                                      namespaces, object or namespace.
      * @param bool                $forClass (optional) If is set to true, message of this exception for class is
      *                                      prepared. Otherwise - for trait.

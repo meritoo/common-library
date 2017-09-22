@@ -12,7 +12,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Arrays;
 
 /**
- * Tests of the useful arrays methods
+ * Test case of the useful arrays methods
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

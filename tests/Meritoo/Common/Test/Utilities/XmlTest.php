@@ -13,7 +13,7 @@ use Meritoo\Common\Utilities\Xml;
 use SimpleXMLElement;
 
 /**
- * Tests of the useful XML-related methods (only static functions)
+ * Test case of the useful XML-related methods (only static functions)
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

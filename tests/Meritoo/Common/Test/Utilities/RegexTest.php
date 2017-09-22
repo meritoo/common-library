@@ -11,7 +11,7 @@ namespace Meritoo\Common\Utilities;
 use Meritoo\Common\Test\Base\BaseTestCase;
 
 /**
- * Tests of the useful regular expressions methods
+ * Test case of the useful regular expressions methods
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

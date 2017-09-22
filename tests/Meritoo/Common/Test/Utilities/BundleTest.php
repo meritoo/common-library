@@ -12,7 +12,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Bundle;
 
 /**
- * Tests of the useful methods for bundle
+ * Test case of the useful methods for bundle
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

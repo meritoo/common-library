@@ -13,7 +13,7 @@ use Meritoo\Common\Type\Base\BaseType;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Tests of the base / abstract type of something
+ * Test case of the base / abstract type of something
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

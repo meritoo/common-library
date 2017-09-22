@@ -23,7 +23,7 @@ class NotExistingFileException extends \Exception
      */
     public function __construct($notExistingFilePath)
     {
-        $template = 'File with path \'%s\' does not exist (or is not readable). Did you provide proper path of file?';
+        $template = 'File with path \'%s\' does not exist (or is not readable). Did you provide path of proper file?';
         $message = sprintf($template, $notExistingFilePath);
 
         parent::__construct($message);

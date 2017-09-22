@@ -17,7 +17,7 @@ use Meritoo\Common\Utilities\Miscellaneous;
 use stdClass;
 
 /**
- * Tests of the Miscellaneous methods (only static functions)
+ * Test case of the Miscellaneous methods (only static functions)
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

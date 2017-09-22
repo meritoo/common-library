@@ -15,7 +15,7 @@ use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\DatePeriod;
 
 /**
- * Tests of date's period
+ * Test case of date's period
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

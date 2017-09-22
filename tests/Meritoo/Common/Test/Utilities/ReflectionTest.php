@@ -23,7 +23,7 @@ use Meritoo\Common\Utilities\Reflection;
 use ReflectionProperty;
 
 /**
- * Tests of the useful reflection methods
+ * Test case of the useful reflection methods
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

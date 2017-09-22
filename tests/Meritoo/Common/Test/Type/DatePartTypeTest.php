@@ -12,7 +12,7 @@ use Meritoo\Common\Test\Base\BaseTypeTestCase;
 use Meritoo\Common\Type\DatePartType;
 
 /**
- * Tests of the type of date part, e.g. "year"
+ * Test case of the type of date part, e.g. "year"
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
