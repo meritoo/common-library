@@ -9,8 +9,9 @@
 namespace Meritoo\Common\Test\Exception\Base;
 
 use Meritoo\Common\Exception\Base\UnknownTypeException;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\Base\BaseType;
-use PHPUnit\Framework\TestCase;
+use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of the exception used while type of something is unknown
@@ -18,8 +19,13 @@ use PHPUnit\Framework\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class UnknownTypeExceptionTest extends TestCase
+class UnknownTypeExceptionTest extends BaseTestCase
 {
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertConstructorVisibilityAndArguments(UnknownTestTypeException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+    }
+
     public function testWithoutException()
     {
         self::assertEquals('Test 2', (new TestService())->getTranslatedType('test_2'));
