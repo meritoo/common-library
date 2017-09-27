@@ -10,6 +10,7 @@ namespace Meritoo\Common\Test\Utilities;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
@@ -20,6 +21,7 @@ use Meritoo\Common\Test\Utilities\Reflection\C;
 use Meritoo\Common\Test\Utilities\Reflection\D;
 use Meritoo\Common\Test\Utilities\Reflection\E;
 use Meritoo\Common\Test\Utilities\Reflection\F;
+use Meritoo\Common\Test\Utilities\Reflection\G;
 use Meritoo\Common\Utilities\Reflection;
 use ReflectionProperty;
 
@@ -240,6 +242,18 @@ class ReflectionTest extends BaseTestCase
         self::assertCount(2, Reflection::getProperties(B::class, null, true));
     }
 
+    public function testGetPropertyValueOfNotExistingProperty()
+    {
+        self::assertNull(Reflection::getPropertyValue(new D(), 'something'));
+        self::assertNull(Reflection::getPropertyValue(new D(), 'something', true));
+    }
+
+    public function testGetPropertyValueFromChain()
+    {
+        $f = new F(1000, 'New York', 'USA', 'john.scott');
+        self::assertEquals('John', Reflection::getPropertyValue($f, 'gInstance.firstName'));
+    }
+
     public function testGetPropertyValueWithPublicGetter()
     {
         $country = 'USA';
@@ -263,6 +277,107 @@ class ReflectionTest extends BaseTestCase
         $f = new F($accountBalance, 'New York', 'USA', 'john.scott');
 
         self::assertEquals($accountBalance, Reflection::getPropertyValue($f, 'accountBalance'));
+    }
+
+    public function testGetPropertyValueWithoutGetter()
+    {
+        $username = 'john.scott';
+        $f = new F(1000, 'New York', 'USA', $username);
+
+        self::assertEquals($username, Reflection::getPropertyValue($f, 'username'));
+    }
+
+    public function testGetPropertyValuesFromEmptySource()
+    {
+        self::assertEquals([], Reflection::getPropertyValues([], 'something'));
+        self::assertEquals([], Reflection::getPropertyValues(new Collection(), 'something'));
+    }
+
+    public function testGetPropertyValuesOfNotExistingPropertyFromSingleObject()
+    {
+        self::assertEquals([], Reflection::getPropertyValues(new D(), 'something'));
+        self::assertEquals([], Reflection::getPropertyValues(new D(), 'something', true));
+    }
+
+    public function testGetPropertyValuesOfNotExistingPropertyFromMultipleObjects()
+    {
+        $objects = [
+            new A(),
+            new A(),
+            new A(),
+            new B(),
+            new B(),
+            new C(),
+            new D(),
+        ];
+
+        self::assertEquals([], Reflection::getPropertyValues($objects, 'something'));
+        self::assertEquals([], Reflection::getPropertyValues($objects, 'something', true));
+
+        $collection = new Collection($objects);
+
+        self::assertEquals([], Reflection::getPropertyValues($collection, 'something'));
+        self::assertEquals([], Reflection::getPropertyValues($collection, 'something', true));
+    }
+
+    public function testGetPropertyValuesOfExistingPropertyFromSingleObject()
+    {
+        self::assertEquals(['John'], Reflection::getPropertyValues(new G(), 'firstName'));
+        self::assertEquals(['John'], Reflection::getPropertyValues(new G(), 'firstName', true));
+    }
+
+    public function testGetPropertyValuesOfExistingPropertyFromMultipleObjects()
+    {
+        $expected = [
+            'New York',
+            'London',
+            'Tokyo',
+        ];
+
+        $objects = [
+            new F(1000, 'New York', 'USA', 'john.scott'),
+            new F(2000, 'London', 'GB', 'john.scott'),
+            new F(3000, 'Tokyo', 'Japan', 'john.scott'),
+        ];
+
+        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'city'));
+        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'city', true));
+
+        $collection = new Collection($objects);
+
+        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'city'));
+        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'city', true));
+    }
+
+    public function testGetPropertyValuesFromChainAndSingleObject()
+    {
+        $f = new F(1000, 'New York', 'USA', 'john.scott');
+
+        self::assertEquals(['John'], Reflection::getPropertyValues($f, 'gInstance.firstName'));
+        self::assertEquals(['John'], Reflection::getPropertyValues($f, 'gInstance.firstName', true));
+    }
+
+    public function testGetPropertyValuesFromChainAndMultipleObjects()
+    {
+        $expected = [
+            'John',
+            'Mary',
+            'Peter',
+        ];
+
+        $objects = [
+            new F(1000, 'New York', 'USA', 'john.scott'),
+            new F(2000, 'London', 'GB', 'john.scott', 'Mary', 'Jane'),
+            new F(3000, 'Tokyo', 'Japan', 'john.scott', 'Peter', 'Brown'),
+        ];
+
+        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'gInstance.firstName'));
+        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'gInstance.firstName', true));
+
+        $collection = new Collection($objects);
+
+        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'gInstance.firstName'));
+        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'gInstance.firstName', true));
     }
 
     /**

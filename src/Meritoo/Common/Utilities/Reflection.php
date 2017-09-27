@@ -8,9 +8,9 @@
 
 namespace Meritoo\Common\Utilities;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
+use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
@@ -288,6 +288,14 @@ class Reflection
      */
     public static function getPropertyValues($objects, $property, $force = false)
     {
+        /*
+         * No objects?
+         * Nothing to do
+         */
+        if (empty($objects)) {
+            return [];
+        }
+
         if ($objects instanceof Collection) {
             $objects = $objects->toArray();
         }
