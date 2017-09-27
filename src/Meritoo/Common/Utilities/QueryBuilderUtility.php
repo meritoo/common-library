@@ -17,8 +17,8 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * Useful methods for query builder (the Doctrine's QueryBuilder class)
  *
- * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright  Meritoo.pl
+ * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+ * @copyright Meritoo.pl
  */
 class QueryBuilderUtility
 {

@@ -14,8 +14,8 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * Useful methods for repository
  *
- * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright  Meritoo.pl
+ * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+ * @copyright Meritoo.pl
  */
 class Repository
 {

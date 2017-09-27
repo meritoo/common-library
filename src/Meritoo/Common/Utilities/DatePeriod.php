@@ -14,8 +14,8 @@ use DateTime;
  * A date's period.
  * Contains start and end date of the period.
  *
- * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright  Meritoo.pl
+ * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+ * @copyright Meritoo.pl
  */
 class DatePeriod
 {

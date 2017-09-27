@@ -11,8 +11,8 @@ namespace Meritoo\Common\Utilities;
 /**
  * Useful locale methods
  *
- * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright  Meritoo.pl
+ * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+ * @copyright Meritoo.pl
  */
 class Locale
 {

@@ -27,9 +27,9 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
     }
 
     /**
-     * @param array|object|string $parentClass Class that has more than one child class, but it shouldn't. An array
+     * @param array|object|string $parentClass     Class that has more than one child class, but it shouldn't. An array
      *                                             of objects, strings, object or string.
-     * @param array               $childClasses Child classes
+     * @param array               $childClasses    Child classes
      * @param string              $expectedMessage Expected exception's message
      *
      * @dataProvider provideParentAndChildClasses

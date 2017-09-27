@@ -11,8 +11,8 @@ namespace Meritoo\Common\Utilities;
 /**
  * Useful methods for mime types of files
  *
- * @author     Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright  Meritoo.pl
+ * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+ * @copyright Meritoo.pl
  */
 class MimeTypes
 {
