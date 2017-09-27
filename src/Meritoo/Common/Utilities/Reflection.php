@@ -229,17 +229,29 @@ class Reflection
                 if ($class->hasProperty($property) || $force) {
                     $property = Inflector::classify($property);
 
-                    $methodPrefixes = [
+                    $getterPrefixes = [
                         'get',
                         'has',
                         'is',
                     ];
 
-                    foreach ($methodPrefixes as $prefix) {
-                        $method = sprintf('%s%s', $prefix, $property);
+                    foreach ($getterPrefixes as $prefix) {
+                        $getterName = sprintf('%s%s', $prefix, $property);
 
-                        if ($class->hasMethod($method)) {
-                            $value = $object->{$method}();
+                        if ($class->hasMethod($getterName)) {
+                            $method = new ReflectionMethod($object, $getterName);
+
+                            /*
+                             * Getter is not accessible publicly?
+                             * I have to skip it, to avoid an error like this:
+                             *
+                             * Call to protected method My\ExtraClass::getExtraProperty() from context 'My\ExtraClass'
+                             */
+                            if ($method->isProtected() || $method->isPrivate()) {
+                                continue;
+                            }
+
+                            $value = $object->{$getterName}();
                             $valueFound = true;
                             break;
                         }
@@ -248,13 +260,14 @@ class Reflection
 
                 if (!$valueFound && null !== $reflectionProperty) {
                     /*
-                     * Oops, we have got exception.
+                     * Oops, value of the property is still unknown
                      *
                      * 3rd try:
-                     * Let's try modify accessibility of the property and try again to get value.
+                     * Let's modify accessibility of the property and try again to get value
                      */
                     $reflectionProperty->setAccessible(true);
                     $value = $reflectionProperty->getValue($object);
+                    $reflectionProperty->setAccessible(false);
                 }
             }
         }

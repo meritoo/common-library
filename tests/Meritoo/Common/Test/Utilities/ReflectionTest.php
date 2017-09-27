@@ -19,6 +19,7 @@ use Meritoo\Common\Test\Utilities\Reflection\B;
 use Meritoo\Common\Test\Utilities\Reflection\C;
 use Meritoo\Common\Test\Utilities\Reflection\D;
 use Meritoo\Common\Test\Utilities\Reflection\E;
+use Meritoo\Common\Test\Utilities\Reflection\F;
 use Meritoo\Common\Utilities\Reflection;
 use ReflectionProperty;
 
@@ -237,6 +238,31 @@ class ReflectionTest extends BaseTestCase
     public function testGetPropertiesWithParents()
     {
         self::assertCount(2, Reflection::getProperties(B::class, null, true));
+    }
+
+    public function testGetPropertyValueWithPublicGetter()
+    {
+        $country = 'USA';
+        $f = new F(1000, 'New York', $country, 'john.scott');
+
+        self::assertEquals($country, Reflection::getPropertyValue($f, 'country'));
+    }
+
+    public function testGetPropertyValueWithProtectedGetter()
+    {
+        $city = 'New York';
+        $f = new F(1000, $city, 'USA', 'john.scott');
+
+        self::assertEquals($city, Reflection::getPropertyValue($f, 'city'));
+    }
+
+
+    public function testGetPropertyValueWithPrivateGetter()
+    {
+        $accountBalance = 1000;
+        $f = new F($accountBalance, 'New York', 'USA', 'john.scott');
+
+        self::assertEquals($accountBalance, Reflection::getPropertyValue($f, 'accountBalance'));
     }
 
     /**
