@@ -270,7 +270,6 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($city, Reflection::getPropertyValue($f, 'city'));
     }
 
-
     public function testGetPropertyValueWithPrivateGetter()
     {
         $accountBalance = 1000;
