@@ -159,8 +159,8 @@ class MiscellaneousTest extends BaseTestCase
         $expected = "int(123)\n";
 
         if ($xdebugLoaded) {
-            $libraryPath = realpath(sprintf('%s%s', dirname(__FILE__), '/../../../../..'));
-            $filePath = sprintf('%s%s', $libraryPath, '/src/Meritoo/Common/Utilities/Miscellaneous.php:');
+            $libraryPath = realpath(sprintf('%s%s', dirname(__FILE__), '/../..'));
+            $filePath = sprintf('%s%s', $libraryPath, '/src/Utilities/Miscellaneous.php:');
 
             /*
              * Attention. I have to use "\d+" at the end of $filePath, because number of line may be different if new

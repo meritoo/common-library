@@ -27,8 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Meritoo\\Common\\": "src/Meritoo/Common/",
-            "Meritoo\\Common\\Test\\": "tests/Meritoo/Common/Test/"
+            "Meritoo\\Common\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Meritoo\\Common\\Test\\": "tests/"
         }
     }
 }
