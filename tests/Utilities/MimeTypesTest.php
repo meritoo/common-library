@@ -20,7 +20,7 @@ use Meritoo\Common\Utilities\MimeTypes;
  */
 class MimeTypesTest extends BaseTestCase
 {
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(MimeTypes::class);
     }

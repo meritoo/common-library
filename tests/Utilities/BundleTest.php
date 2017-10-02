@@ -19,7 +19,7 @@ use Meritoo\Common\Utilities\Bundle;
  */
 class BundleTest extends BaseTestCase
 {
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Bundle::class);
     }

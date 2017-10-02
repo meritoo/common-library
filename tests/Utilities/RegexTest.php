@@ -21,7 +21,7 @@ class RegexTest extends BaseTestCase
     private $simpleText;
     private $camelCaseText;
 
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Regex::class);
     }

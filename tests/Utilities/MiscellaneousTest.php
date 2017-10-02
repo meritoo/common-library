@@ -28,7 +28,7 @@ class MiscellaneousTest extends BaseTestCase
     private $stringCommaSeparated;
     private $stringDotSeparated;
 
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Miscellaneous::class);
     }

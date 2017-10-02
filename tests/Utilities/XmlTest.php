@@ -23,7 +23,7 @@ class XmlTest extends BaseTestCase
     private $simpleXml;
     private $advancedXml;
 
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Xml::class);
     }

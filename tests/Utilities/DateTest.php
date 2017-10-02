@@ -23,7 +23,7 @@ use Meritoo\Common\Utilities\Date;
  */
 class DateTest extends BaseTestCase
 {
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Date::class);
     }

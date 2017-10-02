@@ -25,7 +25,7 @@ class ArraysTest extends BaseTestCase
     private $complexArray;
     private $superComplexArray;
 
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Arrays::class);
     }

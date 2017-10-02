@@ -20,7 +20,7 @@ use Meritoo\Common\Utilities\Locale;
  */
 class LocaleTest extends BaseTestCase
 {
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Locale::class);
     }

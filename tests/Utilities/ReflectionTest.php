@@ -33,7 +33,7 @@ use ReflectionProperty;
  */
 class ReflectionTest extends BaseTestCase
 {
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(Reflection::class);
     }

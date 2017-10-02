@@ -19,7 +19,7 @@ use Meritoo\Common\Utilities\GeneratorUtility;
  */
 class GeneratorUtilityTest extends BaseTestCase
 {
-    public function verifyConstructor()
+    public function testConstructor()
     {
         static::assertHasNoConstructor(GeneratorUtility::class);
     }
