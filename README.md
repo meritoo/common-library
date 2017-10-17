@@ -13,6 +13,15 @@ $ composer require meritoo/common-library
 
 > How to install Composer: https://getcomposer.org/download
 
+## Rebuilding project and tests running
+
+```bash
+$ docker-compose up -d
+$ docker-compose exec php-cli phing
+```
+
+> What is Docker? https://www.docker.com/what-docker
+
 ## Static methods
 
 This package contains a lot of class with static methods, so usage is not so complicated. Just run the static method who would you like to use. Example:

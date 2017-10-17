@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    php-cli:
+        image: php-cli
+        container_name: php-cli
+        working_dir: /project
+        entrypoint: php
+        command: -S 0.0.0.0:99
+        build:
+            context: ./.docker/config
+            args:
+                - TIMEZONE=$TIMEZONE
+        volumes:
+            - .:/project
