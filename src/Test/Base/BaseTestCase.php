@@ -26,6 +26,13 @@ use ReflectionMethod;
 abstract class BaseTestCase extends TestCase
 {
     /**
+     * Path of directory with data used by test cases
+     *
+     * @var string
+     */
+    private static $testsDataDirPath = '.data/tests';
+
+    /**
      * Provides an empty value
      *
      * @return Generator
@@ -98,7 +105,7 @@ abstract class BaseTestCase extends TestCase
 
     /**
      * Returns path of file used by tests.
-     * It should be placed in /data/tests directory of this project.
+     * It should be placed in /.data/tests directory of this project.
      *
      * @param string $fileName      Name of file
      * @param string $directoryPath (optional) Path of directory containing the file
@@ -110,7 +117,7 @@ abstract class BaseTestCase extends TestCase
 
         $paths = [
             $rootPath,
-            'data/tests',
+            self::$testsDataDirPath,
             $directoryPath,
             $fileName,
         ];
@@ -217,5 +224,15 @@ abstract class BaseTestCase extends TestCase
         $constructor = $reflection->getConstructor();
 
         static::assertNull($constructor);
+    }
+
+    /**
+     * Sets path of directory with data used by test cases
+     *
+     * @param string $testsDataDirPath Path of directory with data used by test cases
+     */
+    protected static function setTestsDataDirPath($testsDataDirPath)
+    {
+        static::$testsDataDirPath = $testsDataDirPath;
     }
 }
