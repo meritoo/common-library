@@ -2,8 +2,8 @@ version: '3'
 
 services:
     php-cli:
-        image: php-cli
-        container_name: php-cli
+        image: meritoo/common-library
+        container_name: meritoo-common-library
         working_dir: /project
         entrypoint: php
         command: -S 0.0.0.0:9999
