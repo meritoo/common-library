@@ -6,7 +6,7 @@ services:
         container_name: php-cli
         working_dir: /project
         entrypoint: php
-        command: -S 0.0.0.0:99
+        command: -S 0.0.0.0:9999
         build:
             context: ./.docker/config
             args:
