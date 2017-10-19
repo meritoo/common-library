@@ -5,6 +5,7 @@ FROM php:5.6-cli
 #
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        vim \
         git \
         zip \
         unzip \
@@ -14,7 +15,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #
-# PHP Extensions
+# PHP extensions
 #
 RUN docker-php-ext-install \
     zip \
@@ -23,10 +24,12 @@ RUN docker-php-ext-install \
 
 #
 # PHP configuration:
+# - default configuration
 # - timezone
 #
+COPY php.ini /usr/local/etc/php/php.ini
 ARG TIMEZONE
-RUN echo "date.timezone = $TIMEZONE" >> /usr/local/etc/php/php.ini
+RUN echo "\n""date.timezone = $TIMEZONE""\n" >> /usr/local/etc/php/php.ini
 
 #
 # Xdebug
@@ -52,3 +55,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "unlink('composer-setup.php');" \
     && composer global require --no-plugins --no-scripts hirak/prestissimo \
     && rm -rf /root/.composer/cache/*
+
+#
+# Bash
+#
+RUN sed -i 's/^# export/export/g' /root/.bashrc \
+    && sed -i 's/^# alias/alias/g' /root/.bashrc \
+    && echo "\n"'export PATH=/project/vendor/bin:$PATH'"\n" >> /root/.bashrc
