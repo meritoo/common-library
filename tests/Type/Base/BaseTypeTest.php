@@ -9,8 +9,8 @@
 namespace Meritoo\Common\Test\Type\Base;
 
 use Generator;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\Base\BaseType;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test case of the base / abstract type of something
@@ -18,8 +18,13 @@ use PHPUnit\Framework\TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class BaseTypeTest extends TestCase
+class BaseTypeTest extends BaseTestCase
 {
+    public function testConstructor()
+    {
+        static::assertHasNoConstructor(BaseType::class);
+    }
+
     /**
      * @param BaseType $type          Type of something
      * @param array    $expectedTypes Expected concrete types of given instance of type
