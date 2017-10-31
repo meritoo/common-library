@@ -223,7 +223,7 @@ class DateTest extends BaseTestCase
      */
     public function testGetDayOfWeekIncorrectValues($year, $month, $day)
     {
-        $this->expectException(UnknownDatePartTypeException::class);
+        $this->setExpectedException(UnknownDatePartTypeException::class);
         self::assertEmpty(Date::getDayOfWeek($year, $month, $day));
     }
 

@@ -663,7 +663,8 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetInvertedColorWithIncorrectLength()
     {
-        $this->expectException(IncorrectColorHexLengthException::class);
+        $this->setExpectedException(IncorrectColorHexLengthException::class);
+
         Miscellaneous::getInvertedColor(null);
         Miscellaneous::getInvertedColor('');
         Miscellaneous::getInvertedColor(1);
@@ -676,7 +677,8 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetInvertedColorWithInvalidValue()
     {
-        $this->expectException(InvalidColorHexValueException::class);
+        $this->setExpectedException(InvalidColorHexValueException::class);
+
         Miscellaneous::getInvertedColor('0011zz');
         Miscellaneous::getInvertedColor('001#zz');
         Miscellaneous::getInvertedColor('001!zz');

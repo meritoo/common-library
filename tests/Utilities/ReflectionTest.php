@@ -122,7 +122,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testGetChildClassesInvalidClass($invalidClass)
     {
-        $this->expectException(CannotResolveClassNameException::class);
+        $this->setExpectedException(CannotResolveClassNameException::class);
 
         self::assertNull(Reflection::getChildClasses($invalidClass));
         self::assertNull(Reflection::getChildClasses(123));
@@ -130,7 +130,7 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetChildClassesNotExistingClass()
     {
-        $this->expectException(CannotResolveClassNameException::class);
+        $this->setExpectedException(CannotResolveClassNameException::class);
         self::assertEquals('', Reflection::getChildClasses('xyz'));
     }
 
@@ -161,13 +161,13 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetOneChildClassWithMissingChildClasses()
     {
-        $this->expectException(MissingChildClassesException::class);
+        $this->setExpectedException(MissingChildClassesException::class);
         self::assertEquals('LoremIpsum', Reflection::getOneChildClass(C::class));
     }
 
     public function testGetOneChildClassWithTooManyChildClasses()
     {
-        $this->expectException(TooManyChildClassesException::class);
+        $this->setExpectedException(TooManyChildClassesException::class);
 
         self::assertEquals(B::class, Reflection::getOneChildClass(A::class));
         self::assertEquals(C::class, Reflection::getOneChildClass(A::class));
@@ -195,7 +195,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testUsesTraitInvalidClass($class, $trait)
     {
-        $this->expectException(CannotResolveClassNameException::class);
+        $this->setExpectedException(CannotResolveClassNameException::class);
         self::assertNull(Reflection::usesTrait($class, $trait));
     }
 
@@ -205,7 +205,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testUsesTraitInvalidTrait($trait)
     {
-        $this->expectException(CannotResolveClassNameException::class);
+        $this->setExpectedException(CannotResolveClassNameException::class);
         self::assertNull(Reflection::usesTrait(DateTime::class, $trait));
     }
 

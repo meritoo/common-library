@@ -11,18 +11,18 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=5.5.9",
         "doctrine/orm": "^2.5",
         "gedmo/doctrine-extensions": "^2.4",
         "symfony/http-foundation": "^3.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.7",
+        "friendsofphp/php-cs-fixer": "^2.2",
         "pdepend/pdepend": "^2.5",
-        "phploc/phploc": "^4.0",
+        "phploc/phploc": "^2.1",
         "phpmd/phpmd": "^2.6",
-        "phpunit/phpunit": "^5.7",
-        "sebastian/phpcpd": "^3.0",
+        "phpunit/phpunit": "^4.8",
+        "sebastian/phpcpd": "^2.0",
         "squizlabs/php_codesniffer": "^2.9"
     },
     "autoload": {
@@ -34,5 +34,8 @@
         "psr-4": {
             "Meritoo\\Common\\Test\\": "tests/"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
