@@ -447,12 +447,12 @@ class MimeTypesTest extends BaseTestCase
     public function provideFilePathToGetMimeTypeOfRealFile()
     {
         yield[
-            $this->getFilePathToTests('minion.jpg'),
+            $this->getFilePathForTesting('minion.jpg'),
             'image/jpeg',
         ];
 
         yield[
-            $this->getFilePathToTests('lorem-ipsum.txt'),
+            $this->getFilePathForTesting('lorem-ipsum.txt'),
             'text/plain',
         ];
     }
@@ -465,12 +465,12 @@ class MimeTypesTest extends BaseTestCase
     public function provideExistingFilePathToCheckIsImagePath()
     {
         yield[
-            $this->getFilePathToTests('minion.jpg'),
+            $this->getFilePathForTesting('minion.jpg'),
             true,
         ];
 
         yield[
-            $this->getFilePathToTests('lorem-ipsum.txt'),
+            $this->getFilePathForTesting('lorem-ipsum.txt'),
             false,
         ];
     }

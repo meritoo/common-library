@@ -111,7 +111,7 @@ abstract class BaseTestCase extends TestCase
      * @param string $directoryPath (optional) Path of directory containing the file
      * @return string
      */
-    public function getFilePathToTests($fileName, $directoryPath = '')
+    public function getFilePathForTesting($fileName, $directoryPath = '')
     {
         $rootPath = Miscellaneous::getProjectRootPath();
 

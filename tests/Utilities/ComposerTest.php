@@ -88,6 +88,6 @@ class ComposerTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->composerJsonPath = $this->getFilePathToTests(Composer::FILE_NAME_MAIN);
+        $this->composerJsonPath = $this->getFilePathForTesting(Composer::FILE_NAME_MAIN);
     }
 }
