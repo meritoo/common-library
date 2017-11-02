@@ -55,7 +55,9 @@ class BaseTestCaseTest extends BaseTestCase
 
     public function testProvideDateTimeInstance()
     {
-        $elements = [
+        $dateFormat = 'Y-m-d H:i';
+
+        $expectedElements = [
             [new DateTime()],
             [new DateTime('yesterday')],
             [new DateTime('now')],
@@ -63,7 +65,25 @@ class BaseTestCaseTest extends BaseTestCase
         ];
 
         $generator = (new SimpleTestCase())->provideDateTimeInstance();
-        self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
+        $generatedElements = GeneratorUtility::getGeneratorElements($generator);
+
+        /* @var DateTime $instance1 */
+        $instance1 = $generatedElements[0][0];
+
+        /* @var DateTime $instance2 */
+        $instance2 = $generatedElements[1][0];
+
+        /* @var DateTime $instance3 */
+        $instance3 = $generatedElements[2][0];
+
+        /* @var DateTime $instance4 */
+        $instance4 = $generatedElements[3][0];
+
+        self::assertCount(count($expectedElements), $generatedElements);
+        self::assertEquals($instance1->format($dateFormat), (new DateTime())->format($dateFormat));
+        self::assertEquals($instance2->format($dateFormat), (new DateTime('yesterday'))->format($dateFormat));
+        self::assertEquals($instance3->format($dateFormat), (new DateTime('now'))->format($dateFormat));
+        self::assertEquals($instance4->format($dateFormat), (new DateTime('tomorrow'))->format($dateFormat));
     }
 
     public function testProvideDateTimeRelativeFormat()
