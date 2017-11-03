@@ -12,6 +12,7 @@ use DateInterval;
 use DateTime;
 use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
 use Meritoo\Common\Type\DatePartType;
+use Meritoo\Common\Type\DatePeriod;
 
 /**
  * Useful date methods
@@ -72,7 +73,7 @@ class Date
     {
         $datePeriod = null;
 
-        if (DatePeriod::isCorrectPeriod($period)) {
+        if ((new DatePeriod())->isCorrectType($period)) {
             $dateStart = null;
             $dateEnd = null;
 

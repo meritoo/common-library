@@ -6,13 +6,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities;
+namespace Meritoo\Common\Test\Type;
 
 use DateTime;
 use Generator;
-use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Test\Base\BaseTypeTestCase;
+use Meritoo\Common\Type\DatePeriod;
 use Meritoo\Common\Type\OopVisibilityType;
-use Meritoo\Common\Utilities\DatePeriod;
 
 /**
  * Test case of date's period
@@ -20,7 +20,7 @@ use Meritoo\Common\Utilities\DatePeriod;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class DatePeriodTest extends BaseTestCase
+class DatePeriodTest extends BaseTypeTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
@@ -56,33 +56,6 @@ class DatePeriodTest extends BaseTestCase
 
         $period->setEndDate($endDate);
         self::assertEquals($endDate, $period->getEndDate());
-    }
-
-    /**
-     * @param mixed $period Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testIsCorrectPeriodEmptyPeriod($period)
-    {
-        self::assertFalse(DatePeriod::isCorrectPeriod($period));
-    }
-
-    /**
-     * @param int $period Incorrect period to verify
-     * @dataProvider provideIncorrectPeriod
-     */
-    public function testIsCorrectPeriodIncorrectPeriod($period)
-    {
-        self::assertFalse(DatePeriod::isCorrectPeriod($period));
-    }
-
-    /**
-     * @param int $period The period to verify
-     * @dataProvider providePeriod
-     */
-    public function testIsCorrectPeriod($period)
-    {
-        self::assertTrue(DatePeriod::isCorrectPeriod($period));
     }
 
     /**
@@ -140,36 +113,6 @@ class DatePeriodTest extends BaseTestCase
             $startDate,
             $endDate,
         ];
-    }
-
-    /**
-     * Provides incorrect period
-     *
-     * @return Generator
-     */
-    public function provideIncorrectPeriod()
-    {
-        yield[-1];
-        yield[0];
-        yield[10];
-    }
-
-    /**
-     * Provides period to verify
-     *
-     * @return Generator
-     */
-    public function providePeriod()
-    {
-        yield[DatePeriod::LAST_WEEK];
-        yield[DatePeriod::THIS_WEEK];
-        yield[DatePeriod::NEXT_WEEK];
-        yield[DatePeriod::LAST_MONTH];
-        yield[DatePeriod::THIS_MONTH];
-        yield[DatePeriod::NEXT_MONTH];
-        yield[DatePeriod::LAST_YEAR];
-        yield[DatePeriod::THIS_YEAR];
-        yield[DatePeriod::NEXT_YEAR];
     }
 
     /**
@@ -268,6 +211,70 @@ class DatePeriodTest extends BaseTestCase
             'Y-m-d H:i',
             false,
             '2002-02-02 00:00',
+        ];
+    }
+
+    /**
+     * Returns all expected types of the tested type
+     *
+     * @return array
+     */
+    protected function getAllExpectedTypes()
+    {
+        return [
+            'LAST_MONTH' => DatePeriod::LAST_MONTH,
+            'LAST_WEEK'  => DatePeriod::LAST_WEEK,
+            'LAST_YEAR'  => DatePeriod::LAST_YEAR,
+            'NEXT_MONTH' => DatePeriod::NEXT_MONTH,
+            'NEXT_WEEK'  => DatePeriod::NEXT_WEEK,
+            'NEXT_YEAR'  => DatePeriod::NEXT_YEAR,
+            'THIS_MONTH' => DatePeriod::THIS_MONTH,
+            'THIS_WEEK'  => DatePeriod::THIS_WEEK,
+            'THIS_YEAR'  => DatePeriod::THIS_YEAR,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTestedTypeInstance()
+    {
+        return new DatePeriod();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function provideTypeToVerify()
+    {
+        yield[
+            '',
+            false,
+        ];
+
+        yield[
+            -1,
+            false,
+        ];
+
+        yield[
+            true,
+            false,
+        ];
+
+        yield[
+            DatePeriod::LAST_MONTH,
+            true,
+        ];
+
+        yield[
+            DatePeriod::NEXT_WEEK,
+            true,
+        ];
+
+        yield[
+            DatePeriod::THIS_YEAR,
+            true,
         ];
     }
 }
