@@ -67,97 +67,105 @@ class Date
      * The dates are returned in an array with indexes 'start' and 'end'.
      *
      * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
-     * @return DatePeriod
+     * @return null|DatePeriod
      */
     public static function getDatesForPeriod($period)
     {
-        $datePeriod = null;
-
-        if ((new DatePeriod())->isCorrectType($period)) {
-            $dateStart = null;
-            $dateEnd = null;
-
-            switch ($period) {
-                case DatePeriod::LAST_WEEK:
-                    $thisWeekStart = new DateTime('this week');
-
-                    $dateStart = clone $thisWeekStart;
-                    $dateEnd = clone $thisWeekStart;
-
-                    $dateStart->sub(new DateInterval('P7D'));
-                    $dateEnd->sub(new DateInterval('P1D'));
-
-                    break;
-                case DatePeriod::THIS_WEEK:
-                    $dateStart = new DateTime('this week');
-
-                    $dateEnd = clone $dateStart;
-                    $dateEnd->add(new DateInterval('P6D'));
-
-                    break;
-                case DatePeriod::NEXT_WEEK:
-                    $dateStart = new DateTime('this week');
-                    $dateStart->add(new DateInterval('P7D'));
-
-                    $dateEnd = clone $dateStart;
-                    $dateEnd->add(new DateInterval('P6D'));
-
-                    break;
-                case DatePeriod::LAST_MONTH:
-                    $dateStart = new DateTime('first day of last month');
-                    $dateEnd = new DateTime('last day of last month');
-
-                    break;
-                case DatePeriod::THIS_MONTH:
-                    $lastMonth = self::getDatesForPeriod(DatePeriod::LAST_MONTH);
-                    $nextMonth = self::getDatesForPeriod(DatePeriod::NEXT_MONTH);
-
-                    $dateStart = $lastMonth->getEndDate();
-                    $dateStart->add(new DateInterval('P1D'));
-
-                    $dateEnd = $nextMonth->getStartDate();
-                    $dateEnd->sub(new DateInterval('P1D'));
-
-                    break;
-                case DatePeriod::NEXT_MONTH:
-                    $dateStart = new DateTime('first day of next month');
-                    $dateEnd = new DateTime('last day of next month');
-
-                    break;
-                case DatePeriod::LAST_YEAR:
-                case DatePeriod::THIS_YEAR:
-                case DatePeriod::NEXT_YEAR:
-                    $dateStart = new DateTime();
-                    $dateEnd = new DateTime();
-
-                    if (DatePeriod::LAST_YEAR == $period || DatePeriod::NEXT_YEAR == $period) {
-                        $yearDifference = 1;
-
-                        if (DatePeriod::LAST_YEAR == $period) {
-                            $yearDifference *= -1;
-                        }
-
-                        $modifyString = sprintf('%s year', $yearDifference);
-                        $dateStart->modify($modifyString);
-                        $dateEnd->modify($modifyString);
-                    }
-
-                    $year = $dateStart->format('Y');
-                    $dateStart->setDate($year, 1, 1);
-                    $dateEnd->setDate($year, 12, 31);
-
-                    break;
-            }
-
-            if (null !== $dateStart && null !== $dateEnd) {
-                $dateStart->setTime(0, 0, 0);
-                $dateEnd->setTime(23, 59, 59);
-
-                $datePeriod = new DatePeriod($dateStart, $dateEnd);
-            }
+        /*
+         * Type of period is incorrect?
+         * Nothing to do
+         */
+        if (!(new DatePeriod())->isCorrectType($period)) {
+            return null;
         }
 
-        return $datePeriod;
+        $dateStart = null;
+        $dateEnd = null;
+
+        switch ($period) {
+            case DatePeriod::LAST_WEEK:
+                $thisWeekStart = new DateTime('this week');
+
+                $dateStart = clone $thisWeekStart;
+                $dateEnd = clone $thisWeekStart;
+
+                $dateStart->sub(new DateInterval('P7D'));
+                $dateEnd->sub(new DateInterval('P1D'));
+
+                break;
+            case DatePeriod::THIS_WEEK:
+                $dateStart = new DateTime('this week');
+
+                $dateEnd = clone $dateStart;
+                $dateEnd->add(new DateInterval('P6D'));
+
+                break;
+            case DatePeriod::NEXT_WEEK:
+                $dateStart = new DateTime('this week');
+                $dateStart->add(new DateInterval('P7D'));
+
+                $dateEnd = clone $dateStart;
+                $dateEnd->add(new DateInterval('P6D'));
+
+                break;
+            case DatePeriod::LAST_MONTH:
+                $dateStart = new DateTime('first day of last month');
+                $dateEnd = new DateTime('last day of last month');
+
+                break;
+            case DatePeriod::THIS_MONTH:
+                $lastMonth = self::getDatesForPeriod(DatePeriod::LAST_MONTH);
+                $nextMonth = self::getDatesForPeriod(DatePeriod::NEXT_MONTH);
+
+                $dateStart = $lastMonth->getEndDate();
+                $dateStart->add(new DateInterval('P1D'));
+
+                $dateEnd = $nextMonth->getStartDate();
+                $dateEnd->sub(new DateInterval('P1D'));
+
+                break;
+            case DatePeriod::NEXT_MONTH:
+                $dateStart = new DateTime('first day of next month');
+                $dateEnd = new DateTime('last day of next month');
+
+                break;
+            case DatePeriod::LAST_YEAR:
+            case DatePeriod::THIS_YEAR:
+            case DatePeriod::NEXT_YEAR:
+                $dateStart = new DateTime();
+                $dateEnd = new DateTime();
+
+                if (DatePeriod::LAST_YEAR == $period || DatePeriod::NEXT_YEAR == $period) {
+                    $yearDifference = 1;
+
+                    if (DatePeriod::LAST_YEAR == $period) {
+                        $yearDifference *= -1;
+                    }
+
+                    $modifyString = sprintf('%s year', $yearDifference);
+                    $dateStart->modify($modifyString);
+                    $dateEnd->modify($modifyString);
+                }
+
+                $year = $dateStart->format('Y');
+                $dateStart->setDate($year, 1, 1);
+                $dateEnd->setDate($year, 12, 31);
+
+                break;
+        }
+
+        /*
+         * Start or end date is unknown?
+         * Nothing to do
+         */
+        if (null === $dateStart || null === $dateEnd) {
+            return null;
+        }
+
+        $dateStart->setTime(0, 0, 0);
+        $dateEnd->setTime(23, 59, 59);
+
+        return new DatePeriod($dateStart, $dateEnd);
     }
 
     /**

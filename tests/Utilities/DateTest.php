@@ -13,6 +13,7 @@ use DateTime;
 use Generator;
 use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\DatePeriod;
 use Meritoo\Common\Utilities\Date;
 
 /**
@@ -507,6 +508,35 @@ class DateTest extends BaseTestCase
     }
 
     /**
+     * @param mixed $period Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public function testGetDatesForPeriodUsingEmptyPeriod($period)
+    {
+        self::assertNull(Date::getDatesForPeriod($period));
+    }
+
+    /**
+     * @param int $period Incorrect period to verify
+     * @dataProvider provideIncorrectPeriod
+     */
+    public function testGetDatesForPeriodUsingIncorrectPeriod($period)
+    {
+        self::assertNull(Date::getDatesForPeriod($period));
+    }
+
+    /**
+     * @param int        $period   The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
+     * @param DatePeriod $expected Expected start and end date for given period
+     *
+     * @dataProvider provideCorrectPeriod
+     */
+    public function testGetDatesForPeriod($period, DatePeriod $expected)
+    {
+        self::assertEquals($expected, Date::getDatesForPeriod($period));
+    }
+
+    /**
      * Provides incorrect invalidCount of DateTime
      *
      * @return Generator
@@ -756,6 +786,114 @@ class DateTest extends BaseTestCase
             new DateTime('2000-12-01'),
             10,
             50,
+        ];
+    }
+
+    /**
+     * Provides incorrect period
+     *
+     * @return Generator
+     */
+    public function provideIncorrectPeriod()
+    {
+        yield[-1];
+        yield[0];
+        yield[10];
+    }
+
+    /**
+     * Provides correct period
+     *
+     * @return Generator
+     */
+    public function provideCorrectPeriod()
+    {
+        yield[
+            DatePeriod::LAST_WEEK,
+            new DatePeriod(
+                (new DateTime('this week'))->sub(new DateInterval('P7D'))->setTime(0, 0, 0),
+                (new DateTime('this week'))->sub(new DateInterval('P1D'))->setTime(23, 59, 59)
+            ),
+        ];
+
+        yield[
+            DatePeriod::THIS_WEEK,
+            new DatePeriod(
+                (new DateTime('this week'))->setTime(0, 0, 0),
+                (new DateTime('this week'))->add(new DateInterval('P6D'))->setTime(23, 59, 59)
+            ),
+        ];
+
+        yield[
+            DatePeriod::NEXT_WEEK,
+            new DatePeriod(
+                (new DateTime('this week'))->add(new DateInterval('P7D'))->setTime(0, 0, 0),
+                (new DateTime('this week'))->add(new DateInterval('P7D'))->add(new DateInterval('P6D'))->setTime(23, 59, 59)
+            ),
+        ];
+
+        yield[
+            DatePeriod::LAST_MONTH,
+            new DatePeriod(
+                (new DateTime('first day of last month'))->setTime(0, 0, 0),
+                (new DateTime('last day of last month'))->setTime(23, 59, 59)
+            ),
+        ];
+
+        yield[
+            DatePeriod::THIS_MONTH,
+            new DatePeriod(
+                Date::getDatesForPeriod(DatePeriod::LAST_MONTH)
+                    ->getEndDate()
+                    ->add(new DateInterval('P1D'))
+                    ->setTime(0, 0, 0),
+                Date::getDatesForPeriod(DatePeriod::NEXT_MONTH)
+                    ->getStartDate()
+                    ->sub(new DateInterval('P1D'))
+                    ->setTime(23, 59, 59)
+            ),
+        ];
+
+        yield[
+            DatePeriod::NEXT_MONTH,
+            new DatePeriod(
+                (new DateTime('first day of next month'))->setTime(0, 0, 0),
+                (new DateTime('last day of next month'))->setTime(23, 59, 59)
+            ),
+        ];
+
+        $lastYearStart = (new DateTime())->modify('-1 year');
+        $lastYearEnd = (new DateTime())->modify('-1 year');
+        $year = $lastYearStart->format('Y');
+
+        yield[
+            DatePeriod::LAST_YEAR,
+            new DatePeriod(
+                $lastYearStart->setDate($year, 1, 1)->setTime(0, 0, 0),
+                $lastYearEnd->setDate($year, 12, 31)->setTime(23, 59, 59)
+            ),
+        ];
+
+        $year = (new DateTime())->format('Y');
+
+        yield[
+            DatePeriod::THIS_YEAR,
+            new DatePeriod(
+                (new DateTime())->setDate($year, 1, 1)->setTime(0, 0, 0),
+                (new DateTime())->setDate($year, 12, 31)->setTime(23, 59, 59)
+            ),
+        ];
+
+        $nextYearStart = (new DateTime())->modify('1 year');
+        $nextYearEnd = (new DateTime())->modify('1 year');
+        $year = $nextYearStart->format('Y');
+
+        yield[
+            DatePeriod::NEXT_YEAR,
+            new DatePeriod(
+                $nextYearStart->setDate($year, 1, 1)->setTime(0, 0, 0),
+                $nextYearEnd->setDate($year, 12, 31)->setTime(23, 59, 59)
+            ),
         ];
     }
 }

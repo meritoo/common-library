@@ -74,8 +74,8 @@ class Reflection
     }
 
     /**
-     * Returns maximum constant from all constants of given class / object.
-     * Values of constants should be integers.
+     * Returns maximum integer value of constant of given class / object.
+     * Constants whose values are integers are considered only.
      *
      * @param object|string $class The object or name of object's class
      * @return int|null

@@ -9,18 +9,12 @@
 namespace Meritoo\Common\Test\Utilities\Reflection;
 
 /**
- * The B class.
+ * The H interface.
  * Used for testing the Reflection class.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class B extends A implements I
+interface I
 {
-    protected $name = 'Lorem Ipsum';
-
-    public function getName()
-    {
-        return $this->name;
-    }
 }

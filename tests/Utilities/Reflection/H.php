@@ -9,18 +9,19 @@
 namespace Meritoo\Common\Test\Utilities\Reflection;
 
 /**
- * The B class.
+ * The H class.
  * Used for testing the Reflection class.
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class B extends A implements I
+class H
 {
-    protected $name = 'Lorem Ipsum';
+    const DOLOR = 'sit';
 
-    public function getName()
-    {
-        return $this->name;
-    }
+    const LOREM = 'ipsum';
+
+    const MAX_USERS = 5;
+
+    const MIN_USERS = 2;
 }

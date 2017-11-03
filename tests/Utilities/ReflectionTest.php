@@ -22,6 +22,8 @@ use Meritoo\Common\Test\Utilities\Reflection\D;
 use Meritoo\Common\Test\Utilities\Reflection\E;
 use Meritoo\Common\Test\Utilities\Reflection\F;
 use Meritoo\Common\Test\Utilities\Reflection\G;
+use Meritoo\Common\Test\Utilities\Reflection\H;
+use Meritoo\Common\Test\Utilities\Reflection\I;
 use Meritoo\Common\Utilities\Reflection;
 use ReflectionProperty;
 
@@ -377,6 +379,99 @@ class ReflectionTest extends BaseTestCase
 
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'gInstance.firstName'));
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'gInstance.firstName', true));
+    }
+
+    public function testGetMaxNumberConstantUsingClassWithoutConstants()
+    {
+        static::assertNull(Reflection::getMaxNumberConstant(A::class));
+    }
+
+    public function testGetMaxNumberConstant()
+    {
+        static::assertEquals(5, Reflection::getMaxNumberConstant(H::class));
+    }
+
+    public function testHasMethodUsingClassWithoutMethod()
+    {
+        static::assertFalse(Reflection::hasMethod(A::class, 'getUser'));
+    }
+
+    public function testHasMethod()
+    {
+        static::assertTrue(Reflection::hasMethod(A::class, 'getCount'));
+    }
+
+    public function testHasPropertyUsingClassWithoutProperty()
+    {
+        static::assertFalse(Reflection::hasProperty(A::class, 'users'));
+    }
+
+    public function testHasProperty()
+    {
+        static::assertTrue(Reflection::hasProperty(A::class, 'count'));
+    }
+
+    public function testHasConstantUsingClassWithoutConstant()
+    {
+        static::assertFalse(Reflection::hasConstant(H::class, 'users'));
+    }
+
+    public function testHasConstant()
+    {
+        static::assertTrue(Reflection::hasConstant(H::class, 'LOREM'));
+    }
+
+    public function testGetConstantValueUsingClassWithoutConstant()
+    {
+        static::assertNull(Reflection::getConstantValue(H::class, 'users'));
+    }
+
+    public function testGetConstantValue()
+    {
+        static::assertEquals(H::LOREM, Reflection::getConstantValue(H::class, 'LOREM'));
+    }
+
+    public function testIsInterfaceImplementedUsingClassWithoutInterface()
+    {
+        static::assertFalse(Reflection::isInterfaceImplemented(A::class, I::class));
+    }
+
+    public function testIsInterfaceImplemented()
+    {
+        static::assertTrue(Reflection::isInterfaceImplemented(B::class, I::class));
+    }
+
+    public function testIsChildOfClassUsingClassWithoutChildClass()
+    {
+        static::assertFalse(Reflection::isChildOfClass(A::class, B::class));
+    }
+
+    public function testIsChildOfClass()
+    {
+        static::assertTrue(Reflection::isChildOfClass(B::class, A::class));
+    }
+
+    public function testGetPropertyUsingClassWithoutProperty()
+    {
+        static::assertNull(Reflection::getProperty(A::class, 'lorem'));
+    }
+
+    public function testGetPropertyUsingClassWithPrivateProperty()
+    {
+        $property = Reflection::getProperty(A::class, 'count', ReflectionProperty::IS_PRIVATE);
+
+        static::assertInstanceOf(ReflectionProperty::class, $property);
+        static::assertTrue($property->isPrivate());
+        static::assertEquals('count', $property->getName());
+    }
+
+    public function testGetPropertyUsingClassWithProtectedProperty()
+    {
+        $property = Reflection::getProperty(B::class, 'name', ReflectionProperty::IS_PROTECTED);
+
+        static::assertInstanceOf(ReflectionProperty::class, $property);
+        static::assertTrue($property->isProtected());
+        static::assertEquals('name', $property->getName());
     }
 
     /**
