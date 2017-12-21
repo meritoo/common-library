@@ -8,6 +8,7 @@
 
 namespace Meritoo\Common\Test\Utilities;
 
+use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Bundle;
 
@@ -24,22 +25,104 @@ class BundleTest extends BaseTestCase
         static::assertHasNoConstructor(Bundle::class);
     }
 
-    public function testGetBundleViewPathEmptyPathAndBundle()
+    /**
+     * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
+     * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
+     *
+     * @dataProvider provideEmptyViewPathAndBundle
+     */
+    public function testGetBundleViewPathUsingEmptyPathAndBundle($viewPath, $bundleName)
     {
-        self::assertNull(Bundle::getBundleViewPath('', ''));
-        self::assertNull(Bundle::getBundleViewPath('test', ''));
-        self::assertNull(Bundle::getBundleViewPath('', 'test'));
+        self::assertNull(Bundle::getBundleViewPath($viewPath, $bundleName));
     }
 
-    public function testGetBundleViewPathWithDefaultExtension()
+    /**
+     * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
+     * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
+     * @param string $expected   Expected path to view / template
+     *
+     * @dataProvider provideViewPathAndBundle
+     */
+    public function testGetBundleViewPathUsingDefaultExtension($viewPath, $bundleName, $expected)
     {
-        self::assertEquals('Lorem:Ipsum.html.twig', Bundle::getBundleViewPath('Ipsum', 'Lorem'));
-        self::assertEquals('LobortisTincidunt:FusceElementum.html.twig', Bundle::getBundleViewPath('FusceElementum', 'LobortisTincidunt'));
+        self::assertEquals($expected, Bundle::getBundleViewPath($viewPath, $bundleName));
     }
 
-    public function testGetBundleViewPathWithCustomExtension()
+    /**
+     * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
+     * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
+     * @param string $extension  (optional) Extension of the view / template
+     * @param string $expected   Expected path to view / template
+     *
+     * @dataProvider provideViewPathAndBundleAndExtension
+     */
+    public function testGetBundleViewPathUsingCustomExtension($viewPath, $bundleName, $extension, $expected)
     {
-        self::assertNull(Bundle::getBundleViewPath('Ipsum', 'Lorem', ''));
-        self::assertEquals('Lorem:Ipsum.js.twig', Bundle::getBundleViewPath('Ipsum', 'Lorem', 'js.twig'));
+        self::assertEquals($expected, Bundle::getBundleViewPath($viewPath, $bundleName, $extension));
+    }
+
+    /**
+     * Provides empty path of the view / template and/or name of bundle
+     *
+     * @return Generator
+     */
+    public function provideEmptyViewPathAndBundle()
+    {
+        yield[
+            '',
+            '',
+        ];
+
+        yield[
+            'test',
+            '',
+        ];
+
+        yield[
+            '',
+            'test',
+        ];
+    }
+
+    /**
+     * Provides path of the view / template and name of bundle
+     *
+     * @return Generator
+     */
+    public function provideViewPathAndBundle()
+    {
+        yield[
+            'Ipsum',
+            'Lorem',
+            'Lorem:Ipsum.html.twig',
+        ];
+
+        yield[
+            'FusceElementum',
+            'LobortisTincidunt',
+            'LobortisTincidunt:FusceElementum.html.twig',
+        ];
+    }
+
+    /**
+     * Provides path of the view / template, name of bundle and extension of the view / template
+     *
+     * @return Generator
+     */
+    public function provideViewPathAndBundleAndExtension()
+    {
+        yield[
+            'Ipsum',
+            'Lorem',
+            '',
+            null,
+        ];
+
+        yield[
+            'Ipsum',
+            'Lorem',
+            'js.twig',
+            'Lorem:Ipsum.js.twig',
+        ];
     }
 }
