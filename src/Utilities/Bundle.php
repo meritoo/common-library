@@ -20,7 +20,7 @@ class Bundle
      * Returns path to view / template of given bundle
      *
      * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
-     * @param string $bundleName Name of the bundle, e.g. "MyExtraBundle"
+     * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
      * @param string $extension  (optional) Extension of the view / template
      * @return string|null
      */

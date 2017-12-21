@@ -62,14 +62,14 @@ class Regex
     }
 
     /**
-     * Returns information if given tax ID (in polish: NIP) is valid
+     * Returns information if given tax ID is valid (in Poland it's named "NIP")
      *
-     * @param string $taxidString Tax ID (NIP) string
+     * @param string $taxIdString Tax ID (NIP) string
      * @return bool
      */
-    public static function isValidTaxid($taxidString)
+    public static function isValidTaxId($taxIdString)
     {
-        if (!empty($taxidString)) {
+        if (!empty($taxIdString)) {
             $weights = [
                 6,
                 5,
@@ -81,15 +81,15 @@ class Regex
                 6,
                 7,
             ];
-            $taxid = preg_replace('/[\s-]/', '', $taxidString);
+            $taxId = preg_replace('/[\s-]/', '', $taxIdString);
             $sum = 0;
 
-            if (10 == strlen($taxid) && is_numeric($taxid)) {
+            if (10 == strlen($taxId) && is_numeric($taxId)) {
                 for ($x = 0; $x <= 8; ++$x) {
-                    $sum += $taxid[$x] * $weights[$x];
+                    $sum += $taxId[$x] * $weights[$x];
                 }
 
-                if ((($sum % 11) % 10) == $taxid[9]) {
+                if ((($sum % 11) % 10) == $taxId[9]) {
                     return true;
                 }
             }
