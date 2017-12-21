@@ -37,6 +37,7 @@ class Regex
         'windowsBasedPath' => '/^[A-Z]{1}:\\\.*$/',
         'money'            => '/^[-+]?\d+([\.,]{1}\d*)?$/',
         'color'            => '/^[a-f0-9]{6}$/i',
+        'bundleName'       => '/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/',
     ];
 
     /**
@@ -722,5 +723,22 @@ class Regex
         }
 
         return strtolower($color);
+    }
+
+    /**
+     * Returns information if given name of bundle is valid
+     *
+     * @param string $bundleName Full name of bundle to verify, e.g. "MyExtraBundle"
+     * @return bool
+     */
+    public static function isValidBundleName($bundleName)
+    {
+        if (!is_string($bundleName)) {
+            return false;
+        }
+
+        $pattern = self::$patterns['bundleName'];
+
+        return (bool)preg_match($pattern, $bundleName);
     }
 }

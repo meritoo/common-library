@@ -8,6 +8,7 @@
 
 namespace Meritoo\Common\Utilities;
 
+use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 
 /**
@@ -271,6 +272,69 @@ class RegexTest extends BaseTestCase
 
         self::assertTrue(Regex::isValidNip('7340009469')); // Onet S.A.
         self::assertTrue(Regex::isValidNip('5252530705')); // Facebook Poland sp. z o.o.
+    }
+
+    /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public function testIsValidBundleNameUsingEmptyValue($emptyValue)
+    {
+        self::assertFalse(Regex::isValidBundleName($emptyValue));
+    }
+
+    /**
+     * @param string $bundleName Full name of bundle to verify, e.g. "MyExtraBundle"
+     * @param bool   $expected   Information if it's valid name
+     *
+     * @dataProvider provideBundleName
+     */
+    public function testIsValidBundleName($bundleName, $expected)
+    {
+        self::assertEquals($expected, Regex::isValidBundleName($bundleName));
+    }
+
+    /**
+     * Provides name of bundle and information if it's valid name
+     *
+     * @return Generator
+     */
+    public function provideBundleName()
+    {
+        yield[
+            'something',
+            false,
+        ];
+
+        yield[
+            'something_different',
+            false,
+        ];
+
+        yield[
+            'something-else',
+            false,
+        ];
+
+        yield[
+            'myExtraBundle',
+            false,
+        ];
+
+        yield[
+            'MyExtra',
+            false,
+        ];
+
+        yield[
+            'MyExtraBundle',
+            true,
+        ];
+
+        yield[
+            'MySuperExtraGorgeousBundle',
+            true,
+        ];
     }
 
     /**
