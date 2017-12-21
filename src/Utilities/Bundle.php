@@ -8,6 +8,8 @@
 
 namespace Meritoo\Common\Utilities;
 
+use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
+
 /**
  * Useful methods for bundle
  *
@@ -17,12 +19,14 @@ namespace Meritoo\Common\Utilities;
 class Bundle
 {
     /**
-     * Returns path to view / template of given bundle
+     * Returns path of given bundle to view / template with given extension
      *
      * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
      * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
      * @param string $extension  (optional) Extension of the view / template
      * @return string|null
+     *
+     * @throws IncorrectBundleNameException
      */
     public static function getBundleViewPath($viewPath, $bundleName, $extension = 'html.twig')
     {
@@ -32,6 +36,13 @@ class Bundle
          */
         if (empty($viewPath) || empty($bundleName) || empty($extension)) {
             return null;
+        }
+
+        /*
+         * Given name of bundle is invalid?
+         */
+        if (!Regex::isValidBundleName($bundleName)) {
+            throw new IncorrectBundleNameException($bundleName);
         }
 
         /*
