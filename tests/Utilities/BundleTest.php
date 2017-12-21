@@ -84,6 +84,42 @@ class BundleTest extends BaseTestCase
     }
 
     /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     *
+     * @throws IncorrectBundleNameException
+     * @dataProvider provideEmptyValue
+     */
+    public function testGetShortBundleNameUsingEmptyValue($emptyValue)
+    {
+        $this->setExpectedException(IncorrectBundleNameException::class);
+        Bundle::getShortBundleName($emptyValue);
+    }
+
+    /**
+     * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
+     *
+     * @throws IncorrectBundleNameException
+     * @dataProvider provideIncorrectBundleName
+     */
+    public function testGetShortBundleNameUsingIncorrectBundleName($bundleName)
+    {
+        $this->setExpectedException(IncorrectBundleNameException::class);
+        Bundle::getShortBundleName($bundleName);
+    }
+
+    /**
+     * @param string $fullBundleName  Full name of the bundle, e.g. "MyExtraBundle"
+     * @param string $shortBundleName Short name of bundle (without "Bundle")
+     *
+     * @throws IncorrectBundleNameException
+     * @dataProvider provideFullAndShortBundleName
+     */
+    public function testGetShortBundleName($fullBundleName, $shortBundleName)
+    {
+        self::assertEquals($shortBundleName, Bundle::getShortBundleName($fullBundleName));
+    }
+
+    /**
      * Provides empty path of the view / template and/or name of bundle
      *
      * @return Generator
@@ -137,21 +173,21 @@ class BundleTest extends BaseTestCase
     public function provideViewPathAndBundle()
     {
         yield[
-            ':User',
+            'User',
             'MyExtraBundle',
-            'MyExtraBundle::User.html.twig',
+            '@MyExtra/User.html.twig',
         ];
 
         yield[
             'User:Active',
             'MyExtraBundle',
-            'MyExtraBundle:User:Active.html.twig',
+            '@MyExtra/User/Active.html.twig',
         ];
 
         yield[
             'User:Active',
             'MySuperExtraGorgeousBundle',
-            'MySuperExtraGorgeousBundle:User:Active.html.twig',
+            '@MySuperExtraGorgeous/User/Active.html.twig',
         ];
     }
 
@@ -173,7 +209,45 @@ class BundleTest extends BaseTestCase
             'User:Active',
             'MyExtraBundle',
             'js.twig',
-            'MyExtraBundle:User:Active.js.twig',
+            '@MyExtra/User/Active.js.twig',
+        ];
+    }
+
+    /**
+     * Provides incorrect name of bundle
+     *
+     * @return Generator
+     */
+    public function provideIncorrectBundleName()
+    {
+        yield[
+            'myExtra',
+        ];
+
+        yield[
+            'MyExtra',
+        ];
+
+        yield[
+            'MySuperExtraGorgeous',
+        ];
+    }
+
+    /**
+     * Provides full and short name of bundle
+     *
+     * @return Generator
+     */
+    public function provideFullAndShortBundleName()
+    {
+        yield[
+            'MyExtraBundle',
+            'MyExtra',
+        ];
+
+        yield[
+            'MySuperExtraGorgeousBundle',
+            'MySuperExtraGorgeous',
         ];
     }
 }

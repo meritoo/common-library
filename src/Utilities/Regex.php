@@ -737,8 +737,18 @@ class Regex
             return false;
         }
 
-        $pattern = self::$patterns['bundleName'];
+        $pattern = self::getBundleNamePattern();
 
         return (bool)preg_match($pattern, $bundleName);
+    }
+
+    /**
+     * Returns pattern used to validate / verify name of bundle
+     *
+     * @return string
+     */
+    public static function getBundleNamePattern()
+    {
+        return self::$patterns['bundleName'];
     }
 }

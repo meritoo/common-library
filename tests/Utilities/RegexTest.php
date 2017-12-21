@@ -294,6 +294,11 @@ class RegexTest extends BaseTestCase
         self::assertEquals($expected, Regex::isValidBundleName($bundleName));
     }
 
+    public function testGetBundleNamePattern()
+    {
+        self::assertEquals('/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/', Regex::getBundleNamePattern());
+    }
+
     /**
      * Provides name of bundle and information if it's valid name
      *

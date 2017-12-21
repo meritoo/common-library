@@ -52,6 +52,40 @@ class Bundle
             $viewPath = sprintf('%s.%s', $viewPath, $extension);
         }
 
-        return sprintf('%s:%s', $bundleName, $viewPath);
+        /*
+         * Prepare short name of bundle and path of view / template with "/" (instead of ":")
+         */
+        $shortBundleName = static::getShortBundleName($bundleName);
+        $viewPath = str_replace(':', '/', $viewPath);
+
+        return sprintf('@%s/%s', $shortBundleName, $viewPath);
+    }
+
+    /**
+     * Returns short name of bundle (without "Bundle")
+     *
+     * @param string $fullBundleName Full name of the bundle, e.g. "MyExtraBundle"
+     * @return string|null
+     *
+     * @throws IncorrectBundleNameException
+     */
+    public static function getShortBundleName($fullBundleName)
+    {
+        /*
+         * Given name of bundle is invalid?
+         */
+        if (!Regex::isValidBundleName($fullBundleName)) {
+            if (!is_string($fullBundleName)) {
+                $fullBundleName = gettype($fullBundleName);
+            }
+
+            throw new IncorrectBundleNameException($fullBundleName);
+        }
+
+        $matches = [];
+        $pattern = Regex::getBundleNamePattern();
+        preg_match($pattern, $fullBundleName, $matches);
+
+        return $matches[1];
     }
 }
