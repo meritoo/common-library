@@ -3,7 +3,7 @@ version: '3'
 services:
     php-cli:
         image: meritoo/common-library
-        container_name: meritoo-common-library
+        container_name: ${DOCKER_CONTAINER_PREFIX}
         working_dir: /project
         entrypoint: php
         command: -S 0.0.0.0:9999
