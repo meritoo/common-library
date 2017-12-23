@@ -10,6 +10,7 @@ namespace Meritoo\Common\Test\Exception\Regex;
 
 use Generator;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
+use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 
@@ -21,6 +22,9 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class InvalidColorHexValueExceptionTest extends BaseTestCase
 {
+    /**
+     * @throws UnknownOopVisibilityTypeException
+     */
     public function testConstructorVisibilityAndArguments()
     {
         static::assertConstructorVisibilityAndArguments(InvalidColorHexValueException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
