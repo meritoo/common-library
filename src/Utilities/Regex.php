@@ -32,6 +32,7 @@ class Regex
         'urlDomain'        => '([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i',
         'letterOrDigit'    => '/[a-zA-Z0-9]+/',
         'htmlEntity'       => '/&[a-z0-9]+;/',
+        'htmlAttribute'    => '/([\w-]+)="([\w -]+)"/',
         'fileName'         => '/.+\.\w+$/',
         'isQuoted'         => '/^[\'"]{1}.+[\'"]{1}$/',
         'windowsBasedPath' => '/^[A-Z]{1}:\\\.*$/',
@@ -750,5 +751,49 @@ class Regex
     public static function getBundleNamePattern()
     {
         return self::$patterns['bundleName'];
+    }
+
+    /**
+     * Returns pattern used to validate / verify html attribute
+     *
+     * @return string
+     */
+    public static function getHtmlAttributePattern()
+    {
+        return self::$patterns['htmlAttribute'];
+    }
+
+    /**
+     * Returns information if given html attribute is valid
+     *
+     * @param string $htmlAttribute The html attribute to verify
+     * @return bool
+     */
+    public static function isValidHtmlAttribute($htmlAttribute)
+    {
+        if (!is_string($htmlAttribute)) {
+            return false;
+        }
+
+        $pattern = self::getHtmlAttributePattern();
+
+        return (bool)preg_match($pattern, $htmlAttribute);
+    }
+
+    /**
+     * Returns information if given html attributes are valid
+     *
+     * @param string $htmlAttributes The html attributes to verify
+     * @return bool
+     */
+    public static function areValidHtmlAttributes($htmlAttributes)
+    {
+        if (!is_string($htmlAttributes)) {
+            return false;
+        }
+
+        $pattern = self::getHtmlAttributePattern();
+
+        return (bool)preg_match_all($pattern, $htmlAttributes);
     }
 }

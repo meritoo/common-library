@@ -299,6 +299,51 @@ class RegexTest extends BaseTestCase
         self::assertEquals('/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/', Regex::getBundleNamePattern());
     }
 
+    public function testGetHtmlAttributePattern()
+    {
+        self::assertEquals('/([\w-]+)="([\w -]+)"/', Regex::getHtmlAttributePattern());
+    }
+
+    /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public function testIsValidHtmlAttributeUsingEmptyValue($emptyValue)
+    {
+        self::assertFalse(Regex::isValidHtmlAttribute($emptyValue));
+    }
+
+    /**
+     * @param string $htmlAttribute The html attribute to verify
+     * @param bool   $expected      Information if it's valid attribute
+     *
+     * @dataProvider provideHtmlAttribute
+     */
+    public function testIsValidHtmlAttribute($htmlAttribute, $expected)
+    {
+        self::assertEquals($expected, Regex::isValidHtmlAttribute($htmlAttribute));
+    }
+
+    /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public static function testAreValidHtmlAttributesUsingEmptyValue($emptyValue)
+    {
+        self::assertFalse(Regex::areValidHtmlAttributes($emptyValue));
+    }
+
+    /**
+     * @param string $htmlAttributes The html attributes to verify
+     * @param bool   $expected       Information if attributes are valid
+     *
+     * @dataProvider provideHtmlAttributes
+     */
+    public static function testAreValidHtmlAttributes($htmlAttributes, $expected)
+    {
+        self::assertEquals($expected, Regex::areValidHtmlAttributes($htmlAttributes));
+    }
+
     /**
      * Provides name of bundle and information if it's valid name
      *
@@ -338,6 +383,92 @@ class RegexTest extends BaseTestCase
 
         yield[
             'MySuperExtraGorgeousBundle',
+            true,
+        ];
+    }
+
+    /**
+     * Provides html attribute and information if it's valid
+     *
+     * @return Generator
+     */
+    public function provideHtmlAttribute()
+    {
+        yield[
+            'abc = def',
+            false,
+        ];
+
+        yield[
+            'a b c=def',
+            false,
+        ];
+
+        yield[
+            'abc=def',
+            false,
+        ];
+
+        yield[
+            'a1b2c=d3e4f',
+            false,
+        ];
+
+        yield[
+            'abc="def"',
+            true,
+        ];
+
+        yield[
+            'a1b2c="d3e4f"',
+            true,
+        ];
+    }
+
+    /**
+     * Provides html attribute and information if attributes are valid
+     *
+     * @return Generator
+     */
+    public function provideHtmlAttributes()
+    {
+        yield[
+            'abc = def',
+            false,
+        ];
+
+        yield[
+            'abc = def ghi = jkl',
+            false,
+        ];
+
+        yield[
+            'abc=def ghi=jkl',
+            false,
+        ];
+
+        yield[
+            'abc=def ghi=jkl mno=pqr',
+            false,
+        ];
+
+        yield[
+            'abc="def"',
+            true,
+        ];
+
+        yield[
+            'abc="def" ghi="jkl"',
+            true,
+        ];
+
+        yield[
+            'abc="def" ghi="jkl" mno="pqr"',
+            true,
+        ];
+
+        yield[
+            'a2bc="d4ef" ghi="j k l" mno="pq9r"',
             true,
         ];
     }
