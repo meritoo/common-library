@@ -39,6 +39,7 @@ class Regex
         'money'            => '/^[-+]?\d+([\.,]{1}\d*)?$/',
         'color'            => '/^[a-f0-9]{6}$/i',
         'bundleName'       => '/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/',
+        'binaryValue'      => '/[^\x20-\x7E\t\r\n]/',
     ];
 
     /**
@@ -795,5 +796,22 @@ class Regex
         $pattern = self::getHtmlAttributePattern();
 
         return (bool)preg_match_all($pattern, $htmlAttributes);
+    }
+
+    /**
+     * Returns information if given value is a binary value
+     *
+     * @param string $value Value to verify
+     * @return bool
+     */
+    public static function isBinaryValue($value)
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        $pattern = self::$patterns['binaryValue'];
+
+        return (bool)preg_match($pattern, $value);
     }
 }

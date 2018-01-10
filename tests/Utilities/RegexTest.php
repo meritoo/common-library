@@ -345,6 +345,17 @@ class RegexTest extends BaseTestCase
     }
 
     /**
+     * @param string $value    Value to verify
+     * @param bool   $expected Information if value is a binary value
+     *
+     * @dataProvider provideBinaryValue
+     */
+    public static function testIsBinaryValue($value, $expected)
+    {
+        self::assertEquals($expected, Regex::isBinaryValue($value));
+    }
+
+    /**
      * Provides name of bundle and information if it's valid name
      *
      * @return Generator
@@ -469,6 +480,62 @@ class RegexTest extends BaseTestCase
 
         yield[
             'a2bc="d4ef" ghi="j k l" mno="pq9r"',
+            true,
+        ];
+    }
+
+    /**
+     * Provides value to verify if it is a binary value
+     *
+     * @return Generator
+     */
+    public function provideBinaryValue()
+    {
+        $file1Path = $this->getFilePathForTesting('lorem-ipsum.txt');
+        $file2Path = $this->getFilePathForTesting('minion.jpg');
+
+        yield[
+            null,
+            false,
+        ];
+
+        yield[
+            [],
+            false,
+        ];
+
+        yield[
+            '',
+            false,
+        ];
+
+        yield[
+            'abc',
+            false,
+        ];
+
+        yield[
+            '1234',
+            false,
+        ];
+
+        yield[
+            1234,
+            false,
+        ];
+
+        yield[
+            12.34,
+            false,
+        ];
+
+        yield[
+            fread(fopen($file1Path, 'r'), 1),
+            false,
+        ];
+
+        yield[
+            fread(fopen($file2Path, 'r'), 1),
             true,
         ];
     }
