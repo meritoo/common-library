@@ -25,7 +25,7 @@ class Regex
      * @var array
      */
     private static $patterns = [
-        'email'            => '/[\w-]{2,}@[\w-]+\.[\w]{2,}+/',
+        'email'            => '/^[\w-.]{2,}@[\w-]+\.[\w]{2,}+$/',
         'phone'            => '/^\+?[0-9 ]+$/',
         'camelCasePart'    => '/([a-z]|[A-Z]){1}[a-z]*/',
         'urlProtocol'      => '/^([a-z]+:\/\/)',
@@ -59,6 +59,10 @@ class Regex
      */
     public static function isValidEmail($email)
     {
+        if (!is_string($email)) {
+            return false;
+        }
+
         $pattern = self::getEmailPattern();
 
         return (bool)preg_match($pattern, $email);
@@ -72,30 +76,56 @@ class Regex
      */
     public static function isValidTaxId($taxIdString)
     {
-        if (!empty($taxIdString)) {
-            $weights = [
-                6,
-                5,
-                7,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-            ];
-            $taxId = preg_replace('/[\s-]/', '', $taxIdString);
-            $sum = 0;
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($taxIdString)) {
+            return false;
+        }
 
-            if (10 == strlen($taxId) && is_numeric($taxId)) {
-                for ($x = 0; $x <= 8; ++$x) {
-                    $sum += $taxId[$x] * $weights[$x];
-                }
+        /*
+         * Empty/Unknown value?
+         * Nothing to do
+         */
+        if (empty($taxIdString)) {
+            return false;
+        }
 
-                if ((($sum % 11) % 10) == $taxId[9]) {
-                    return true;
-                }
-            }
+        $taxId = preg_replace('/[\s-]/', '', $taxIdString);
+
+        /*
+         * Tax ID is not 10 characters length OR is not numeric?
+         * Nothing to do
+         */
+        if (10 !== strlen($taxId) || !is_numeric($taxId)) {
+            return false;
+        }
+
+        $weights = [
+            6,
+            5,
+            7,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+        ];
+
+        $sum = 0;
+
+        for ($x = 0; $x <= 8; ++$x) {
+            $sum += $taxId[$x] * $weights[$x];
+        }
+
+        /*
+         * Last number it's not a remainder from dividing per 11?
+         * Nothing to do
+         */
+        if ($sum % 11 == $taxId[9]) {
+            return true;
         }
 
         return false;

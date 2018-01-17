@@ -356,6 +356,46 @@ class RegexTest extends BaseTestCase
     }
 
     /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public static function testIsValidEmailUsingEmptyValue($emptyValue)
+    {
+        self::assertFalse(Regex::isValidEmail($emptyValue));
+    }
+
+    /**
+     * @param string $email    E-mail address to validate / verify
+     * @param bool   $expected Information if e-mail is valid
+     *
+     * @dataProvider provideEmail
+     */
+    public static function testIsValidEmail($email, $expected)
+    {
+        self::assertEquals($expected, Regex::isValidEmail($email));
+    }
+
+    /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public static function testIsValidTaxIdUsingEmptyValue($emptyValue)
+    {
+        self::assertFalse(Regex::isValidTaxId($emptyValue));
+    }
+
+    /**
+     * @param string $taxIdString Tax ID (NIP) string
+     * @param bool   $expected    Information if tax ID is valid
+     *
+     * @dataProvider provideTaxId
+     */
+    public static function testIsValidTaxId($taxIdString, $expected)
+    {
+        self::assertEquals($expected, Regex::isValidTaxId($taxIdString));
+    }
+
+    /**
      * Provides name of bundle and information if it's valid name
      *
      * @return Generator
@@ -536,6 +576,93 @@ class RegexTest extends BaseTestCase
 
         yield[
             fread(fopen($file2Path, 'r'), 1),
+            true,
+        ];
+    }
+
+    /**
+     * Provides e-mail and information if it's valid
+     *
+     * @return Generator
+     */
+    public function provideEmail()
+    {
+        yield[
+            '1',
+            false,
+        ];
+
+        yield[
+            1,
+            false,
+        ];
+
+        yield[
+            'a@a',
+            false,
+        ];
+
+        yield[
+            'a@a.com',
+            false,
+        ];
+
+        yield[
+            'aa@a.com',
+            true,
+        ];
+
+        yield[
+            'a.b@d.com',
+            true,
+        ];
+    }
+
+    /**
+     * Provides tax ID and information if it's valid
+     *
+     * @return Generator
+     */
+    public function provideTaxId()
+    {
+        yield[
+            '123',
+            false,
+        ];
+
+        yield[
+            '12345',
+            false,
+        ];
+
+        yield[
+            '1122334455',
+            false,
+        ];
+
+        yield[
+            '1234567890',
+            false,
+        ];
+
+        yield[
+            '0987654321',
+            false,
+        ];
+
+        /*
+         * Microsoft sp. z o.o.
+         */
+        yield[
+            '5270103391',
+            true,
+        ];
+
+        /*
+         * Onet S.A.
+         */
+        yield[
+            '7340009469',
             true,
         ];
     }
