@@ -10,11 +10,33 @@ RUN apt-get update \
         git \
         unzip \
         libicu-dev \
+        locales \
     && apt-get clean \
     && rm -rf \
         /var/lib/apt/lists/* \
         /tmp/* \
         /var/tmp/*
+
+#
+# Generating locales:
+# - de_DE
+# - es_ES
+# - en_GB
+# - en_US
+# - fr_FR
+# - it_IT
+# - pl_PL
+# - ru_RU
+#
+RUN sed -i 's/^# de_DE/de_DE/g; \
+            s/^# es_ES/es_ES/g; \
+            s/^# en_GB/en_GB/g; \
+            s/^# en_US/en_US/g; \
+            s/^# fr_FR/fr_FR/g; \
+            s/^# it_IT/it_IT/g; \
+            s/^# pl_PL/pl_PL/g; \
+            s/^# ru_RU/ru_RU/g;' /etc/locale.gen \
+    && locale-gen
 
 #
 # PHP extensions
