@@ -111,6 +111,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 #
 # Bash
 #
-RUN sed -i 's/^# export/export/g' ~/.bashrc \
-    && sed -i 's/^# alias/alias/g' ~/.bashrc \
+RUN sed -i 's/^# export/export/g; \
+            s/^# alias/alias/g;' ~/.bashrc \
     && echo "\n"'export PATH=/project/vendor/bin:$PATH'"\n" >> ~/.bashrc
