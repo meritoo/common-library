@@ -76,6 +76,21 @@ class LocaleTest extends BaseTestCase
     }
 
     /**
+     * @param int    $category       Named constant specifying the category of the functions affected by the locale setting.
+     *                               It's the same constant as required by setlocale() function.
+     * @param string $languageCode   Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
+     * @param string $countryCode    Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
+     * @param string $expectedLocale Expected locale
+     *
+     * @dataProvider provideCategoryLanguageCodeAndExpectedLocale
+     */
+    public function testGetLocale($category, $languageCode, $countryCode, $expectedLocale)
+    {
+        Locale::setLocale($category, $languageCode, $countryCode);
+        self::assertEquals($expectedLocale, Locale::getLocale($category));
+    }
+
+    /**
      * Provides language, encoding and country code
      *
      * @return Generator
