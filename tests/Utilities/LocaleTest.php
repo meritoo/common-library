@@ -40,7 +40,7 @@ class LocaleTest extends BaseTestCase
      * @param string $encoding     Encoding of the final locale
      * @param string $expected     Expected long form of the locale
      *
-     * @dataProvider provideLanguageAndCountryCode
+     * @dataProvider provideLanguageEncodingAndCountryCode
      */
     public function testGetLongForm($languageCode, $countryCode, $encoding, $expected)
     {
@@ -56,24 +56,31 @@ class LocaleTest extends BaseTestCase
         self::assertFalse(Locale::setLocale($emptyValue, $emptyValue));
     }
 
-    /**
-     * @param int    $category     Named constant specifying the category of the functions affected by the locale
-     *                             setting. It's the same constant as required by setlocale() function.
-     * @param string $languageCode Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
-     *
-     * @dataProvider provideCategoryAndLanguageCode
-     */
-    public function testSetLocale($category, $languageCode)
+    public function testSetLocaleIncorrectCategory()
     {
-        self::assertTrue(Locale::setLocale($category, $languageCode));
+        self::assertFalse(Locale::setLocale(-1, 'en'));
     }
 
     /**
-     * Provides language and country code
+     * @param int    $category       Named constant specifying the category of the functions affected by the locale
+     *                               setting. It's the same constant as required by setlocale() function.
+     * @param string $languageCode   Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
+     * @param string $countryCode    Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
+     * @param string $expectedLocale Expected locale
+     *
+     * @dataProvider provideCategoryLanguageCodeAndExpectedLocale
+     */
+    public function testSetLocale($category, $languageCode, $countryCode, $expectedLocale)
+    {
+        self::assertEquals($expectedLocale, Locale::setLocale($category, $languageCode, $countryCode));
+    }
+
+    /**
+     * Provides language, encoding and country code
      *
      * @return Generator
      */
-    public function provideLanguageAndCountryCode()
+    public function provideLanguageEncodingAndCountryCode()
     {
         yield[
             'fr',
@@ -102,33 +109,97 @@ class LocaleTest extends BaseTestCase
             'UTF-8',
             'fr_FR.UTF-8',
         ];
+
+        yield[
+            'en',
+            'US',
+            '',
+            'en_US',
+        ];
+
+        yield[
+            'en',
+            'US',
+            'UTF-8',
+            'en_US.UTF-8',
+        ];
+
+        yield[
+            'en',
+            'US',
+            'ISO-8859-1',
+            'en_US.ISO-8859-1',
+        ];
     }
 
     /**
-     * Provides category and language
+     * Provides category
      *
      * @return Generator
      */
-    public function provideCategoryAndLanguageCode()
+    public function provideCategoryLanguageCodeAndExpectedLocale()
     {
         yield[
             LC_ALL,
             'fr',
+            '',
+            'fr_FR.UTF-8',
         ];
 
         yield[
             LC_COLLATE,
             'fr',
+            'FR',
+            'fr_FR.UTF-8',
         ];
 
         yield[
             LC_CTYPE,
             'en',
+            'US',
+            'en_US.UTF-8',
         ];
 
         yield[
             LC_NUMERIC,
             'en',
+            'GB',
+            'en_GB.UTF-8',
+        ];
+
+        yield[
+            LC_MONETARY,
+            'es',
+            '',
+            'es_ES.UTF-8',
+        ];
+
+        yield[
+            LC_MONETARY,
+            'es',
+            'ES',
+            'es_ES.UTF-8',
+        ];
+
+        yield[
+            LC_TIME,
+            'it',
+            '',
+            'it_IT.UTF-8',
+        ];
+
+        yield[
+            LC_TIME,
+            'it',
+            'IT',
+            'it_IT.UTF-8',
+        ];
+
+        yield[
+            LC_TIME,
+            'it',
+            'it',
+            'it_IT.UTF-8',
         ];
     }
 }
