@@ -14,7 +14,9 @@ use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Miscellaneous;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
+use stdClass;
 
 /**
  * BaseTestCaseTrait
@@ -101,6 +103,26 @@ trait BaseTestCaseTrait
         yield['lets-test.doc'];
         yield['lorem/ipsum.jpg'];
         yield['surprise/me/one/more/time.txt'];
+    }
+
+    /**
+     * Provides non scalar value, e.g. [] or null
+     *
+     * @return Generator
+     */
+    public function provideNonScalarValue()
+    {
+        yield[
+            [],
+        ];
+
+        yield[
+            null,
+        ];
+
+        yield[
+            new stdClass(),
+        ];
     }
 
     /**

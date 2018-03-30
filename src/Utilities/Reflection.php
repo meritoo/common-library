@@ -428,7 +428,7 @@ class Reflection
 
         $parents = class_parents($childClassName);
 
-        if (is_array($parents)) {
+        if (is_array($parents) && 0 < count($parents)) {
             return in_array($parentClassName, $parents);
         }
 

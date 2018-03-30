@@ -154,88 +154,104 @@ class Regex
      */
     public static function isValidPhoneNumber($phoneNumber)
     {
+        if (!is_string($phoneNumber)) {
+            return false;
+        }
+
         $pattern = self::getPhoneNumberPattern();
 
-        return (bool)preg_match($pattern, $phoneNumber);
+        return (bool)preg_match($pattern, trim($phoneNumber));
     }
 
     /**
-     * Returns array values that matches given pattern (or values that keys matches)
+     * Returns array values that match given pattern (or values that keys match the pattern)
      *
      * @param string $pattern       Pattern to match
-     * @param array  $dataArray     The array
-     * @param bool   $itsKeyPattern (optional) If is set to true, keys are checks if they match pattern. Otherwise -
-     *                              values are checks.
+     * @param array  $array         The array (scalar values only)
+     * @param bool   $itsKeyPattern (optional) If is set to true, keys will be checked if they match pattern.
+     *                              Otherwise - values will be checked (default behaviour).
      * @return array
      */
-    public static function getArrayValuesByPattern($pattern, $dataArray, $itsKeyPattern = false)
+    public static function getArrayValuesByPattern($pattern, array $array, $itsKeyPattern = false)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return [];
+        }
+
         if ($itsKeyPattern) {
             $effect = [];
 
-            if (!empty($dataArray)) {
-                $matches = [];
-
-                foreach ($dataArray as $key => $value) {
-                    if (preg_match($pattern, $key, $matches)) {
-                        $effect[$key] = $value;
-                    }
+            foreach ($array as $key => $value) {
+                if ((bool)preg_match($pattern, $key)) {
+                    $effect[$key] = $value;
                 }
             }
 
             return $effect;
         }
 
-        return preg_grep($pattern, $dataArray);
+        return preg_grep($pattern, $array);
     }
 
     /**
      * Filters array by given expression and column
      *
-     * Expression can be simple compare expression, like ' == 2', or regular expression.
+     * Expression can be simple compare expression, like " == 2", or regular expression.
      * Returns filtered array.
      *
-     * @param array  $array                The array that should be filtered
+     * @param array  $array                The 2-dimensional array that should be filtered
      * @param string $arrayColumnKey       Column name
-     * @param string $filterExpression     Filter expression, e.g. '== 2' or '!= \'home\''
-     * @param bool   $itsRegularExpression (optional) If is set to true, means that filter expression is a
-     *                                     regular expression
+     * @param string $filterExpression     Simple filter expression (e.g. "== 2" or "!= \'home\'") or regular
+     *                                     expression (e.g. "/\d+/" or "/[a-z]+[,;]{2,}/")
+     * @param bool   $itsRegularExpression (optional) If is set to true, means that filter expression is a regular
+     *                                     expression. Otherwise - not (default behaviour).
      * @return array
      */
     public static function arrayFilter($array, $arrayColumnKey, $filterExpression, $itsRegularExpression = false)
     {
-        $effect = [];
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return [];
+        }
 
-        if (!empty($array)) {
-            $effect = $array;
+        $effect = $array;
 
-            foreach ($effect as $key => &$item) {
-                if (isset($item[$arrayColumnKey])) {
-                    $value = $item[$arrayColumnKey];
+        foreach ($effect as $key => &$item) {
+            if (!isset($item[$arrayColumnKey])) {
+                continue;
+            }
 
-                    if ($itsRegularExpression) {
-                        $matches = [];
-                        $pattern = '|' . $filterExpression . '|';
-                        $matchesCount = preg_match($pattern, $value, $matches);
+            $value = $item[$arrayColumnKey];
 
-                        $remove = 0 == $matchesCount;
+            if ($itsRegularExpression) {
+                $matchesCount = preg_match($filterExpression, $value);
+                $remove = 0 == $matchesCount;
+            } else {
+                if (is_string($value)) {
+                    $value = sprintf('\'%s\'', $value);
+                } elseif (is_bool($value)) {
+                    if (true === $value) {
+                        $value = 'true';
                     } else {
-                        if ('' == $value) {
-                            $value = '\'\'';
-                        } elseif (is_string($value)) {
-                            $value = '\'' . $value . '\'';
-                        }
-
-                        eval('$isTrue = ' . $value . $filterExpression . ';');
-
-                        /* @var bool $isTrue */
-                        $remove = !$isTrue;
-                    }
-
-                    if ($remove) {
-                        unset($effect[$key]);
+                        $value = 'false';
                     }
                 }
+
+                eval(sprintf('$isEqual = %s%s;', $value, $filterExpression));
+
+                /* @var bool $isEqual */
+                $remove = !$isEqual;
+            }
+
+            if ($remove) {
+                unset($effect[$key]);
             }
         }
 
@@ -243,36 +259,41 @@ class Regex
     }
 
     /**
-     * Perform regular expression match with many given patterns.
+     * Performs regular expression match with many given patterns.
      * Returns information if given $subject matches one or all given $patterns.
      *
      * @param array|string $patterns     The patterns to match
      * @param string       $subject      The string to check
      * @param bool         $mustAllMatch (optional) If is set to true, $subject must match all $patterns. Otherwise -
-     *                                   not.
+     *                                   not (default behaviour).
      * @return bool
      */
     public static function pregMultiMatch($patterns, $subject, $mustAllMatch = false)
     {
+        /*
+         * No patterns?
+         * Nothing to do
+         */
+        if (empty($patterns)) {
+            return false;
+        }
+
         $effect = false;
         $patterns = Arrays::makeArray($patterns);
 
-        if (!empty($patterns)) {
+        if ($mustAllMatch) {
+            $effect = true;
+        }
+
+        foreach ($patterns as $pattern) {
+            $matched = (bool)preg_match_all($pattern, $subject);
+
             if ($mustAllMatch) {
-                $effect = true;
-            }
-
-            foreach ($patterns as $pattern) {
-                $matches = [];
-                $matched = (bool)preg_match_all($pattern, $subject, $matches);
-
-                if ($mustAllMatch) {
-                    $effect = $effect && $matched;
-                } else {
-                    if ($matched) {
-                        $effect = $matched;
-                        break;
-                    }
+                $effect = $effect && $matched;
+            } else {
+                if ($matched) {
+                    $effect = $matched;
+                    break;
                 }
             }
         }
@@ -709,6 +730,10 @@ class Regex
      */
     public static function isValidMoneyValue($value)
     {
+        if (!is_scalar($value)) {
+            return false;
+        }
+
         $pattern = self::getMoneyPattern();
 
         return (bool)preg_match($pattern, $value);
@@ -728,33 +753,53 @@ class Regex
      */
     public static function getValidColorHexValue($color, $throwException = true)
     {
+        /*
+         * Not a scalar value?
+         * Nothing to do
+         */
+        if (!is_scalar($color)) {
+            return false;
+        }
+
         $color = Miscellaneous::replace($color, '/#/', '');
         $length = strlen($color);
 
-        if (3 === $length) {
-            $color = Miscellaneous::replace($color, '/(.)(.)(.)/', '$1$1$2$2$3$3');
-        } else {
-            if (6 !== $length) {
-                if ($throwException) {
-                    throw new IncorrectColorHexLengthException($color);
-                }
-
-                return false;
-            }
-        }
-
-        $pattern = self::$patterns['color'];
-        $match = (bool)preg_match($pattern, $color);
-
-        if (!$match) {
+        /*
+         * Color is not 3 or 6 characters long?
+         * Nothing to do
+         */
+        if (3 !== $length && 6 !== $length) {
             if ($throwException) {
-                throw new InvalidColorHexValueException($color);
+                throw new IncorrectColorHexLengthException($color);
             }
 
             return false;
         }
 
-        return strtolower($color);
+        /*
+         * Color is 3 characters long?
+         * Let's make it 6 characters long
+         */
+        if (3 === $length) {
+            $color = Miscellaneous::replace($color, '/(.)(.)(.)/', '$1$1$2$2$3$3');
+        }
+
+        $pattern = self::$patterns['color'];
+        $match = (bool)preg_match($pattern, $color);
+
+        /*
+         * It's valid color
+         * Nothing to do more
+         */
+        if ($match) {
+            return strtolower($color);
+        }
+
+        if ($throwException) {
+            throw new InvalidColorHexValueException($color);
+        }
+
+        return false;
     }
 
     /**
