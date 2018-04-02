@@ -35,6 +35,8 @@ class Reflection
      * @param bool          $withoutInheritance (optional) If is set to true, only methods for given class are returned.
      *                                          Otherwise - all methods, with inherited methods too.
      * @return array
+     *
+     * @throws ReflectionException
      */
     public static function getMethods($class, $withoutInheritance = false)
     {
@@ -65,6 +67,8 @@ class Reflection
      *
      * @param object|string $class The object or name of object's class
      * @return array
+     *
+     * @throws ReflectionException
      */
     public static function getConstants($class)
     {
@@ -79,6 +83,8 @@ class Reflection
      *
      * @param object|string $class The object or name of object's class
      * @return int|null
+     *
+     * @throws ReflectionException
      */
     public static function getMaxNumberConstant($class)
     {
@@ -105,6 +111,8 @@ class Reflection
      * @param object|string $class  The object or name of object's class
      * @param string        $method Name of the method to find
      * @return bool
+     *
+     * @throws ReflectionException
      */
     public static function hasMethod($class, $method)
     {
@@ -119,6 +127,8 @@ class Reflection
      * @param object|string $class    The object or name of object's class
      * @param string        $property Name of the property to find
      * @return bool
+     *
+     * @throws ReflectionException
      */
     public static function hasProperty($class, $property)
     {
@@ -133,6 +143,8 @@ class Reflection
      * @param object|string $class    The object or name of object's class
      * @param string        $constant Name of the constant to find
      * @return bool
+     *
+     * @throws ReflectionException
      */
     public static function hasConstant($class, $constant)
     {
@@ -147,6 +159,8 @@ class Reflection
      * @param object|string $class    The object or name of object's class
      * @param string        $constant Name of the constant that contains a value
      * @return mixed
+     *
+     * @throws ReflectionException
      */
     public static function getConstantValue($class, $constant)
     {
@@ -169,6 +183,8 @@ class Reflection
      * @param bool   $force    (optional) If is set to true, try to retrieve value even if the object doesn't have
      *                         property. Otherwise - not.
      * @return mixed
+     *
+     * @throws ReflectionException
      */
     public static function getPropertyValue($object, $property, $force = false)
     {
@@ -285,6 +301,8 @@ class Reflection
      * @param bool                    $force    (optional) If is set to true, try to retrieve value even if the
      *                                          object does not have property. Otherwise - not.
      * @return array
+     *
+     * @throws ReflectionException
      */
     public static function getPropertyValues($objects, $property, $force = false)
     {
@@ -444,6 +462,8 @@ class Reflection
      * @param bool                $includeParents (optional) If is set to true, properties of parent classes are
      *                                            included (recursively). Otherwise - not.
      * @return array|ReflectionProperty
+     *
+     * @throws ReflectionException
      */
     public static function getProperties($source, $filter = null, $includeParents = false)
     {
@@ -477,6 +497,8 @@ class Reflection
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
      * @return ReflectionClass|bool
+     *
+     * @throws ReflectionException
      */
     public static function getParentClass($source)
     {
@@ -549,6 +571,7 @@ class Reflection
      *                                         namespaces, object or namespace.
      * @return mixed
      *
+     * @throws CannotResolveClassNameException
      * @throws MissingChildClassesException
      * @throws TooManyChildClassesException
      */
@@ -583,6 +606,8 @@ class Reflection
      * @param int                 $filter   (optional) Filter of properties. Uses ReflectionProperty class constants.
      *                                      By default all properties are allowed / processed.
      * @return null|ReflectionProperty
+     *
+     * @throws ReflectionException
      */
     public static function getProperty($class, $property, $filter = null)
     {
@@ -609,7 +634,9 @@ class Reflection
      * @param bool                $verifyParents If is set to true, parent classes are verified if they use given
      *                                           trait. Otherwise - not.
      * @return bool|null
+     *
      * @throws CannotResolveClassNameException
+     * @throws ReflectionException
      */
     public static function usesTrait($class, $trait, $verifyParents = false)
     {
@@ -652,6 +679,8 @@ class Reflection
      *
      * @param array|object|string $class An array of objects, namespaces, object or namespace
      * @return string|null
+     *
+     * @throws ReflectionException
      */
     public static function getParentClassName($class)
     {

@@ -730,6 +730,10 @@ class Regex
      */
     public static function isValidMoneyValue($value)
     {
+        /*
+         * Not a scalar value?
+         * Nothing to do
+         */
         if (!is_scalar($value)) {
             return false;
         }

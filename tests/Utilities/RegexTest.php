@@ -12,6 +12,7 @@ use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use ReflectionException;
 
 /**
  * Test case of the useful regular expressions methods
@@ -24,6 +25,9 @@ class RegexTest extends BaseTestCase
     private $simpleText;
     private $camelCaseText;
 
+    /**
+     * @throws ReflectionException
+     */
     public function testConstructor()
     {
         static::assertHasNoConstructor(Regex::class);

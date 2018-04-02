@@ -23,7 +23,7 @@ class Bundle
      *
      * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
      * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
-     * @param string $extension  (optional) Extension of the view / template
+     * @param string $extension  (optional) Extension of the view / template (default: "html.twig")
      * @return string|null
      *
      * @throws IncorrectBundleNameException

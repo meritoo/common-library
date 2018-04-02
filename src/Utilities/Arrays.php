@@ -530,6 +530,10 @@ class Arrays
      */
     public static function removeElement(array $array, $item)
     {
+        /*
+         * No elements or the element does not exist?
+         * Nothing to do
+         */
         if (empty($array) || !in_array($item, $array)) {
             return false;
         }
@@ -626,6 +630,10 @@ class Arrays
      */
     public static function setKeysAsValues(array $array, $ignoreDuplicatedValues = true)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
         if (empty($array)) {
             return [];
         }
@@ -1083,6 +1091,10 @@ class Arrays
      */
     public static function getAllValuesOfKey(array $array, $key)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
         if (empty($array)) {
             return null;
         }

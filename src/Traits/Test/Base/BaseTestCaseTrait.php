@@ -159,6 +159,7 @@ trait BaseTestCaseTrait
      * @param int                     $requiredArgumentsCount (optional) Expected count/amount of required arguments
      *                                                        of the verified method
      * @throws UnknownOopVisibilityTypeException
+     * @throws ReflectionException
      *
      * Attention. 2nd argument, the $method, may be:
      * - string - name of the method
@@ -215,6 +216,7 @@ trait BaseTestCaseTrait
      * @param int    $argumentsCount         (optional) Expected count/amount of arguments of the verified method
      * @param int    $requiredArgumentsCount (optional) Expected count/amount of required arguments of the verified
      *                                       method
+     * @throws ReflectionException
      * @throws UnknownOopVisibilityTypeException
      */
     protected static function assertConstructorVisibilityAndArguments(
@@ -236,6 +238,7 @@ trait BaseTestCaseTrait
      * Asserts that class with given namespace has no constructor
      *
      * @param string $classNamespace Namespace of class that contains constructor to verify
+     * @throws ReflectionException
      */
     protected static function assertHasNoConstructor($classNamespace)
     {

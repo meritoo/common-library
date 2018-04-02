@@ -9,6 +9,8 @@
 namespace Meritoo\Common\Utilities;
 
 use Gedmo\Sluggable\Util\Urlizer;
+use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
+use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Symfony\Component\HttpFoundation\Cookie;
 use Transliterator;
 
@@ -1433,6 +1435,9 @@ class Miscellaneous
      *
      * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
      * @return string
+     *
+     * @throws IncorrectColorHexLengthException
+     * @throws InvalidColorHexValueException
      */
     public static function getInvertedColor($color)
     {
