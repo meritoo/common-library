@@ -11,6 +11,7 @@ namespace Meritoo\Common\Test\Utilities;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Locale;
+use ReflectionException;
 
 /**
  * Test case of the useful locale methods
@@ -20,6 +21,9 @@ use Meritoo\Common\Utilities\Locale;
  */
 class LocaleTest extends BaseTestCase
 {
+    /**
+     * @throws ReflectionException
+     */
     public function testConstructor()
     {
         static::assertHasNoConstructor(Locale::class);
