@@ -10,6 +10,7 @@ namespace Meritoo\Common\Utilities;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use ReflectionException;
 
 /**
  * Useful methods for repository
@@ -23,9 +24,13 @@ class Repository
      * Replenishes positions of given items
      *
      * @param array $items  The items
-     * @param bool  $asLast (optional) If is set to true, items are placed at the end. Otherwise - at the top.
+     * @param bool  $asLast (optional) If is set to true, items are placed at the end (default behaviour). Otherwise
+     *                      - at top.
      * @param bool  $force  (optional) If is set to true, positions are set even there is no extreme position.
-     *                      Otherwise - if extreme position is not found (is null) replenishment is stopped / skipped.
+     *                      Otherwise - if extreme position is not found (is null) replenishment is stopped / skipped
+     *                      (default behaviour).
+     *
+     * @throws ReflectionException
      */
     public static function replenishPositions($items, $asLast = true, $force = false)
     {
@@ -60,6 +65,8 @@ class Repository
      * @param array $items The items
      * @param bool  $max   (optional) If is set to true, maximum value is returned. Otherwise - minimum.
      * @return int
+     *
+     * @throws ReflectionException
      */
     public static function getExtremePosition($items, $max = true)
     {

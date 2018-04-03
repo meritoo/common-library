@@ -10,6 +10,7 @@ namespace Meritoo\Common\Utilities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
@@ -155,9 +156,10 @@ class QueryBuilderUtility
      *
      * @param EntityManager         $entityManager The entity manager
      * @param array|ArrayCollection $entities      The entities to delete
-     * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects.
-     *                                             Otherwise - not.
+     * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects (default
+     *                                             behaviour). Otherwise - not.
      * @return bool
+     * @throws OptimisticLockException
      */
     public static function deleteEntities(EntityManager $entityManager, $entities, $flushDeleted = true)
     {

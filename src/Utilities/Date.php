@@ -10,6 +10,7 @@ namespace Meritoo\Common\Utilities;
 
 use DateInterval;
 use DateTime;
+use Exception;
 use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
 use Meritoo\Common\Type\DatePartType;
 use Meritoo\Common\Type\DatePeriod;
@@ -68,6 +69,8 @@ class Date
      *
      * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
      * @return null|DatePeriod
+     *
+     * @throws Exception
      */
     public static function getDatesForPeriod($period)
     {
@@ -219,6 +222,7 @@ class Date
      * Returns current day of week
      *
      * @return int
+     * @throws UnknownDatePartTypeException
      */
     public static function getCurrentDayOfWeek()
     {
@@ -485,6 +489,8 @@ class Date
      *                                   placeholder which is replaced with a number that represents each iteration.
      *                                   Default: interval for days.
      * @return array
+     *
+     * @throws Exception
      */
     public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD')
     {
@@ -530,6 +536,8 @@ class Date
      * @param string   $intervalTemplate (optional) Template used to build date interval. The placeholder is replaced
      *                                   with next, iterated value.
      * @return DateTime
+     *
+     * @throws Exception
      */
     public static function getRandomDate(DateTime $startDate = null, $start = 1, $end = 100, $intervalTemplate = 'P%sD')
     {

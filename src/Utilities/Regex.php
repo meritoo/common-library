@@ -59,6 +59,10 @@ class Regex
      */
     public static function isValidEmail($email)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
         if (!is_string($email)) {
             return false;
         }
@@ -141,6 +145,14 @@ class Regex
      */
     public static function isValidUrl($url, $requireProtocol = false)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($url)) {
+            return false;
+        }
+
         $pattern = self::getUrlPattern($requireProtocol);
 
         return (bool)preg_match($pattern, $url);
@@ -154,6 +166,10 @@ class Regex
      */
     public static function isValidPhoneNumber($phoneNumber)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
         if (!is_string($phoneNumber)) {
             return false;
         }
@@ -814,6 +830,10 @@ class Regex
      */
     public static function isValidBundleName($bundleName)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
         if (!is_string($bundleName)) {
             return false;
         }
@@ -851,6 +871,10 @@ class Regex
      */
     public static function isValidHtmlAttribute($htmlAttribute)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
         if (!is_string($htmlAttribute)) {
             return false;
         }
@@ -868,6 +892,10 @@ class Regex
      */
     public static function areValidHtmlAttributes($htmlAttributes)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
         if (!is_string($htmlAttributes)) {
             return false;
         }
@@ -885,6 +913,10 @@ class Regex
      */
     public static function isBinaryValue($value)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
         if (!is_string($value)) {
             return false;
         }
