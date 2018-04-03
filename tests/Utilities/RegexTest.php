@@ -152,6 +152,10 @@ class RegexTest extends BaseTestCase
     {
         $string = 'Lorem ipsum dolor sit amet';
 
+        $beginning = '';
+        self::assertFalse(Regex::startsWith($string, $beginning));
+        self::assertFalse(Regex::startsWith('', $string));
+
         $beginning = 'Lor';
         self::assertTrue(Regex::startsWith($string, $beginning));
 
@@ -247,6 +251,9 @@ class RegexTest extends BaseTestCase
     {
         self::assertTrue(Regex::contains($this->simpleText, 'ipsum'));
         self::assertFalse(Regex::contains($this->simpleText, 'neque'));
+
+        self::assertFalse(Regex::contains($this->simpleText, '.'));
+        self::assertTrue(Regex::contains($this->simpleText, 'l'));
     }
 
     public function testIsFileName()
@@ -455,6 +462,18 @@ class RegexTest extends BaseTestCase
     public static function testGetArrayValuesByPatternUsingKeys($pattern, array $dataArray, $expected)
     {
         self::assertEquals($expected, Regex::getArrayValuesByPattern($pattern, $dataArray, true));
+    }
+
+    public static function testGetUrlPatternWithProtocolRequired()
+    {
+        $pattern = '/^([a-z]+:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i';
+        self::assertEquals($pattern, Regex::getUrlPattern(true));
+    }
+
+    public static function testGetUrlPatternWithoutProtocol()
+    {
+        $pattern = '/^([a-z]+:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i';
+        self::assertEquals($pattern, Regex::getUrlPattern());
     }
 
     /**
