@@ -11,7 +11,7 @@ before_install:
   - composer global require hirak/prestissimo
 
 install:
-- composer install
+- travis_wait 30 composer install
 
 script:
   - php ./vendor/bin/phpunit
