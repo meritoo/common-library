@@ -50,7 +50,7 @@ RUN docker-php-ext-install \
 # - Xdebug
 #
 RUN pecl install \
-        xdebug \
+        xdebug-2.5.5 \
     && docker-php-ext-enable \
         xdebug
 
