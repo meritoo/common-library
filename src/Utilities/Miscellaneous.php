@@ -628,10 +628,10 @@ class Miscellaneous
      * Breaks long text
      *
      * @param string $text                   The text to check and break
-     * @param int    $perLine                (optional) Characters count per line
-     * @param string $separator              (optional) Separator that is placed beetwen lines
-     * @param string $encoding               (optional) Character encoding. Used by mb_substr().
-     * @param int    $proportionalAberration (optional) Proportional aberration for chars (percent value)
+     * @param int    $perLine                (optional) Characters count per line. Default: 100.
+     * @param string $separator              (optional) Separator that is placed between lines. Default: "<br>".
+     * @param string $encoding               (optional) Character encoding. Used by mb_substr(). Default: "UTF-8".
+     * @param int    $proportionalAberration (optional) Proportional aberration for chars (percent value). Default: 20.
      * @return string
      */
     public static function breakLongText(
@@ -718,15 +718,23 @@ class Miscellaneous
      *
      * @param string $directoryPath Directory path
      * @param bool   $contentOnly   (optional) If is set to true, only content of the directory is removed, not
-     *                              directory. Otherwise - directory is removed too.
-     * @return bool
+     *                              directory itself. Otherwise - directory is removed too (default behaviour).
+     * @return bool|null
      */
     public static function removeDirectory($directoryPath, $contentOnly = false)
     {
+        /*
+         * Directory does not exist?
+         * Nothing to do
+         */
         if (!file_exists($directoryPath)) {
-            return true;
+            return null;
         }
 
+        /*
+         * It's not a directory?
+         * Let's treat it like file
+         */
         if (!is_dir($directoryPath)) {
             return unlink($directoryPath);
         }
@@ -741,6 +749,9 @@ class Miscellaneous
             }
         }
 
+        /*
+         * Directory should be removed too?
+         */
         if (!$contentOnly) {
             return rmdir($directoryPath);
         }
