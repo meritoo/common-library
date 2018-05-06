@@ -1229,104 +1229,112 @@ class Miscellaneous
      * to "true". To read exact length of HTTP headers from CURL you can use "curl_getinfo()" function
      * and read "CURLINFO_HEADER_SIZE" option.
      *
-     * @param string $response   the full content of response, including HTTP headers
-     * @param int    $headerSize The length of HTTP headers in content
+     * @param string $response   Full content of response, including HTTP headers
+     * @param int    $headerSize Length of HTTP headers in content
      * @return array
      */
     public static function getCurlResponseWithHeaders($response, $headerSize)
     {
-        $headerContent = mb_substr($response, 0, $headerSize);
-        $content = mb_substr($response, $headerSize);
         $headers = [];
         $cookies = [];
+
+        $headerContent = '';
+        $content = '';
+
+        if (0 < $headerSize) {
+            $headerContent = mb_substr($response, 0, $headerSize);
+            $content = mb_substr($response, $headerSize);
+        }
 
         /*
          * Let's transform headers content into two arrays: headers and cookies
          */
-        foreach (explode("\r\n", $headerContent) as $i => $line) {
-            /*
-             * First line is only HTTP status and is unneeded so skip it
-             */
-            if (0 === $i) {
-                continue;
-            }
-
-            if (Regex::contains($line, ':')) {
-                list($key, $value) = explode(': ', $line);
-
+        if (!empty($headerContent)) {
+            foreach (explode("\r\n", $headerContent) as $i => $line) {
                 /*
-                 * If the header is a "set-cookie" let's save it to "cookies" array
+                 * First line is only HTTP status and is unneeded so skip it
                  */
-                if ('Set-Cookie' === $key) {
-                    $cookieParameters = explode(';', $value);
-
-                    $name = '';
-                    $value = '';
-                    $expire = 0;
-                    $path = '/';
-                    $domain = null;
-                    $secure = false;
-                    $httpOnly = true;
-
-                    foreach ($cookieParameters as $j => $parameter) {
-                        $param = explode('=', $parameter);
-
-                        /*
-                         * First parameter will be always a cookie name and it's value. It is not needed to run
-                         * further actions for them, so save the values and move to next parameter.
-                         */
-                        if (0 === $j) {
-                            $name = trim($param[0]);
-                            $value = trim($param[1]);
-                            continue;
-                        }
-
-                        /*
-                         * Now there would be the rest of cookie parameters, names of params are sent different way so
-                         * I need to lowercase the names and remove unneeded spaces.
-                         */
-                        $paramName = mb_strtolower(trim($param[0]));
-                        $paramValue = true;
-
-                        /*
-                         * Some parameters don't have value e.g. "secure", but the value for them if they're specified
-                         * is "true". Otherwise - just read a value for parameter if exists.
-                         */
-                        if (array_key_exists(1, $param)) {
-                            $paramValue = trim($param[1]);
-                        }
-
-                        switch ($paramName) {
-                            case 'expires':
-                                $expire = $paramValue;
-                                break;
-                            case 'path':
-                                $path = $paramValue;
-                                break;
-                            case 'domain':
-                                $domain = $paramValue;
-                                break;
-                            case 'secure':
-                                $secure = $paramValue;
-                                break;
-                            case 'httponly':
-                                $httpOnly = $paramValue;
-                                break;
-                        }
-                    }
-
-                    /*
-                     * Create new Cookie object and add it to "cookies" array.
-                     * I must skip to next header as cookies shouldn't be saved in "headers" array.
-                     */
-                    $cookies[] = new Cookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
+                if (0 === $i) {
                     continue;
                 }
 
-                /*
-                 * Save response header which is not a cookie
-                 */
-                $headers[$key] = $value;
+                if (Regex::contains($line, ':')) {
+                    list($key, $value) = explode(': ', $line);
+
+                    /*
+                     * If the header is a "set-cookie" let's save it to "cookies" array
+                     */
+                    if ('Set-Cookie' === $key) {
+                        $cookieParameters = explode(';', $value);
+
+                        $name = '';
+                        $value = '';
+                        $expire = 0;
+                        $path = '/';
+                        $domain = null;
+                        $secure = false;
+                        $httpOnly = true;
+
+                        foreach ($cookieParameters as $j => $parameter) {
+                            $param = explode('=', $parameter);
+
+                            /*
+                             * First parameter will be always a cookie name and it's value. It is not needed to run
+                             * further actions for them, so save the values and move to next parameter.
+                             */
+                            if (0 === $j) {
+                                $name = trim($param[0]);
+                                $value = trim($param[1]);
+                                continue;
+                            }
+
+                            /*
+                             * Now there would be the rest of cookie parameters, names of params are sent different way so
+                             * I need to lowercase the names and remove unneeded spaces.
+                             */
+                            $paramName = mb_strtolower(trim($param[0]));
+                            $paramValue = true;
+
+                            /*
+                             * Some parameters don't have value e.g. "secure", but the value for them if they're specified
+                             * is "true". Otherwise - just read a value for parameter if exists.
+                             */
+                            if (array_key_exists(1, $param)) {
+                                $paramValue = trim($param[1]);
+                            }
+
+                            switch ($paramName) {
+                                case 'expires':
+                                    $expire = $paramValue;
+                                    break;
+                                case 'path':
+                                    $path = $paramValue;
+                                    break;
+                                case 'domain':
+                                    $domain = $paramValue;
+                                    break;
+                                case 'secure':
+                                    $secure = $paramValue;
+                                    break;
+                                case 'httponly':
+                                    $httpOnly = $paramValue;
+                                    break;
+                            }
+                        }
+
+                        /*
+                         * Create new Cookie object and add it to "cookies" array.
+                         * I must skip to next header as cookies shouldn't be saved in "headers" array.
+                         */
+                        $cookies[] = new Cookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
+                        continue;
+                    }
+
+                    /*
+                     * Save response header which is not a cookie
+                     */
+                    $headers[$key] = $value;
+                }
             }
         }
 

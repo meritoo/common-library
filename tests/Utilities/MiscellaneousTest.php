@@ -28,6 +28,7 @@ class MiscellaneousTest extends BaseTestCase
     private $stringSmall;
     private $stringCommaSeparated;
     private $stringDotSeparated;
+    private $stringWithoutSpaces;
 
     /**
      * @throws ReflectionException
@@ -365,6 +366,7 @@ class MiscellaneousTest extends BaseTestCase
     {
         self::assertEquals('Lorem ipsum dolor sit<br>amet, consectetur<br>adipiscing<br>elit', Miscellaneous::breakLongText($this->stringCommaSeparated, 20));
         self::assertEquals('Lorem ipsum dolor sit---amet, consectetur---adipiscing---elit', Miscellaneous::breakLongText($this->stringCommaSeparated, 20, '---'));
+        self::assertEquals('LoremIpsum<br>DolorSitAm<br>etConsecte<br>turAdipisc<br>ingElit', Miscellaneous::breakLongText($this->stringWithoutSpaces, 10));
     }
 
     public function testRemoveDirectoryUsingNotExistingDirectory()
@@ -766,6 +768,21 @@ class MiscellaneousTest extends BaseTestCase
     public function testGetProjectRootPath()
     {
         self::assertNotEmpty(Miscellaneous::getProjectRootPath());
+    }
+
+    /**
+     * @param int $headerSize Length of HTTP headers in content
+     * @dataProvider provideHeaderSizeForEmptyCurlResponse
+     */
+    public function testGetCurlResponseWithHeadersUsingEmptyResponse($headerSize)
+    {
+        $expected = [
+            'headers' => [],
+            'cookies' => [],
+            'content' => '',
+        ];
+
+        self::assertEquals($expected, Miscellaneous::getCurlResponseWithHeaders('', $headerSize));
     }
 
     /**
@@ -1179,6 +1196,30 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
+     * Provides length/size of HTTP headers for an empty response
+     *
+     * @return Generator
+     */
+    public function provideHeaderSizeForEmptyCurlResponse()
+    {
+        yield[
+            -10,
+        ];
+
+        yield[
+            -1,
+        ];
+
+        yield[
+            0,
+        ];
+
+        yield[
+            10,
+        ];
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -1188,6 +1229,7 @@ class MiscellaneousTest extends BaseTestCase
         $this->stringSmall = 'Lorem ipsum dolor sit amet.';
         $this->stringCommaSeparated = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
         $this->stringDotSeparated = 'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.';
+        $this->stringWithoutSpaces = 'LoremIpsumDolorSitAmetConsecteturAdipiscingElit';
     }
 
     /**
@@ -1200,5 +1242,6 @@ class MiscellaneousTest extends BaseTestCase
         unset($this->stringSmall);
         unset($this->stringCommaSeparated);
         unset($this->stringDotSeparated);
+        unset($this->stringWithoutSpaces);
     }
 }
