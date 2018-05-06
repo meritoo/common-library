@@ -39,6 +39,14 @@ RUN sed -i 's/^# de_DE/de_DE/g; \
     && locale-gen
 
 #
+# Set default language
+#
+# Required to avoid problem with using strange language by error messages.
+# Example: "chmod(): Aucun fichier ou dossier de ce type"
+#
+ENV LANGUAGE=en_US.UTF-8
+
+#
 # PHP extensions
 #
 RUN docker-php-ext-install \
@@ -65,7 +73,7 @@ COPY php.ini /usr/local/etc/php/php.ini
 ARG TIMEZONE
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo ${TIMEZONE} > /etc/timezone \
-    && printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
+    && printf '[PHP]\ndate.timezone = "%s"\n' ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
     && "date"
 #RUN echo "\n""date.timezone = $TIMEZONE""\n" >> /usr/local/etc/php/php.ini
 
