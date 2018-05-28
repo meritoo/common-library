@@ -87,7 +87,7 @@
 
     <!-- Test target -->
     <target name="build:test"
-            depends="test:phpunit"
+            depends="test:unit"
             description="Executes all tests" />
 
     <!-- Project build clean -->
@@ -103,7 +103,6 @@
         <!--<mkdir dir="${dir.docs}" />-->
         <!--<mkdir dir="${dir.docs.phpdoc2}" />-->
         <mkdir dir="${dir.reports}" />
-        <mkdir dir="${dir.reports.coverage}" />
         <mkdir dir="${dir.reports.pdepend}" />
     </target>
 
@@ -212,10 +211,9 @@
     </target>
 
     <!-- Unit tests -->
-    <target name="test:phpunit" description="Executes PHPUnit tests">
+    <target name="test:unit" description="Executes unit tests">
         <echo msg="Running unit tests..." />
-        <exec command="${phpUnit.path} --verbose --no-coverage --configuration ${project.basedir}/phpunit.xml.dist"
-              passthru="true"/>
+        <exec command="${tests_framework.path} run --silent" passthru="true"/>
     </target>
 
     <!-- Checkout and finalization -->

@@ -76,7 +76,6 @@ dir.tests = ${project.basedir}/tests
 dir.build = ${project.basedir}/.build
 dir.reports = ${dir.build}/logs
 dir.reports.pdepend = ${dir.reports}/pdepend
-dir.reports.coverage = ${dir.reports}/phpunit_coverage
 #
 # Disabled, because unnecessary right now
 # phpdocumentor/phpdocumentor cannot be installed via Composer
@@ -97,9 +96,9 @@ dir.data.temporary = ${dir.data}/tmp
 # Testing
 # --------------------------------------------------------------------------------
 
-# Path of the PHPUnit
+# Path of the framework used to run unit tests
 #
-phpUnit.path = ./vendor/bin/phpunit
+tests_framework.path = ./vendor/bin/codecept
 
 # Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
 #
