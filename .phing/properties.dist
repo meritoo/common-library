@@ -91,7 +91,6 @@ dir.reports.coverage = ${dir.reports}/phpunit_coverage
 # Data directories
 # --------------------------------------------------------------------------------
 
-dir.data.tests = ${dir.data}/tests
 dir.data.temporary = ${dir.data}/tmp
 
 # --------------------------------------------------------------------------------

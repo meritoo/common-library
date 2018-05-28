@@ -213,14 +213,6 @@
 
     <!-- Unit tests -->
     <target name="test:phpunit" description="Executes PHPUnit tests">
-        <if>
-            <not>
-                <available file="${dir.data.tests}" type="dir" property="dir.data.tests.available" />
-            </not>
-            <then>
-                <mkdir dir="${dir.data.tests}" />
-            </then>
-        </if>
         <echo msg="Running unit tests..." />
         <exec command="${phpUnit.path} --verbose --no-coverage --configuration ${project.basedir}/phpunit.xml.dist"
               passthru="true"/>
