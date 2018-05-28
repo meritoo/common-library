@@ -98,7 +98,7 @@ dir.data.temporary = ${dir.data}/tmp
 
 # Path of the framework used to run unit tests
 #
-tests_framework.path = ./vendor/bin/codecept
+tests.framework.path = ./vendor/bin/codecept
 
 # Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
 #

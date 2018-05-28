@@ -213,7 +213,7 @@
     <!-- Unit tests -->
     <target name="test:unit" description="Executes unit tests">
         <echo msg="Running unit tests..." />
-        <exec command="${tests_framework.path} run --silent" passthru="true"/>
+        <exec command="${tests.framework.path} run --silent" passthru="true"/>
     </target>
 
     <!-- Checkout and finalization -->
