@@ -8,7 +8,7 @@ services:
         entrypoint: php
         command: -S 0.0.0.0:9999
         build:
-            context: ./.docker/config
+            context: ./docker/config
             args:
                 - TIMEZONE=$TIMEZONE
         volumes:

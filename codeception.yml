@@ -15,8 +15,8 @@ coverage:
     include:
         - src/*
     exclude:
-        - .data/*
-        - .docker/*
-        - .phing/*
+        - data/*
+        - docker/*
+        - phing/*
         - tests/*
         - vendor/*

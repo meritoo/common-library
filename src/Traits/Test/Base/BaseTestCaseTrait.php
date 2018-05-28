@@ -32,7 +32,7 @@ trait BaseTestCaseTrait
      *
      * @var string
      */
-    private static $testsDataDirPath = '.data/tests';
+    private static $testsDataDirPath = 'data/tests';
 
     /**
      * Provides an empty value
@@ -127,7 +127,7 @@ trait BaseTestCaseTrait
 
     /**
      * Returns path of file used by tests.
-     * It should be placed in /.data/tests directory of this project.
+     * It should be placed in /data/tests directory of this project.
      *
      * @param string $fileName      Name of file
      * @param string $directoryPath (optional) Path of directory containing the file
