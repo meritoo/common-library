@@ -102,27 +102,7 @@ dir.data.temporary = ${dir.data}/tmp
 #
 tests.database = ${dir.data.temporary}/database.sqlite
 
-#
-# Disabled, because unnecessary right now
-# PHPUnit is installed and loaded by Composer
-#
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-# 2017-02-22
-#
-# Run PHPUnit using exec task instead of phpunitTask
-#phpunit.useExec = false
-
-#
-# Disabled, because unnecessary right now
-# We want generate code coverage always
-#
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-# 2017-02-22
-#
-# Collect coverage data during tests
-#phpunit.withCoverage = true
-
-# Path of the PHPUnit (https://phpunit.de)
+# Path of the PHPUnit
 #
 phpUnit.path = ./vendor/bin/phpunit
 
