@@ -213,7 +213,6 @@
 
     <!-- Unit tests -->
     <target name="test:phpunit" description="Executes PHPUnit tests">
-        <!-- Check test database -->
         <if>
             <not>
                 <available file="${dir.data.tests}" type="dir" property="dir.data.tests.available" />
@@ -222,19 +221,9 @@
                 <mkdir dir="${dir.data.tests}" />
             </then>
         </if>
-        <if>
-            <not>
-                <available file="${tests.database}" property="tests.database.available" />
-            </not>
-            <then>
-                <touch file="${tests.database}" />
-            </then>
-        </if>
         <echo msg="Running unit tests..." />
-        <coverage-setup database="${dir.reports.coverage}/coverage.db">
-            <fileset refid="sourcecode" />
-        </coverage-setup>
-        <exec command="${phpUnit.path} --verbose --configuration ${project.basedir}/phpunit.xml.dist" passthru="true" />
+        <exec command="${phpUnit.path} --verbose --no-coverage --configuration ${project.basedir}/phpunit.xml.dist"
+              passthru="true"/>
     </target>
 
     <!-- Checkout and finalization -->

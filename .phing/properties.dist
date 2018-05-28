@@ -98,10 +98,6 @@ dir.data.temporary = ${dir.data}/tmp
 # Testing
 # --------------------------------------------------------------------------------
 
-# Test database path
-#
-tests.database = ${dir.data.temporary}/database.sqlite
-
 # Path of the PHPUnit
 #
 phpUnit.path = ./vendor/bin/phpunit
