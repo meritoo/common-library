@@ -104,6 +104,7 @@
         <!--<mkdir dir="${dir.docs.phpdoc2}" />-->
         <mkdir dir="${dir.reports}" />
         <mkdir dir="${dir.reports.pdepend}" />
+        <mkdir dir="${dir.reports.coverage}"/>
     </target>
 
     <!-- PHPDocumentor2 API documentation target -->
@@ -213,7 +214,7 @@
     <!-- Unit tests -->
     <target name="test:unit" description="Executes unit tests">
         <echo msg="Running unit tests..." />
-        <exec command="${tests.framework.path} run --silent" passthru="true"/>
+        <exec command="${tests.framework.path}" passthru="true"/>
     </target>
 
     <!-- Checkout and finalization -->

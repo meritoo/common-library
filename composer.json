@@ -17,11 +17,11 @@
         "symfony/http-foundation": "^3.3"
     },
     "require-dev": {
-        "codeception/codeception": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.2",
         "pdepend/pdepend": "^2.5",
         "phploc/phploc": "^2.1",
         "phpmd/phpmd": "^2.6",
+        "phpunit/phpunit": "^4.8",
         "sebastian/phpcpd": "^2.0",
         "squizlabs/php_codesniffer": "^2.9"
     },
