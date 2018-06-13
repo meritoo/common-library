@@ -3,7 +3,7 @@ Common and useful classes, methods, exceptions etc.
 
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/meritoo/common-library) [![Packagist](https://img.shields.io/packagist/v/meritoo/common-library.svg?style=flat-square)](https://packagist.org/packages/meritoo/common-library) [![StyleCI](https://styleci.io/repos/101790028/shield?branch=master)](https://styleci.io/repos/101790028) [![license](https://img.shields.io/github/license/meritoo/common-library.svg?style=flat-square)](https://github.com/meritoo/common-library) [![GitHub commits](https://img.shields.io/github/commits-since/meritoo/common-library/0.0.1.svg?style=flat-square)](https://github.com/meritoo/common-library) [![Coverage Status](https://coveralls.io/repos/github/meritoo/common-library/badge.svg?branch=master)](https://coveralls.io/github/meritoo/common-library?branch=master)
 
-## Installation
+# Installation
 
 Run [Composer](https://getcomposer.org) to install this package in your project:
 
@@ -11,18 +11,41 @@ Run [Composer](https://getcomposer.org) to install this package in your project:
 $ composer require meritoo/common-library
 ```
 
-> How to install Composer: https://getcomposer.org/download
+> [How to install Composer?](https://getcomposer.org/download)
 
-## Rebuilding project and tests running
+# Docker
+
+Build, create and start Docker's containers by running command:
 
 ```bash
 $ docker-compose up -d
+```
+
+> [What is Docker?](https://www.docker.com/what-docker)
+
+# Composer
+
+Install packages by running command:
+
+```bash
+$ docker-compose run composer install
+```
+
+Update packages by running command:
+
+```bash
+$ docker-compose run composer update
+```
+
+# Rebuild project and run tests
+
+```bash
 $ docker-compose exec php-cli phing
 ```
 
-> What is Docker? https://www.docker.com/what-docker
+> [What is Docker?](https://www.docker.com/what-docker)
 
-## Static methods
+# Static methods
 
 This package contains a lot of class with static methods, so usage is not so complicated. Just run the static method who would you like to use. Example:
 
@@ -33,7 +56,7 @@ $firstElement = Arrays::getFirstElement(['lorem', 'ipsum']);
 var_dump($firstElement); // string(5) "lorem"
 ```
 
-## Base test case with common methods and data providers
+# Base test case with common methods and data providers
 
 Located here: `Meritoo\Common\Test\Base\BaseTestCase`. Just extend the `BaseTestCase` class and use it like in `Meritoo\Common\Test\Utilities\DateTest` class:
 
@@ -73,7 +96,7 @@ class MimeTypesTest extends BaseTestCase
 }
 ```
 
-## Collection of elements
+# Collection of elements
 
 Located here: `Meritoo\Common\Collection\Collection`. It's a set of some elements, e.g. objects. It's iterable and countable. Provides very useful methods. Some of them:
 - `getFirst()` - returns the first element in the collection
@@ -86,7 +109,7 @@ Located here: `Meritoo\Common\Collection\Collection`. It's a set of some element
 
 Examples of usage below.
 
-#### An empty collection
+### An empty collection
 
 ```php
 use Meritoo\Common\Collection\Collection;
@@ -95,7 +118,7 @@ $emptyCollection = new Collection();
 var_dump($emptyCollection->isEmpty()); // bool(true)
 ```
 
-#### Simple collection
+### Simple collection
 
 ```php
 use Meritoo\Common\Collection\Collection;
