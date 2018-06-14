@@ -22,6 +22,40 @@ Development-related information
 
 > [What is Docker?](https://www.docker.com/what-docker)
 
+# Composer
+
+Available as `composer` service. You can run any Composer's command using the `composer` service:
+
+```bash
+docker-compose run composer <command>
+```
+
+Examples below.
+
+##### Install packages
+
+```bash
+docker-compose run composer install
+```
+
+##### Update packages
+
+```bash
+docker-compose run composer update
+```
+
+##### Add package
+
+```bash
+docker-compose run composer require <vendor>/<package>
+```
+
+##### Remove package
+
+```bash
+docker-compose run composer remove <vendor>/<package>
+```
+
 # Tests
 
 ### Prerequisites
