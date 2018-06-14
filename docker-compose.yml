@@ -4,7 +4,6 @@ services:
     php-cli:
         image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php-cli
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-php-cli
-        working_dir: /project
         entrypoint: php
         command: -S 0.0.0.0:9999
         build:
@@ -16,7 +15,6 @@ services:
     composer:
         image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php-cli
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-composer
-        working_dir: /project
         entrypoint: composer
         volumes:
             - .:/project

@@ -127,3 +127,5 @@ RUN sed -i 's/^# export/export/g; \
 # Use project-related binaries globally
 #
 ENV PATH="/project/vendor/bin:${PATH}"
+
+WORKDIR /project
