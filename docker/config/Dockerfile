@@ -121,5 +121,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 #
 RUN sed -i 's/^# export/export/g; \
             s/^# alias/alias/g;' ~/.bashrc \
-    && echo "\n"'export PATH=/project/vendor/bin:$PATH'"\n" >> ~/.bashrc \
     && echo 'COLUMNS=200'"\n" >> ~/.bashrc
+
+#
+# Use project-related binaries globally
+#
+ENV PATH="/project/vendor/bin:${PATH}"
