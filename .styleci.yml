@@ -1,4 +1,4 @@
-preset: symfony
+preset: recommended
 
 disabled:
     - phpdoc_annotation_without_dot
