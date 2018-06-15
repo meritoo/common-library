@@ -2,7 +2,7 @@ preset: symfony
 
 disabled:
     - phpdoc_annotation_without_dot
+    - phpdoc_summary
     - cast_spaces
     - concat_without_spaces
-    - blank_line_before_return
     - trim_array_spaces
