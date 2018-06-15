@@ -771,21 +771,6 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * @param int $headerSize Length of HTTP headers in content
-     * @dataProvider provideHeaderSizeForEmptyCurlResponse
-     */
-    public function testGetCurlResponseWithHeadersUsingEmptyResponse($headerSize)
-    {
-        $expected = [
-            'headers' => [],
-            'cookies' => [],
-            'content' => '',
-        ];
-
-        self::assertEquals($expected, Miscellaneous::getCurlResponseWithHeaders('', $headerSize));
-    }
-
-    /**
      * Provides string to convert characters to latin characters and not lower cased and not human-readable
      *
      * @return Generator
@@ -1192,30 +1177,6 @@ class MiscellaneousTest extends BaseTestCase
             5,
             false,
             '12300',
-        ];
-    }
-
-    /**
-     * Provides length/size of HTTP headers for an empty response
-     *
-     * @return Generator
-     */
-    public function provideHeaderSizeForEmptyCurlResponse()
-    {
-        yield[
-            -10,
-        ];
-
-        yield[
-            -1,
-        ];
-
-        yield[
-            0,
-        ];
-
-        yield[
-            10,
         ];
     }
 
