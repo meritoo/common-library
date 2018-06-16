@@ -1,13 +1,13 @@
 preset: symfony
 
 enabled:
-    - concat_with_spaces
     - phpdoc_add_missing_param_annotation
     - phpdoc_order
 
 disabled:
     - blank_line_before_return
     - cast_spaces
+    - concat_without_spaces
     - phpdoc_align
     - phpdoc_separation
     - phpdoc_summary
