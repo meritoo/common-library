@@ -158,8 +158,8 @@ class QueryBuilderUtility
      * @param array|ArrayCollection $entities      The entities to delete
      * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects (default
      *                                             behaviour). Otherwise - not.
-     * @return bool
      * @throws OptimisticLockException
+     * @return bool
      */
     public static function deleteEntities(EntityManager $entityManager, $entities, $flushDeleted = true)
     {

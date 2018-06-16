@@ -68,9 +68,8 @@ class Date
      * The dates are returned in an array with indexes 'start' and 'end'.
      *
      * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
-     * @return null|DatePeriod
-     *
      * @throws Exception
+     * @return null|DatePeriod
      */
     public static function getDatesForPeriod($period)
     {
@@ -221,8 +220,8 @@ class Date
     /**
      * Returns current day of week
      *
-     * @return int
      * @throws UnknownDatePartTypeException
+     * @return int
      */
     public static function getCurrentDayOfWeek()
     {
@@ -243,8 +242,8 @@ class Date
      * @param int $month The month value
      * @param int $day   The day value
      *
-     * @return int
      * @throws UnknownDatePartTypeException
+     * @return int
      */
     public static function getDayOfWeek($year, $month, $day)
     {
@@ -488,9 +487,8 @@ class Date
      * @param string   $intervalTemplate (optional) Template used to build date interval. It should contain "%d" as the
      *                                   placeholder which is replaced with a number that represents each iteration.
      *                                   Default: interval for days.
-     * @return array
-     *
      * @throws Exception
+     * @return array
      */
     public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD')
     {
@@ -535,9 +533,8 @@ class Date
      * @param int      $end              (optional) End of random partition
      * @param string   $intervalTemplate (optional) Template used to build date interval. The placeholder is replaced
      *                                   with next, iterated value.
-     * @return DateTime
-     *
      * @throws Exception
+     * @return DateTime
      */
     public static function getRandomDate(DateTime $startDate = null, $start = 1, $end = 100, $intervalTemplate = 'P%sD')
     {

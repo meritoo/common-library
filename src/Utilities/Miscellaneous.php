@@ -1312,10 +1312,9 @@ class Miscellaneous
      * Returns inverted value of color for given color
      *
      * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
-     * @return string
-     *
      * @throws IncorrectColorHexLengthException
      * @throws InvalidColorHexValueException
+     * @return string
      */
     public static function getInvertedColor($color)
     {

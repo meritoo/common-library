@@ -759,9 +759,8 @@ class MimeTypes
      * Returns mime type of given file
      *
      * @param string $filePath Path of the file to check
-     * @return string
-     *
      * @throws \RuntimeException
+     * @return string
      */
     public static function getMimeType($filePath)
     {

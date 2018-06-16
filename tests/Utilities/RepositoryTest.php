@@ -353,7 +353,6 @@ class RepositoryTest extends BaseTestCase
 
         yield[
             [
-
                 [],
                 [],
                 [

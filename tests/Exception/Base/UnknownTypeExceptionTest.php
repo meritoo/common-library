@@ -82,9 +82,8 @@ class TestService
      * Returns translated type (for testing purposes)
      *
      * @param string $type Type of something (for testing purposes)
-     * @return string
-     *
      * @throws UnknownTestTypeException
+     * @return string
      */
     public function getTranslatedType($type)
     {

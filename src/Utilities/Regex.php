@@ -766,10 +766,9 @@ class Regex
      * @param string $color          Color to verify
      * @param bool   $throwException (optional) If is set to true, throws an exception if given color is invalid
      *                               (default behaviour). Otherwise - not.
-     * @return string|bool
-     *
      * @throws IncorrectColorHexLengthException
      * @throws InvalidColorHexValueException
+     * @return string|bool
      */
     public static function getValidColorHexValue($color, $throwException = true)
     {

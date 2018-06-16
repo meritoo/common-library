@@ -24,9 +24,8 @@ class Bundle
      * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
      * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
      * @param string $extension  (optional) Extension of the view / template (default: "html.twig")
-     * @return string|null
-     *
      * @throws IncorrectBundleNameException
+     * @return string|null
      */
     public static function getBundleViewPath($viewPath, $bundleName, $extension = 'html.twig')
     {
@@ -65,9 +64,8 @@ class Bundle
      * Returns short name of bundle (without "Bundle")
      *
      * @param string $fullBundleName Full name of the bundle, e.g. "MyExtraBundle"
-     * @return string|null
-     *
      * @throws IncorrectBundleNameException
+     * @return string|null
      */
     public static function getShortBundleName($fullBundleName)
     {
