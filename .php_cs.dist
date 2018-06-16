@@ -14,7 +14,6 @@ return PhpCsFixer\Config::create()
         ],
         'blank_line_before_return'            => false,
         'cast_spaces'                         => false,
-        // "concat_space" instead of "concat_without_spaces" option used by StyleCI
         'concat_space'                        => [
             'spacing' => 'one',
         ],

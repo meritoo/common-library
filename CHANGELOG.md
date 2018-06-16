@@ -10,3 +10,4 @@ Common and useful classes, methods, exceptions etc.
 5. Documentation > Docker > add paragraph for PHP Coding Standards Fixer
 6. Coding standard > fix automatically
 7. StyleCI configuration > fix bug "The provided fixer 'binary_operator_spaces' cannot be enabled again because it was already enabled"
+8. StyleCI > disable & remove
