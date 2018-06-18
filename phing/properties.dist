@@ -65,7 +65,7 @@ composer.validate = false
 
 # System directories
 #
-dir.data = ${project.basedir}/.data
+dir.data = ${project.basedir}/data
 dir.src = ${project.basedir}/src
 dir.tests = ${project.basedir}/tests
 
@@ -73,7 +73,7 @@ dir.tests = ${project.basedir}/tests
 # Build directories
 # --------------------------------------------------------------------------------
 
-dir.build = ${project.basedir}/.build
+dir.build = ${project.basedir}/build
 dir.reports = ${dir.build}/logs
 dir.reports.pdepend = ${dir.reports}/pdepend
 dir.reports.coverage = ${dir.reports}/phpunit_coverage
@@ -91,40 +91,15 @@ dir.reports.coverage = ${dir.reports}/phpunit_coverage
 # Data directories
 # --------------------------------------------------------------------------------
 
-dir.data.tests = ${dir.data}/tests
 dir.data.temporary = ${dir.data}/tmp
 
 # --------------------------------------------------------------------------------
 # Testing
 # --------------------------------------------------------------------------------
 
-# Test database path
+# Path of the framework used to run unit tests
 #
-tests.database = ${dir.data.temporary}/database.sqlite
-
-#
-# Disabled, because unnecessary right now
-# PHPUnit is installed and loaded by Composer
-#
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-# 2017-02-22
-#
-# Run PHPUnit using exec task instead of phpunitTask
-#phpunit.useExec = false
-
-#
-# Disabled, because unnecessary right now
-# We want generate code coverage always
-#
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-# 2017-02-22
-#
-# Collect coverage data during tests
-#phpunit.withCoverage = true
-
-# Path of the PHPUnit (https://phpunit.de)
-#
-phpUnit.path = ./vendor/bin/phpunit
+tests.framework.path = ./vendor/bin/phpunit --verbose --no-coverage --testdox
 
 # Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
 #

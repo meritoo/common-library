@@ -24,13 +24,25 @@ class Uri
      */
     public static function getFullUri($withoutHost = false)
     {
-        $effect = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'REQUEST_URI');
+        $requestedUrl = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'REQUEST_URI');
 
-        if ($withoutHost) {
-            return $effect;
+        /*
+         * Unknown requested url?
+         * Nothing to do
+         */
+        if (empty($requestedUrl)) {
+            return '';
         }
 
-        return self::getServerNameOrIp(true) . $effect;
+        /*
+         * Without host / server name?
+         * All is done
+         */
+        if ($withoutHost) {
+            return $requestedUrl;
+        }
+
+        return self::getServerNameOrIp(true) . $requestedUrl;
     }
 
     /**
@@ -41,13 +53,25 @@ class Uri
      */
     public static function getServerNameOrIp($withProtocol = false)
     {
-        $protocol = '';
+        $host = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_HOST');
 
-        if ($withProtocol) {
-            $protocol .= self::getProtocolName() . '://';
+        /*
+         * Unknown host / server?
+         * Nothing to do
+         */
+        if (empty($host)) {
+            return '';
         }
 
-        return $protocol . Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_HOST');
+        /*
+         * With protocol?
+         * Let's include the protocol
+         */
+        if ($withProtocol) {
+            return sprintf('%s://%s', self::getProtocolName(), $host);
+        }
+
+        return $host;
     }
 
     /**
@@ -57,8 +81,6 @@ class Uri
      */
     public static function getProtocolName()
     {
-        $effect = '';
-
         $matches = [];
         $protocolData = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'SERVER_PROTOCOL'); // e.g. HTTP/1.1
         $matchCount = preg_match('|(.+)\/(.+)|', $protocolData, $matches);
@@ -68,11 +90,14 @@ class Uri
          * $matches[2] - protocol version, e.g. 1.1
          */
 
-        if ($matchCount > 0) {
-            $effect = strtolower($matches[1]);
+        /*
+         * Oops, cannot match protocol
+         */
+        if (0 == $matchCount) {
+            return '';
         }
 
-        return $effect;
+        return strtolower($matches[1]);
     }
 
     /**
@@ -82,13 +107,7 @@ class Uri
      */
     public static function getRefererUri()
     {
-        $effect = '';
-
-        if (filter_has_var(INPUT_SERVER, 'HTTP_REFERER')) {
-            $effect = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_REFERER');
-        }
-
-        return $effect;
+        return Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_REFERER');
     }
 
     /**
@@ -214,10 +233,35 @@ class Uri
      */
     public static function isExternalUrl($url)
     {
+        /*
+         * Unknown url or it's just slash?
+         * Nothing to do
+         */
+        if (empty($url) || '/' === $url) {
+            return false;
+        }
+
         $currentUrl = self::getServerNameOrIp(true);
         $url = self::replenishProtocol($url);
 
-        return !Regex::contains($currentUrl, $url);
+        /*
+         * Let's prepare pattern of current url
+         */
+        $search = [
+            ':',
+            '/',
+            '.',
+        ];
+
+        $replace = [
+            '\:',
+            '\/',
+            '\.',
+        ];
+
+        $currentUrlPattern = str_replace($search, $replace, $currentUrl);
+
+        return !Regex::contains($url, $currentUrlPattern);
     }
 
     /**
@@ -273,6 +317,14 @@ class Uri
      */
     public static function getSecuredUrl($url, $user = '', $password = '')
     {
+        /*
+         * Url is not provided?
+         * Nothing to do
+         */
+        if (empty($url)) {
+            return '';
+        }
+
         $protocol = self::getProtocolName();
         $host = self::getServerNameOrIp();
 

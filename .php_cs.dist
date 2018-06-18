@@ -1,13 +1,6 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    /*
-     * Do not verify:
-     * - all DependencyInjection/Configuration classes: the Configuration.php files
-     * - autoloader from /app directory: autoload.php
-     */
-    ->notPath('/DependencyInjection\/Configuration\.php/')
-    ->notPath('/autoload\.php/')
     ->in([
         __DIR__ . '/src',
         __DIR__ . '/tests',
@@ -15,16 +8,20 @@ $finder = PhpCsFixer\Finder::create()
 
 return PhpCsFixer\Config::create()
     ->setRules([
-        '@Symfony'               => true,
-        'phpdoc_summary'         => false,
-        'phpdoc_separation'      => false,
-        'phpdoc_align'           => false,
-        'cast_spaces'            => false,
-        'binary_operator_spaces' => [
+        '@Symfony'                            => true,
+        'binary_operator_spaces'              => [
             'align_double_arrow' => true,
         ],
-        'concat_space'           => [
+        'blank_line_before_return'            => false,
+        'cast_spaces'                         => false,
+        'concat_space'                        => [
             'spacing' => 'one',
         ],
+        'phpdoc_add_missing_param_annotation' => true,
+        'phpdoc_align'                        => false,
+        'phpdoc_order'                        => true,
+        'phpdoc_separation'                   => false,
+        'phpdoc_summary'                      => false,
+        'trim_array_spaces'                   => false,
     ])
     ->setFinder($finder);

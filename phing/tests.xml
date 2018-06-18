@@ -11,12 +11,12 @@
 
     <!-- Properties -->
     <if>
-        <available file=".phing/properties" property="custom.properties.available"/>
+        <available file="phing/properties" property="custom.properties.available"/>
         <then>
-            <property file=".phing/properties" />
+            <property file="phing/properties"/>
         </then>
         <else>
-            <property file=".phing/properties.dist" />
+            <property file="phing/properties.dist"/>
         </else>
     </if>
 
@@ -87,7 +87,7 @@
 
     <!-- Test target -->
     <target name="build:test"
-            depends="test:phpunit"
+            depends="test:unit"
             description="Executes all tests" />
 
     <!-- Project build clean -->
@@ -103,8 +103,8 @@
         <!--<mkdir dir="${dir.docs}" />-->
         <!--<mkdir dir="${dir.docs.phpdoc2}" />-->
         <mkdir dir="${dir.reports}" />
-        <mkdir dir="${dir.reports.coverage}" />
         <mkdir dir="${dir.reports.pdepend}" />
+        <mkdir dir="${dir.reports.coverage}"/>
     </target>
 
     <!-- PHPDocumentor2 API documentation target -->
@@ -212,94 +212,9 @@
     </target>
 
     <!-- Unit tests -->
-    <target name="test:phpunit" description="Executes PHPUnit tests">
-        <!-- Check test database -->
-        <if>
-            <not>
-                <available file="${dir.data.tests}" type="dir" property="dir.data.tests.available" />
-            </not>
-            <then>
-                <mkdir dir="${dir.data.tests}" />
-            </then>
-        </if>
-        <if>
-            <not>
-                <available file="${tests.database}" property="tests.database.available" />
-            </not>
-            <then>
-                <touch file="${tests.database}" />
-            </then>
-        </if>
+    <target name="test:unit" description="Executes unit tests">
         <echo msg="Running unit tests..." />
-        <coverage-setup database="${dir.reports.coverage}/coverage.db">
-            <fileset refid="sourcecode" />
-        </coverage-setup>
-        <exec command="${phpUnit.path} --verbose --configuration ${project.basedir}/phpunit.xml.dist" passthru="true" />
-        <!--
-        I have to use ExecTask to run PHPUnit instead of PHPUnitTask, because tests are not running if PHPUnitTask is
-        used (don't know why):
-        Total tests run: 0, Failures: 0, Errors: 0, Incomplete: 0, Skipped: 0
-
-        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-        2017-02-23
-
-        <phpunit configuration="${project.basedir}/phpunit.xml.dist" printsummary="true">
-            <formatter type="xml" todir="${dir.reports}" outfile="phpunit.xml" />
-            <formatter type="plain" todir="${dir.reports}" outfile="phpunit.txt" />
-            <formatter type="clover" todir="${dir.reports.coverage}" />
-            <formatter type="summary" todir="${dir.reports}" outfile="phpunit_summary.txt" />
-        </phpunit>
-        -->
-
-        <!--
-        Previous / old version
-
-        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-        2017-02-22
-
-        <if>
-            <istrue value="${phpunit.useExec}" />
-            <then>
-                <if>
-                    <istrue value="${phpunit.withCoverage}" />
-                    <then>
-                        <echo message="Running tests with code coverage..." />
-                        <exec command="phpunit \-\-log-junit ${dir.reports}/phpunit.xml \-\-coverage-clover ${dir.reports.coverage}/clover-coverage.xml \-\-coverage-crap4j ${dir.reports.coverage}/crap4j-coverage.xml \-\-coverage-html ${dir.reports.coverage}/ -c ${project.basedir} \-\-colors" passthru="true" checkreturn="true" />
-                    </then>
-                    <else>
-                        <echo message="Running tests without code coverage..." />
-                        <exec command="phpunit \-\-log-junit ${dir.reports}/phpunit.xml -c ${project.basedir} \-\-colors" passthru="true" checkreturn="true" />
-                    </else>
-                </if>
-            </then>
-            <else>
-                <if>
-                    <istrue value="${phpunit.withCoverage}" />
-                    <then>
-                        <echo message="Running tests with code coverage..." />
-                        <coverage-setup database="${dir.reports.coverage}/coverage.db">
-                            <fileset refid="sourcecode" />
-                        </coverage-setup>
-                        <phpunit printsummary="true" codecoverage="true">
-                            <formatter type="xml" todir="${dir.reports}" outfile="phpunit.xml" />
-                            <formatter type="plain" todir="${dir.reports}" outfile="phpunit.txt" />
-                            <formatter type="clover" todir="${dir.reports.coverage}" />
-                            <formatter type="summary" todir="${dir.reports}" outfile="phpunit_summary.txt" />
-                        </phpunit>
-                    </then>
-                    <else>
-                        <echo message="Running tests without code coverage..." />
-                        <phpunit printsummary="true">
-                            <formatter todir="${dir.reports}" type="xml" outfile="phpunit.xml" />
-                            <batchtest>
-                                <fileset refid="tests" />
-                            </batchtest>
-                        </phpunit>
-                    </else>
-                </if>
-            </else>
-        </if>
-        -->
+        <exec command="${tests.framework.path}" passthru="true"/>
     </target>
 
     <!-- Checkout and finalization -->

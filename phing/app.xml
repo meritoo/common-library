@@ -2,12 +2,12 @@
 <project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
     <!-- Properties -->
     <if>
-        <available file=".phing/properties" property="custom.properties.available"/>
+        <available file="phing/properties" property="custom.properties.available"/>
         <then>
-            <property file=".phing/properties" />
+            <property file="phing/properties"/>
         </then>
         <else>
-            <property file=".phing/properties.dist" />
+            <property file="phing/properties.dist"/>
         </else>
     </if>
 
@@ -21,9 +21,9 @@
             depends="app:composer, app:vendors, app:checkout"
             description="Prepares app to build." />
 
-    <!-- Check / update composer -->
-    <target name="app:composer" description="Checks / updates composer">
-        <echo msg="Checking / updating composer..." />
+    <!-- Updates Composer and validates composer.* files -->
+    <target name="app:composer" description="Updates Composer and validates composer.* files">
+        <echo msg="Updating Composer and validating composer.* files..." />
 
         <if>
             <available file="composer.phar" />
@@ -42,7 +42,14 @@
                 </if>
             </else>
         </if>
+
+        <!-- Update Composer -->
         <composer command="selfupdate" />
+
+        <!-- Validate Composer -->
+        <composer command="validate">
+            <arg line="--no-check-all --strict" />
+        </composer>
     </target>
 
     <!-- Project Install/update vendors -->
@@ -68,6 +75,8 @@
             <then>
                 <composer php="${composer.php}" composer="${composer.path}" command="install">
                     <arg value="--optimize-autoloader" />
+                    <arg value="--prefer-dist" />
+                    <arg value="--classmap-authoritative" />
                 </composer>
             </then>
             <else>

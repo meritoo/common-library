@@ -25,18 +25,21 @@ class Regex
      * @var array
      */
     private static $patterns = [
-        'email'            => '/[\w-]{2,}@[\w-]+\.[\w]{2,}+/',
+        'email'            => '/^[\w-.]{2,}@[\w-]+\.[\w]{2,}+$/',
         'phone'            => '/^\+?[0-9 ]+$/',
         'camelCasePart'    => '/([a-z]|[A-Z]){1}[a-z]*/',
         'urlProtocol'      => '/^([a-z]+:\/\/)',
         'urlDomain'        => '([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i',
         'letterOrDigit'    => '/[a-zA-Z0-9]+/',
         'htmlEntity'       => '/&[a-z0-9]+;/',
+        'htmlAttribute'    => '/([\w-]+)="([\w -]+)"/',
         'fileName'         => '/.+\.\w+$/',
         'isQuoted'         => '/^[\'"]{1}.+[\'"]{1}$/',
         'windowsBasedPath' => '/^[A-Z]{1}:\\\.*$/',
         'money'            => '/^[-+]?\d+([\.,]{1}\d*)?$/',
         'color'            => '/^[a-f0-9]{6}$/i',
+        'bundleName'       => '/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/',
+        'binaryValue'      => '/[^\x20-\x7E\t\r\n]/',
     ];
 
     /**
@@ -56,43 +59,77 @@ class Regex
      */
     public static function isValidEmail($email)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($email)) {
+            return false;
+        }
+
         $pattern = self::getEmailPattern();
 
         return (bool)preg_match($pattern, $email);
     }
 
     /**
-     * Returns information if given tax ID (in polish: NIP) is valid
+     * Returns information if given tax ID is valid (in Poland it's named "NIP")
      *
-     * @param string $taxidString Tax ID (NIP) string
+     * @param string $taxIdString Tax ID (NIP) string
      * @return bool
      */
-    public static function isValidTaxid($taxidString)
+    public static function isValidTaxId($taxIdString)
     {
-        if (!empty($taxidString)) {
-            $weights = [
-                6,
-                5,
-                7,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-            ];
-            $taxid = preg_replace('/[\s-]/', '', $taxidString);
-            $sum = 0;
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($taxIdString)) {
+            return false;
+        }
 
-            if (10 == strlen($taxid) && is_numeric($taxid)) {
-                for ($x = 0; $x <= 8; ++$x) {
-                    $sum += $taxid[$x] * $weights[$x];
-                }
+        /*
+         * Empty/Unknown value?
+         * Nothing to do
+         */
+        if (empty($taxIdString)) {
+            return false;
+        }
 
-                if ((($sum % 11) % 10) == $taxid[9]) {
-                    return true;
-                }
-            }
+        $taxId = preg_replace('/[\s-]/', '', $taxIdString);
+
+        /*
+         * Tax ID is not 10 characters length OR is not numeric?
+         * Nothing to do
+         */
+        if (10 !== strlen($taxId) || !is_numeric($taxId)) {
+            return false;
+        }
+
+        $weights = [
+            6,
+            5,
+            7,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+        ];
+
+        $sum = 0;
+
+        for ($x = 0; $x <= 8; ++$x) {
+            $sum += $taxId[$x] * $weights[$x];
+        }
+
+        /*
+         * Last number it's not a remainder from dividing per 11?
+         * Nothing to do
+         */
+        if ($sum % 11 == $taxId[9]) {
+            return true;
         }
 
         return false;
@@ -108,6 +145,14 @@ class Regex
      */
     public static function isValidUrl($url, $requireProtocol = false)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($url)) {
+            return false;
+        }
+
         $pattern = self::getUrlPattern($requireProtocol);
 
         return (bool)preg_match($pattern, $url);
@@ -121,88 +166,108 @@ class Regex
      */
     public static function isValidPhoneNumber($phoneNumber)
     {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($phoneNumber)) {
+            return false;
+        }
+
         $pattern = self::getPhoneNumberPattern();
 
-        return (bool)preg_match($pattern, $phoneNumber);
+        return (bool)preg_match($pattern, trim($phoneNumber));
     }
 
     /**
-     * Returns array values that matches given pattern (or values that keys matches)
+     * Returns array values that match given pattern (or values that keys match the pattern)
      *
      * @param string $pattern       Pattern to match
-     * @param array  $dataArray     The array
-     * @param bool   $itsKeyPattern (optional) If is set to true, keys are checks if they match pattern. Otherwise -
-     *                              values are checks.
+     * @param array  $array         The array (scalar values only)
+     * @param bool   $itsKeyPattern (optional) If is set to true, keys will be checked if they match pattern.
+     *                              Otherwise - values will be checked (default behaviour).
      * @return array
      */
-    public static function getArrayValuesByPattern($pattern, $dataArray, $itsKeyPattern = false)
+    public static function getArrayValuesByPattern($pattern, array $array, $itsKeyPattern = false)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return [];
+        }
+
         if ($itsKeyPattern) {
             $effect = [];
 
-            if (!empty($dataArray)) {
-                $matches = [];
-
-                foreach ($dataArray as $key => $value) {
-                    if (preg_match($pattern, $key, $matches)) {
-                        $effect[$key] = $value;
-                    }
+            foreach ($array as $key => $value) {
+                if ((bool)preg_match($pattern, $key)) {
+                    $effect[$key] = $value;
                 }
             }
 
             return $effect;
         }
 
-        return preg_grep($pattern, $dataArray);
+        return preg_grep($pattern, $array);
     }
 
     /**
      * Filters array by given expression and column
      *
-     * Expression can be simple compare expression, like ' == 2', or regular expression.
+     * Expression can be simple compare expression, like " == 2", or regular expression.
      * Returns filtered array.
      *
-     * @param array  $array                The array that should be filtered
+     * @param array  $array                The 2-dimensional array that should be filtered
      * @param string $arrayColumnKey       Column name
-     * @param string $filterExpression     Filter expression, e.g. '== 2' or '!= \'home\''
-     * @param bool   $itsRegularExpression (optional) If is set to true, means that filter expression is a
-     *                                     regular expression
+     * @param string $filterExpression     Simple filter expression (e.g. "== 2" or "!= \'home\'") or regular
+     *                                     expression (e.g. "/\d+/" or "/[a-z]+[,;]{2,}/")
+     * @param bool   $itsRegularExpression (optional) If is set to true, means that filter expression is a regular
+     *                                     expression. Otherwise - not (default behaviour).
      * @return array
      */
     public static function arrayFilter($array, $arrayColumnKey, $filterExpression, $itsRegularExpression = false)
     {
-        $effect = [];
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return [];
+        }
 
-        if (!empty($array)) {
-            $effect = $array;
+        $effect = $array;
 
-            foreach ($effect as $key => &$item) {
-                if (isset($item[$arrayColumnKey])) {
-                    $value = $item[$arrayColumnKey];
+        foreach ($effect as $key => &$item) {
+            if (!isset($item[$arrayColumnKey])) {
+                continue;
+            }
 
-                    if ($itsRegularExpression) {
-                        $matches = [];
-                        $pattern = '|' . $filterExpression . '|';
-                        $matchesCount = preg_match($pattern, $value, $matches);
+            $value = $item[$arrayColumnKey];
 
-                        $remove = 0 == $matchesCount;
+            if ($itsRegularExpression) {
+                $matchesCount = preg_match($filterExpression, $value);
+                $remove = 0 == $matchesCount;
+            } else {
+                if (is_string($value)) {
+                    $value = sprintf('\'%s\'', $value);
+                } elseif (is_bool($value)) {
+                    if (true === $value) {
+                        $value = 'true';
                     } else {
-                        if ('' == $value) {
-                            $value = '\'\'';
-                        } elseif (is_string($value)) {
-                            $value = '\'' . $value . '\'';
-                        }
-
-                        eval('$isTrue = ' . $value . $filterExpression . ';');
-
-                        /* @var bool $isTrue */
-                        $remove = !$isTrue;
-                    }
-
-                    if ($remove) {
-                        unset($effect[$key]);
+                        $value = 'false';
                     }
                 }
+
+                eval(sprintf('$isEqual = %s%s;', $value, $filterExpression));
+
+                /* @var bool $isEqual */
+                $remove = !$isEqual;
+            }
+
+            if ($remove) {
+                unset($effect[$key]);
             }
         }
 
@@ -210,36 +275,41 @@ class Regex
     }
 
     /**
-     * Perform regular expression match with many given patterns.
+     * Performs regular expression match with many given patterns.
      * Returns information if given $subject matches one or all given $patterns.
      *
      * @param array|string $patterns     The patterns to match
      * @param string       $subject      The string to check
      * @param bool         $mustAllMatch (optional) If is set to true, $subject must match all $patterns. Otherwise -
-     *                                   not.
+     *                                   not (default behaviour).
      * @return bool
      */
     public static function pregMultiMatch($patterns, $subject, $mustAllMatch = false)
     {
+        /*
+         * No patterns?
+         * Nothing to do
+         */
+        if (empty($patterns)) {
+            return false;
+        }
+
         $effect = false;
         $patterns = Arrays::makeArray($patterns);
 
-        if (!empty($patterns)) {
+        if ($mustAllMatch) {
+            $effect = true;
+        }
+
+        foreach ($patterns as $pattern) {
+            $matched = (bool)preg_match_all($pattern, $subject);
+
             if ($mustAllMatch) {
-                $effect = true;
-            }
-
-            foreach ($patterns as $pattern) {
-                $matches = [];
-                $matched = (bool)preg_match_all($pattern, $subject, $matches);
-
-                if ($mustAllMatch) {
-                    $effect = $effect && $matched;
-                } else {
-                    if ($matched) {
-                        $effect = $matched;
-                        break;
-                    }
+                $effect = $effect && $matched;
+            } else {
+                if ($matched) {
+                    $effect = $matched;
+                    break;
                 }
             }
         }
@@ -676,6 +746,14 @@ class Regex
      */
     public static function isValidMoneyValue($value)
     {
+        /*
+         * Not a scalar value?
+         * Nothing to do
+         */
+        if (!is_scalar($value)) {
+            return false;
+        }
+
         $pattern = self::getMoneyPattern();
 
         return (bool)preg_match($pattern, $value);
@@ -688,39 +766,162 @@ class Regex
      * @param string $color          Color to verify
      * @param bool   $throwException (optional) If is set to true, throws an exception if given color is invalid
      *                               (default behaviour). Otherwise - not.
-     * @return string|bool
-     *
      * @throws IncorrectColorHexLengthException
      * @throws InvalidColorHexValueException
+     * @return string|bool
      */
     public static function getValidColorHexValue($color, $throwException = true)
     {
+        /*
+         * Not a scalar value?
+         * Nothing to do
+         */
+        if (!is_scalar($color)) {
+            return false;
+        }
+
         $color = Miscellaneous::replace($color, '/#/', '');
         $length = strlen($color);
 
-        if (3 === $length) {
-            $color = Miscellaneous::replace($color, '/(.)(.)(.)/', '$1$1$2$2$3$3');
-        } else {
-            if (6 !== $length) {
-                if ($throwException) {
-                    throw new IncorrectColorHexLengthException($color);
-                }
-
-                return false;
-            }
-        }
-
-        $pattern = self::$patterns['color'];
-        $match = (bool)preg_match($pattern, $color);
-
-        if (!$match) {
+        /*
+         * Color is not 3 or 6 characters long?
+         * Nothing to do
+         */
+        if (3 !== $length && 6 !== $length) {
             if ($throwException) {
-                throw new InvalidColorHexValueException($color);
+                throw new IncorrectColorHexLengthException($color);
             }
 
             return false;
         }
 
-        return strtolower($color);
+        /*
+         * Color is 3 characters long?
+         * Let's make it 6 characters long
+         */
+        if (3 === $length) {
+            $color = Miscellaneous::replace($color, '/(.)(.)(.)/', '$1$1$2$2$3$3');
+        }
+
+        $pattern = self::$patterns['color'];
+        $match = (bool)preg_match($pattern, $color);
+
+        /*
+         * It's valid color
+         * Nothing to do more
+         */
+        if ($match) {
+            return strtolower($color);
+        }
+
+        if ($throwException) {
+            throw new InvalidColorHexValueException($color);
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns information if given name of bundle is valid
+     *
+     * @param string $bundleName Full name of bundle to verify, e.g. "MyExtraBundle"
+     * @return bool
+     */
+    public static function isValidBundleName($bundleName)
+    {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($bundleName)) {
+            return false;
+        }
+
+        $pattern = self::getBundleNamePattern();
+
+        return (bool)preg_match($pattern, $bundleName);
+    }
+
+    /**
+     * Returns pattern used to validate / verify name of bundle
+     *
+     * @return string
+     */
+    public static function getBundleNamePattern()
+    {
+        return self::$patterns['bundleName'];
+    }
+
+    /**
+     * Returns pattern used to validate / verify html attribute
+     *
+     * @return string
+     */
+    public static function getHtmlAttributePattern()
+    {
+        return self::$patterns['htmlAttribute'];
+    }
+
+    /**
+     * Returns information if given html attribute is valid
+     *
+     * @param string $htmlAttribute The html attribute to verify
+     * @return bool
+     */
+    public static function isValidHtmlAttribute($htmlAttribute)
+    {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($htmlAttribute)) {
+            return false;
+        }
+
+        $pattern = self::getHtmlAttributePattern();
+
+        return (bool)preg_match($pattern, $htmlAttribute);
+    }
+
+    /**
+     * Returns information if given html attributes are valid
+     *
+     * @param string $htmlAttributes The html attributes to verify
+     * @return bool
+     */
+    public static function areValidHtmlAttributes($htmlAttributes)
+    {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($htmlAttributes)) {
+            return false;
+        }
+
+        $pattern = self::getHtmlAttributePattern();
+
+        return (bool)preg_match_all($pattern, $htmlAttributes);
+    }
+
+    /**
+     * Returns information if given value is a binary value
+     *
+     * @param string $value Value to verify
+     * @return bool
+     */
+    public static function isBinaryValue($value)
+    {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($value)) {
+            return false;
+        }
+
+        $pattern = self::$patterns['binaryValue'];
+
+        return (bool)preg_match($pattern, $value);
     }
 }

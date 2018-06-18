@@ -14,6 +14,7 @@ use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Locale;
 use Meritoo\Common\Utilities\Miscellaneous;
+use ReflectionException;
 use stdClass;
 
 /**
@@ -27,7 +28,11 @@ class MiscellaneousTest extends BaseTestCase
     private $stringSmall;
     private $stringCommaSeparated;
     private $stringDotSeparated;
+    private $stringWithoutSpaces;
 
+    /**
+     * @throws ReflectionException
+     */
     public function testConstructor()
     {
         static::assertHasNoConstructor(Miscellaneous::class);
@@ -361,37 +366,36 @@ class MiscellaneousTest extends BaseTestCase
     {
         self::assertEquals('Lorem ipsum dolor sit<br>amet, consectetur<br>adipiscing<br>elit', Miscellaneous::breakLongText($this->stringCommaSeparated, 20));
         self::assertEquals('Lorem ipsum dolor sit---amet, consectetur---adipiscing---elit', Miscellaneous::breakLongText($this->stringCommaSeparated, 20, '---'));
+        self::assertEquals('LoremIpsum<br>DolorSitAm<br>etConsecte<br>turAdipisc<br>ingElit', Miscellaneous::breakLongText($this->stringWithoutSpaces, 10));
     }
 
-    public function testRemoveDirectory()
+    public function testRemoveDirectoryUsingNotExistingDirectory()
     {
-        /*
-         * Removing not existing directory
-         */
-        self::assertTrue(Miscellaneous::removeDirectory('/abc/def/ghi'));
+        self::assertNull(Miscellaneous::removeDirectory('/abc/def/ghi'));
+    }
 
-        /*
-         * Removing not directory
-         */
+    public function testRemoveDirectoryUsingNoDirectory()
+    {
         $directoryPath = sys_get_temp_dir() . '/ipsum.txt';
         touch($directoryPath);
         self::assertTrue(Miscellaneous::removeDirectory($directoryPath));
+    }
 
-        /*
-         * Removing simple directory
-         */
+    public function testRemoveDirectoryUsingSimpleDirectory()
+    {
         $directoryPath = sys_get_temp_dir() . '/lorem/ipsum';
         mkdir($directoryPath, 0777, true);
         self::assertTrue(Miscellaneous::removeDirectory($directoryPath));
+    }
 
-        /*
-         * Removing more complex directory
-         */
+    public function testRemoveDirectoryUsingComplexDirectory()
+    {
         $directory1Path = sys_get_temp_dir() . '/lorem/ipsum';
         $directory2Path = sys_get_temp_dir() . '/lorem/dolor/sit';
 
         mkdir($directory1Path, 0777, true);
         mkdir($directory2Path, 0777, true);
+
         self::assertTrue(Miscellaneous::removeDirectory(sys_get_temp_dir() . '/lorem', false));
     }
 
@@ -661,6 +665,10 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(255, Miscellaneous::getValidColorComponent(255, false));
     }
 
+    /**
+     * @throws IncorrectColorHexLengthException
+     * @throws InvalidColorHexValueException
+     */
     public function testGetInvertedColorWithIncorrectLength()
     {
         $this->setExpectedException(IncorrectColorHexLengthException::class);
@@ -675,6 +683,10 @@ class MiscellaneousTest extends BaseTestCase
         Miscellaneous::getInvertedColor('1234567');
     }
 
+    /**
+     * @throws IncorrectColorHexLengthException
+     * @throws InvalidColorHexValueException
+     */
     public function testGetInvertedColorWithInvalidValue()
     {
         $this->setExpectedException(InvalidColorHexValueException::class);
@@ -686,6 +698,10 @@ class MiscellaneousTest extends BaseTestCase
         Miscellaneous::getInvertedColor('00ppqq');
     }
 
+    /**
+     * @throws IncorrectColorHexLengthException
+     * @throws InvalidColorHexValueException
+     */
     public function testGetInvertedColor()
     {
         /*
@@ -1174,6 +1190,7 @@ class MiscellaneousTest extends BaseTestCase
         $this->stringSmall = 'Lorem ipsum dolor sit amet.';
         $this->stringCommaSeparated = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
         $this->stringDotSeparated = 'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.';
+        $this->stringWithoutSpaces = 'LoremIpsumDolorSitAmetConsecteturAdipiscingElit';
     }
 
     /**
@@ -1186,5 +1203,6 @@ class MiscellaneousTest extends BaseTestCase
         unset($this->stringSmall);
         unset($this->stringCommaSeparated);
         unset($this->stringDotSeparated);
+        unset($this->stringWithoutSpaces);
     }
 }

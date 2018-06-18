@@ -48,23 +48,6 @@ class Arrays
 
                 if (is_array($value)) {
                     $effect .= self::values2string($value, $arrayColumnKey, $separator);
-                    /*
-                     * Previous version. Doesn't work with array containing arrays, e.g.:
-                     * array(
-                     *      1 => array(
-                     *          'item1',
-                     *          'item2'
-                     *      ),
-                     *      2 => array(
-                     *          'item3',
-                     *          'item4'
-                     *      )
-                     * )
-                     *
-                      if(isset($value[$arrayColumnKey])){
-                      $effect .= $value[$arrayColumnKey];
-                      }
-                     */
                 } else {
                     if (empty($arrayColumnKey)) {
                         $effect .= $value;
@@ -530,6 +513,10 @@ class Arrays
      */
     public static function removeElement(array $array, $item)
     {
+        /*
+         * No elements or the element does not exist?
+         * Nothing to do
+         */
         if (empty($array) || !in_array($item, $array)) {
             return false;
         }
@@ -626,6 +613,10 @@ class Arrays
      */
     public static function setKeysAsValues(array $array, $ignoreDuplicatedValues = true)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
         if (empty($array)) {
             return [];
         }
@@ -1083,6 +1074,10 @@ class Arrays
      */
     public static function getAllValuesOfKey(array $array, $key)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
         if (empty($array)) {
             return null;
         }

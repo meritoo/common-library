@@ -9,7 +9,8 @@
 namespace Meritoo\Common\Utilities;
 
 use Gedmo\Sluggable\Util\Urlizer;
-use Symfony\Component\HttpFoundation\Cookie;
+use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
+use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Transliterator;
 
 /**
@@ -626,10 +627,10 @@ class Miscellaneous
      * Breaks long text
      *
      * @param string $text                   The text to check and break
-     * @param int    $perLine                (optional) Characters count per line
-     * @param string $separator              (optional) Separator that is placed beetwen lines
-     * @param string $encoding               (optional) Character encoding. Used by mb_substr().
-     * @param int    $proportionalAberration (optional) Proportional aberration for chars (percent value)
+     * @param int    $perLine                (optional) Characters count per line. Default: 100.
+     * @param string $separator              (optional) Separator that is placed between lines. Default: "<br>".
+     * @param string $encoding               (optional) Character encoding. Used by mb_substr(). Default: "UTF-8".
+     * @param int    $proportionalAberration (optional) Proportional aberration for chars (percent value). Default: 20.
      * @return string
      */
     public static function breakLongText(
@@ -716,15 +717,23 @@ class Miscellaneous
      *
      * @param string $directoryPath Directory path
      * @param bool   $contentOnly   (optional) If is set to true, only content of the directory is removed, not
-     *                              directory. Otherwise - directory is removed too.
-     * @return bool
+     *                              directory itself. Otherwise - directory is removed too (default behaviour).
+     * @return bool|null
      */
     public static function removeDirectory($directoryPath, $contentOnly = false)
     {
+        /*
+         * Directory does not exist?
+         * Nothing to do
+         */
         if (!file_exists($directoryPath)) {
-            return true;
+            return null;
         }
 
+        /*
+         * It's not a directory?
+         * Let's treat it like file
+         */
         if (!is_dir($directoryPath)) {
             return unlink($directoryPath);
         }
@@ -739,6 +748,9 @@ class Miscellaneous
             }
         }
 
+        /*
+         * Directory should be removed too?
+         */
         if (!$contentOnly) {
             return rmdir($directoryPath);
         }
@@ -1193,138 +1205,6 @@ class Miscellaneous
     }
 
     /**
-     * Returns a CURL response with parsed HTTP headers as array with "headers", "cookies" and "content" keys
-     *
-     * The headers and cookies are parsed and returned as an array, and an array of Cookie objects. Returned array looks
-     * like this example:
-     * <code>
-     * [
-     *      'headers' => [
-     *          'Content-Type' => 'text/html; charset=UTF-8',
-     *          ...
-     *      ],
-     *      'cookies' => [
-     *          new Symfony\Component\HttpFoundation\Cookie(),
-     *          new Symfony\Component\HttpFoundation\Cookie(),
-     *          ...
-     *      ],
-     *      'content' => '<html>...</html>'
-     * ]
-     * </code>
-     *
-     * If you want to attach HTTP headers into response content by CURL you need to set "CURLOPT_HEADER" option
-     * to "true". To read exact length of HTTP headers from CURL you can use "curl_getinfo()" function
-     * and read "CURLINFO_HEADER_SIZE" option.
-     *
-     * @param string $response   the full content of response, including HTTP headers
-     * @param int    $headerSize The length of HTTP headers in content
-     * @return array
-     */
-    public static function getCurlResponseWithHeaders($response, $headerSize)
-    {
-        $headerContent = mb_substr($response, 0, $headerSize);
-        $content = mb_substr($response, $headerSize);
-        $headers = [];
-        $cookies = [];
-
-        /*
-         * Let's transform headers content into two arrays: headers and cookies
-         */
-        foreach (explode("\r\n", $headerContent) as $i => $line) {
-            /*
-             * First line is only HTTP status and is unneeded so skip it
-             */
-            if (0 === $i) {
-                continue;
-            }
-
-            if (Regex::contains($line, ':')) {
-                list($key, $value) = explode(': ', $line);
-
-                /*
-                 * If the header is a "set-cookie" let's save it to "cookies" array
-                 */
-                if ('Set-Cookie' === $key) {
-                    $cookieParameters = explode(';', $value);
-
-                    $name = '';
-                    $value = '';
-                    $expire = 0;
-                    $path = '/';
-                    $domain = null;
-                    $secure = false;
-                    $httpOnly = true;
-
-                    foreach ($cookieParameters as $j => $parameter) {
-                        $param = explode('=', $parameter);
-
-                        /*
-                         * First parameter will be always a cookie name and it's value. It is not needed to run
-                         * further actions for them, so save the values and move to next parameter.
-                         */
-                        if (0 === $j) {
-                            $name = trim($param[0]);
-                            $value = trim($param[1]);
-                            continue;
-                        }
-
-                        /*
-                         * Now there would be the rest of cookie parameters, names of params are sent different way so
-                         * I need to lowercase the names and remove unneeded spaces.
-                         */
-                        $paramName = mb_strtolower(trim($param[0]));
-                        $paramValue = true;
-
-                        /*
-                         * Some parameters don't have value e.g. "secure", but the value for them if they're specified
-                         * is "true". Otherwise - just read a value for parameter if exists.
-                         */
-                        if (array_key_exists(1, $param)) {
-                            $paramValue = trim($param[1]);
-                        }
-
-                        switch ($paramName) {
-                            case 'expires':
-                                $expire = $paramValue;
-                                break;
-                            case 'path':
-                                $path = $paramValue;
-                                break;
-                            case 'domain':
-                                $domain = $paramValue;
-                                break;
-                            case 'secure':
-                                $secure = $paramValue;
-                                break;
-                            case 'httponly':
-                                $httpOnly = $paramValue;
-                                break;
-                        }
-                    }
-
-                    /*
-                     * Create new Cookie object and add it to "cookies" array.
-                     * I must skip to next header as cookies shouldn't be saved in "headers" array.
-                     */
-                    $cookies[] = new Cookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
-                    continue;
-                }
-
-                /*
-                 * Save response header which is not a cookie
-                 */
-                $headers[$key] = $value;
-            }
-        }
-
-        return [
-            'headers' => $headers,
-            'cookies' => $cookies,
-            'content' => $content,
-        ];
-    }
-
-    /**
      * Adds missing the "0" characters to given number until given length is reached
      *
      * Example:
@@ -1432,6 +1312,8 @@ class Miscellaneous
      * Returns inverted value of color for given color
      *
      * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
+     * @throws IncorrectColorHexLengthException
+     * @throws InvalidColorHexValueException
      * @return string
      */
     public static function getInvertedColor($color)
