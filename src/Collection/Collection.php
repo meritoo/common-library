@@ -109,7 +109,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
      */
     public function add($element, $index = null)
     {
-        if (null === $index) {
+        if (null === $index || '' === $index) {
             $this->elements[] = $element;
         } else {
             $this->elements[$index] = $element;

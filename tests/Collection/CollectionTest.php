@@ -9,6 +9,7 @@
 namespace Meritoo\Common\Test\Collection;
 
 use ArrayIterator;
+use Generator;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -129,22 +130,39 @@ class CollectionTest extends BaseTestCase
         static::assertInstanceOf(ArrayIterator::class, $this->simpleCollection->getIterator());
     }
 
-    public function testAdd()
+    /**
+     * @param mixed      $element       The element to add
+     * @param int        $expectedCount Expected count of elements in collection
+     * @param int        $expectedIndex Expected index of added element in collection
+     * @param Collection $collection    The collection
+     *
+     * @dataProvider provideElementToAdd
+     */
+    public function testAddWithoutIndex($element, $expectedCount, $expectedIndex, Collection $collection)
     {
-        $this->emptyCollection->add('test1');
+        $collection->add($element);
 
-        static::assertTrue($this->emptyCollection->has('test1'));
-        static::assertEquals(1, $this->emptyCollection->count());
-        static::assertEquals('test1', $this->emptyCollection[0]);
+        static::assertTrue($collection->has($element));
+        static::assertEquals($expectedCount, $collection->count());
+        static::assertEquals($element, $collection[$expectedIndex]);
     }
 
-    public function testAddWithIndex()
+    /**
+     * @param mixed      $element       The element to add
+     * @param mixed      $index         Index of element to add
+     * @param int        $expectedCount Expected count of elements in collection
+     * @param int        $expectedIndex Expected index of added element in collection
+     * @param Collection $collection    The collection
+     *
+     * @dataProvider provideElementToAddWithIndex
+     */
+    public function testAddWithIndex($element, $index, $expectedCount, $expectedIndex, Collection $collection)
     {
-        $this->emptyCollection->add('test2', 1234);
+        $collection->add($element, $index);
 
-        static::assertTrue($this->emptyCollection->has('test2'));
-        static::assertEquals(1, $this->emptyCollection->count());
-        static::assertEquals('test2', $this->emptyCollection[1234]);
+        static::assertTrue($collection->has($element));
+        static::assertEquals($expectedCount, $collection->count());
+        static::assertEquals($element, $collection[$expectedIndex]);
     }
 
     public function testAddMultipleUsingEmptyArray()
@@ -307,6 +325,87 @@ class CollectionTest extends BaseTestCase
     public function testExistsVisibilityAndArguments()
     {
         static::assertMethodVisibilityAndArguments(Collection::class, 'exists', OopVisibilityType::IS_PRIVATE, 1, 1);
+    }
+
+    /**
+     * Provides element to add to collection
+     *
+     * @return Generator
+     */
+    public function provideElementToAdd()
+    {
+        $collection = new Collection();
+
+        yield[
+            'test1',
+            1,
+            0,
+            $collection,
+        ];
+
+        yield[
+            'test2',
+            2,
+            1,
+            $collection,
+        ];
+
+        yield[
+            'test3',
+            3,
+            2,
+            $collection,
+        ];
+    }
+
+    /**
+     * Provides element with index to add to collection
+     *
+     * @return Generator
+     */
+    public function provideElementToAddWithIndex()
+    {
+        $collection = new Collection();
+
+        yield[
+            'test1',
+            'aa',
+            1,
+            'aa',
+            $collection,
+        ];
+
+        yield[
+            'test2',
+            'oo',
+            2,
+            'oo',
+            $collection,
+        ];
+
+        yield[
+            'test3',
+            null,
+            3,
+            0,
+            $collection,
+        ];
+
+        yield[
+            'test4',
+            '',
+            4,
+            1,
+            $collection,
+        ];
+
+        yield[
+            'test5',
+            'vv',
+            5,
+            'vv',
+            $collection,
+        ];
     }
 
     /**
