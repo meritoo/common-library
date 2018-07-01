@@ -4,6 +4,7 @@ Common and useful classes, methods, exceptions etc.
 # 0.0.21
 
 1. Composer > require ext-pcre
+2. Arrays > minor refactoring
 
 # 0.0.20
 
