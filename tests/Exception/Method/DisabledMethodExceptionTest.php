@@ -16,8 +16,8 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while method cannot be called, because is disabled
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class DisabledMethodExceptionTest extends BaseTestCase
 {

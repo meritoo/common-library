@@ -13,8 +13,8 @@ use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
 /**
  * Base test case for the type of something
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 abstract class BaseTypeTestCase extends BaseTestCase
 {

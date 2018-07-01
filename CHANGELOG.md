@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. Composer > require ext-pcre
 2. Arrays > minor refactoring
+3. Update @author and @copyright in classes' descriptions
 
 # 0.0.20
 

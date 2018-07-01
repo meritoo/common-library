@@ -17,8 +17,8 @@ use stdClass;
 /**
  * Test case of the useful methods for repository
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class RepositoryTest extends BaseTestCase
 {

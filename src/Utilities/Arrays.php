@@ -11,8 +11,8 @@ namespace Meritoo\Common\Utilities;
 /**
  * Useful arrays methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Arrays
 {

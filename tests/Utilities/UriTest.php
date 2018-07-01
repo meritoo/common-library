@@ -15,8 +15,8 @@ use Meritoo\Common\Utilities\Uri;
 /**
  * Test case of the useful uri methods (only static functions)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UriTest extends BaseTestCase
 {

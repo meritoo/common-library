@@ -16,8 +16,8 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of the exception used while type of something is unknown
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UnknownTypeExceptionTest extends BaseTestCase
 {
@@ -41,8 +41,8 @@ class UnknownTypeExceptionTest extends BaseTestCase
 /**
  * Type of something (for testing purposes)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TestType extends BaseType
 {
@@ -54,8 +54,8 @@ class TestType extends BaseType
 /**
  * An exception used while type of something is unknown (for testing purposes)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UnknownTestTypeException extends UnknownTypeException
 {
@@ -73,8 +73,8 @@ class UnknownTestTypeException extends UnknownTypeException
 /**
  * Service used together with type of something (for testing purposes)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TestService
 {

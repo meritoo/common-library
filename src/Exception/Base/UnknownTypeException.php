@@ -15,8 +15,8 @@ use Meritoo\Common\Utilities\Arrays;
 /**
  * An exception used while type of something is unknown
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 abstract class UnknownTypeException extends Exception
 {

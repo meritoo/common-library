@@ -17,8 +17,8 @@ use ReflectionException;
 /**
  * Test case of the useful regular expressions methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class RegexTest extends BaseTestCase
 {

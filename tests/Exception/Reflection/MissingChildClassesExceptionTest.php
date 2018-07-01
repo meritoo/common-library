@@ -16,8 +16,8 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while given class has no child classes
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class MissingChildClassesExceptionTest extends BaseTestCase
 {

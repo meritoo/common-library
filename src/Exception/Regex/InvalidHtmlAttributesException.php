@@ -11,8 +11,8 @@ namespace Meritoo\Common\Exception\Regex;
 /**
  * An exception used while html attributes are invalid
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class InvalidHtmlAttributesException extends \Exception
 {

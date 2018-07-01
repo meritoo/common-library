@@ -14,8 +14,8 @@ use Meritoo\Common\Utilities\Reflection;
 /**
  * An exception used while given class has no child classes
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class MissingChildClassesException extends Exception
 {

@@ -13,8 +13,8 @@ use Meritoo\Common\Type\Base\BaseType;
 /**
  * Type of date part, e.g. "year"
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class DatePartType extends BaseType
 {

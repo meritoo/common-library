@@ -18,8 +18,8 @@ use Meritoo\Common\Utilities\Arrays;
  * Collection of elements.
  * It's a set of some elements, e.g. objects.
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Collection implements Countable, ArrayAccess, IteratorAggregate
 {

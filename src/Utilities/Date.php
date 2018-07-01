@@ -18,8 +18,8 @@ use Meritoo\Common\Type\DatePeriod;
 /**
  * Useful date methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Date
 {

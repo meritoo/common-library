@@ -14,8 +14,8 @@ use Meritoo\Common\Utilities\Reflection;
 /**
  * An exception used while given class has more than one child class
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TooManyChildClassesException extends Exception
 {

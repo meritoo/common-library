@@ -13,8 +13,8 @@ use Generator;
 /**
  * Useful methods for the Generator class (only static functions)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class GeneratorUtility
 {

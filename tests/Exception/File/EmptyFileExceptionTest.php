@@ -16,8 +16,8 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while file with given path is empty (has no content)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class EmptyFileExceptionTest extends BaseTestCase
 {

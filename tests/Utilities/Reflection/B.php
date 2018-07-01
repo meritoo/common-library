@@ -12,8 +12,8 @@ namespace Meritoo\Common\Test\Utilities\Reflection;
  * The B class.
  * Used for testing the Reflection class.
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class B extends A implements I
 {

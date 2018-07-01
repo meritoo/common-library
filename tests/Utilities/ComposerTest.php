@@ -15,8 +15,8 @@ use Meritoo\Common\Utilities\Composer;
 /**
  * Test case of the useful Composer-related methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class ComposerTest extends BaseTestCase
 {

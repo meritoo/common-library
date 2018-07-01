@@ -13,8 +13,8 @@ use Exception;
 /**
  * An exception used while name of bundle is incorrect
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class IncorrectBundleNameException extends Exception
 {

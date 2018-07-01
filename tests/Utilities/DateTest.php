@@ -19,8 +19,8 @@ use Meritoo\Common\Utilities\Date;
 /**
  * Test case of the Date methods (only static functions)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class DateTest extends BaseTestCase
 {

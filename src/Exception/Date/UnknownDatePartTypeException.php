@@ -14,8 +14,8 @@ use Meritoo\Common\Type\DatePartType;
 /**
  * An exception used while type of date part, e.g. "year", is unknown
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UnknownDatePartTypeException extends UnknownTypeException
 {

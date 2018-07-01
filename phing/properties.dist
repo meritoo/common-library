@@ -31,7 +31,7 @@ assets.installWithSymlink = true
 # The cache:clear command should always be called with the --no-warmup option. Warmup should be done via the cache:warmup command.
 # https://github.com/symfony/symfony/blob/master/UPGRADE-3.3.md#frameworkbundle
 #
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+# Meritoo <github@meritoo.pl>
 # 2017-06-06
 #
 cache.clearWithWarmup = false
@@ -81,7 +81,7 @@ dir.reports.coverage = ${dir.reports}/phpunit_coverage
 # Disabled, because unnecessary right now
 # phpdocumentor/phpdocumentor cannot be installed via Composer
 #
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+# Meritoo <github@meritoo.pl>
 # 2017-02-22
 #
 #dir.docs = ${dir.build}/docs

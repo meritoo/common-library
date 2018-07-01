@@ -23,8 +23,8 @@ use ReflectionProperty;
 /**
  * Useful reflection methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Reflection
 {
@@ -206,7 +206,7 @@ class Reflection
              * while using "project.name" as property - $project has $name property ($project exists in the Deal class)
              * and the $project equals null
              *
-             * Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+             * Meritoo <github@meritoo.pl>
              * 2016-11-07
              */
             if (null !== $object) {

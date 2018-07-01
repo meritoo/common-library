@@ -14,8 +14,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * Base test case with common methods and data providers
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 abstract class BaseTestCase extends TestCase
 {

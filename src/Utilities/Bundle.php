@@ -13,8 +13,8 @@ use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
 /**
  * Useful methods for bundle
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Bundle
 {

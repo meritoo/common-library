@@ -14,8 +14,8 @@ use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 /**
  * Useful regular expressions methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Regex
 {
