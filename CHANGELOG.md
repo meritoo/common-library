@@ -1,6 +1,10 @@
 # Meritoo Common Library
 Common and useful classes, methods, exceptions etc.
 
+# 0.0.21
+
+1. Composer > require ext-pcre
+
 # 0.0.20
 
 1. Collection > add() method > treat empty string as not provided index (same as null)
