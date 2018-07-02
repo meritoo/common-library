@@ -7,6 +7,7 @@ Common and useful classes, methods, exceptions etc.
 1. Composer > support/require PHP 5.6+ (instead of 5.5.9+)
 2. Docker > rename `php-cli` service to `php`
 3. Exceptions > create instance of exception using static `create()` method (instead of constructor)
+4. Documentation > Exceptions
 
 # 0.0.21
 
