@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 0.1.1
 
 1. TravisCI > run using PHP 7.2 too
+2. ValueObject > class Version > represents version of software
 
 # 0.1.0
 
