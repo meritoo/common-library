@@ -6,6 +6,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. TravisCI > run using PHP 7.2 too
 2. ValueObject > class Version > represents version of software
+3. Move version of this package to `VERSION` file (from `composer.json` file)
 
 # 0.1.0
 
