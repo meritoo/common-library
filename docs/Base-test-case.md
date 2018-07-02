@@ -48,5 +48,6 @@ class MimeTypesTest extends BaseTestCase
 2. [Collection of elements](Collection-of-elements.md)
 3. [Exceptions](Exceptions.md)
 4. [Static methods](Static-methods.md)
+5. [Value Objects](Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../README.md)
