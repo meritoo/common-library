@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 0.1.1
+
+1. TravisCI > run using PHP 7.2 too
+
 # 0.1.0
 
 1. Composer > support/require PHP 5.6+ (instead of 5.5.9+)
