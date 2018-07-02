@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while method cannot be called, because is disabled
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class DisabledMethodExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(DisabledMethodException::class, OopVisibilityType::IS_PUBLIC, 2, 1);
+        static::assertConstructorVisibilityAndArguments(DisabledMethodException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -36,7 +36,7 @@ class DisabledMethodExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($disabledMethod, $alternativeMethod, $expectedMessage)
     {
-        $exception = new DisabledMethodException($disabledMethod, $alternativeMethod);
+        $exception = DisabledMethodException::create($disabledMethod, $alternativeMethod);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

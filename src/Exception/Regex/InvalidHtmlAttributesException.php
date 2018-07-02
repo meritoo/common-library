@@ -11,19 +11,21 @@ namespace Meritoo\Common\Exception\Regex;
 /**
  * An exception used while html attributes are invalid
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class InvalidHtmlAttributesException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $htmlAttributes Invalid html attributes
+     * @return InvalidHtmlAttributesException
      */
-    public function __construct($htmlAttributes)
+    public static function create($htmlAttributes)
     {
         $message = sprintf('HTML attributes \'%s\' are invalid. Is there everything ok?', $htmlAttributes);
-        parent::__construct($message);
+
+        return new static($message);
     }
 }

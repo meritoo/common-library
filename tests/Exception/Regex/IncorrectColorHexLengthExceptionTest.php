@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while length of given hexadecimal value of color is incorrect
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class IncorrectColorHexLengthExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(IncorrectColorHexLengthException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(IncorrectColorHexLengthException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -34,7 +34,7 @@ class IncorrectColorHexLengthExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($color, $expectedMessage)
     {
-        $exception = new IncorrectColorHexLengthException($color);
+        $exception = IncorrectColorHexLengthException::create($color);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

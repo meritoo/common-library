@@ -11,19 +11,21 @@ namespace Meritoo\Common\Exception\Regex;
 /**
  * An exception used while given hexadecimal value of color is invalid
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class InvalidColorHexValueException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $color Invalid hexadecimal value of color
+     * @return InvalidColorHexValueException
      */
-    public function __construct($color)
+    public static function create($color)
     {
         $message = sprintf('Hexadecimal value of color \'%s\' is invalid. Is there everything ok?', $color);
-        parent::__construct($message);
+
+        return new static($message);
     }
 }

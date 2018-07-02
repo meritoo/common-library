@@ -16,8 +16,8 @@ use Meritoo\Common\Utilities\Date;
  * A date's period.
  * Contains start and end date of the period.
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class DatePeriod extends BaseType
 {

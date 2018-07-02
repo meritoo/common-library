@@ -7,8 +7,8 @@ use Meritoo\Common\Type\Base\BaseType;
 /**
  * The visibility of a property, a method or (as of PHP 7.1.0) a constant
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @see       http://php.net/manual/en/language.oop5.visibility.php
  */

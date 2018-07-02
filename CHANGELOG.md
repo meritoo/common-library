@@ -1,5 +1,19 @@
 # Meritoo Common Library
+
 Common and useful classes, methods, exceptions etc.
+
+# 0.1.0
+
+1. Composer > support/require PHP 5.6+ (instead of 5.5.9+)
+2. Docker > rename `php-cli` service to `php`
+3. Exceptions > create instance of exception using static `create()` method (instead of constructor)
+4. Documentation > Exceptions
+
+# 0.0.21
+
+1. Composer > require ext-pcre
+2. Arrays > minor refactoring
+3. Update @author and @copyright in classes' descriptions
 
 # 0.0.20
 

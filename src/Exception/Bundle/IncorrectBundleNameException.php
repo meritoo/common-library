@@ -13,22 +13,24 @@ use Exception;
 /**
  * An exception used while name of bundle is incorrect
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class IncorrectBundleNameException extends Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $bundleName Incorrect name of bundle
+     * @return IncorrectBundleNameException
      */
-    public function __construct($bundleName)
+    public static function create($bundleName)
     {
         $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
             . ' there everything ok?';
 
         $message = sprintf($template, $bundleName);
-        parent::__construct($message);
+
+        return new static($message);
     }
 }

@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of the exception used while type of something is unknown
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UnknownTypeExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownTestTypeException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(UnknownTestTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     public function testWithoutException()
@@ -41,8 +41,8 @@ class UnknownTypeExceptionTest extends BaseTestCase
 /**
  * Type of something (for testing purposes)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TestType extends BaseType
 {
@@ -54,27 +54,31 @@ class TestType extends BaseType
 /**
  * An exception used while type of something is unknown (for testing purposes)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UnknownTestTypeException extends UnknownTypeException
 {
     /**
-     * Class constructor
+     * Creates exception
      *
-     * @param int|string $unknownType The unknown type of something (for testing purposes)
+     * @param string $unknownType The unknown type of something (for testing purposes)
+     * @return UnknownTestTypeException
      */
-    public function __construct($unknownType)
+    public static function createException($unknownType)
     {
-        parent::__construct($unknownType, new TestType(), 'type of something used for testing');
+        /* @var UnknownTestTypeException $exception */
+        $exception = parent::create($unknownType, new TestType(), 'type of something used for testing');
+
+        return $exception;
     }
 }
 
 /**
  * Service used together with type of something (for testing purposes)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TestService
 {

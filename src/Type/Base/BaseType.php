@@ -14,8 +14,8 @@ use Meritoo\Common\Utilities\Reflection;
  * Base / abstract type of something, e.g. type of button, order, date etc.
  * Child class should contain constants - each of them represent one type.
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 abstract class BaseType
 {

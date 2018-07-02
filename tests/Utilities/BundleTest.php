@@ -16,8 +16,8 @@ use Meritoo\Common\Utilities\Bundle;
 /**
  * Test case of the useful methods for bundle
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class BundleTest extends BaseTestCase
 {
@@ -42,7 +42,6 @@ class BundleTest extends BaseTestCase
      * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
      * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
      *
-     * @throws IncorrectBundleNameException
      * @dataProvider provideViewPathAndIncorrectBundleName
      */
     public function testGetBundleViewPathUsingIncorrectBundleName($viewPath, $bundleName)

@@ -15,8 +15,8 @@ use SimpleXMLElement;
 /**
  * Useful XML-related methods (only static functions)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Xml
 {

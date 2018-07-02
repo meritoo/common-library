@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while given class has more than one child class
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TooManyChildClassesExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(TooManyChildClassesException::class, OopVisibilityType::IS_PUBLIC, 2, 2);
+        static::assertConstructorVisibilityAndArguments(TooManyChildClassesException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -36,7 +36,7 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($parentClass, array $childClasses, $expectedMessage)
     {
-        $exception = new TooManyChildClassesException($parentClass, $childClasses);
+        $exception = TooManyChildClassesException::create($parentClass, $childClasses);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

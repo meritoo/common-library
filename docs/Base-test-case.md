@@ -1,4 +1,5 @@
 # Meritoo Common Library
+
 Common and useful classes, methods, exceptions etc.
 
 # Base test case (with common methods and data providers)
@@ -45,6 +46,7 @@ class MimeTypesTest extends BaseTestCase
 
 1. [**Base test case (with common methods and data providers)**](Base-test-case.md)
 2. [Collection of elements](Collection-of-elements.md)
-3. [Static methods](Static-methods.md)
+3. [Exceptions](Exceptions.md)
+4. [Static methods](Static-methods.md)
 
 [&lsaquo; Back to `Readme`](../README.md)

@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while url is invalid
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class InvalidUrlExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(InvalidUrlException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(InvalidUrlException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -34,7 +34,7 @@ class InvalidUrlExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($url, $expectedMessage)
     {
-        $exception = new InvalidUrlException($url);
+        $exception = InvalidUrlException::create($url);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

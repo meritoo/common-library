@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while given class has no child classes
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class MissingChildClassesExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(MissingChildClassesException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(MissingChildClassesException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -35,7 +35,7 @@ class MissingChildClassesExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($parentClass, $expectedMessage)
     {
-        $exception = new MissingChildClassesException($parentClass);
+        $exception = MissingChildClassesException::create($parentClass);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

@@ -11,21 +11,22 @@ namespace Meritoo\Common\Exception\File;
 /**
  * An exception used while file with given path does not exist
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class NotExistingFileException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $notExistingFilePath Path of not existing (or not readable) file
+     * @return NotExistingFileException
      */
-    public function __construct($notExistingFilePath)
+    public static function create($notExistingFilePath)
     {
         $template = 'File with path \'%s\' does not exist (or is not readable). Did you provide path of proper file?';
         $message = sprintf($template, $notExistingFilePath);
 
-        parent::__construct($message);
+        return new static($message);
     }
 }

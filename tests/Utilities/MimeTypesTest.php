@@ -15,8 +15,8 @@ use Meritoo\Common\Utilities\MimeTypes;
 /**
  * Test case of the useful methods for mime types of files
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class MimeTypesTest extends BaseTestCase
 {

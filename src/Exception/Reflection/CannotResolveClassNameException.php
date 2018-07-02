@@ -13,20 +13,21 @@ use Exception;
 /**
  * An exception used while name of class or trait cannot be resolved
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class CannotResolveClassNameException extends Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param array|object|string $source   Source of the class's / trait's name. It can be an array of objects,
      *                                      namespaces, object or namespace.
      * @param bool                $forClass (optional) If is set to true, message of this exception for class is
      *                                      prepared. Otherwise - for trait.
+     * @return CannotResolveClassNameException
      */
-    public function __construct($source, $forClass = true)
+    public static function create($source, $forClass = true)
     {
         $forWho = 'trait';
         $value = '';
@@ -42,6 +43,6 @@ class CannotResolveClassNameException extends Exception
         $template = 'Name of %s from given \'%s\'%s cannot be resolved. Is there everything ok?';
         $message = sprintf($template, $forWho, gettype($source), $value);
 
-        parent::__construct($message);
+        return new static($message);
     }
 }

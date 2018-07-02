@@ -11,15 +11,15 @@ namespace Meritoo\Common\Utilities;
 use DateInterval;
 use DateTime;
 use Exception;
-use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
+use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
 use Meritoo\Common\Type\DatePartType;
 use Meritoo\Common\Type\DatePeriod;
 
 /**
  * Useful date methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Date
 {
@@ -255,21 +255,21 @@ class Date
          * Oops, incorrect year
          */
         if ($year <= 0) {
-            throw new UnknownDatePartTypeException(DatePartType::YEAR, $year);
+            throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
         }
 
         /*
          * Oops, incorrect month
          */
         if ($month < 1 || $month > 12) {
-            throw new UnknownDatePartTypeException(DatePartType::MONTH, $month);
+            throw UnknownDatePartTypeException::createException(DatePartType::MONTH, $month);
         }
 
         /*
          * Oops, incorrect day
          */
         if ($day < 1 || $day > 31) {
-            throw new UnknownDatePartTypeException(DatePartType::DAY, $day);
+            throw UnknownDatePartTypeException::createException(DatePartType::DAY, $day);
         }
 
         if ($month < 3) {

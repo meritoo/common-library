@@ -17,8 +17,8 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of date's period
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class DatePeriodTest extends BaseTypeTestCase
 {

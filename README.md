@@ -1,4 +1,5 @@
 # Meritoo Common Library
+
 Common and useful classes, methods, exceptions etc.
 
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/meritoo/common-library) [![Packagist](https://img.shields.io/packagist/v/meritoo/common-library.svg?style=flat-square)](https://packagist.org/packages/meritoo/common-library) [![license](https://img.shields.io/github/license/meritoo/common-library.svg?style=flat-square)](https://github.com/meritoo/common-library) [![GitHub commits](https://img.shields.io/github/commits-since/meritoo/common-library/0.0.1.svg?style=flat-square)](https://github.com/meritoo/common-library) [![Coverage Status](https://coveralls.io/repos/github/meritoo/common-library/badge.svg?branch=master)](https://coveralls.io/github/meritoo/common-library?branch=master)
@@ -17,7 +18,8 @@ composer require meritoo/common-library
 
 1. [Base test case (with common methods and data providers)](docs/Base-test-case.md)
 2. [Collection of elements](docs/Collection-of-elements.md)
-3. [Static methods](docs/Static-methods.md)
+3. [Exceptions](docs/Static-methods.md)
+4. [Static methods](docs/Static-methods.md)
 
 # Development
 

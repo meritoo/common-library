@@ -20,8 +20,8 @@ use stdClass;
 /**
  * Test case of the Miscellaneous methods (only static functions)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class MiscellaneousTest extends BaseTestCase
 {

@@ -22,8 +22,8 @@ use stdClass;
  * BaseTestCaseTrait
  * Created on 2017-11-02
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 trait BaseTestCaseTrait
 {

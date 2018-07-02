@@ -2,7 +2,7 @@
     "name": "meritoo/common-library",
     "description": "Useful classes, methods, extensions etc.",
     "license": "MIT",
-    "version": "0.0.20",
+    "version": "0.1.0",
     "authors": [
         {
             "name": "Meritoo.pl",
@@ -11,7 +11,8 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=5.6",
+        "ext-pcre": "*",
         "doctrine/orm": "^2.5",
         "gedmo/doctrine-extensions": "^2.4"
     },

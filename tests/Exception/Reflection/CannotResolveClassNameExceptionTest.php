@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while name of class or trait cannot be resolved
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class CannotResolveClassNameExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(CannotResolveClassNameException::class, OopVisibilityType::IS_PUBLIC, 2, 1);
+        static::assertConstructorVisibilityAndArguments(CannotResolveClassNameException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -37,7 +37,7 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($source, $forClass, $expectedMessage)
     {
-        $exception = new CannotResolveClassNameException($source, $forClass);
+        $exception = CannotResolveClassNameException::create($source, $forClass);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

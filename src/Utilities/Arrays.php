@@ -11,8 +11,8 @@ namespace Meritoo\Common\Utilities;
 /**
  * Useful arrays methods
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class Arrays
 {
@@ -673,7 +673,7 @@ class Arrays
             return null;
         }
 
-        $effect = $array;
+        $effect = &$array;
         ksort($effect, $sortFlags);
 
         foreach ($effect as &$value) {
@@ -822,60 +822,66 @@ class Arrays
      */
     public static function getLastElementsPaths(array $array, $separator = '.', $parentPath = '', $stopIfMatchedBy = '')
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return [];
+        }
+
+        if (!empty($stopIfMatchedBy)) {
+            $stopIfMatchedBy = self::makeArray($stopIfMatchedBy);
+        }
+
         $paths = [];
 
-        if (!empty($array)) {
-            if (!empty($stopIfMatchedBy)) {
-                $stopIfMatchedBy = self::makeArray($stopIfMatchedBy);
+        foreach ($array as $key => $value) {
+            $path = $key;
+            $stopRecursion = false;
+
+            /*
+             * If the path of parent element is delivered,
+             * I have to use it and build longer path
+             */
+            if (!empty($parentPath)) {
+                $pathTemplate = '%s%s%s';
+                $path = sprintf($pathTemplate, $parentPath, $separator, $key);
             }
 
-            foreach ($array as $key => $value) {
-                $path = $key;
-                $stopRecursion = false;
+            /*
+             * Check if the key or current path matches one of patterns at which the process should be stopped,
+             * the recursive not used. It means that I have to pass current value and stop processing of the
+             * array (don't go to the next step).
+             */
+            if (!empty($stopIfMatchedBy)) {
+                foreach ($stopIfMatchedBy as $rawPattern) {
+                    $pattern = sprintf('|%s|', $rawPattern);
 
-                /*
-                 * If the path of parent element is delivered,
-                 * I have to use it and build longer path
-                 */
-                if (!empty($parentPath)) {
-                    $pathTemplate = '%s%s%s';
-                    $path = sprintf($pathTemplate, $parentPath, $separator, $key);
-                }
-
-                /*
-                 * Check if the key or current path matches one of patterns at which the process should be stopped,
-                 * the recursive not used. It means that I have to pass current value and stop processing of the
-                 * array (don't go to the next step).
-                 */
-                if (!empty($stopIfMatchedBy)) {
-                    foreach ($stopIfMatchedBy as $rawPattern) {
-                        $pattern = sprintf('|%s|', $rawPattern);
-
-                        if (preg_match($pattern, $key) || preg_match($pattern, $path)) {
-                            $stopRecursion = true;
-                            break;
-                        }
+                    if (preg_match($pattern, $key) || preg_match($pattern, $path)) {
+                        $stopRecursion = true;
+                        break;
                     }
                 }
+            }
 
-                /*
-                 * The value is passed to the returned array if:
-                 * - it's not an array
-                 * or
-                 * - the process is stopped, recursive is not used
-                 */
-                if (!is_array($value) || (is_array($value) && empty($value)) || $stopRecursion) {
-                    $paths[$path] = $value;
-                    continue;
-                }
+            /*
+             * The value is passed to the returned array if:
+             * - it's not an array
+             * or
+             * - the process is stopped, recursive is not used
+             */
+            if (!is_array($value) || (is_array($value) && empty($value)) || $stopRecursion) {
+                $paths[$path] = $value;
+                continue;
+            }
 
-                /*
-                 * Let's iterate through the next level, using recursive
-                 */
-                if (is_array($value)) {
-                    $recursivePaths = self::getLastElementsPaths($value, $separator, $path, $stopIfMatchedBy);
-                    $paths += $recursivePaths;
-                }
+            /*
+             * Let's iterate through the next level, using recursive
+             */
+            if (is_array($value)) {
+                $recursivePaths = self::getLastElementsPaths($value, $separator, $path, $stopIfMatchedBy);
+                $paths += $recursivePaths;
             }
         }
 

@@ -4,7 +4,7 @@
     The AutoloaderTask is required to load binaries installed by Composer.
     The "autoloaderpath" attribute of this task is not required, because it's default value is: vendor/autoload.php.
 
-    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    Meritoo <github@meritoo.pl>
     2017-02-23
     -->
     <autoloader />
@@ -48,7 +48,7 @@
     a) phpdocumentor/phpdocumentor v2.9.0 requires symfony/validator ~2.2
     b) symfony/validator ~2.2 causes to remove symfony/symfony 3.*
 
-    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    Meritoo <github@meritoo.pl>
     2017-02-22
     -->
 
@@ -73,7 +73,7 @@
     a) phpdocumentor/phpdocumentor v2.9.0 requires symfony/validator ~2.2
     b) symfony/validator ~2.2 causes to remove symfony/symfony 3.*
 
-    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    Meritoo <github@meritoo.pl>
     2017-02-22
     -->
     <!--<target name="build:doc"-->
@@ -113,7 +113,7 @@
     a) phpdocumentor/phpdocumentor v2.9.0 requires symfony/validator ~2.2
     b) symfony/validator ~2.2 causes to remove symfony/symfony 3.*
 
-    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    Meritoo <github@meritoo.pl>
     2017-02-22
 
     <target name="doc:phpdoc2" description="Generates API documentations">
@@ -142,7 +142,7 @@
     via Composer the Symfony2 standard is not included / available in this package. In this case the PHP Coding
     Standards Fixer (http://cs.sensiolabs.org) is used.
 
-    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    Meritoo <github@meritoo.pl>
     2017-02-22
     -->
     <target name="check:cs" description="Checks coding standard">
@@ -166,7 +166,7 @@
         <!--
         Previous / old version
 
-        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+        Meritoo <github@meritoo.pl>
         2017-02-22
 
         <exec command="phpcpd \-\-log-pmd=${dir.reports}/pmd-cpd.xml ${dir.src}" />
@@ -204,7 +204,7 @@
         <!--
         Previous / old version
 
-        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+        Meritoo <github@meritoo.pl>
         2017-02-22
 
         <exec command="phploc \-\-log-csv=${dir.reports}/phploc.csv ${dir.src}" />

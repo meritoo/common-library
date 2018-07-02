@@ -11,16 +11,16 @@ namespace Meritoo\Common\Exception\File;
 /**
  * An exception used while path of given file is empty
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class EmptyFilePathException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      */
-    public function __construct()
+    public static function create()
     {
-        parent::__construct('Path of the file is empty. Did you provide path of proper file?');
+        return new static('Path of the file is empty. Did you provide path of proper file?');
     }
 }

@@ -16,14 +16,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while file with given path is empty (has no content)
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class EmptyFileExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(EmptyFileException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(EmptyFileException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -32,9 +32,9 @@ class EmptyFileExceptionTest extends BaseTestCase
      *
      * @dataProvider providePathOfFile
      */
-    public function testConstructorMessage($emptyFilePath, $expectedMessage)
+    public function testMessage($emptyFilePath, $expectedMessage)
     {
-        $exception = new EmptyFileException($emptyFilePath);
+        $exception = EmptyFileException::create($emptyFilePath);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

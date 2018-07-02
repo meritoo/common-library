@@ -14,8 +14,8 @@ use Meritoo\Common\Utilities\GeneratorUtility;
 /**
  * Test case of the useful methods for the Generator class
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class GeneratorUtilityTest extends BaseTestCase
 {

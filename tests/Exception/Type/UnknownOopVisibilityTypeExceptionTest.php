@@ -17,14 +17,14 @@ use Meritoo\Common\Type\OopVisibilityType;
  * Test case of an exception used while the visibility of a property, a method or (as of PHP 7.1.0) a constant is
  * unknown
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownOopVisibilityTypeException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(UnknownOopVisibilityTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -35,7 +35,7 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($unknownType, $expectedMessage)
     {
-        $exception = new UnknownOopVisibilityTypeException($unknownType);
+        $exception = UnknownOopVisibilityTypeException::createException($unknownType);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

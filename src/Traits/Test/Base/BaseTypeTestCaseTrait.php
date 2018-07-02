@@ -14,8 +14,8 @@ use Meritoo\Common\Type\Base\BaseType;
 /**
  * Trait for the base test case for the type of something
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 trait BaseTypeTestCaseTrait
 {

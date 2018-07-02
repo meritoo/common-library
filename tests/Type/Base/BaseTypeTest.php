@@ -15,8 +15,8 @@ use Meritoo\Common\Type\Base\BaseType;
 /**
  * Test case of the base / abstract type of something
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class BaseTypeTest extends BaseTestCase
 {
@@ -184,8 +184,8 @@ class BaseTypeTest extends BaseTestCase
 /**
  * Empty type of something used for testing
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TestEmptyType extends BaseType
 {
@@ -194,8 +194,8 @@ class TestEmptyType extends BaseType
 /**
  * Type of something used for testing
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class TestType extends BaseType
 {

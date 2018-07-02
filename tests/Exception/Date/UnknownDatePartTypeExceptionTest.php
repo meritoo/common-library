@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Test\Exception\Date;
 
 use Generator;
-use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
+use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\DatePartType;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -17,14 +17,14 @@ use Meritoo\Common\Type\OopVisibilityType;
 /**
  * Test case of an exception used while type of date part, e.g. "year", is unknown
  *
- * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
- * @copyright Meritoo.pl
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
  */
 class UnknownDatePartTypeExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownDatePartTypeException::class, OopVisibilityType::IS_PUBLIC, 2, 2);
+        static::assertConstructorVisibilityAndArguments(UnknownDatePartTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -34,9 +34,9 @@ class UnknownDatePartTypeExceptionTest extends BaseTestCase
      *
      * @dataProvider provideDatePartAndValue
      */
-    public function testConstructorMessage($unknownDatePart, $value, $expectedMessage)
+    public function testMessage($unknownDatePart, $value, $expectedMessage)
     {
-        $exception = new UnknownDatePartTypeException($unknownDatePart, $value);
+        $exception = UnknownDatePartTypeException::createException($unknownDatePart, $value);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 
