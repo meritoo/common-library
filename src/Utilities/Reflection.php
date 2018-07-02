@@ -524,7 +524,7 @@ class Reflection
          * Oops, cannot resolve class
          */
         if (null === $className) {
-            throw new CannotResolveClassNameException($class);
+            throw CannotResolveClassNameException::create($class);
         }
 
         $childClasses = [];
@@ -558,7 +558,6 @@ class Reflection
      *
      * @param array|object|string $parentClass Class who child class should be returned. An array of objects,
      *                                         namespaces, object or namespace.
-     * @throws CannotResolveClassNameException
      * @throws MissingChildClassesException
      * @throws TooManyChildClassesException
      * @return mixed
@@ -572,7 +571,7 @@ class Reflection
          * Oops, the base / parent class hasn't child class
          */
         if (empty($childClasses)) {
-            throw new MissingChildClassesException($parentClass);
+            throw MissingChildClassesException::create($parentClass);
         }
 
         /*
@@ -580,7 +579,7 @@ class Reflection
          * Oops, the base / parent class has too many child classes
          */
         if (count($childClasses) > 1) {
-            throw new TooManyChildClassesException($parentClass, $childClasses);
+            throw TooManyChildClassesException::create($parentClass, $childClasses);
         }
 
         return trim($childClasses[0]);
@@ -621,7 +620,6 @@ class Reflection
      * @param bool                $verifyParents If is set to true, parent classes are verified if they use given
      *                                           trait. Otherwise - not.
      * @throws CannotResolveClassNameException
-     * @throws ReflectionException
      * @return bool|null
      */
     public static function usesTrait($class, $trait, $verifyParents = false)
@@ -633,7 +631,7 @@ class Reflection
          * Oops, cannot resolve class
          */
         if (empty($className)) {
-            throw new CannotResolveClassNameException($class);
+            throw CannotResolveClassNameException::create($class);
         }
 
         /*

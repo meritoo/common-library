@@ -17,13 +17,15 @@ namespace Meritoo\Common\Exception\Regex;
 class InvalidHtmlAttributesException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $htmlAttributes Invalid html attributes
+     * @return InvalidHtmlAttributesException
      */
-    public function __construct($htmlAttributes)
+    public static function create($htmlAttributes)
     {
         $message = sprintf('HTML attributes \'%s\' are invalid. Is there everything ok?', $htmlAttributes);
-        parent::__construct($message);
+
+        return new static($message);
     }
 }

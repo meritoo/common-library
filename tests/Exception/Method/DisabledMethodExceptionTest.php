@@ -23,7 +23,7 @@ class DisabledMethodExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(DisabledMethodException::class, OopVisibilityType::IS_PUBLIC, 2, 1);
+        static::assertConstructorVisibilityAndArguments(DisabledMethodException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -36,7 +36,7 @@ class DisabledMethodExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($disabledMethod, $alternativeMethod, $expectedMessage)
     {
-        $exception = new DisabledMethodException($disabledMethod, $alternativeMethod);
+        $exception = DisabledMethodException::create($disabledMethod, $alternativeMethod);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

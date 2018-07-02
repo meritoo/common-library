@@ -42,7 +42,6 @@ class BundleTest extends BaseTestCase
      * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
      * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
      *
-     * @throws IncorrectBundleNameException
      * @dataProvider provideViewPathAndIncorrectBundleName
      */
     public function testGetBundleViewPathUsingIncorrectBundleName($viewPath, $bundleName)

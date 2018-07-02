@@ -23,7 +23,7 @@ class MissingChildClassesExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(MissingChildClassesException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(MissingChildClassesException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -35,7 +35,7 @@ class MissingChildClassesExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($parentClass, $expectedMessage)
     {
-        $exception = new MissingChildClassesException($parentClass);
+        $exception = MissingChildClassesException::create($parentClass);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

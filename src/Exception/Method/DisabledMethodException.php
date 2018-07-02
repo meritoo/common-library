@@ -19,12 +19,13 @@ use Exception;
 class DisabledMethodException extends Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $disabledMethod    Name of the disabled method
      * @param string $alternativeMethod (optional) Name of the alternative method
+     * @return DisabledMethodException
      */
-    public function __construct($disabledMethod, $alternativeMethod = '')
+    public static function create($disabledMethod, $alternativeMethod = '')
     {
         $template = 'Method %s() cannot be called, because is disabled.';
 
@@ -33,6 +34,7 @@ class DisabledMethodException extends Exception
         }
 
         $message = sprintf($template, $disabledMethod, $alternativeMethod);
-        parent::__construct($message);
+
+        return new static($message);
     }
 }

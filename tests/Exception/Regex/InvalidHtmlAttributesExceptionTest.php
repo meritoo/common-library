@@ -10,7 +10,6 @@ namespace Meritoo\Common\Test\Exception\Regex;
 
 use Generator;
 use Meritoo\Common\Exception\Regex\InvalidHtmlAttributesException;
-use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 
@@ -22,12 +21,9 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class InvalidHtmlAttributesExceptionTest extends BaseTestCase
 {
-    /**
-     * @throws UnknownOopVisibilityTypeException
-     */
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(InvalidHtmlAttributesException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(InvalidHtmlAttributesException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -38,7 +34,7 @@ class InvalidHtmlAttributesExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($htmlAttributes, $expectedMessage)
     {
-        $exception = new InvalidHtmlAttributesException($htmlAttributes);
+        $exception = InvalidHtmlAttributesException::create($htmlAttributes);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

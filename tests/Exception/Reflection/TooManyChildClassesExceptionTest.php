@@ -23,7 +23,7 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(TooManyChildClassesException::class, OopVisibilityType::IS_PUBLIC, 2, 2);
+        static::assertConstructorVisibilityAndArguments(TooManyChildClassesException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -36,7 +36,7 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($parentClass, array $childClasses, $expectedMessage)
     {
-        $exception = new TooManyChildClassesException($parentClass, $childClasses);
+        $exception = TooManyChildClassesException::create($parentClass, $childClasses);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

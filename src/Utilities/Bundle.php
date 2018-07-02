@@ -41,7 +41,7 @@ class Bundle
          * Given name of bundle is invalid?
          */
         if (!Regex::isValidBundleName($bundleName)) {
-            throw new IncorrectBundleNameException($bundleName);
+            throw IncorrectBundleNameException::create($bundleName);
         }
 
         /*

@@ -17,15 +17,16 @@ namespace Meritoo\Common\Exception\File;
 class EmptyFileException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $emptyFilePath Path of the empty file
+     * @return EmptyFileException
      */
-    public function __construct($emptyFilePath)
+    public static function create($emptyFilePath)
     {
         $template = 'File with path \'%s\' is empty (has no content). Did you provide path of proper file?';
         $message = sprintf($template, $emptyFilePath);
 
-        parent::__construct($message);
+        return new static($message);
     }
 }

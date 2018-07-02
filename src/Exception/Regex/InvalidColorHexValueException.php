@@ -17,13 +17,15 @@ namespace Meritoo\Common\Exception\Regex;
 class InvalidColorHexValueException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $color Invalid hexadecimal value of color
+     * @return InvalidColorHexValueException
      */
-    public function __construct($color)
+    public static function create($color)
     {
         $message = sprintf('Hexadecimal value of color \'%s\' is invalid. Is there everything ok?', $color);
-        parent::__construct($message);
+
+        return new static($message);
     }
 }

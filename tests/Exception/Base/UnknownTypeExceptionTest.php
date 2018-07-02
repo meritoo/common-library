@@ -23,7 +23,7 @@ class UnknownTypeExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownTestTypeException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(UnknownTestTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     public function testWithoutException()
@@ -60,13 +60,17 @@ class TestType extends BaseType
 class UnknownTestTypeException extends UnknownTypeException
 {
     /**
-     * Class constructor
+     * Creates exception
      *
-     * @param int|string $unknownType The unknown type of something (for testing purposes)
+     * @param string $unknownType The unknown type of something (for testing purposes)
+     * @return UnknownTestTypeException
      */
-    public function __construct($unknownType)
+    public static function createException($unknownType)
     {
-        parent::__construct($unknownType, new TestType(), 'type of something used for testing');
+        /* @var UnknownTestTypeException $exception */
+        $exception = parent::create($unknownType, new TestType(), 'type of something used for testing');
+
+        return $exception;
     }
 }
 

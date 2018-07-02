@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Exception\Date;
+namespace Meritoo\Common\Exception\Type;
 
 use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Type\DatePartType;
@@ -20,13 +20,17 @@ use Meritoo\Common\Type\DatePartType;
 class UnknownDatePartTypeException extends UnknownTypeException
 {
     /**
-     * Class constructor
+     * Creates exception
      *
-     * @param string $unknownDatePart Type of date part, e.g. "year". One of DatePartType class constants.
+     * @param string $unknownDatePart Unknown type of date part
      * @param string $value           Incorrect value
+     * @return UnknownDatePartTypeException
      */
-    public function __construct($unknownDatePart, $value)
+    public static function createException($unknownDatePart, $value)
     {
-        parent::__construct($unknownDatePart, new DatePartType(), sprintf('date part (with value %s)', $value));
+        /* @var UnknownDatePartTypeException $exception */
+        $exception = parent::create($unknownDatePart, new DatePartType(), sprintf('date part (with value %s)', $value));
+
+        return $exception;
     }
 }

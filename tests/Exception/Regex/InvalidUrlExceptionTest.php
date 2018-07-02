@@ -23,7 +23,7 @@ class InvalidUrlExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(InvalidUrlException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(InvalidUrlException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -34,7 +34,7 @@ class InvalidUrlExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($url, $expectedMessage)
     {
-        $exception = new InvalidUrlException($url);
+        $exception = InvalidUrlException::create($url);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

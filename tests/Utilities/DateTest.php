@@ -11,7 +11,7 @@ namespace Meritoo\Common\Test\Utilities;
 use DateInterval;
 use DateTime;
 use Generator;
-use Meritoo\Common\Exception\Date\UnknownDatePartTypeException;
+use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\DatePeriod;
 use Meritoo\Common\Utilities\Date;

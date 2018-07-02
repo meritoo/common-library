@@ -24,7 +24,7 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownOopVisibilityTypeException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(UnknownOopVisibilityTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -35,7 +35,7 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($unknownType, $expectedMessage)
     {
-        $exception = new UnknownOopVisibilityTypeException($unknownType);
+        $exception = UnknownOopVisibilityTypeException::createException($unknownType);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

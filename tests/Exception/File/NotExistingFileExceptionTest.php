@@ -23,7 +23,7 @@ class NotExistingFileExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(NotExistingFileException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(NotExistingFileException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -34,7 +34,7 @@ class NotExistingFileExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($notExistingFilePath, $expectedMessage)
     {
-        $exception = new NotExistingFileException($notExistingFilePath);
+        $exception = NotExistingFileException::create($notExistingFilePath);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

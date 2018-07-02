@@ -22,12 +22,12 @@ class EmptyFilePathExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(EmptyFilePathException::class, OopVisibilityType::IS_PUBLIC);
+        static::assertConstructorVisibilityAndArguments(EmptyFilePathException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     public function testConstructorMessage()
     {
-        $exception = new EmptyFilePathException();
+        $exception = EmptyFilePathException::create();
         static::assertEquals('Path of the file is empty. Did you provide path of proper file?', $exception->getMessage());
     }
 }

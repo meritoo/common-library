@@ -23,7 +23,7 @@ class IncorrectColorHexLengthExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(IncorrectColorHexLengthException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(IncorrectColorHexLengthException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -34,7 +34,7 @@ class IncorrectColorHexLengthExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($color, $expectedMessage)
     {
-        $exception = new IncorrectColorHexLengthException($color);
+        $exception = IncorrectColorHexLengthException::create($color);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

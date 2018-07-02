@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * (c) Meritoo.pl, http://www.meritoo.pl
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Meritoo\Common\Exception\Regex;
 
 /**
@@ -11,13 +17,15 @@ namespace Meritoo\Common\Exception\Regex;
 class InvalidUrlException extends \Exception
 {
     /**
-     * Class constructor
+     * Creates exception
      *
      * @param string $url Invalid url
+     * @return InvalidUrlException
      */
-    public function __construct($url)
+    public static function create($url)
     {
         $message = sprintf('Url \'%s\' is invalid. Is there everything ok?', $url);
-        parent::__construct($message);
+
+        return new static($message);
     }
 }

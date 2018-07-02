@@ -23,7 +23,7 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(CannotResolveClassNameException::class, OopVisibilityType::IS_PUBLIC, 2, 1);
+        static::assertConstructorVisibilityAndArguments(CannotResolveClassNameException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -37,7 +37,7 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($source, $forClass, $expectedMessage)
     {
-        $exception = new CannotResolveClassNameException($source, $forClass);
+        $exception = CannotResolveClassNameException::create($source, $forClass);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 
