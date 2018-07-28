@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 0.1.2
 
 1. Documentation > Value Objects
+2. Docker > improve performance
 
 # 0.1.1
 

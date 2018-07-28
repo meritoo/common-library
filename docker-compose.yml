@@ -9,12 +9,12 @@ services:
         build:
             context: ./docker/config
             args:
-                - TIMEZONE=$TIMEZONE
+            - TIMEZONE=${TIMEZONE}
         volumes:
-            - .:/project
+        - .:/project:cached
     composer:
         image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-composer
         entrypoint: composer
         volumes:
-            - .:/project
+        - .:/project:cached
