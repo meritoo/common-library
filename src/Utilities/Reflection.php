@@ -13,12 +13,8 @@ use Doctrine\Common\Util\Inflector;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
+use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
-use ReflectionObject;
-use ReflectionProperty;
 
 /**
  * Useful reflection methods
@@ -34,21 +30,20 @@ class Reflection
      * @param object|string $class              The object or name of object's class
      * @param bool          $withoutInheritance (optional) If is set to true, only methods for given class are returned.
      *                                          Otherwise - all methods, with inherited methods too.
-     * @throws ReflectionException
      * @return array
      */
     public static function getMethods($class, $withoutInheritance = false)
     {
         $effect = [];
 
-        $reflection = new ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
         $methods = $reflection->getMethods();
 
         if (!empty($methods)) {
             $className = self::getClassName($class);
 
             foreach ($methods as $method) {
-                if ($method instanceof ReflectionMethod) {
+                if ($method instanceof \ReflectionMethod) {
                     if ($withoutInheritance && $className !== $method->class) {
                         continue;
                     }
@@ -65,12 +60,11 @@ class Reflection
      * Returns constants of given class / object
      *
      * @param object|string $class The object or name of object's class
-     * @throws ReflectionException
      * @return array
      */
     public static function getConstants($class)
     {
-        $reflection = new ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
 
         return $reflection->getConstants();
     }
@@ -80,7 +74,6 @@ class Reflection
      * Constants whose values are integers are considered only.
      *
      * @param object|string $class The object or name of object's class
-     * @throws ReflectionException
      * @return int|null
      */
     public static function getMaxNumberConstant($class)
@@ -107,12 +100,11 @@ class Reflection
      *
      * @param object|string $class  The object or name of object's class
      * @param string        $method Name of the method to find
-     * @throws ReflectionException
      * @return bool
      */
     public static function hasMethod($class, $method)
     {
-        $reflection = new ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
 
         return $reflection->hasMethod($method);
     }
@@ -122,12 +114,11 @@ class Reflection
      *
      * @param object|string $class    The object or name of object's class
      * @param string        $property Name of the property to find
-     * @throws ReflectionException
      * @return bool
      */
     public static function hasProperty($class, $property)
     {
-        $reflection = new ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
 
         return $reflection->hasProperty($property);
     }
@@ -137,12 +128,11 @@ class Reflection
      *
      * @param object|string $class    The object or name of object's class
      * @param string        $constant Name of the constant to find
-     * @throws ReflectionException
      * @return bool
      */
     public static function hasConstant($class, $constant)
     {
-        $reflection = new ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
 
         return $reflection->hasConstant($constant);
     }
@@ -152,12 +142,11 @@ class Reflection
      *
      * @param object|string $class    The object or name of object's class
      * @param string        $constant Name of the constant that contains a value
-     * @throws ReflectionException
      * @return mixed
      */
     public static function getConstantValue($class, $constant)
     {
-        $reflection = new ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
 
         if (self::hasConstant($class, $constant)) {
             return $reflection->getConstant($constant);
@@ -175,7 +164,6 @@ class Reflection
      *                         dot-separated, e.g. "invoice.user.email".
      * @param bool   $force    (optional) If is set to true, try to retrieve value even if the object doesn't have
      *                         property. Otherwise - not.
-     * @throws ReflectionException
      * @return mixed
      */
     public static function getPropertyValue($object, $property, $force = false)
@@ -197,9 +185,9 @@ class Reflection
              * Let's dig more and get proper value
              *
              * Required to avoid bug:
-             * ReflectionObject::__construct() expects parameter 1 to be object, null given
+             * \ReflectionObject::__construct() expects parameter 1 to be object, null given
              * (...)
-             * 4. at ReflectionObject->__construct (null)
+             * 4. at \ReflectionObject->__construct (null)
              * 5. at Reflection ::getPropertyValue (null, 'name', true)
              * 6. at ListService->getItemValue (object(Deal), 'project.name', '0')
              *
@@ -224,17 +212,17 @@ class Reflection
              * Use \ReflectionObject class
              */
             try {
-                $reflectionProperty = new ReflectionProperty($className, $property);
+                $reflectionProperty = new \ReflectionProperty($className, $property);
                 $value = $reflectionProperty->getValue($object);
-            } catch (ReflectionException $exception) {
+            } catch (\ReflectionException $exception) {
                 /*
                  * 2nd try:
                  * Look for the get / has / is methods
                  */
-                $class = new ReflectionObject($object);
+                $class = new \ReflectionObject($object);
                 $valueFound = false;
 
-                if ($class->hasProperty($property) || $force) {
+                if ($force || $class->hasProperty($property)) {
                     $property = Inflector::classify($property);
 
                     $getterPrefixes = [
@@ -247,7 +235,7 @@ class Reflection
                         $getterName = sprintf('%s%s', $prefix, $property);
 
                         if ($class->hasMethod($getterName)) {
-                            $method = new ReflectionMethod($object, $getterName);
+                            $method = new \ReflectionMethod($object, $getterName);
 
                             /*
                              * Getter is not accessible publicly?
@@ -292,7 +280,6 @@ class Reflection
      * @param string                  $property Name of the property that contains a value
      * @param bool                    $force    (optional) If is set to true, try to retrieve value even if the
      *                                          object does not have property. Otherwise - not.
-     * @throws ReflectionException
      * @return array
      */
     public static function getPropertyValues($objects, $property, $force = false)
@@ -395,13 +382,13 @@ class Reflection
     {
         $fullClassName = self::getClassName($source);
 
-        if (empty($fullClassName)) {
+        if (null === $fullClassName || '' === $fullClassName) {
             return '';
         }
 
         $className = self::getClassName($source, true);
 
-        if ($className == $fullClassName) {
+        if ($className === $fullClassName) {
             return $className;
         }
 
@@ -420,7 +407,7 @@ class Reflection
         $className = self::getClassName($source);
         $interfaces = class_implements($className);
 
-        return in_array($interface, $interfaces);
+        return in_array($interface, $interfaces, true);
     }
 
     /**
@@ -438,7 +425,7 @@ class Reflection
         $parents = class_parents($childClassName);
 
         if (is_array($parents) && 0 < count($parents)) {
-            return in_array($parentClassName, $parents);
+            return in_array($parentClassName, $parents, true);
         }
 
         return false;
@@ -448,23 +435,22 @@ class Reflection
      * Returns given object properties
      *
      * @param array|object|string $source         An array of objects, namespaces, object or namespace
-     * @param int                 $filter         (optional) Filter of properties. Uses ReflectionProperty class
+     * @param int                 $filter         (optional) Filter of properties. Uses \ReflectionProperty class
      *                                            constants. By default all properties are returned.
      * @param bool                $includeParents (optional) If is set to true, properties of parent classes are
      *                                            included (recursively). Otherwise - not.
-     * @throws ReflectionException
-     * @return array|ReflectionProperty
+     * @return array|\ReflectionProperty
      */
     public static function getProperties($source, $filter = null, $includeParents = false)
     {
         $className = self::getClassName($source);
-        $reflection = new ReflectionClass($className);
+        $reflection = new \ReflectionClass($className);
 
         if (null === $filter) {
-            $filter = ReflectionProperty::IS_PRIVATE
-                + ReflectionProperty::IS_PROTECTED
-                + ReflectionProperty::IS_PUBLIC
-                + ReflectionProperty::IS_STATIC;
+            $filter = \ReflectionProperty::IS_PRIVATE
+                + \ReflectionProperty::IS_PROTECTED
+                + \ReflectionProperty::IS_PUBLIC
+                + \ReflectionProperty::IS_STATIC;
         }
 
         $properties = $reflection->getProperties($filter);
@@ -486,13 +472,12 @@ class Reflection
      * Returns a parent class or false if there is no parent class
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
-     * @throws ReflectionException
-     * @return ReflectionClass|bool
+     * @return \ReflectionClass|bool
      */
     public static function getParentClass($source)
     {
         $className = self::getClassName($source);
-        $reflection = new ReflectionClass($className);
+        $reflection = new \ReflectionClass($className);
 
         return $reflection->getParentClass();
     }
@@ -541,7 +526,7 @@ class Reflection
                  */
                 $realClass = ClassUtils::getRealClass($oneClass);
 
-                if (in_array($realClass, $childClasses)) {
+                if (in_array($realClass, $childClasses, true)) {
                     continue;
                 }
 
@@ -586,14 +571,13 @@ class Reflection
     }
 
     /**
-     * Returns property, the ReflectionProperty instance, of given object
+     * Returns property, the \ReflectionProperty instance, of given object
      *
      * @param array|object|string $class    An array of objects, namespaces, object or namespace
      * @param string              $property Name of the property
-     * @param int                 $filter   (optional) Filter of properties. Uses ReflectionProperty class constants.
+     * @param int                 $filter   (optional) Filter of properties. Uses \ReflectionProperty class constants.
      *                                      By default all properties are allowed / processed.
-     * @throws ReflectionException
-     * @return null|ReflectionProperty
+     * @return null|\ReflectionProperty
      */
     public static function getProperty($class, $property, $filter = null)
     {
@@ -601,9 +585,9 @@ class Reflection
         $properties = self::getProperties($className, $filter);
 
         if (!empty($properties)) {
-            /* @var $reflectionProperty ReflectionProperty */
+            /* @var $reflectionProperty \ReflectionProperty */
             foreach ($properties as $reflectionProperty) {
-                if ($reflectionProperty->getName() == $property) {
+                if ($reflectionProperty->getName() === $property) {
                     return $reflectionProperty;
                 }
             }
@@ -630,21 +614,21 @@ class Reflection
         /*
          * Oops, cannot resolve class
          */
-        if (empty($className)) {
+        if (null === $className || '' === $className) {
             throw CannotResolveClassNameException::create($class);
         }
 
         /*
          * Oops, cannot resolve trait
          */
-        if (empty($traitName)) {
+        if (null === $traitName || '' === $traitName) {
             throw new CannotResolveClassNameException($class, false);
         }
 
-        $reflection = new ReflectionClass($className);
+        $reflection = new \ReflectionClass($className);
         $traitsNames = $reflection->getTraitNames();
 
-        $uses = in_array($traitName, $traitsNames);
+        $uses = in_array($traitName, $traitsNames, true);
 
         if (!$uses && $verifyParents) {
             $parentClassName = self::getParentClassName($className);
@@ -662,13 +646,12 @@ class Reflection
      * If given class does not extend another, returns null.
      *
      * @param array|object|string $class An array of objects, namespaces, object or namespace
-     * @throws ReflectionException
      * @return string|null
      */
     public static function getParentClassName($class)
     {
         $className = self::getClassName($class);
-        $reflection = new ReflectionClass($className);
+        $reflection = new \ReflectionClass($className);
         $parentClass = $reflection->getParentClass();
 
         if (null === $parentClass || false === $parentClass) {
@@ -676,5 +659,37 @@ class Reflection
         }
 
         return $parentClass->getName();
+    }
+
+    /**
+     * Sets value of given property
+     *
+     * @param mixed  $object   Object that should contains given property
+     * @param string $property Name of the property
+     * @param mixed  $value    Value of the property
+     * @throws NotExistingPropertyException
+     */
+    public static function setPropertyValue($object, $property, $value)
+    {
+        $reflectionProperty = self::getProperty($object, $property);
+
+        /*
+         * Oops, property does not exist
+         */
+        if (null === $reflectionProperty) {
+            throw NotExistingPropertyException::create($object, $property);
+        }
+
+        $notAccessible = $reflectionProperty->isPrivate() || $reflectionProperty->isProtected();
+
+        if ($notAccessible) {
+            $reflectionProperty->setAccessible(true);
+        }
+
+        $reflectionProperty->setValue($object, $value);
+
+        if ($notAccessible) {
+            $reflectionProperty->setAccessible(false);
+        }
     }
 }
