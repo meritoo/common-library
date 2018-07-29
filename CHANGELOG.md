@@ -6,6 +6,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. Documentation > Value Objects
 2. Docker > improve performance
+3. Utilities > Reflection > setPropertyValue() method > sets value of given property
 
 # 0.1.1
 

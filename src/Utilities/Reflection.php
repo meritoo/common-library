@@ -13,6 +13,7 @@ use Doctrine\Common\Util\Inflector;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
+use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
 
 /**
@@ -658,5 +659,37 @@ class Reflection
         }
 
         return $parentClass->getName();
+    }
+
+    /**
+     * Sets value of given property
+     *
+     * @param mixed  $object   Object that should contains given property
+     * @param string $property Name of the property
+     * @param mixed  $value    Value of the property
+     * @throws NotExistingPropertyException
+     */
+    public static function setPropertyValue($object, $property, $value)
+    {
+        $reflectionProperty = self::getProperty($object, $property);
+
+        /*
+         * Oops, property does not exist
+         */
+        if (null === $reflectionProperty) {
+            throw NotExistingPropertyException::create($object, $property);
+        }
+
+        $notAccessible = $reflectionProperty->isPrivate() || $reflectionProperty->isProtected();
+
+        if ($notAccessible) {
+            $reflectionProperty->setAccessible(true);
+        }
+
+        $reflectionProperty->setValue($object, $value);
+
+        if ($notAccessible) {
+            $reflectionProperty->setAccessible(false);
+        }
     }
 }
