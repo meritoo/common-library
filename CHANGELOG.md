@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 0.1.3
 
 1. Tests > refactoring & minor improvements
+2. Utilities > CssSelector > useful methods related to CSS selectors
 
 # 0.1.2
 
