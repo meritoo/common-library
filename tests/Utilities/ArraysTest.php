@@ -517,7 +517,12 @@ letsTest[2] = value_2;';
         self::assertTrue(Arrays::areKeysInArray($keys17, $this->complexArray, false));
     }
 
-    public function testGetLastElementsPaths()
+    public function testGetLastElementsPathsUsingEmptyArray()
+    {
+        self::assertSame([], Arrays::getLastElementsPaths([]));
+    }
+
+    public function testGetLastElementsPathsUsingDefaults()
     {
         /*
          * Using default separator and other default arguments
@@ -536,7 +541,10 @@ letsTest[2] = value_2;';
         ];
 
         self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray));
+    }
 
+    public function testGetLastElementsPathsUsingCustomSeparator()
+    {
         /*
          * Using custom separator
          */
@@ -555,204 +563,20 @@ letsTest[2] = value_2;';
         ];
 
         self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray, $separator));
+    }
 
-        /*
-         * Special exception: do not use, stop recursive on the "diam" key
-         */
-        $expected = [
-            'lorem.ipsum.dolor'        => 'sit',
-            'consectetur'              => 'adipiscing',
-            'mollis'                   => 1234,
-            2                          => [],
-            'sit.nullam'               => 'donec',
-            'sit.aliquet.vitae.ligula' => 'quis',
-            'sit.0'                    => 'elit',
-            'amet.0'                   => 'iaculis',
-            'amet.1'                   => 'primis',
-            'lorem.ipsum.diam'         => [
-                'non' => 'egestas',
-            ],
-        ];
-
-        $stopIfMatchedBy = 'diam';
-        self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray, '.', '', $stopIfMatchedBy));
-
-        /*
-         * Stop building of paths on these keys:
-         * - "diam"
-         * - "aliquet"
-         */
-        $expected = [
-            'lorem . ipsum . dolor' => 'sit',
-            'consectetur'           => 'adipiscing',
-            'mollis'                => 1234,
-            2                       => [],
-            'sit . nullam'          => 'donec',
-            'sit . 0'               => 'elit',
-            'amet . 0'              => 'iaculis',
-            'amet . 1'              => 'primis',
-            'lorem . ipsum . diam'  => [
-                'non' => 'egestas',
-            ],
-            'sit . aliquet'         => [
-                'vitae' => [
-                    'ligula' => 'quis',
-                ],
-            ],
-        ];
-
-        $stopIfMatchedBy = [
-            'diam',
-            'aliquet',
-        ];
-
-        self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray, ' . ', '', $stopIfMatchedBy));
-
-        $expected = [
-            'ipsum > quis > vestibulum > porta-1' => [
-                'turpis',
-                'urna',
-            ],
-            'ipsum > quis > vestibulum > porta-2' => [
-                'tortor' => [
-                    'in' => [
-                        'dui',
-                        'dolor' => [
-                            'aliquam',
-                        ],
-                    ],
-                ],
-            ],
-            'ipsum > quis > vestibulum > porta-3' => [
-                1,
-                2,
-                3,
-            ],
-            'primis > 0'                          => [
-                'in',
-                'faucibus',
-                'orci',
-            ],
-            'primis > 1'                          => [
-                'luctus',
-                'et',
-                'ultrices',
-            ],
-        ];
-
-        /*
-         * Stop building of paths on more sophisticated keys
-         */
-        $stopIfMatchedBy = [
-            'porta\-\d+',
-            '^\d+$',
-        ];
-
-        self::assertEquals($expected, Arrays::getLastElementsPaths($this->superComplexArray, ' > ', '', $stopIfMatchedBy));
-
-        /*
-         * Stop building of paths on these:
-         * - keys
-         * and
-         * - paths (verify paths too)
-         */
-        $expected = [
-            'lorem > ipsum > dolor' => 'sit',
-            'consectetur'           => 'adipiscing',
-            'mollis'                => 1234,
-            2                       => [],
-            'sit > nullam'          => 'donec',
-            'sit > 0'               => 'elit',
-            'amet > 0'              => 'iaculis',
-            'amet > 1'              => 'primis',
-            'lorem > ipsum > diam'  => [
-                'non' => 'egestas',
-            ],
-            'sit > aliquet > vitae' => [
-                'ligula' => 'quis',
-            ],
-        ];
-
-        $stopIfMatchedBy = [
-            'diam',
-            'sit > aliquet > vitae',
-        ];
-
-        self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray, ' > ', '', $stopIfMatchedBy));
-
-        /*
-         * Stop building of paths on these paths (verify paths only)
-         */
-        $expected = [
-            'ipsum > quis > vestibulum > porta-1'          => [
-                'turpis',
-                'urna',
-            ],
-            'ipsum > quis > vestibulum > porta-2 > tortor' => [
-                'in' => [
-                    'dui',
-                    'dolor' => [
-                        'aliquam',
-                    ],
-                ],
-            ],
-            'ipsum > quis > vestibulum > porta-3 > 0'      => 1,
-            'ipsum > quis > vestibulum > porta-3 > 1'      => 2,
-            'ipsum > quis > vestibulum > porta-3 > 2'      => 3,
-            'primis > 0 > 0'                               => 'in',
-            'primis > 0 > 1'                               => 'faucibus',
-            'primis > 0 > 2'                               => 'orci',
-            'primis > 1'                                   => [
-                'luctus',
-                'et',
-                'ultrices',
-            ],
-        ];
-
-        $stopIfMatchedBy = [
-            'ipsum > quis > vestibulum > porta-1',
-            'ipsum > quis > vestibulum > porta-2 > tortor',
-            'primis > 1',
-        ];
-
-        self::assertEquals($expected, Arrays::getLastElementsPaths($this->superComplexArray, ' > ', '', $stopIfMatchedBy));
-
-        /*
-         * Stop building of paths if path contains any of these part (verify part of paths only)
-         */
-        $expected = [
-            'ipsum > quis > vestibulum > porta-1'               => [
-                'turpis',
-                'urna',
-            ],
-            'ipsum > quis > vestibulum > porta-2 > tortor > in' => [
-                'dui',
-                'dolor' => [
-                    'aliquam',
-                ],
-            ],
-            'ipsum > quis > vestibulum > porta-3 > 0'           => 1,
-            'ipsum > quis > vestibulum > porta-3 > 1'           => 2,
-            'ipsum > quis > vestibulum > porta-3 > 2'           => 3,
-            'primis > 0'                                        => [
-                'in',
-                'faucibus',
-                'orci',
-            ],
-            'primis > 1'                                        => [
-                'luctus',
-                'et',
-                'ultrices',
-            ],
-        ];
-
-        $stopIfMatchedBy = [
-            'vestibulum > porta-1',
-            'tortor > in',
-            '[a-z]+ > \d+',
-        ];
-
-        self::assertEquals($expected, Arrays::getLastElementsPaths($this->superComplexArray, ' > ', '', $stopIfMatchedBy));
+    /**
+     * @param string|array $stopIfMatchedBy Patterns of keys or paths that matched will stop the process of path
+     *                                      building and including children of those keys or paths (recursive will
+     *                                      not be used for keys in lower level of given array)
+     * @param string       $separator       Separator used in resultant strings. Default: ".".
+     * @param array        $expected        Expected array
+     *
+     * @dataProvider provideStopIfMatchedByForGetLastElementsPaths
+     */
+    public function testGetLastElementsPathsUsingStopIfMatchedBy($stopIfMatchedBy, $separator, array $expected)
+    {
+        self::assertEquals($expected, Arrays::getLastElementsPaths($this->superComplexArray, $separator, '', $stopIfMatchedBy));
     }
 
     public function testAreAllKeysMatchedByPattern()
@@ -1761,6 +1585,229 @@ letsTest[2] = value_2;';
     }
 
     /**
+     * Provides patterns of keys or paths that matched will stop the process and the expected array for the
+     * getLastElementsPaths() method
+     *
+     * @return \Generator
+     */
+    public function provideStopIfMatchedByForGetLastElementsPaths()
+    {
+        /*
+         * Special exception: do not use, stop recursive on the "diam" key
+         */
+        yield[
+            'diam',
+            '.',
+            [
+                'ipsum.quis.vestibulum.porta-1.0'                 => 'turpis',
+                'ipsum.quis.vestibulum.porta-1.1'                 => 'urna',
+                'ipsum.quis.vestibulum.porta-2.tortor.in.0'       => 'dui',
+                'ipsum.quis.vestibulum.porta-2.tortor.in.dolor.0' => 'aliquam',
+                'ipsum.quis.vestibulum.porta-3.0'                 => 1,
+                'ipsum.quis.vestibulum.porta-3.1'                 => 2,
+                'ipsum.quis.vestibulum.porta-3.2'                 => 3,
+                'primis.0.0'                                      => 'in',
+                'primis.0.1'                                      => 'faucibus',
+                'primis.0.2'                                      => 'orci',
+                'primis.1.0'                                      => 'luctus',
+                'primis.1.1'                                      => 'et',
+                'primis.1.2'                                      => 'ultrices',
+            ],
+        ];
+
+        /*
+         * Stop building of paths on these keys:
+         * - "tortor"
+         * - "primis"
+         */
+        yield[
+            [
+                'tortor',
+                'primis',
+            ],
+            ' . ',
+            [
+                'ipsum . quis . vestibulum . porta-1 . 0'      => 'turpis',
+                'ipsum . quis . vestibulum . porta-1 . 1'      => 'urna',
+                'ipsum . quis . vestibulum . porta-2 . tortor' => [
+                    'in' => [
+                        'dui',
+                        'dolor' => [
+                            'aliquam',
+                        ],
+                    ],
+                ],
+                'ipsum . quis . vestibulum . porta-3 . 0'      => 1,
+                'ipsum . quis . vestibulum . porta-3 . 1'      => 2,
+                'ipsum . quis . vestibulum . porta-3 . 2'      => 3,
+                'primis'                                       => [
+                    [
+                        'in',
+                        'faucibus',
+                        'orci',
+                    ],
+                    [
+                        'luctus',
+                        'et',
+                        'ultrices',
+                    ],
+                ],
+            ],
+        ];
+
+        /*
+         * Stop building of paths on more sophisticated keys
+         */
+        yield[
+            [
+                'porta\-\d+',
+                '^\d+$',
+            ],
+            ' > ',
+            [
+                'ipsum > quis > vestibulum > porta-1' => [
+                    'turpis',
+                    'urna',
+                ],
+                'ipsum > quis > vestibulum > porta-2' => [
+                    'tortor' => [
+                        'in' => [
+                            'dui',
+                            'dolor' => [
+                                'aliquam',
+                            ],
+                        ],
+                    ],
+                ],
+                'ipsum > quis > vestibulum > porta-3' => [
+                    1,
+                    2,
+                    3,
+                ],
+                'primis > 0'                          => [
+                    'in',
+                    'faucibus',
+                    'orci',
+                ],
+                'primis > 1'                          => [
+                    'luctus',
+                    'et',
+                    'ultrices',
+                ],
+            ],
+        ];
+
+        /*
+         * Stop building of paths on these:
+         * - keys
+         * and
+         * - paths (verify paths too)
+         */
+        yield[
+            [
+                'porta-1',
+                'porta-2 > tortor > in',
+            ],
+            ' > ',
+            [
+                'ipsum > quis > vestibulum > porta-1'               => [
+                    'turpis',
+                    'urna',
+                ],
+                'ipsum > quis > vestibulum > porta-2 > tortor > in' => [
+                    'dui',
+                    'dolor' => [
+                        'aliquam',
+                    ],
+                ],
+                'ipsum > quis > vestibulum > porta-3 > 0'           => 1,
+                'ipsum > quis > vestibulum > porta-3 > 1'           => 2,
+                'ipsum > quis > vestibulum > porta-3 > 2'           => 3,
+                'primis > 0 > 0'                                    => 'in',
+                'primis > 0 > 1'                                    => 'faucibus',
+                'primis > 0 > 2'                                    => 'orci',
+                'primis > 1 > 0'                                    => 'luctus',
+                'primis > 1 > 1'                                    => 'et',
+                'primis > 1 > 2'                                    => 'ultrices',
+            ],
+        ];
+
+        /*
+         * Stop building of paths on these paths (verify paths only)
+         */
+        yield[
+            [
+                'ipsum > quis > vestibulum > porta-1',
+                'ipsum > quis > vestibulum > porta-2 > tortor',
+                'primis > 1',
+            ],
+            ' > ',
+            [
+                'ipsum > quis > vestibulum > porta-1'          => [
+                    'turpis',
+                    'urna',
+                ],
+                'ipsum > quis > vestibulum > porta-2 > tortor' => [
+                    'in' => [
+                        'dui',
+                        'dolor' => [
+                            'aliquam',
+                        ],
+                    ],
+                ],
+                'ipsum > quis > vestibulum > porta-3 > 0'      => 1,
+                'ipsum > quis > vestibulum > porta-3 > 1'      => 2,
+                'ipsum > quis > vestibulum > porta-3 > 2'      => 3,
+                'primis > 0 > 0'                               => 'in',
+                'primis > 0 > 1'                               => 'faucibus',
+                'primis > 0 > 2'                               => 'orci',
+                'primis > 1'                                   => [
+                    'luctus',
+                    'et',
+                    'ultrices',
+                ],
+            ],
+        ];
+
+        /*
+         * Stop building of paths if path contains any of these part (verify part of paths only)
+         */
+        yield[
+            [
+                'vestibulum > porta-1',
+                'tortor > in',
+                '[a-z]+ > \d+',
+            ],
+            ' > ',
+            [
+                'ipsum > quis > vestibulum > porta-1'               => [
+                    'turpis',
+                    'urna',
+                ],
+                'ipsum > quis > vestibulum > porta-2 > tortor > in' => [
+                    'dui',
+                    'dolor' => [
+                        'aliquam',
+                    ],
+                ],
+                'ipsum > quis > vestibulum > porta-3 > 0'           => 1,
+                'ipsum > quis > vestibulum > porta-3 > 1'           => 2,
+                'ipsum > quis > vestibulum > porta-3 > 2'           => 3,
+                'primis > 0'                                        => [
+                    'in',
+                    'faucibus',
+                    'orci',
+                ],
+                'primis > 1'                                        => [
+                    'luctus',
+                    'et',
+                    'ultrices',
+                ],
+            ],
+        ];
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -1877,10 +1924,12 @@ letsTest[2] = value_2;';
     {
         parent::tearDown();
 
-        unset($this->simpleArray);
-        unset($this->simpleArrayWithKeys);
-        unset($this->twoDimensionsArray);
-        unset($this->complexArray);
-        unset($this->superComplexArray);
+        unset(
+            $this->simpleArray,
+            $this->simpleArrayWithKeys,
+            $this->twoDimensionsArray,
+            $this->complexArray,
+            $this->superComplexArray
+        );
     }
 }

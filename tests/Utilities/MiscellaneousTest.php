@@ -164,7 +164,7 @@ class MiscellaneousTest extends BaseTestCase
         $expected = "int(123)\n";
 
         if ($xdebugLoaded) {
-            $libraryPath = realpath(sprintf('%s%s', dirname(__FILE__), '/../..'));
+            $libraryPath = realpath(sprintf('%s%s', __DIR__, '/../..'));
             $filePath = sprintf('%s%s', $libraryPath, '/src/Utilities/Miscellaneous.php:');
 
             /*
@@ -348,7 +348,10 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetOperatingSystemNameServer()
     {
-        self::assertEquals(php_uname('s'), Miscellaneous::getOperatingSystemNameServer());
+        /*
+         * While running Docker OS is a Linux
+         */
+        self::assertEquals('Linux', Miscellaneous::getOperatingSystemNameServer());
     }
 
     public function testSubstringToWord()

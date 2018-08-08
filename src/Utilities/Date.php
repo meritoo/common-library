@@ -119,11 +119,15 @@ class Date
                 $lastMonth = self::getDatesForPeriod(DatePeriod::LAST_MONTH);
                 $nextMonth = self::getDatesForPeriod(DatePeriod::NEXT_MONTH);
 
-                $dateStart = $lastMonth->getEndDate();
-                $dateStart->add(new DateInterval('P1D'));
+                if (null !== $lastMonth) {
+                    $dateStart = $lastMonth->getEndDate();
+                    $dateStart->add(new DateInterval('P1D'));
+                }
 
-                $dateEnd = $nextMonth->getStartDate();
-                $dateEnd->sub(new DateInterval('P1D'));
+                if (null !== $nextMonth) {
+                    $dateEnd = $nextMonth->getStartDate();
+                    $dateEnd->sub(new DateInterval('P1D'));
+                }
 
                 break;
             case DatePeriod::NEXT_MONTH:
@@ -137,10 +141,10 @@ class Date
                 $dateStart = new DateTime();
                 $dateEnd = new DateTime();
 
-                if (DatePeriod::LAST_YEAR == $period || DatePeriod::NEXT_YEAR == $period) {
+                if (DatePeriod::LAST_YEAR === $period || DatePeriod::NEXT_YEAR === $period) {
                     $yearDifference = 1;
 
-                    if (DatePeriod::LAST_YEAR == $period) {
+                    if (DatePeriod::LAST_YEAR === $period) {
                         $yearDifference *= -1;
                     }
 
@@ -220,7 +224,6 @@ class Date
     /**
      * Returns current day of week
      *
-     * @throws UnknownDatePartTypeException
      * @return int
      */
     public static function getCurrentDayOfWeek()
@@ -368,11 +371,11 @@ class Date
             return null;
         }
 
-        $dateStart = self::getDateTime($dateStart, true);
-        $dateEnd = self::getDateTime($dateEnd, true);
+        $start = self::getDateTime($dateStart, true);
+        $end = self::getDateTime($dateEnd, true);
 
         $difference = [];
-        $dateDiff = $dateEnd->getTimestamp() - $dateStart->getTimestamp();
+        $dateDiff = $end->getTimestamp() - $start->getTimestamp();
 
         $daysInSeconds = 0;
         $hoursInSeconds = 0;
@@ -390,39 +393,39 @@ class Date
             self::DATE_DIFFERENCE_UNIT_MINUTES,
         ];
 
-        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_YEARS == $differenceUnit) {
-            $diff = $dateEnd->diff($dateStart);
+        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_YEARS === $differenceUnit) {
+            $diff = $end->diff($start);
 
             /*
              * Difference between dates in years should be returned only?
              */
-            if (self::DATE_DIFFERENCE_UNIT_YEARS == $differenceUnit) {
+            if (self::DATE_DIFFERENCE_UNIT_YEARS === $differenceUnit) {
                 return $diff->y;
             }
 
             $difference[self::DATE_DIFFERENCE_UNIT_YEARS] = $diff->y;
         }
 
-        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MONTHS == $differenceUnit) {
-            $diff = $dateEnd->diff($dateStart);
+        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MONTHS === $differenceUnit) {
+            $diff = $end->diff($start);
 
             /*
              * Difference between dates in months should be returned only?
              */
-            if (self::DATE_DIFFERENCE_UNIT_MONTHS == $differenceUnit) {
+            if (self::DATE_DIFFERENCE_UNIT_MONTHS === $differenceUnit) {
                 return $diff->m;
             }
 
             $difference[self::DATE_DIFFERENCE_UNIT_MONTHS] = $diff->m;
         }
 
-        if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits)) {
+        if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits, true)) {
             $days = (int)floor($dateDiff / $daySeconds);
 
             /*
              * Difference between dates in days should be returned only?
              */
-            if (self::DATE_DIFFERENCE_UNIT_DAYS == $differenceUnit) {
+            if (self::DATE_DIFFERENCE_UNIT_DAYS === $differenceUnit) {
                 return $days;
             }
 
@@ -439,13 +442,13 @@ class Date
             $daysInSeconds = $days * $daySeconds;
         }
 
-        if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits)) {
+        if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits, true)) {
             $hours = (int)floor(($dateDiff - $daysInSeconds) / $hourSeconds);
 
             /*
              * Difference between dates in hours should be returned only?
              */
-            if (self::DATE_DIFFERENCE_UNIT_HOURS == $differenceUnit) {
+            if (self::DATE_DIFFERENCE_UNIT_HOURS === $differenceUnit) {
                 return $hours;
             }
 
@@ -462,13 +465,13 @@ class Date
             $hoursInSeconds = $hours * $hourSeconds;
         }
 
-        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MINUTES == $differenceUnit) {
+        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MINUTES === $differenceUnit) {
             $minutes = (int)floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
 
             /*
              * Difference between dates in minutes should be returned only?
              */
-            if (self::DATE_DIFFERENCE_UNIT_MINUTES == $differenceUnit) {
+            if (self::DATE_DIFFERENCE_UNIT_MINUTES === $differenceUnit) {
                 return $minutes;
             }
 
@@ -554,7 +557,7 @@ class Date
         }
 
         $randomDate = clone $startDate;
-        $randomInterval = new DateInterval(sprintf($intervalTemplate, rand($start, $end)));
+        $randomInterval = new DateInterval(sprintf($intervalTemplate, mt_rand($start, $end)));
 
         return $randomDate->add($randomInterval);
     }
@@ -637,7 +640,7 @@ class Date
                          * So, I have to refuse those special compound formats if they are not explicitly declared as
                          * compound (2nd argument of this method, set to false by default)
                          */
-                        if (in_array($value, $specialFormats)) {
+                        if (in_array($value, $specialFormats, true)) {
                             return false;
                         }
                     }
@@ -662,7 +665,7 @@ class Date
              */
             $dateString = (new DateTime())->format($value);
 
-            if ($dateString != $value) {
+            if ($dateString !== (string)$value) {
                 return new DateTime($dateString);
             }
         } catch (\Exception $exception) {
@@ -706,7 +709,7 @@ class Date
          * Formatted date it's the format who is validated?
          * The format is invalid
          */
-        if ($formatted == $format) {
+        if ($formatted === $format) {
             return false;
         }
 

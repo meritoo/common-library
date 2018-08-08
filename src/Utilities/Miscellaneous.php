@@ -9,8 +9,6 @@
 namespace Meritoo\Common\Utilities;
 
 use Gedmo\Sluggable\Util\Urlizer;
-use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
-use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Transliterator;
 
 /**
@@ -62,15 +60,15 @@ class Miscellaneous
             $startFileName = mb_substr($startFileName, 1);
         }
 
-        $directoryContent = scandir($directoryPath);
+        $directoryContent = scandir($directoryPath, SCANDIR_SORT_ASCENDING);
 
         if (!empty($directoryContent)) {
             foreach ($directoryContent as $fileName) {
-                if ('.' != $fileName && '..' != $fileName) {
+                if ('.' !== $fileName && '..' !== $fileName) {
                     $content = null;
 
                     if (!empty($startFileName) && !$startFileFound) {
-                        if ($fileName == $startFileName) {
+                        if ($fileName === $startFileName) {
                             $startFileFound = true;
                         }
 
@@ -84,18 +82,18 @@ class Miscellaneous
                     if (null !== $content) {
                         $files[$fileName] = $content;
 
-                        if (!empty($maxFilesCount)) {
+                        if (null !== $maxFilesCount) {
                             $count += Arrays::getNonArrayElementsCount($content);
                         }
                     } else {
                         $files[] = $fileName;
 
-                        if (!empty($maxFilesCount)) {
+                        if (null !== $maxFilesCount) {
                             ++$count;
                         }
                     }
 
-                    if (!empty($maxFilesCount) && $count >= $maxFilesCount) {
+                    if (null !== $maxFilesCount && $count >= $maxFilesCount) {
                         break;
                     }
                 }
@@ -160,11 +158,17 @@ class Miscellaneous
      */
     public static function includeFileExtension($fileName, $extension)
     {
-        if (self::getFileExtension($fileName, true) != strtolower($extension)) {
-            return sprintf('%s.%s', $fileName, $extension);
+        $fileExtension = self::getFileExtension($fileName, true);
+
+        /*
+         * File has given extension?
+         * Nothing to do
+         */
+        if ($fileExtension === strtolower($extension)) {
+            return $fileName;
         }
 
-        return $fileName;
+        return sprintf('%s.%s', $fileName, $extension);
     }
 
     /**
@@ -229,31 +233,28 @@ class Miscellaneous
         /*
          * Let's clear name of file
          *
-         * Attention. The name without extension may be cleared / urlized only
-         * to avoid incorrect name by replacing "." with "-".
+         * Attention.
+         * The name without extension may be cleared / urlized only to avoid incorrect name by replacing "." with "-".
          */
         $withoutExtension = Urlizer::urlize($withoutExtension);
 
         /*
          * Now I have to complete the template used to build / generate unique name
          */
-        $template = '%s-%s'; // file's name and unique key
-
-        if ($objectId > 0) {
-            $template .= '-%s'; // object ID
-        }
-
-        $template .= '.%s'; // file's extension
+        $template = '%s-%s.%s'; // [file's name]-[unique key].[file's extension]
 
         /*
          * Add some uniqueness
          */
-        $unique = uniqid(mt_rand(), true);
+        $unique = self::getUniqueString(mt_rand());
 
         /*
          * Finally build and return the unique name
          */
+
         if ($objectId > 0) {
+            $template = '%s-%s-%s.%s'; // [file's name]-[unique key]-[object ID].[file's extension]
+
             return sprintf($template, $withoutExtension, $unique, $objectId, $extension);
         }
 
@@ -333,7 +334,7 @@ class Miscellaneous
     {
         $phpModulesArray = get_loaded_extensions();
 
-        return in_array($phpModuleName, $phpModulesArray);
+        return in_array($phpModuleName, $phpModulesArray, false);
     }
 
     /**
@@ -461,7 +462,7 @@ class Miscellaneous
          * Value to find is neither a string nor an array OR it's an empty string?
          * Nothing to do
          */
-        if ((!$searchIsString && !$searchIsArray) || ($searchIsString && 0 == strlen($search))) {
+        if ((!$searchIsString && !$searchIsArray) || ($searchIsString && '' === $search)) {
             return $effect;
         }
 
@@ -486,7 +487,7 @@ class Miscellaneous
          * Second step: replace with regular expressions.
          * Attention. Searched and replacement value should be the same type: strings or arrays.
          */
-        if ($effect == $subject && ($bothAreStrings || $bothAreArrays)) {
+        if ($effect === $subject && ($bothAreStrings || $bothAreArrays)) {
             if ($quoteStrings && $replacementIsString) {
                 $replacement = '\'' . $replacement . '\'';
             }
@@ -504,7 +505,7 @@ class Miscellaneous
          * Third step: complex replace of the replacement defined as an array.
          * It may be useful when you want to search for a one string and replace the string with multiple values.
          */
-        if ($effect == $subject && $searchIsString && $replacementIsArray) {
+        if ($effect === $subject && $searchIsString && $replacementIsArray) {
             $subjectIsArray = is_array($subject);
             $effect = '';
 
@@ -589,7 +590,12 @@ class Miscellaneous
      */
     public static function getOperatingSystemNameServer()
     {
-        return php_uname('s');
+        return PHP_OS;
+
+        /*
+         * Previous version:
+         * return php_uname('s');
+         */
     }
 
     /**
@@ -681,7 +687,8 @@ class Miscellaneous
 
                     $spacePosition = mb_strrpos($lineWithAberration, ' ', 0, $encoding);
 
-                    if ($spacePosition > 0) {
+                    if (false !== $spacePosition && 0 < $spacePosition) {
+                        /* @var int $spacePosition */
                         $perLine = $spacePosition;
                         $insertSeparator = true;
                     }
@@ -738,8 +745,8 @@ class Miscellaneous
             return unlink($directoryPath);
         }
 
-        foreach (scandir($directoryPath) as $item) {
-            if ('.' == $item || '..' == $item) {
+        foreach (scandir($directoryPath, SCANDIR_SORT_ASCENDING) as $item) {
+            if ('.' === $item || '..' === $item) {
                 continue;
             }
 
@@ -788,7 +795,7 @@ class Miscellaneous
         foreach ($members as $key => $value) {
             $value = mb_strtolower($value);
 
-            if (0 == $key) {
+            if (0 === $key) {
                 $effect .= self::lowercaseFirst($value);
             } else {
                 $effect .= self::uppercaseFirst($value);
@@ -809,10 +816,6 @@ class Miscellaneous
      * - null (default): nothing is done with the string
      * - true: the rest of string is lowercased
      * - false: the rest of string is uppercased
-     *
-     * Some explanation:
-     * Function lcfirst() is available for PHP >= 5.30, so I wrote my own function that lowercases first character of
-     * the string.
      */
     public static function lowercaseFirst($text, $restLowercase = null)
     {
@@ -828,16 +831,7 @@ class Miscellaneous
             $effect = mb_strtoupper($effect);
         }
 
-        if (function_exists('lcfirst')) {
-            $effect = lcfirst($effect);
-        } else {
-            $first = mb_strtolower($effect[0]);
-            $rest = mb_substr($effect, 1);
-
-            $effect = $first . $rest;
-        }
-
-        return $effect;
+        return lcfirst($effect);
     }
 
     /**
@@ -866,16 +860,7 @@ class Miscellaneous
             $effect = mb_strtoupper($effect);
         }
 
-        if (function_exists('ucfirst')) {
-            $effect = ucfirst($effect);
-        } else {
-            $first = mb_strtoupper($effect[0]);
-            $rest = mb_substr($effect, 1);
-
-            $effect = $first . $rest;
-        }
-
-        return $effect;
+        return ucfirst($effect);
     }
 
     /**
@@ -916,9 +901,9 @@ class Miscellaneous
             'TB',
             'PB',
         ];
-        $index = floor(log($sizeInBytes, 1024));
 
-        $size = round($sizeInBytes / pow(1024, $index), 2);
+        $index = floor(log($sizeInBytes, 1024));
+        $size = round($sizeInBytes / (1024 ** $index), 2);
         $unit = $units[(int)$index];
 
         return sprintf('%s %s', $size, $unit);
@@ -1194,10 +1179,6 @@ class Miscellaneous
 
             if (null !== $globalSource && isset($globalSource[$variableName])) {
                 $value = $globalSource[$variableName];
-
-                if (!ini_get('magic_quotes_gpc')) {
-                    $value = addslashes($value);
-                }
             }
         }
 
@@ -1243,7 +1224,7 @@ class Miscellaneous
                 continue;
             }
 
-            $text = $text . '0';
+            $text .= '0';
         }
 
         return $text;
@@ -1298,8 +1279,8 @@ class Miscellaneous
         if ($asHexadecimal) {
             $hexadecimal = dechex($colorComponent);
 
-            if (1 == strlen($hexadecimal)) {
-                return sprintf('0%s', $hexadecimal, $hexadecimal);
+            if (1 === strlen($hexadecimal)) {
+                return sprintf('0%s', $hexadecimal);
             }
 
             return $hexadecimal;
@@ -1312,8 +1293,6 @@ class Miscellaneous
      * Returns inverted value of color for given color
      *
      * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
      * @return string
      */
     public static function getInvertedColor($color)
@@ -1328,14 +1307,14 @@ class Miscellaneous
          * Verify and get valid value of color.
          * An exception will be thrown if the value is not a color.
          */
-        $color = Regex::getValidColorHexValue($color);
+        $validColor = Regex::getValidColorHexValue($color);
 
         /*
          * Grab color's components
          */
-        $red = hexdec(substr($color, 0, 2));
-        $green = hexdec(substr($color, 2, 2));
-        $blue = hexdec(substr($color, 4, 2));
+        $red = hexdec(substr($validColor, 0, 2));
+        $green = hexdec(substr($validColor, 2, 2));
+        $blue = hexdec(substr($validColor, 4, 2));
 
         /*
          * Calculate inverted color's components

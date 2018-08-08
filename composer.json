@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": ">=5.6",
+        "ext-intl": "*",
         "ext-pcre": "*",
         "doctrine/orm": "^2.5",
         "gedmo/doctrine-extensions": "^2.4"

@@ -50,6 +50,20 @@ trait BaseTestCaseTrait
     }
 
     /**
+     * Provides an empty scalar value
+     *
+     * @return Generator
+     */
+    public function provideEmptyScalarValue()
+    {
+        yield[''];
+        yield['   '];
+        yield[null];
+        yield[0];
+        yield[false];
+    }
+
+    /**
      * Provides boolean value
      *
      * @return Generator
