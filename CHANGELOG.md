@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 0.1.4
+
+1. Phing > update configuration
+
 # 0.1.3
 
 1. Tests > refactoring & minor improvements

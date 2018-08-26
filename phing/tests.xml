@@ -62,8 +62,8 @@
         -->
 
         <exec
-            passthru="true"
-            command="${phpCsFixer.path} fix --verbose"
+                passthru="true"
+                command="${tests.cs_fixer.path} fix --verbose"
         />
     </target>
 
@@ -212,7 +212,7 @@
     </target>
 
     <!-- Unit tests -->
-    <target name="test:unit" description="Executes unit tests">
+    <target name="test:unit" description="Runs unit tests">
         <echo msg="Running unit tests..." />
         <exec command="${tests.framework.path}" passthru="true"/>
     </target>
