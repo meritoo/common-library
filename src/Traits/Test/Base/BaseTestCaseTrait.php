@@ -19,8 +19,7 @@ use ReflectionMethod;
 use stdClass;
 
 /**
- * BaseTestCaseTrait
- * Created on 2017-11-02
+ * Trait for the base test case
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
