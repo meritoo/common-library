@@ -8,6 +8,10 @@
 
 namespace Meritoo\Common\Test\Utilities;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
+use Doctrine\ORM\QueryBuilder;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Test\Utilities\Repository\Sortable;
@@ -160,7 +164,7 @@ class RepositoryTest extends BaseTestCase
 
     /**
      * @param array $items    Objects who have "getPosition()" and "setPosition()" methods or arrays
-     * @param bool  $max      (optional) If is set to true, maximum value is returned. Otherwise - minimum.
+     * @param bool  $max      If is set to true, maximum value is returned. Otherwise - minimum.
      * @param int   $expected Extreme position (max or min) of given items
      *
      * @dataProvider provideArraysWithoutExtremePositionToGetExtremePosition
@@ -170,12 +174,122 @@ class RepositoryTest extends BaseTestCase
         static::assertEquals($expected, Repository::getExtremePosition($items, $max));
     }
 
-    public function testGetExtremePositionUsingObjects()
+    /**
+     * @param array $items    Objects who have "getPosition()" and "setPosition()" methods or arrays
+     * @param bool  $max      If is set to true, maximum value is returned. Otherwise - minimum.
+     * @param int   $expected Extreme position (max or min) of given items
+     *
+     * @dataProvider provideArraysWithExtremePositionToGetExtremePosition
+     */
+    public function testGetExtremePositionUsingArraysWithExtremePosition(array $items, $max, $expected)
     {
+        static::assertEquals($expected, Repository::getExtremePosition($items, $max));
     }
 
-    public function testGetEntityOrderedQueryBuilder()
+    /**
+     * @param array $items    Objects who have "getPosition()" and "setPosition()" methods or arrays
+     * @param bool  $max      If is set to true, maximum value is returned. Otherwise - minimum.
+     * @param int   $expected Extreme position (max or min) of given items
+     *
+     * @dataProvider provideObjectsWithoutExtremePositionToGetExtremePosition
+     */
+    public function testGetExtremePositionUsingObjectsWithoutExtremePosition(array $items, $max, $expected)
     {
+        static::assertEquals($expected, Repository::getExtremePosition($items, $max));
+    }
+
+    /**
+     * @param array $items    Objects who have "getPosition()" and "setPosition()" methods or arrays
+     * @param bool  $max      If is set to true, maximum value is returned. Otherwise - minimum.
+     * @param int   $expected Extreme position (max or min) of given items
+     *
+     * @dataProvider provideObjectsWithExtremePositionToGetExtremePosition
+     */
+    public function testGetExtremePositionUsingObjectsWithExtremePosition(array $items, $max, $expected)
+    {
+        static::assertEquals($expected, Repository::getExtremePosition($items, $max));
+    }
+
+    public function testGetEntityOrderedQueryBuilderUsingDefaults()
+    {
+        $entityManager = $this->getMock(EntityManagerInterface::class);
+
+        $entityRepository = $this
+            ->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'createQueryBuilder',
+            ])
+            ->getMock();
+
+        $expectedQueryBuilder = new QueryBuilder($entityManager);
+        $expectedQueryBuilder->from('any_table_name', 'qb');
+
+        $entityRepository
+            ->expects(static::once())
+            ->method('createQueryBuilder')
+            ->willReturn($expectedQueryBuilder);
+
+        $queryBuilder = Repository::getEntityOrderedQueryBuilder($entityRepository);
+        $selectDQLPart = $queryBuilder->getDQLPart('select');
+        $whereDQLPart = $queryBuilder->getDQLPart('where');
+        $orderDQLPart = $queryBuilder->getDQLPart('orderBy');
+
+        /* @var OrderBy $orderBy */
+        $orderBy = $orderDQLPart[0];
+
+        static::assertInstanceOf(QueryBuilder::class, $queryBuilder);
+        static::assertArraySubset(['qb'], $queryBuilder->getRootAliases());
+        static::assertSame([], $selectDQLPart);
+        static::assertNull($whereDQLPart);
+        static::assertSame(['qb.name ASC'], $orderBy->getParts());
+    }
+
+    /**
+     * @param string $property        Name of property used by the ORDER BY clause
+     * @param string $direction       Direction used by the ORDER BY clause ("ASC" or "DESC")
+     * @param string $expectedOrderBy Expected ORDER BY clause
+     *
+     * @dataProvider providePropertyAndDirectionToGetEntityOrderedQueryBuilder
+     */
+    public function testGetEntityOrderedQueryBuilder($property, $direction, $expectedOrderBy)
+    {
+        $entityManager = $this->getMock(EntityManagerInterface::class);
+
+        $entityRepository = $this
+            ->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'createQueryBuilder',
+            ])
+            ->getMock();
+
+        $expectedQueryBuilder = new QueryBuilder($entityManager);
+        $expectedQueryBuilder->from('any_table_name', 'qb');
+
+        $entityRepository
+            ->expects(static::once())
+            ->method('createQueryBuilder')
+            ->willReturn($expectedQueryBuilder);
+
+        $queryBuilder = Repository::getEntityOrderedQueryBuilder($entityRepository, $property, $direction);
+        $selectDQLPart = $queryBuilder->getDQLPart('select');
+        $whereDQLPart = $queryBuilder->getDQLPart('where');
+        $orderDQLPart = $queryBuilder->getDQLPart('orderBy');
+
+        static::assertInstanceOf(QueryBuilder::class, $queryBuilder);
+        static::assertArraySubset(['qb'], $queryBuilder->getRootAliases());
+        static::assertSame([], $selectDQLPart);
+        static::assertNull($whereDQLPart);
+
+        if (empty($property)) {
+            static::assertSame([], $orderDQLPart);
+        } else {
+            /* @var OrderBy $orderBy */
+            $orderBy = $orderDQLPart[0];
+
+            static::assertSame([$expectedOrderBy], $orderBy->getParts());
+        }
     }
 
     /**
@@ -581,7 +695,7 @@ class RepositoryTest extends BaseTestCase
                 [],
             ],
             true,
-            1,
+            2,
         ];
 
         yield[
@@ -596,7 +710,125 @@ class RepositoryTest extends BaseTestCase
                 [],
             ],
             false,
-            2,
+            1,
+        ];
+    }
+
+    /**
+     * Provides objects without extreme position used to get extreme position
+     *
+     * @return Generator
+     */
+    public function provideObjectsWithoutExtremePositionToGetExtremePosition()
+    {
+        yield[
+            [],
+            false,
+            null,
+        ];
+
+        yield[
+            [],
+            true,
+            null,
+        ];
+
+        yield[
+            [
+                new Sortable(),
+                new Sortable(),
+                new Sortable(),
+            ],
+            true,
+            null,
+        ];
+
+        yield[
+            [
+                new Sortable(),
+                new Sortable(),
+                new Sortable(),
+            ],
+            false,
+            null,
+        ];
+    }
+
+    /**
+     * Provides objects with extreme position used to get extreme position
+     *
+     * @return Generator
+     */
+    public function provideObjectsWithExtremePositionToGetExtremePosition()
+    {
+        yield[
+            [
+                new Sortable(1),
+                new Sortable(2),
+                new Sortable(3),
+            ],
+            true,
+            3,
+        ];
+
+        yield[
+            [
+                new Sortable(1),
+                new Sortable(2),
+                new Sortable(3),
+            ],
+            false,
+            1,
+        ];
+    }
+
+    /**
+     * Provide name of property, direction and expected ORDER BY clause used to get query builder
+     *
+     * @return Generator
+     */
+    public function providePropertyAndDirectionToGetEntityOrderedQueryBuilder()
+    {
+        yield[
+            null,
+            null,
+            '',
+        ];
+
+        yield[
+            '',
+            '',
+            '',
+        ];
+
+        yield[
+            'first_name',
+            '',
+            'qb.first_name ASC',
+        ];
+
+        yield[
+            'first_name',
+            'asc',
+            'qb.first_name asc',
+        ];
+
+        yield[
+            'first_name',
+            'ASC',
+            'qb.first_name ASC',
+        ];
+
+        yield[
+            'first_name',
+            'desc',
+            'qb.first_name desc',
+        ];
+
+        yield[
+            'first_name',
+            'DESC',
+            'qb.first_name DESC',
         ];
     }
 }
