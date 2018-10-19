@@ -64,8 +64,7 @@ class Date
     const DATE_DIFFERENCE_UNIT_YEARS = 'years';
 
     /**
-     * Returns start and end date for given period.
-     * The dates are returned in an array with indexes 'start' and 'end'.
+     * Returns date's period (that contains start and end date) for given period
      *
      * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
      * @throws Exception
@@ -531,11 +530,15 @@ class Date
     /**
      * Returns random date based on given start date
      *
-     * @param DateTime $startDate        The start date. Start of the random date.
-     * @param int      $start            (optional) Start of random partition
-     * @param int      $end              (optional) End of random partition
+     * @param DateTime $startDate        (optional) Beginning of the random date. If not provided, current date will
+     *                                   be used (default behaviour).
+     * @param int      $start            (optional) Start of random partition. If not provided, 1 will be used
+     *                                   (default behaviour).
+     * @param int      $end              (optional) End of random partition. If not provided, 100 will be used
+     *                                   (default behaviour).
      * @param string   $intervalTemplate (optional) Template used to build date interval. The placeholder is replaced
-     *                                   with next, iterated value.
+     *                                   with next, iterated value. If not provided, "P%sD" will be used (default
+     *                                   behaviour).
      * @throws Exception
      * @return DateTime
      */

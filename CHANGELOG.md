@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 0.1.4
 
 1. Phing > update configuration
+2. Utilities > Date > update descriptions of methods
 
 # 0.1.3
 
