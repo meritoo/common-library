@@ -1,20 +1,4 @@
 # --------------------------------------------------------------------------------
-# Information
-# --------------------------------------------------------------------------------
-
-# Property files contain key/value pairs
-# key = value
-#
-# Property keys may contain alphanumeric chars and colons, but
-# not special chars. This way you can create pseudo-namespaces
-#
-# You can refer to values of other properties by enclosing their keys in "${}".
-# Example: dir.js = ${dir.public}/js
-#
-# Everything behind the equal sign is the value, you do
-# not have to enclose strings: text=This is some text, Your OS is ${php.os}
-
-# --------------------------------------------------------------------------------
 # Common, e.g. default environment
 # --------------------------------------------------------------------------------
 
@@ -36,19 +20,17 @@ cache.clearWithWarmup = false
 # Composer
 # --------------------------------------------------------------------------------
 
-composer.download_command = php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
-
-# Path to composer executable or composer.phar file
+# Command used to download Composer
 #
-composer.path = composer.phar
+composer.download_command = bash ${project.basedir}/phing/composer-install.sh
+
+# Path to composer executable or downloaded composer.phar file
+#
+composer.path = ${project.basedir}/composer.phar
 
 # Path to php executable used by composer
 #
 composer.php = php
-
-# Self update of the composer
-#
-composer.self-update = false
 
 # --------------------------------------------------------------------------------
 # Directories
@@ -67,7 +49,7 @@ dir.tests = ${project.basedir}/tests
 # Build directories
 #
 dir.build = ${project.basedir}/build
-dir.reports = ${dir.build}/logs
+dir.reports = ${dir.build}/reports
 dir.reports.pdepend = ${dir.reports}/pdepend
 dir.reports.coverage = ${dir.reports}/phpunit_coverage
 
@@ -88,12 +70,15 @@ dir.docker.logs = ${dir.docker}/logs/nginx
 
 # Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
 #
-tests.cs_fixer.path = ./vendor/bin/php-cs-fixer
+tests.cs_fixer.command = ./vendor/bin/php-cs-fixer fix --verbose
 
 # Test database path
 #
 tests.database = ${dir.data.temporary}/database.sqlite
 
-# Path of the framework used to run unit tests
+# Paths of frameworks used to run tests:
+# - PHPUnit (unit tests)
+# - Infection (mutation tests)
 #
-tests.framework.path = ./vendor/bin/phpunit --verbose --no-coverage
+tests.phpunit.command = ./vendor/bin/phpunit --verbose --no-coverage
+tests.mutation.command = ./vendor/bin/infection --threads=5
