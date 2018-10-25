@@ -1,28 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- https://phpunit.de/manual/4.8/en/appendixes.configuration.html -->
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/4.8/phpunit.xsd"
-        backupGlobals="true"
-        backupStaticAttributes="false"
-        bootstrap="./vendor/autoload.php"
-        cacheTokens="false"
+        bootstrap="vendor/autoload.php"
         colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        forceCoversAnnotation="false"
-        mapTestClassNameToCoveredClassName="false"
-        processIsolation="false"
-        stopOnError="false"
-        stopOnFailure="false"
-        stopOnIncomplete="false"
-        stopOnSkipped="false"
-        stopOnRisky="false"
-        testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
-        timeoutForSmallTests="1"
-        timeoutForMediumTests="10"
-        timeoutForLargeTests="60"
         verbose="true"
 >
     <php>
@@ -31,23 +14,17 @@
 
     <testsuites>
         <testsuite name="Meritoo Package - Main Test Suite">
-            <directory>./tests/</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./src/</directory>
+            <directory>src/</directory>
         </whitelist>
     </filter>
 
-    <groups>
-        <exclude>
-            <group>performance</group>
-        </exclude>
-    </groups>
-
     <logging>
-        <log type="coverage-html" target="./build/logs/phpunit_coverage/html"/>
+        <log type="coverage-html" target="build/reports/phpunit_coverage/html"/>
     </logging>
 </phpunit>
