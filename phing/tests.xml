@@ -30,8 +30,6 @@
     <!-- Default / main target -->
     <target name="build:main"
             depends="build:fix-coding-standards,
-                    build:clean,
-                    build:prepare,
                     build:check,
                     build:test,
                     app:checkout"
@@ -57,20 +55,8 @@
                     test:infection"
     />
 
-    <!-- Project build clean -->
-    <target name="build:clean">
-        <delete dir="${dir.reports}"/>
-    </target>
-
-    <!-- Project build prepare -->
-    <target name="build:prepare">
-        <mkdir dir="${dir.reports}"/>
-        <mkdir dir="${dir.reports.pdepend}"/>
-        <mkdir dir="${dir.reports.coverage}"/>
-    </target>
-
     <!-- Symfony2 code sniffer -->
-    <target name="check:cs">
+    <target name="check:cs" depends="build:prepare">
         <phpcodesniffer standard="PSR2" showWarnings="true">
             <fileset refid="sourcecode"/>
             <formatter type="checkstyle" outfile="${dir.reports}/checkstyle.xml"/>
@@ -80,7 +66,7 @@
     </target>
 
     <!-- copy/paste detector -->
-    <target name="check:cpd">
+    <target name="check:cpd" depends="build:prepare">
         <phpcpd>
             <fileset refid="sourcecode"/>
             <formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml"/>
@@ -88,7 +74,7 @@
     </target>
 
     <!-- Mess detector -->
-    <target name="check:md">
+    <target name="check:md" depends="build:prepare">
         <phpmd rulesets="codesize,controversial,design,naming,unusedcode">
             <fileset refid="sourcecode"/>
             <formatter type="html" outfile="${dir.reports}/phpmd.html"/>
@@ -97,7 +83,7 @@
     </target>
 
     <!-- Code dependency -->
-    <target name="check:depend">
+    <target name="check:depend" depends="build:prepare">
         <phpdepend>
             <fileset refid="sourcecode"/>
             <logger type="jdepend-xml" outfile="${dir.reports.pdepend}/jdepend.xml"/>
@@ -107,20 +93,37 @@
     </target>
 
     <!-- Measure the size and analyzing the structure of a project -->
-    <target name="check:loc">
+    <target name="check:loc" depends="build:prepare">
         <phploc reportType="txt" reportName="phploc" reportDirectory="${dir.reports}">
             <fileset refid="sourcecode"/>
         </phploc>
     </target>
 
     <!-- PHPUnit tests -->
-    <target name="test:phpunit">
+    <target name="test:phpunit" depends="build:prepare">
         <exec command="${tests.phpunit.command}" passthru="true"/>
     </target>
 
     <!-- Run mutation testing -->
-    <target name="test:infection">
+    <target name="test:infection" depends="build:prepare">
         <exec command="${tests.mutation.command}" passthru="true"/>
+    </target>
+
+    <!-- Project build clean -->
+    <target name="build:clean">
+        <if>
+            <available file="${dir.reports}" type="dir" property="dir_is_available"/>
+            <then>
+                <delete dir="${dir.reports}"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- Project build prepare -->
+    <target name="build:prepare" depends="build:clean">
+        <mkdir dir="${dir.reports}"/>
+        <mkdir dir="${dir.reports.pdepend}"/>
+        <mkdir dir="${dir.reports.coverage}"/>
     </target>
 
     <!-- Checkout and finalization -->
