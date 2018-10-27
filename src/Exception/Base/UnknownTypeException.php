@@ -35,7 +35,7 @@ abstract class UnknownTypeException extends Exception
 
         $allTypes = $typeInstance->getAll();
         $types = Arrays::values2string($allTypes, '', ', ');
-        $message = sprintf(sprintf($template, $unknownType, $typeName, $types));
+        $message = sprintf($template, $unknownType, $typeName, $types);
 
         return new static($message);
     }
