@@ -6,6 +6,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. Phing > update configuration
 2. Utilities > Date > update descriptions of methods
+3. Docker > docker-compose.yml > add "phpunit" service > used to run PHPUnit's tests
 
 # 0.1.3
 
