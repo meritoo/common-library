@@ -51,8 +51,7 @@
 
     <!-- Test target -->
     <target name="build:test"
-            depends="test:phpunit,
-                    test:infection"
+            depends="test:phpunit"
     />
 
     <!-- Symfony2 code sniffer -->
@@ -102,11 +101,6 @@
     <!-- PHPUnit tests -->
     <target name="test:phpunit" depends="build:prepare">
         <exec command="${tests.phpunit.command}" passthru="true"/>
-    </target>
-
-    <!-- Run mutation testing -->
-    <target name="test:infection" depends="build:prepare">
-        <exec command="${tests.mutation.command}" passthru="true"/>
     </target>
 
     <!-- Project build clean -->
