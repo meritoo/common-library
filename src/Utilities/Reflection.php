@@ -662,7 +662,7 @@ class Reflection
     }
 
     /**
-     * Sets value of given property
+     * Sets value of given property in given object
      *
      * @param mixed  $object   Object that should contains given property
      * @param string $property Name of the property

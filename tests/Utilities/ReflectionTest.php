@@ -484,9 +484,7 @@ class ReflectionTest extends BaseTestCase
     public function testSetPropertyValueUsingNotExistingProperty($object, $property)
     {
         $this->setExpectedException(NotExistingPropertyException::class);
-
-        $object = new \stdClass();
-        Reflection::setPropertyValue($object, 'test', 'test test test');
+        Reflection::setPropertyValue($object, $property, 'test test test');
     }
 
     /**
