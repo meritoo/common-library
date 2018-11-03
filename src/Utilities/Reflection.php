@@ -692,4 +692,25 @@ class Reflection
             $reflectionProperty->setAccessible(false);
         }
     }
+
+    /**
+     * Sets values of properties in given object
+     *
+     * @param mixed $object           Object that should contains given property
+     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
+     */
+    public static function setPropertiesValues($object, array $propertiesValues)
+    {
+        /*
+         * No properties?
+         * Nothing to do
+         */
+        if (empty($propertiesValues)) {
+            return;
+        }
+
+        foreach ($propertiesValues as $property => $value) {
+            static::setPropertyValue($object, $property, $value);
+        }
+    }
 }

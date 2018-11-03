@@ -525,6 +525,43 @@ class ReflectionTest extends BaseTestCase
         static::assertSame($newValue, $value);
     }
 
+    public function testSetPropertiesValuesWithoutProperties()
+    {
+        $object = new G();
+        Reflection::setPropertiesValues($object, []);
+
+        static::assertSame($object->getFirstName(), 'John');
+        static::assertSame($object->getLastName(), 'Scott');
+    }
+
+    /**
+     * @param mixed $object           Object that should contains given property
+     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
+     *
+     * @dataProvider provideObjectAndNotExistingProperties
+     */
+    public function testSetPropertiesValuesUsingNotExistingProperties($object, array $propertiesValues)
+    {
+        $this->setExpectedException(NotExistingPropertyException::class);
+        Reflection::setPropertiesValues($object, $propertiesValues);
+    }
+
+    /**
+     * @param mixed $object           Object that should contains given property
+     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
+     *
+     * @dataProvider provideObjectAndPropertiesValues
+     */
+    public function testSetPropertiesValues($object, array $propertiesValues)
+    {
+        Reflection::setPropertiesValues($object, $propertiesValues);
+
+        foreach ($propertiesValues as $property => $value) {
+            $realValue = Reflection::getPropertyValue($object, $property);
+            static::assertSame($value, $realValue);
+        }
+    }
+
     /**
      * Provides invalid class and trait
      *
@@ -605,6 +642,106 @@ class ReflectionTest extends BaseTestCase
             new G(),
             'lastName',
             'Smith',
+        ];
+    }
+
+    /**
+     * Provides object and not existing properties
+     *
+     * @return Generator
+     */
+    public function provideObjectAndNotExistingProperties()
+    {
+        yield[
+            new \stdClass(),
+            [
+                'test' => 1,
+            ],
+        ];
+
+        yield[
+            new A(),
+            [
+                'test' => 2,
+            ],
+        ];
+
+        yield[
+            new B(),
+            [
+                'firstName' => '',
+            ],
+        ];
+    }
+
+    /**
+     * Provides object and its new values of properties
+     *
+     * @return Generator
+     */
+    public function provideObjectAndPropertiesValues()
+    {
+        yield[
+            new A(),
+            [
+                'count' => 123,
+            ],
+        ];
+
+        yield[
+            new B(),
+            [
+                'name' => 'test test',
+            ],
+        ];
+
+        yield[
+            new G(),
+            [
+                'firstName' => 'Jane',
+            ],
+        ];
+
+        yield[
+            new G(),
+            [
+                'lastName' => 'Smith',
+            ],
+        ];
+
+        yield[
+            new G(),
+            [
+                'firstName' => 'Jane',
+                'lastName'  => 'Brown',
+            ],
+        ];
+
+        yield[
+            new F(
+                123,
+                'New York',
+                'USA',
+                'UnKnown'
+            ),
+            [
+                'gInstance' => new G(),
+            ],
+        ];
+
+        yield[
+            new F(
+                123,
+                'New York',
+                'USA',
+                'UnKnown',
+                'Mary',
+                'Brown'
+            ),
+            [
+                'country'        => 'Canada',
+                'accountBalance' => 456,
+            ],
         ];
     }
 }
