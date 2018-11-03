@@ -23,9 +23,9 @@ abstract class UnknownTypeException extends Exception
     /**
      * Creates exception
      *
-     * @param string|int $unknownType  The unknown type of something (value of constant)
-     * @param BaseType   $typeInstance An instance of class that contains type of the something
-     * @param string     $typeName     Name of the something
+     * @param mixed    $unknownType  The unknown type of something (value of constant)
+     * @param BaseType $typeInstance An instance of class that contains type of the something
+     * @param string   $typeName     Name of the something
      * @return UnknownTypeException
      */
     public static function create($unknownType, BaseType $typeInstance, $typeName)
@@ -35,7 +35,7 @@ abstract class UnknownTypeException extends Exception
 
         $allTypes = $typeInstance->getAll();
         $types = Arrays::values2string($allTypes, '', ', ');
-        $message = sprintf(sprintf($template, $unknownType, $typeName, $types));
+        $message = sprintf($template, $unknownType, $typeName, $types);
 
         return new static($message);
     }

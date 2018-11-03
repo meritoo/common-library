@@ -1,98 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
+
+<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.16.0">
     <!-- Properties -->
     <if>
-        <available file="phing/properties" property="custom.properties.available"/>
+        <available file="${project.basedir}/phing/properties" property="custom.properties.available"/>
         <then>
-            <property file="phing/properties"/>
+            <property file="${project.basedir}/phing/properties"/>
         </then>
         <else>
-            <property file="phing/properties.dist"/>
+            <property file="${project.basedir}/phing/properties.dist"/>
         </else>
     </if>
+
+    <!-- Filesets -->
+    <import file="${project.basedir}/phing/filesets.xml"/>
 
     <!-- Default / main target -->
     <target name="build:main"
             depends="build:app"
-            description="Builds the application" />
+    />
 
     <!-- App target -->
     <target name="build:app"
-            depends="app:composer, app:vendors, app:checkout"
-            description="Prepares app to build." />
+            depends="app:clean,
+                    app:composer:self-update,
+                    app:composer:install,
+                    app:composer:validate,
+                    app:checkout"
+    />
 
-    <!-- Updates Composer and validates composer.* files -->
-    <target name="app:composer" description="Updates Composer and validates composer.* files">
-        <echo msg="Updating Composer and validating composer.* files..." />
-
+    <!-- Updates Composer -->
+    <target name="app:composer:self-update">
         <if>
-            <available file="composer.phar" />
+            <not>
+                <available file="${composer.path}" property="composer.local.unavailable"/>
+            </not>
             <then>
-                <echo msg="[Skipped] Downloading of Composer skipped, because exist in the project..." />
-            </then>
-            <else>
                 <if>
-                    <os family="windows" />
+                    <os family="windows"/>
                     <then>
-                        <fail message="Composer not found! Go to http://getcomposer.org/download and download the Composer." />
+                        <fail message="Composer not found! Go to http://getcomposer.org/download and download the Composer."/>
                     </then>
                     <else>
-                        <exec command="${composer.download_command}" checkreturn="true" />
+                        <exec command="${composer.download_command}" checkreturn="true" passthru="true"/>
                     </else>
                 </if>
-            </else>
+            </then>
         </if>
 
         <!-- Update Composer -->
-        <composer command="selfupdate" />
-
-        <!-- Validate Composer -->
-        <composer command="validate">
-            <arg line="--no-check-all --strict" />
+        <composer php="${composer.php}" composer="${composer.path}" command="selfupdate">
+            <arg value="--ansi"/>
         </composer>
     </target>
 
-    <!-- Project Install/update vendors -->
-    <target name="app:vendors" description="Installs / updates vendors">
-        <echo msg="Installing / updating vendors..." />
+    <!-- Validates composer.* files -->
+    <target name="app:composer:validate" depends="app:composer:install">
+        <composer php="${composer.php}" composer="${composer.path}" command="validate">
+            <arg value="--no-check-all"/>
+            <arg value="--strict"/>
+            <arg value="--ansi"/>
+        </composer>
+    </target>
 
+    <!-- Project clean -->
+    <target name="app:clean">
         <if>
-            <istrue value="${composer.self-update}"/>
+            <equals arg1="${env}" arg2="prod"/>
             <then>
-                <composer php="${composer.php}" composer="${composer.path}" command="self-update"/>
-            </then>
-        </if>
-
-        <if>
-            <istrue value="${composer.validate}"/>
-            <then>
-                <composer php="${composer.php}" composer="${composer.path}" command="validate"/>
-            </then>
-        </if>
-
-        <if>
-            <equals arg1="${env}" arg2="prod" />
-            <then>
-                <composer php="${composer.php}" composer="${composer.path}" command="install">
-                    <arg value="--optimize-autoloader" />
-                    <arg value="--prefer-dist" />
-                    <arg value="--classmap-authoritative" />
-                </composer>
+                <echo message="[Skipped] Cleaning project (and directories cleanup) -> 'prod' environment"/>
             </then>
             <else>
-                <composer php="${composer.php}" composer="${composer.path}" command="install" />
+                <foreach list="${directoriesToEmpty}" param="directory" target="app:clean:empty"/>
             </else>
+        </if>
+
+        <foreach list="${directoriesToCheck}" param="directory" target="app:clean:check"/>
+
+        <touch file="${dir.cache}/.gitkeep"/>
+        <touch file="${dir.logs}/.gitkeep"/>
+        <touch file="${dir.sessions}/.gitkeep"/>
+
+        <foreach list="${directoriesToEmpty}" param="directory" target="app:permissions"/>
+    </target>
+
+    <!-- Cleaning directory (making empty) directory -->
+    <target name="app:clean:empty">
+        <if>
+            <available file="${directory}" type="dir" property="dir_is_available"/>
+            <then>
+                <delete includeemptydirs="true" dir="${directory}"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- Checking if directory exists -->
+    <target name="app:clean:check">
+        <if>
+            <not>
+                <available file="${directory}" type="dir" property="dir_is_available"/>
+            </not>
+            <then>
+                <if>
+                    <or>
+                        <contains string="${directory}" substring="cache"/>
+                        <contains string="${directory}" substring="logs"/>
+                        <contains string="${directory}" substring="sessions"/>
+                    </or>
+                    <then>
+                        <mkdir dir="${directory}" mode="0777"/>
+                    </then>
+                    <else>
+                        <mkdir dir="${directory}" mode="0775"/>
+                    </else>
+                </if>
+            </then>
+        </if>
+    </target>
+
+    <!-- Installs vendors -->
+    <target name="app:composer:install" depends="app:composer:self-update">
+        <composer php="${composer.php}" composer="${composer.path}" command="install">
+            <arg value="--optimize-autoloader"/>
+            <arg value="--ansi"/>
+        </composer>
+    </target>
+
+    <!-- Clearing cache -->
+    <target name="app:cache">
+        <if>
+            <istrue value="${cache.clearWithWarmup}"/>
+            <then>
+                <SymfonyConsole console="bin/console" command="cache:clear">
+                    <arg name="env" value="${env}"/>
+                </SymfonyConsole>
+            </then>
+            <else>
+                <SymfonyConsole console="bin/console" command="cache:clear">
+                    <arg name="env" value="${env}"/>
+                    <arg name="no-warmup"/>
+                </SymfonyConsole>
+            </else>
+        </if>
+    </target>
+
+    <!-- Clearing cache (faster) -->
+    <target name="app:cache:faster">
+        <SymfonyConsole console="bin/console" command="cache:clear">
+            <arg name="env" value="${env}"/>
+            <arg name="no-optional-warmers"/>
+        </SymfonyConsole>
+    </target>
+
+    <!-- Warming up cache -->
+    <target name="app:cache:warmup">
+        <SymfonyConsole console="bin/console" command="cache:warmup">
+            <arg name="env" value="${env}"/>
+        </SymfonyConsole>
+    </target>
+
+    <!-- Setting permissions of given directory -->
+    <target name="app:permissions">
+        <if>
+            <not>
+                <os family="windows"/>
+            </not>
+            <then>
+                <exec command="chmod -R 777 ${directory}/*"/>
+            </then>
         </if>
     </target>
 
     <!-- Checkout and finalization -->
     <target name="app:checkout">
         <tstamp>
-            <format property="date_end" pattern="%Y-%m-%d %H:%M" />
+            <format property="date_end" pattern="%Y-%m-%d %H:%M"/>
         </tstamp>
 
-        <echo msg="------------------------------------" />
-        <echo msg="Build finished at: ${date_end}" />
-        <echo msg="------------------------------------" />
+        <echo msg="------------------------------------"/>
+        <echo msg="Build finished at: ${date_end}"/>
+        <echo msg="------------------------------------"/>
     </target>
 </project>

@@ -1,30 +1,10 @@
 # --------------------------------------------------------------------------------
-# Information
-# --------------------------------------------------------------------------------
-
-# Property files contain key/value pairs
-# key = value
-#
-# Property keys may contain alphanumeric chars and colons, but
-# not special chars. This way you can create pseudo-namespaces
-#
-# You can refer to values of other properties by enclosing their keys in "${}".
-# Example: dir.js = ${dir.web}/js
-#
-# Everything behind the equal sign is the value, you do
-# not have to enclose strings: text=This is some text, Your OS is ${php.os}
-
-# --------------------------------------------------------------------------------
 # Common, e.g. default environment
 # --------------------------------------------------------------------------------
 
 # Default environment
 #
 env = dev
-
-# Install assets using symlinks
-#
-assets.installWithSymlink = true
 
 # Clear cache with the "warmup" option
 #
@@ -40,24 +20,17 @@ cache.clearWithWarmup = false
 # Composer
 # --------------------------------------------------------------------------------
 
-composer.download_command = php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
-
-# Path to composer executable or composer.phar file
+# Command used to download Composer
 #
-composer.path = composer.phar
-#composer.path = /usr/local/bin/composer
+composer.download_command = bash ${project.basedir}/phing/composer-install.sh
+
+# Path to composer executable or downloaded composer.phar file
+#
+composer.path = ${project.basedir}/composer.phar
 
 # Path to php executable used by composer
 #
 composer.php = php
-
-# Self update of the composer
-#
-composer.self-update = false
-
-# Validate the composer.json file
-#
-composer.validate = false
 
 # --------------------------------------------------------------------------------
 # Directories
@@ -65,42 +38,45 @@ composer.validate = false
 
 # System directories
 #
-dir.data = ${project.basedir}/data
 dir.src = ${project.basedir}/src
+dir.var = ${project.basedir}/tests/Resources/var
+dir.cache = ${dir.var}/cache
+dir.logs = ${dir.var}/log
+dir.sessions = ${dir.var}/sessions
+dir.data = ${project.basedir}/data
 dir.tests = ${project.basedir}/tests
 
-# --------------------------------------------------------------------------------
 # Build directories
-# --------------------------------------------------------------------------------
-
+#
 dir.build = ${project.basedir}/build
-dir.reports = ${dir.build}/logs
+dir.reports = ${dir.build}/reports
 dir.reports.pdepend = ${dir.reports}/pdepend
 dir.reports.coverage = ${dir.reports}/phpunit_coverage
-#
-# Disabled, because unnecessary right now
-# phpdocumentor/phpdocumentor cannot be installed via Composer
-#
-# Meritoo <github@meritoo.pl>
-# 2017-02-22
-#
-#dir.docs = ${dir.build}/docs
-#dir.docs.phpdoc2 = ${dir.docs}/phpdoc2
 
-# --------------------------------------------------------------------------------
 # Data directories
-# --------------------------------------------------------------------------------
-
+#
+dir.data.tests = ${dir.data}/tests
 dir.data.temporary = ${dir.data}/tmp
+
+# Docker directories
+#
+dir.docker = ${project.basedir}/docker
+dir.docker.data = ${dir.docker}/data/db
+dir.docker.logs = ${dir.docker}/logs/nginx
 
 # --------------------------------------------------------------------------------
 # Testing
 # --------------------------------------------------------------------------------
 
-# Path of the framework used to run unit tests
-#
-tests.framework.path = ./vendor/bin/phpunit --verbose --no-coverage --testdox
-
 # Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
 #
-phpCsFixer.path = ./vendor/bin/php-cs-fixer
+tests.cs_fixer.command = ./vendor/bin/php-cs-fixer fix --verbose
+
+# Test database path
+#
+tests.database = ${dir.data.temporary}/database.sqlite
+
+# Paths of frameworks used to run tests:
+# - PHPUnit (unit tests)
+#
+tests.phpunit.command = ./vendor/bin/phpunit --verbose

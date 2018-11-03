@@ -43,7 +43,7 @@ abstract class BaseType
     /**
      * Returns information if given type is correct
      *
-     * @param string $type The type to check
+     * @param mixed $type The type to check
      * @return bool
      */
     public function isCorrectType($type)

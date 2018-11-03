@@ -2,6 +2,13 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 0.1.4
+
+1. Phing > update configuration
+2. Utilities > Date > update descriptions of methods
+3. Docker > docker-compose.yml > add "phpunit" service > used to run PHPUnit's tests
+4. Reflection > setPropertiesValues() method > sets values of properties in given object
+
 # 0.1.3
 
 1. Tests > refactoring & minor improvements

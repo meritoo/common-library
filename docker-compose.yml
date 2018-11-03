@@ -1,6 +1,9 @@
 version: '3'
 
 services:
+    #
+    # Required to run project
+    #
     php:
         image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-php
@@ -9,12 +12,22 @@ services:
         build:
             context: ./docker/config
             args:
-            - TIMEZONE=${TIMEZONE}
+                - TIMEZONE=${TIMEZONE}
         volumes:
-        - .:/project:cached
+            - .:/project:cached
     composer:
         image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-composer
-        entrypoint: composer
+        entrypoint: php -d memory_limit=-1 /usr/local/bin/composer
         volumes:
-        - .:/project:cached
+            - .:/project:cached
+    #
+    # Required to run PHPUnit's tests
+    #
+    phpunit:
+        image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php
+        container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-phpunit
+        entrypoint: ./vendor/bin/phpunit
+        command: --version
+        volumes:
+            - .:/project:cached

@@ -177,10 +177,13 @@ class Repository
         $direction = 'ASC'
     ) {
         $alias = 'qb';
+        $queryBuilder = $repository->createQueryBuilder($alias);
 
-        return $repository
-            ->createQueryBuilder($alias)
-            ->orderBy(sprintf('%s.%s', $alias, $property), $direction);
+        if (empty($property)) {
+            return $queryBuilder;
+        }
+
+        return $queryBuilder->orderBy(sprintf('%s.%s', $alias, $property), $direction);
     }
 
     /**

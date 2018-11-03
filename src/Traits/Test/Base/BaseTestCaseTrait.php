@@ -14,13 +14,11 @@ use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Miscellaneous;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 use stdClass;
 
 /**
- * BaseTestCaseTrait
- * Created on 2017-11-02
+ * Trait for the base test case
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
@@ -173,7 +171,6 @@ trait BaseTestCaseTrait
      * @param int                     $requiredArgumentsCount (optional) Expected count/amount of required arguments
      *                                                        of the verified method
      * @throws UnknownOopVisibilityTypeException
-     * @throws ReflectionException
      *
      * Attention. 2nd argument, the $method, may be:
      * - string - name of the method
@@ -230,8 +227,6 @@ trait BaseTestCaseTrait
      * @param int    $argumentsCount         (optional) Expected count/amount of arguments of the verified method
      * @param int    $requiredArgumentsCount (optional) Expected count/amount of required arguments of the verified
      *                                       method
-     * @throws ReflectionException
-     * @throws UnknownOopVisibilityTypeException
      */
     protected static function assertConstructorVisibilityAndArguments(
         $classNamespace,
@@ -245,14 +240,19 @@ trait BaseTestCaseTrait
         $reflection = new ReflectionClass($classNamespace);
         $method = $reflection->getConstructor();
 
-        static::assertMethodVisibilityAndArguments($classNamespace, $method, $visibilityType, $argumentsCount, $requiredArgumentsCount);
+        static::assertMethodVisibilityAndArguments(
+            $classNamespace,
+            $method,
+            $visibilityType,
+            $argumentsCount,
+            $requiredArgumentsCount
+        );
     }
 
     /**
      * Asserts that class with given namespace has no constructor
      *
      * @param string $classNamespace Namespace of class that contains constructor to verify
-     * @throws ReflectionException
      */
     protected static function assertHasNoConstructor($classNamespace)
     {

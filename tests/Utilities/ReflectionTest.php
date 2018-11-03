@@ -82,8 +82,15 @@ class ReflectionTest extends BaseTestCase
          * Class with namespace containing name of class (duplicated string)
          */
         if (class_exists('Symfony\Bundle\SecurityBundle\SecurityBundle')) {
-            self::assertEquals('Symfony\Bundle\SecurityBundle\SecurityBundle', Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle'));
-            self::assertEquals('SecurityBundle', Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle', true));
+            self::assertEquals(
+                'Symfony\Bundle\SecurityBundle\SecurityBundle',
+                Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle')
+            );
+
+            self::assertEquals(
+                'SecurityBundle',
+                Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle', true)
+            );
         }
     }
 
@@ -115,7 +122,10 @@ class ReflectionTest extends BaseTestCase
          * Class with namespace containing name of class (duplicated string)
          */
         if (class_exists('Symfony\Bundle\SecurityBundle\SecurityBundle')) {
-            self::assertEquals('Symfony\Bundle\SecurityBundle', Reflection::getClassNamespace('Symfony\Bundle\SecurityBundle\SecurityBundle'));
+            self::assertEquals(
+                'Symfony\Bundle\SecurityBundle',
+                Reflection::getClassNamespace('Symfony\Bundle\SecurityBundle\SecurityBundle')
+            );
         }
     }
 
@@ -183,11 +193,11 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetMethods()
     {
-        self::assertEquals(1, count(Reflection::getMethods(B::class, true)));
-        self::assertEquals(3, count(Reflection::getMethods(B::class)));
-        self::assertEquals(2, count(Reflection::getMethods(A::class)));
-        self::assertEquals(2, count(Reflection::getMethods(C::class, true)));
-        self::assertEquals(5, count(Reflection::getMethods(C::class)));
+        self::assertCount(1, Reflection::getMethods(B::class, true));
+        self::assertCount(3, Reflection::getMethods(B::class));
+        self::assertCount(2, Reflection::getMethods(A::class));
+        self::assertCount(2, Reflection::getMethods(C::class, true));
+        self::assertCount(5, Reflection::getMethods(C::class));
     }
 
     /**
@@ -235,9 +245,20 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetPropertiesUsingFilter()
     {
-        self::assertCount(1, Reflection::getProperties(B::class, ReflectionProperty::IS_PROTECTED));
-        self::assertCount(0, Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE));
-        self::assertCount(1, Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE, true));
+        self::assertCount(
+            1,
+            Reflection::getProperties(B::class, ReflectionProperty::IS_PROTECTED)
+        );
+
+        self::assertCount(
+            0,
+            Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE)
+        );
+
+        self::assertCount(
+            1,
+            Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE, true)
+        );
     }
 
     public function testGetPropertiesWithParents()
@@ -484,9 +505,7 @@ class ReflectionTest extends BaseTestCase
     public function testSetPropertyValueUsingNotExistingProperty($object, $property)
     {
         $this->setExpectedException(NotExistingPropertyException::class);
-
-        $object = new \stdClass();
-        Reflection::setPropertyValue($object, 'test', 'test test test');
+        Reflection::setPropertyValue($object, $property, 'test test test');
     }
 
     /**
@@ -504,6 +523,43 @@ class ReflectionTest extends BaseTestCase
 
         static::assertNotSame($oldValue, $value);
         static::assertSame($newValue, $value);
+    }
+
+    public function testSetPropertiesValuesWithoutProperties()
+    {
+        $object = new G();
+        Reflection::setPropertiesValues($object, []);
+
+        static::assertSame($object->getFirstName(), 'John');
+        static::assertSame($object->getLastName(), 'Scott');
+    }
+
+    /**
+     * @param mixed $object           Object that should contains given property
+     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
+     *
+     * @dataProvider provideObjectAndNotExistingProperties
+     */
+    public function testSetPropertiesValuesUsingNotExistingProperties($object, array $propertiesValues)
+    {
+        $this->setExpectedException(NotExistingPropertyException::class);
+        Reflection::setPropertiesValues($object, $propertiesValues);
+    }
+
+    /**
+     * @param mixed $object           Object that should contains given property
+     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
+     *
+     * @dataProvider provideObjectAndPropertiesValues
+     */
+    public function testSetPropertiesValues($object, array $propertiesValues)
+    {
+        Reflection::setPropertiesValues($object, $propertiesValues);
+
+        foreach ($propertiesValues as $property => $value) {
+            $realValue = Reflection::getPropertyValue($object, $property);
+            static::assertSame($value, $realValue);
+        }
     }
 
     /**
@@ -586,6 +642,106 @@ class ReflectionTest extends BaseTestCase
             new G(),
             'lastName',
             'Smith',
+        ];
+    }
+
+    /**
+     * Provides object and not existing properties
+     *
+     * @return Generator
+     */
+    public function provideObjectAndNotExistingProperties()
+    {
+        yield[
+            new \stdClass(),
+            [
+                'test' => 1,
+            ],
+        ];
+
+        yield[
+            new A(),
+            [
+                'test' => 2,
+            ],
+        ];
+
+        yield[
+            new B(),
+            [
+                'firstName' => '',
+            ],
+        ];
+    }
+
+    /**
+     * Provides object and its new values of properties
+     *
+     * @return Generator
+     */
+    public function provideObjectAndPropertiesValues()
+    {
+        yield[
+            new A(),
+            [
+                'count' => 123,
+            ],
+        ];
+
+        yield[
+            new B(),
+            [
+                'name' => 'test test',
+            ],
+        ];
+
+        yield[
+            new G(),
+            [
+                'firstName' => 'Jane',
+            ],
+        ];
+
+        yield[
+            new G(),
+            [
+                'lastName' => 'Smith',
+            ],
+        ];
+
+        yield[
+            new G(),
+            [
+                'firstName' => 'Jane',
+                'lastName'  => 'Brown',
+            ],
+        ];
+
+        yield[
+            new F(
+                123,
+                'New York',
+                'USA',
+                'UnKnown'
+            ),
+            [
+                'gInstance' => new G(),
+            ],
+        ];
+
+        yield[
+            new F(
+                123,
+                'New York',
+                'USA',
+                'UnKnown',
+                'Mary',
+                'Brown'
+            ),
+            [
+                'country'        => 'Canada',
+                'accountBalance' => 456,
+            ],
         ];
     }
 }
