@@ -572,10 +572,11 @@ class Date
      * @param mixed  $value                The value which maybe is a date
      * @param bool   $allowCompoundFormats (optional) If is set to true, the compound formats used to create an
      *                                     instance of DateTime class are allowed (e.g. "now", "last day of next
-     *                                     month", "yyyy"). Otherwise - not and every incorrect value is refused.
+     *                                     month", "yyyy"). Otherwise - not and every incorrect value is refused
+     *                                     (default behaviour).
      * @param string $dateFormat           (optional) Format of date used to verify if given value is actually a date.
      *                                     It should be format matched to the given value, e.g. "Y-m-d H:i" for
-     *                                     "2015-01-01 10:00" value.
+     *                                     "2015-01-01 10:00" value. Default: "Y-m-d".
      * @return DateTime|bool
      */
     public static function getDateTime($value, $allowCompoundFormats = false, $dateFormat = 'Y-m-d')
