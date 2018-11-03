@@ -82,8 +82,15 @@ class ReflectionTest extends BaseTestCase
          * Class with namespace containing name of class (duplicated string)
          */
         if (class_exists('Symfony\Bundle\SecurityBundle\SecurityBundle')) {
-            self::assertEquals('Symfony\Bundle\SecurityBundle\SecurityBundle', Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle'));
-            self::assertEquals('SecurityBundle', Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle', true));
+            self::assertEquals(
+                'Symfony\Bundle\SecurityBundle\SecurityBundle',
+                Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle')
+            );
+
+            self::assertEquals(
+                'SecurityBundle',
+                Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle', true)
+            );
         }
     }
 
@@ -115,7 +122,10 @@ class ReflectionTest extends BaseTestCase
          * Class with namespace containing name of class (duplicated string)
          */
         if (class_exists('Symfony\Bundle\SecurityBundle\SecurityBundle')) {
-            self::assertEquals('Symfony\Bundle\SecurityBundle', Reflection::getClassNamespace('Symfony\Bundle\SecurityBundle\SecurityBundle'));
+            self::assertEquals(
+                'Symfony\Bundle\SecurityBundle',
+                Reflection::getClassNamespace('Symfony\Bundle\SecurityBundle\SecurityBundle')
+            );
         }
     }
 
@@ -183,11 +193,11 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetMethods()
     {
-        self::assertEquals(1, count(Reflection::getMethods(B::class, true)));
-        self::assertEquals(3, count(Reflection::getMethods(B::class)));
-        self::assertEquals(2, count(Reflection::getMethods(A::class)));
-        self::assertEquals(2, count(Reflection::getMethods(C::class, true)));
-        self::assertEquals(5, count(Reflection::getMethods(C::class)));
+        self::assertCount(1, Reflection::getMethods(B::class, true));
+        self::assertCount(3, Reflection::getMethods(B::class));
+        self::assertCount(2, Reflection::getMethods(A::class));
+        self::assertCount(2, Reflection::getMethods(C::class, true));
+        self::assertCount(5, Reflection::getMethods(C::class));
     }
 
     /**
@@ -235,9 +245,20 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetPropertiesUsingFilter()
     {
-        self::assertCount(1, Reflection::getProperties(B::class, ReflectionProperty::IS_PROTECTED));
-        self::assertCount(0, Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE));
-        self::assertCount(1, Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE, true));
+        self::assertCount(
+            1,
+            Reflection::getProperties(B::class, ReflectionProperty::IS_PROTECTED)
+        );
+
+        self::assertCount(
+            0,
+            Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE)
+        );
+
+        self::assertCount(
+            1,
+            Reflection::getProperties(B::class, ReflectionProperty::IS_PRIVATE, true)
+        );
     }
 
     public function testGetPropertiesWithParents()
