@@ -279,8 +279,17 @@ class DateTest extends BaseTestCase
         self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_YEARS));
         self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_YEARS));
 
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MONTHS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MONTHS));
+
         self::assertEquals(1, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
         self::assertEquals(1, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_DAYS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_HOURS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
 
         /*
          * Difference of 1 day (using the relative date format)
@@ -294,8 +303,10 @@ class DateTest extends BaseTestCase
         ];
 
         self::assertEquals($effect, Date::getDateDifference(new DateTime('yesterday'), new DateTime('midnight')));
+        self::assertEquals(0, Date::getDateDifference(new DateTime('yesterday'), new DateTime('midnight'), Date::DATE_DIFFERENCE_UNIT_MONTHS));
         self::assertEquals(1, Date::getDateDifference(new DateTime('yesterday'), new DateTime('midnight'), Date::DATE_DIFFERENCE_UNIT_DAYS));
         self::assertEquals(0, Date::getDateDifference(new DateTime('yesterday'), new DateTime('midnight'), Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime('yesterday'), new DateTime('midnight'), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
     public function testGetDateDifferenceOneDayTwoHours()
@@ -319,6 +330,12 @@ class DateTest extends BaseTestCase
 
         self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_YEARS));
         self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_YEARS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MONTHS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MONTHS));
+
+        self::assertEquals(1, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
+        self::assertEquals(1, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_DAYS));
 
         self::assertEquals(2, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
         self::assertEquals(2, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_HOURS));
@@ -355,8 +372,139 @@ class DateTest extends BaseTestCase
         self::assertEquals(41, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
         self::assertEquals(41, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_DAYS));
 
+        self::assertEquals(4, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(4, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_HOURS));
+
         self::assertEquals(30, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
         self::assertEquals(30, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
+    }
+
+    public function testGetDateDifferenceNewYear()
+    {
+        $dateStart = '2017-12-31 23:59';
+        $dateEnd = '2018-01-01 00:00';
+
+        $effect = [
+            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS    => 0,
+            Date::DATE_DIFFERENCE_UNIT_HOURS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_MINUTES => 1,
+        ];
+
+        self::assertEquals($effect, Date::getDateDifference($dateStart, $dateEnd));
+        self::assertEquals($effect, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd)));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_YEARS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_YEARS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MONTHS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MONTHS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_DAYS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_HOURS));
+
+        self::assertEquals(1, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
+        self::assertEquals(1, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
+    }
+
+    public function testGetDateDifferenceLessThan24Hours()
+    {
+        $dateStart = '2017-01-01 16:00';
+        $dateEnd = '2017-01-02 10:00';
+
+        $effect = [
+            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS    => 0,
+            Date::DATE_DIFFERENCE_UNIT_HOURS   => 18,
+            Date::DATE_DIFFERENCE_UNIT_MINUTES => 0,
+        ];
+
+        self::assertEquals($effect, Date::getDateDifference($dateStart, $dateEnd));
+        self::assertEquals($effect, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd)));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_YEARS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_YEARS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MONTHS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MONTHS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_DAYS));
+
+        self::assertEquals(18, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(18, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_HOURS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
+    }
+
+    public function testGetDateDifferenceEqual24Hours()
+    {
+        $dateStart = '2017-01-01 00:00';
+        $dateEnd = '2017-01-02 00:00';
+
+        $effect = [
+            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS    => 1,
+            Date::DATE_DIFFERENCE_UNIT_HOURS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_MINUTES => 0,
+        ];
+
+        self::assertEquals($effect, Date::getDateDifference($dateStart, $dateEnd));
+        self::assertEquals($effect, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd)));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_YEARS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_YEARS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MONTHS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MONTHS));
+
+        self::assertEquals(1, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
+        self::assertEquals(1, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_DAYS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_HOURS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
+    }
+
+    public function testGetDateDifferenceInvertedDates()
+    {
+        $dateStart = '2017-01-02 10:00';
+        $dateEnd = '2017-01-01 16:00';
+
+        $effect = [
+            Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
+            Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
+            Date::DATE_DIFFERENCE_UNIT_DAYS    => -1,
+            Date::DATE_DIFFERENCE_UNIT_HOURS   => 6,
+            Date::DATE_DIFFERENCE_UNIT_MINUTES => 0,
+        ];
+
+        self::assertEquals($effect, Date::getDateDifference($dateStart, $dateEnd));
+        self::assertEquals($effect, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd)));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_YEARS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_YEARS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MONTHS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MONTHS));
+
+        self::assertEquals(-1, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
+        self::assertEquals(-1, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_DAYS));
+
+        self::assertEquals(6, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(6, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_HOURS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
+        self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
     public function testGetDateDifferenceNoDifference()
@@ -383,6 +531,12 @@ class DateTest extends BaseTestCase
 
         self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MONTHS));
         self::assertEquals(0, Date::getDateDifference(new DateTime(), new DateTime(), Date::DATE_DIFFERENCE_UNIT_MONTHS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_DAYS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime(), new DateTime(), Date::DATE_DIFFERENCE_UNIT_DAYS));
+
+        self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_HOURS));
+        self::assertEquals(0, Date::getDateDifference(new DateTime(), new DateTime(), Date::DATE_DIFFERENCE_UNIT_HOURS));
 
         self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
         self::assertEquals(0, Date::getDateDifference(new DateTime(), new DateTime(), Date::DATE_DIFFERENCE_UNIT_MINUTES));

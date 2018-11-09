@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 0.1.5
+
+1. Tests > Date > one more test case
+
 # 0.1.4
 
 1. Phing > update configuration
