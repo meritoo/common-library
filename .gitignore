@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Environment-related parameters
+### Environment-related parameters
 # ------------------------------------------------------------------------------
 .env
 
@@ -51,42 +51,15 @@
 
 
 # ------------------------------------------------------------------------------
-### Compiled source
-# ------------------------------------------------------------------------------
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
-
-
-# ------------------------------------------------------------------------------
-### Shell scripts
-# ------------------------------------------------------------------------------
-/*.sh
-
-
-# ------------------------------------------------------------------------------
-### JetBrains
+### JetBrains template
 # ------------------------------------------------------------------------------
 /.idea
 
 
 # ------------------------------------------------------------------------------
-### NetBeans template
+### macOS template
 # ------------------------------------------------------------------------------
-nbproject/private/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-.nb-gradle/
-
-
-# ------------------------------------------------------------------------------
-### OSX template
-# ------------------------------------------------------------------------------
+# General
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -104,6 +77,7 @@ Icon
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
 # Directories potentially created on remote AFP share
 .AppleDB
@@ -127,16 +101,23 @@ Temporary Items
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
 
 # ------------------------------------------------------------------------------
 ### Windows template
 # ------------------------------------------------------------------------------
-# Windows image file caches
+# Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
 
 # Folder config file
-Desktop.ini
+[Dd]esktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -144,6 +125,7 @@ $RECYCLE.BIN/
 # Windows Installer files
 *.cab
 *.msi
+*.msix
 *.msm
 *.msp
 
