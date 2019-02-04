@@ -349,7 +349,7 @@ class Date
      *
      * @param string|DateTime $dateStart      The start date
      * @param string|DateTime $dateEnd        The end date
-     * @param int             $differenceUnit (optional) Unit of date difference. One of this class
+     * @param string          $differenceUnit (optional) Unit of date difference. One of this class
      *                                        DATE_DIFFERENCE_UNIT_* constants. If is set to null all units are
      *                                        returned in the array.
      * @return array|int
