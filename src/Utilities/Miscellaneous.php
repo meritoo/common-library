@@ -297,34 +297,6 @@ class Miscellaneous
     }
 
     /**
-     * Displays variable content as preformatted text (fixed-width font and preserves both spaces and line breaks)
-     *
-     * If xdebug php module is loaded, displays variable using var_dump(), otherwise <pre>var_dump()</pre>.
-     * You can pass as many variables as you wish.
-     *
-     * Pass each variable as argument of this function. Amount unlimited. Variables are loaded using the
-     * func_get_args() function (@see http://pl1.php.net/manual/en/function.func-get-args.php).
-     */
-    public static function variableDump()
-    {
-        $xdebugLoaded = self::isPhpModuleLoaded('xdebug');
-
-        if (!$xdebugLoaded) {
-            echo '<pre>';
-        }
-
-        $arguments = func_get_args();
-
-        foreach ($arguments as $argument) {
-            var_dump($argument);
-        }
-
-        if (!$xdebugLoaded) {
-            echo '</pre>';
-        }
-    }
-
-    /**
      * Returns information if given PHP module is compiled and loaded
      *
      * @param string $phpModuleName PHP module name

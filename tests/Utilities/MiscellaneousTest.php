@@ -156,33 +156,6 @@ class MiscellaneousTest extends BaseTestCase
         self::assertFalse(Miscellaneous::isPhpModuleLoaded('xyz123'));
     }
 
-    public function testVariableDump()
-    {
-        $xdebugLoaded = Miscellaneous::isPhpModuleLoaded('xdebug');
-
-        $variable = 123;
-        $expected = "int(123)\n";
-
-        if ($xdebugLoaded) {
-            $libraryPath = realpath(sprintf('%s%s', __DIR__, '/../..'));
-            $filePath = sprintf('%s%s', $libraryPath, '/src/Utilities/Miscellaneous.php:');
-
-            /*
-             * Attention. I have to use "\d+" at the end of $filePath, because number of line may be different if new
-             * method / function will be created.
-             */
-            $filePathQuoted = sprintf('%s\d+\:', preg_quote($filePath, '/'));
-
-            $expectedPattern = sprintf("/%s\n%s/", $filePathQuoted, preg_quote($expected, '/'));
-            $this->expectOutputRegex($expectedPattern);
-        } else {
-            $expected = sprintf('<pre>%s</pre>', $expected);
-            $this->expectOutputString($expected);
-        }
-
-        Miscellaneous::variableDump($variable);
-    }
-
     /**
      * @param mixed $string Empty value, e.g. ""
      * @dataProvider provideEmptyValue
