@@ -130,11 +130,12 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
     {
         if (!empty($elements)) {
             foreach ($elements as $index => $element) {
-                if (!$useIndexes) {
-                    $index = null;
+                if ($useIndexes) {
+                    $this->add($element, $index);
+                    continue;
                 }
 
-                $this->add($element, $index);
+                $this->add($element);
             }
         }
 

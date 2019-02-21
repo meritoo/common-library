@@ -28,12 +28,12 @@ class DisabledMethodException extends Exception
     public static function create($disabledMethod, $alternativeMethod = '')
     {
         $template = 'Method %s() cannot be called, because is disabled.';
+        $message = sprintf($template, $disabledMethod);
 
         if (!empty($alternativeMethod)) {
-            $template .= ' Use %s() instead.';
+            $template = '%s Use %s() instead.';
+            $message = sprintf($template, $message, $alternativeMethod);
         }
-
-        $message = sprintf($template, $disabledMethod, $alternativeMethod);
 
         return new static($message);
     }

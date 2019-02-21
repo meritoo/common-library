@@ -733,7 +733,7 @@ class MimeTypes
      */
     public static function getExtension($mimeType)
     {
-        if (is_string($mimeType) && in_array($mimeType, self::$mimeTypes)) {
+        if (is_string($mimeType) && in_array($mimeType, self::$mimeTypes, true)) {
             $data = Arrays::setKeysAsValues(self::$mimeTypes, false);
 
             return $data[$mimeType];
@@ -806,7 +806,7 @@ class MimeTypes
      */
     public static function isImage($mimeType)
     {
-        if (in_array($mimeType, self::$mimeTypes)) {
+        if (in_array($mimeType, self::$mimeTypes, true)) {
             return (bool)preg_match('|^image/.+$|', $mimeType);
         }
 

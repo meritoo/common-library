@@ -10,7 +10,6 @@ namespace Meritoo\Common\Utilities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
@@ -91,7 +90,7 @@ class QueryBuilderUtility
      * @param array        $criteria     (optional) The criteria used in WHERE clause. It may simple array with pairs
      *                                   key-value or an array of arrays where second element of sub-array is the
      *                                   comparison operator. Example below.
-     * @param string       $alias        (optional) Alias used in the query
+     * @param string|null  $alias        (optional) Alias used in the query
      * @return QueryBuilder
      *
      * Example of the $criteria argument:
@@ -107,7 +106,7 @@ class QueryBuilderUtility
      *      'position' => 5,
      * ]
      */
-    public static function setCriteria(QueryBuilder $queryBuilder, array $criteria = [], $alias = '')
+    public static function setCriteria(QueryBuilder $queryBuilder, array $criteria = [], $alias = null)
     {
         /*
          * No criteria used in WHERE clause?
@@ -121,7 +120,7 @@ class QueryBuilderUtility
          * No alias provided?
          * Let's use root alias
          */
-        if (empty($alias)) {
+        if (null === $alias || '' === $alias) {
             $alias = self::getRootAlias($queryBuilder);
         }
 
@@ -129,7 +128,7 @@ class QueryBuilderUtility
             $compareOperator = '=';
 
             if (is_array($value) && !empty($value)) {
-                if (2 == count($value)) {
+                if (2 === count($value)) {
                     $compareOperator = $value[1];
                 }
 
@@ -158,7 +157,6 @@ class QueryBuilderUtility
      * @param array|ArrayCollection $entities      The entities to delete
      * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects (default
      *                                             behaviour). Otherwise - not.
-     * @throws OptimisticLockException
      * @return bool
      */
     public static function deleteEntities(EntityManager $entityManager, $entities, $flushDeleted = true)

@@ -52,7 +52,7 @@ class Locale
             LC_MESSAGES,
         ];
 
-        if (empty($languageCode) || !in_array($category, $availableCategories)) {
+        if (empty($languageCode) || !in_array($category, $availableCategories, true)) {
             return false;
         }
 

@@ -10,6 +10,10 @@
         }
     ],
     "require": {
+        "ext-dom": "*",
+        "ext-fileinfo": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
         "php": ">=5.6",
         "ext-intl": "*",
         "ext-pcre": "*",

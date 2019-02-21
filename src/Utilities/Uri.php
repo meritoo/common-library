@@ -93,7 +93,7 @@ class Uri
         /*
          * Oops, cannot match protocol
          */
-        if (0 == $matchCount) {
+        if (0 === $matchCount) {
             return '';
         }
 

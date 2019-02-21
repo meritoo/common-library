@@ -102,7 +102,7 @@ class Regex
          * Tax ID is not 10 characters length OR is not numeric?
          * Nothing to do
          */
-        if (10 !== strlen($taxId) || !is_numeric($taxId)) {
+        if (!is_numeric($taxId) || 10 !== strlen($taxId)) {
             return false;
         }
 
@@ -125,14 +125,11 @@ class Regex
         }
 
         /*
-         * Last number it's not a remainder from dividing per 11?
-         * Nothing to do
+         * Last number it's a remainder from dividing per 11?
+         * Tax ID is valid
          */
-        if ($sum % 11 == $taxId[9]) {
-            return true;
-        }
 
-        return false;
+        return $sum % 11 === (int)$taxId[9];
     }
 
     /**
@@ -248,7 +245,7 @@ class Regex
 
             if ($itsRegularExpression) {
                 $matchesCount = preg_match($filterExpression, $value);
-                $remove = 0 == $matchesCount;
+                $remove = 0 === $matchesCount;
             } else {
                 if (is_string($value)) {
                     $value = sprintf('\'%s\'', $value);
@@ -306,11 +303,9 @@ class Regex
 
             if ($mustAllMatch) {
                 $effect = $effect && $matched;
-            } else {
-                if ($matched) {
-                    $effect = $matched;
-                    break;
-                }
+            } elseif ($matched) {
+                $effect = $matched;
+                break;
             }
         }
 
@@ -501,7 +496,7 @@ class Regex
     public static function startsWith($string, $beginning)
     {
         if (!empty($string) && !empty($beginning)) {
-            if (1 == strlen($beginning) && !self::isLetterOrDigit($beginning)) {
+            if (1 === strlen($beginning) && !self::isLetterOrDigit($beginning)) {
                 $beginning = '\\' . $beginning;
             }
 
@@ -522,7 +517,7 @@ class Regex
      */
     public static function endsWith($string, $ending)
     {
-        if (1 == strlen($ending) && !self::isLetterOrDigit($ending)) {
+        if (1 === strlen($ending) && !self::isLetterOrDigit($ending)) {
             $ending = '\\' . $ending;
         }
 
@@ -607,7 +602,7 @@ class Regex
      */
     public static function contains($haystack, $needle)
     {
-        if (1 == strlen($needle) && !self::isLetterOrDigit($needle)) {
+        if (1 === strlen($needle) && !self::isLetterOrDigit($needle)) {
             $needle = '\\' . $needle;
         }
 
@@ -694,14 +689,14 @@ class Regex
      */
     public static function isValidNip($nip)
     {
-        $nip = preg_replace('/[^0-9]/', '', $nip);
+        $nip = preg_replace('/[\D]/', '', $nip);
 
         $invalidNips = [
             '1234567890',
             '0000000000',
         ];
 
-        if (!preg_match('/^[0-9]{10}$/', $nip) || in_array($nip, $invalidNips)) {
+        if (!preg_match('/^[\d]{10}$/', $nip) || in_array($nip, $invalidNips, true)) {
             return false;
         }
 
@@ -723,9 +718,9 @@ class Regex
         }
 
         $modulo = $sum % 11;
-        $numberControl = (10 == $modulo) ? 0 : $modulo;
+        $numberControl = (10 === $modulo) ? 0 : $modulo;
 
-        return $numberControl == $nip[9];
+        return $numberControl === (int)$nip[9];
     }
 
     /**

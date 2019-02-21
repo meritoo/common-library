@@ -40,7 +40,7 @@ class Xml
         $query = $path->query('/*/*');
         $nodesCount = $query->length;
 
-        if (0 == $nodesCount) {
+        if (0 === $nodesCount) {
             return $element1;
         }
 

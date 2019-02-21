@@ -140,7 +140,12 @@ class Date
                 $dateStart = new DateTime();
                 $dateEnd = new DateTime();
 
-                if (DatePeriod::LAST_YEAR === $period || DatePeriod::NEXT_YEAR === $period) {
+                $yearPeriod = [
+                    DatePeriod::LAST_YEAR,
+                    DatePeriod::NEXT_YEAR,
+                ];
+
+                if (in_array($period, $yearPeriod, true)) {
                     $yearDifference = 1;
 
                     if (DatePeriod::LAST_YEAR === $period) {
@@ -167,7 +172,7 @@ class Date
             return null;
         }
 
-        $dateStart->setTime(0, 0, 0);
+        $dateStart->setTime(0, 0);
         $dateEnd->setTime(23, 59, 59);
 
         return new DatePeriod($dateStart, $dateEnd);
@@ -217,7 +222,8 @@ class Date
 
         return $dateTime
             ->setTime($hour, $minute, $second)
-            ->format($format);
+            ->format($format)
+            ;
     }
 
     /**
