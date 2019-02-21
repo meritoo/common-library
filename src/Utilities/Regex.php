@@ -12,7 +12,7 @@ use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 
 /**
- * Useful regular expressions methods
+ * Useful methods related to regular expressions
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
@@ -918,5 +918,38 @@ class Regex
         $pattern = self::$patterns['binaryValue'];
 
         return (bool)preg_match($pattern, $value);
+    }
+
+    /**
+     * Returns slug for given value
+     *
+     * @param string $value Value that should be transformed to slug
+     * @return string|bool
+     */
+    public static function createSlug($value)
+    {
+        /*
+         * Not a scalar value?
+         * Nothing to do
+         */
+        if (!is_scalar($value)) {
+            return false;
+        }
+
+        /*
+         * It's an empty string?
+         * Nothing to do
+         */
+        if ('' === $value) {
+            return '';
+        }
+
+        $id = 'Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC; [:Punctuation:] Remove; Lower();';
+        $transliterator = \Transliterator::create($id);
+
+        $cleanValue = trim($value);
+        $result = $transliterator->transliterate($cleanValue);
+
+        return preg_replace('/[-\s]+/', '-', $result);
     }
 }

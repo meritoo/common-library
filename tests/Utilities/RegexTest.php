@@ -625,6 +625,17 @@ class RegexTest extends BaseTestCase
     }
 
     /**
+     * @param string $value    Value that should be transformed to slug
+     * @param string $expected Expected slug
+     *
+     * @dataProvider provideValueSlug
+     */
+    public function testCreateSlug($value, $expected)
+    {
+        self::assertSame($expected, Regex::createSlug($value));
+    }
+
+    /**
      * Provides name of bundle and information if it's valid name
      *
      * @return Generator
@@ -1691,6 +1702,89 @@ class RegexTest extends BaseTestCase
         yield[
             '#000',
             '000000',
+        ];
+    }
+
+    /**
+     * Provide value to create slug
+     *
+     * @return Generator
+     */
+    public function provideValueSlug()
+    {
+        yield[
+            [],
+            false,
+        ];
+
+        yield[
+            null,
+            false,
+        ];
+
+        yield[
+            '',
+            '',
+        ];
+
+        yield[
+            1234,
+            '1234',
+        ];
+
+        yield[
+            '1234',
+            '1234',
+        ];
+
+        yield[
+            '1/2/3/4',
+            '1234',
+        ];
+
+        yield[
+            '1 / 2 / 3 / 4',
+            '1-2-3-4',
+        ];
+
+        yield[
+            'test',
+            'test',
+        ];
+
+        yield[
+            'test test',
+            'test-test',
+        ];
+
+        yield[
+            'lorem ipsum dolor sit',
+            'lorem-ipsum-dolor-sit',
+        ];
+
+        yield[
+            'Lorem ipsum. Dolor sit 12.34 amet.',
+            'lorem-ipsum-dolor-sit-1234-amet',
+        ];
+
+        yield[
+            'Was sind Löwen, Bären, Vögel und Käfer (für die Prüfung)?',
+            'was-sind-lowen-baren-vogel-und-kafer-fur-die-prufung',
+        ];
+
+        yield[
+            'äöü (ÄÖÜ)',
+            'aou-aou',
+        ];
+
+        yield[
+            'Półka dębowa. Kolor: żółędziowy. Wymiary: 80 x 30 cm.',
+            'polka-debowa-kolor-zoledziowy-wymiary-80-x-30-cm',
+        ];
+
+        yield[
+            'ąęółńśżźć (ĄĘÓŁŃŚŻŹĆ)',
+            'aeolnszzc-aeolnszzc',
         ];
     }
 

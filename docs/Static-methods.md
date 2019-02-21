@@ -19,6 +19,7 @@ var_dump($firstElement); // string(5) "lorem"
 2. [Collection of elements](Collection-of-elements.md)
 3. [Exceptions](Exceptions.md)
 4. [**Static methods**](Static-methods.md)
+   1. [Regex](Static-methods/Regex.md)
 5. [Value Objects](Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../README.md)
