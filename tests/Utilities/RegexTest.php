@@ -12,7 +12,6 @@ use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use ReflectionException;
 
 /**
  * Test case of the useful regular expressions methods
@@ -25,9 +24,6 @@ class RegexTest extends BaseTestCase
     private $simpleText;
     private $camelCaseText;
 
-    /**
-     * @throws ReflectionException
-     */
     public function testConstructor()
     {
         static::assertHasNoConstructor(Regex::class);
@@ -553,10 +549,6 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $nonScalarValue Non scalar value, e.g. [] or null
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     *
      * @dataProvider provideNonScalarValue
      */
     public function testGetValidColorHexValueUsingNonScalarValue($nonScalarValue)
@@ -566,10 +558,6 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     *
      * @dataProvider provideColorEmptyValue
      */
     public function testGetValidColorHexValueUsingEmptyValueWithoutException($emptyValue)
@@ -579,10 +567,6 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     *
      * @dataProvider provideColorEmptyValue
      */
     public function testGetValidColorHexValueUsingEmptyValue($emptyValue)
@@ -593,10 +577,6 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $incorrectColor Incorrect value of color
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     *
      * @dataProvider provideColorIncorrectLength
      */
     public function testGetValidColorHexValueUsingIncorrectValueWithoutException($incorrectColor)
@@ -606,10 +586,6 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $incorrectColor Incorrect value of color
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     *
      * @dataProvider provideColorIncorrectLength
      */
     public function testGetValidColorHexValueUsingIncorrectValue($incorrectColor)
@@ -620,10 +596,6 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $invalidColor Invalid value of color
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     *
      * @dataProvider provideColorInvalidValue
      */
     public function testGetValidColorHexValueUsingInvalidValueWithoutException($invalidColor)
@@ -633,10 +605,6 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $invalidColor Invalid value of color
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     *
      * @dataProvider provideColorInvalidValue
      */
     public function testGetValidColorHexValueUsingInvalidValue($invalidColor)
@@ -648,9 +616,6 @@ class RegexTest extends BaseTestCase
     /**
      * @param string $color    Color to verify
      * @param string $expected Expected value of color
-     *
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
      *
      * @dataProvider provideColor
      */
