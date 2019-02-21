@@ -799,12 +799,12 @@ class RegexTest extends BaseTestCase
         ];
 
         yield[
-            fread(fopen($file1Path, 'r'), 1),
+            fread(fopen($file1Path, 'rb'), 1),
             false,
         ];
 
         yield[
-            fread(fopen($file2Path, 'r'), 1),
+            fread(fopen($file2Path, 'rb'), 1),
             true,
         ];
     }
