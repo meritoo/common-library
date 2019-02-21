@@ -1702,7 +1702,8 @@ class RegexTest extends BaseTestCase
         parent::setUp();
 
         $this->simpleText = 'lorem ipsum dolor sit';
-        $this->camelCaseText = str_replace(' ', '', lcfirst(ucwords($this->simpleText))); // 'loremIpsumDolorSit'
+        $simpleUppercase = ucwords($this->simpleText);
+        $this->camelCaseText = str_replace(' ', '', lcfirst($simpleUppercase)); // 'loremIpsumDolorSit'
     }
 
     /**
@@ -1711,8 +1712,6 @@ class RegexTest extends BaseTestCase
     protected function tearDown()
     {
         parent::tearDown();
-
-        unset($this->simpleText);
-        unset($this->camelCaseText);
+        unset($this->simpleText, $this->camelCaseText);
     }
 }
