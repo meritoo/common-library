@@ -57,6 +57,41 @@ $address = new Address('New York', '00123', '4th Avenue', '10', '200');
 $asString = (string)$address; // "4th Avenue 10/200, 00123, New York"
 ```
 
+### BankAccount
+
+##### Namespace
+
+`Meritoo\Common\ValueObject\BankAccount`
+
+##### Info
+
+Represents bank account. Contains properties:
+1. `$bankName` - name of bank
+2. $accountNumber` - number of bank's account
+
+##### New instance
+
+New instance can be created using constructor
+
+```php
+new BankAccount('Bank of America', '1234567890')
+```
+
+##### Methods
+
+Has getters for each property `getBankName()` and `getAccountNumber()`.
+
+##### Conversion to string (the `__toString()` method)
+
+Instance of `BankAccount` may be represented as string that contains all non-empty properties separated by `, `.
+
+Example:
+
+```php
+$bank = new BankAccount('Bank of America', '1234567890');
+$asString = (string)$bank; // "Bank of America, 1234567890"
+```
+
 ### Version
 
 ##### Namespace
