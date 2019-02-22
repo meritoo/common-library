@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Test\Common\ValueObject;
+namespace Meritoo\Common\Test\ValueObject;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
