@@ -9,6 +9,7 @@
 namespace Meritoo\Common\Test\Utilities;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Test\Utilities\Arrays\SimpleToString;
 use Meritoo\Common\Utilities\Arrays;
 
 /**
@@ -1487,6 +1488,43 @@ letsTest[2] = value_2;';
     }
 
     /**
+     * @param string $description Description of test case
+     * @param array  $values      The values to filter
+     * @param array  $expected    Expected non-empty values
+     *
+     * @dataProvider provideValuesToFilterNonEmpty
+     */
+    public function testGetNonEmptyValues($description, array $values, array $expected)
+    {
+        self::assertSame($expected, Arrays::getNonEmptyValues($values), $description);
+    }
+
+    /**
+     * @param string $description Description of test case
+     * @param array  $values      The values to filter
+     * @param string $expected    Expected non-empty values (as string)
+     *
+     * @dataProvider provideValuesToFilterNonEmptyAsStringUsingDefaultSeparator
+     */
+    public function testGetNonEmptyValuesAsStringUsingDefaultSeparator($description, array $values, $expected)
+    {
+        self::assertSame($expected, Arrays::getNonEmptyValuesAsString($values), $description);
+    }
+
+    /**
+     * @param string $description Description of test case
+     * @param array  $values      The values to filter
+     * @param string $separator   Separator used to implode the values
+     * @param string $expected    Expected non-empty values (as string)
+     *
+     * @dataProvider provideValuesToFilterNonEmptyAsString
+     */
+    public function testGetNonEmptyValuesAsString($description, array $values, $separator, $expected)
+    {
+        self::assertSame($expected, Arrays::getNonEmptyValuesAsString($values, $separator), $description);
+    }
+
+    /**
      * Provides simple array to set/replace values with keys
      *
      * @return \Generator
@@ -1804,6 +1842,264 @@ letsTest[2] = value_2;';
                     'ultrices',
                 ],
             ],
+        ];
+    }
+
+    /**
+     * Provide values to filter and get non-empty values
+     *
+     * @return \Generator
+     */
+    public function provideValuesToFilterNonEmpty()
+    {
+        $simpleObject = new SimpleToString('1234');
+
+        yield[
+            'An empty array (no values to filter)',
+            [],
+            [],
+        ];
+
+        yield[
+            'All values are empty',
+            [
+                '',
+                null,
+                [],
+            ],
+            [],
+        ];
+
+        yield[
+            '5 values with 2 empty strings',
+            [
+                'test 1',
+                '',
+                'test 2',
+                'test 3',
+                '',
+            ],
+            [
+                0 => 'test 1',
+                2 => 'test 2',
+                3 => 'test 3',
+            ],
+        ];
+
+        yield[
+            '"0" shouldn\'t be treated like an empty value',
+            [
+                123,
+                0,
+                456,
+            ],
+            [
+                123,
+                0,
+                456,
+            ],
+        ];
+
+        yield[
+            'Object shouldn\'t be treated like an empty value',
+            [
+                'test 1',
+                $simpleObject,
+                'test 2',
+                null,
+                'test 3',
+            ],
+            [
+                0 => 'test 1',
+                1 => $simpleObject,
+                2 => 'test 2',
+                4 => 'test 3',
+            ],
+        ];
+
+        yield[
+            'Mixed values (non-empty, empty, strings, integers, objects)',
+            [
+                'test 1',
+                '',
+                123,
+                null,
+                'test 2',
+                'test 3',
+                0,
+                $simpleObject,
+                456,
+                [],
+                $simpleObject,
+            ],
+            [
+                0  => 'test 1',
+                2  => 123,
+                4  => 'test 2',
+                5  => 'test 3',
+                6  => 0,
+                7  => $simpleObject,
+                8  => 456,
+                10 => $simpleObject,
+            ],
+        ];
+    }
+
+    /**
+     * Provide values to filter and get non-empty values concatenated by default separator
+     *
+     * @return \Generator
+     */
+    public function provideValuesToFilterNonEmptyAsStringUsingDefaultSeparator()
+    {
+        yield[
+            'An empty array (no values to filter)',
+            [],
+            '',
+        ];
+
+        yield[
+            'All values are empty',
+            [
+                '',
+                null,
+                [],
+            ],
+            '',
+        ];
+
+        yield[
+            '5 values with 2 empty strings',
+            [
+                'test 1',
+                '',
+                'test 2',
+                'test 3',
+                '',
+            ],
+            'test 1, test 2, test 3',
+        ];
+
+        yield[
+            'Numbers with "0" that shouldn\'t be treated like an empty value',
+            [
+                123,
+                0,
+                456,
+            ],
+            '123, 0, 456',
+        ];
+
+        yield[
+            'Object shouldn\'t be treated like an empty value',
+            [
+                'test 1',
+                new SimpleToString('1234'),
+                'test 2',
+                null,
+                'test 3',
+            ],
+            'test 1, Instance with ID: 1234, test 2, test 3',
+        ];
+
+        yield[
+            'Mixed values (non-empty, empty, strings, integers, objects)',
+            [
+                'test 1',
+                '',
+                123,
+                null,
+                'test 2',
+                'test 3',
+                0,
+                new SimpleToString('A1XC90Z'),
+                456,
+                [],
+                new SimpleToString('FF-45-0Z'),
+            ],
+            'test 1, 123, test 2, test 3, 0, Instance with ID: A1XC90Z, 456, Instance with ID: FF-45-0Z',
+        ];
+    }
+
+    /**
+     * Provide values to filter and get non-empty values concatenated by given separator
+     *
+     * @return \Generator
+     */
+    public function provideValuesToFilterNonEmptyAsString()
+    {
+        yield[
+            'An empty array (no values to filter)',
+            [],
+            ' | ',
+            '',
+        ];
+
+        yield[
+            'All values are empty',
+            [
+                '',
+                null,
+                [],
+            ],
+            ' | ',
+            '',
+        ];
+
+        yield[
+            '5 values with 2 empty strings',
+            [
+                'test 1',
+                '',
+                'test 2',
+                'test 3',
+                '',
+            ],
+            ' | ',
+            'test 1 | test 2 | test 3',
+        ];
+
+        yield[
+            'Numbers with "0" that shouldn\'t be treated like an empty value',
+            [
+                123,
+                0,
+                456,
+            ],
+            ' <-> ',
+            '123 <-> 0 <-> 456',
+        ];
+
+        yield[
+            'Object shouldn\'t be treated like an empty value',
+            [
+                'test 1',
+                new SimpleToString('1234'),
+                'test 2',
+                null,
+                'test 3',
+            ],
+            ' | ',
+            'test 1 | Instance with ID: 1234 | test 2 | test 3',
+        ];
+
+        yield[
+            'Mixed values (non-empty, empty, strings, integers, objects)',
+            [
+                'test 1',
+                '',
+                123,
+                null,
+                'test 2',
+                'test 3',
+                0,
+                new SimpleToString('A1XC90Z'),
+                456,
+                [],
+                new SimpleToString('FF-45-0Z'),
+            ],
+            ';',
+            'test 1;123;test 2;test 3;0;Instance with ID: A1XC90Z;456;Instance with ID: FF-45-0Z',
         ];
     }
 

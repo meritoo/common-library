@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Utilities;
 
 /**
- * Useful arrays methods
+ * Useful methods related to arrays
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
@@ -1571,6 +1571,52 @@ class Arrays
         }
 
         return $dimensionsCount;
+    }
+
+    /**
+     * Returns non-empty values, e.g. without "" (empty string), null or []
+     *
+     * @param array $values The values to filter
+     * @return array
+     */
+    public static function getNonEmptyValues(array $values)
+    {
+        /*
+         * No values?
+         * Nothing to do
+         */
+        if (empty($values)) {
+            return [];
+        }
+
+        return array_filter($values, function ($value) {
+            $nonEmptyScalar = is_scalar($value) && '' !== $value;
+            $nonEmptyArray = is_array($value) && !empty($value);
+
+            return $nonEmptyScalar || $nonEmptyArray || is_object($value);
+        });
+    }
+
+    /**
+     * Returns non-empty values concatenated by given separator
+     *
+     * @param array  $values    The values to filter
+     * @param string $separator (optional) Separator used to implode the values. Default: ", ".
+     * @return string
+     */
+    public static function getNonEmptyValuesAsString(array $values, $separator = ', ')
+    {
+        $nonEmpty = self::getNonEmptyValues($values);
+
+        /*
+         * No values?
+         * Nothing to do
+         */
+        if (empty($nonEmpty)) {
+            return '';
+        }
+
+        return implode($separator, $nonEmpty);
     }
 
     /**

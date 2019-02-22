@@ -4,14 +4,14 @@ Common and useful classes, methods, exceptions etc.
 
 # Regex
 
-*Useful methods related to regular expressions*
+> Useful methods related to regular expressions
 
 Class: `Meritoo\Common\Utilities\Regex`
 File: `src/Utilities/Regex.php`
 
 ### createSlug($value)
 
-*Returns slug for given value*
+> Returns slug for given value
 
 ##### Arguments
 
@@ -38,7 +38,8 @@ File: `src/Utilities/Regex.php`
 2. [Collection of elements](../Collection-of-elements.md)
 3. [Exceptions](../Exceptions.md)
 4. [Static methods](../Static-methods.md)
-   1. [**Regex**](../Static-methods/Regex.md)
+   1. [Arrays](../Static-methods/Arrays.md)
+   2. [**Regex**](Regex.md)
 5. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)
