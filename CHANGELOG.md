@@ -12,6 +12,14 @@ Common and useful classes, methods, exceptions etc.
 2. Utilities > Date > update descriptions of methods
 3. Docker > docker-compose.yml > add "phpunit" service > used to run PHPUnit's tests
 4. Reflection > setPropertiesValues() method > sets values of properties in given object
+5. Phing > update configuration
+6. Miscellaneous > variableDump() method > remove, because unnecessary
+7. Regex > createSlug() method > returns slug for given value
+8. Arrays > getNonEmptyValues() method > returns non-empty values, e.g. without "" (empty string), null or []
+9. Arrays > getNonEmptyValuesAsString() method > returns non-empty values concatenated by given separator
+10. ValueObject > Company > represents a company
+11. ValueObject > BankAccount > represents bank account
+12. ValueObject > Address > represents address of company, institution, user etc.
 
 # 0.1.3
 
