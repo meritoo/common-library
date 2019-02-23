@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 0.1.6
+
+1. Arrays > refactoring & more tests
+
 # 0.1.5
 
 1. Tests > Date > one more test case

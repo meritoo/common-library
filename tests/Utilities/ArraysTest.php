@@ -31,50 +31,95 @@ class ArraysTest extends BaseTestCase
         static::assertHasNoConstructor(Arrays::class);
     }
 
-    public function testValues2string()
+    /**
+     * @param string $description    Description of test
+     * @param string $expected       Expected array converted to string
+     * @param array  $array          Data to be converted
+     * @param string $arrayColumnKey (optional) Column name. Default: "".
+     * @param string $separator      (optional) Separator used between values. Default: ",".
+     *
+     * @dataProvider provideArrayValues2string
+     */
+    public function testValues2string($description, $expected, array $array, $arrayColumnKey = '', $separator = ',')
     {
-        /*
-         * Simple array / string
-         */
-        $simpleString = 'Lorem,ipsum,dolor,sit,amet';
-        $simpleStringWithDots = str_replace(',', '.', $simpleString);
-
-        self::assertEquals($simpleString, Arrays::values2string($this->simpleArray));
-        self::assertEquals('ipsum', Arrays::values2string($this->simpleArray, 1));
-        self::assertEquals($simpleStringWithDots, Arrays::values2string($this->simpleArray, '', '.'));
-
-        /*
-         * Complex array / string
-         */
-        $complexString = 'sit,egestas,adipiscing,1234,,donec,quis,elit,iaculis,primis';
-        $complexStringWithDots = str_replace(',', '.', $complexString);
-
-        self::assertEquals($complexString, Arrays::values2string($this->complexArray));
-        self::assertEquals($complexStringWithDots, Arrays::values2string($this->complexArray, '', '.'));
-
-        /*
-         * Other cases
-         */
-        self::assertEquals('', Arrays::values2string([]));
+        self::assertSame($expected, Arrays::values2string($array, $arrayColumnKey, $separator), $description);
     }
 
-    public function testValuesKeys2string()
-    {
-        self::assertEquals('0=Lorem,1=ipsum,2=dolor,3=sit,4=amet', Arrays::valuesKeys2string($this->simpleArray));
-        self::assertEquals('0=Lorem;1=ipsum;2=dolor;3=sit;4=amet', Arrays::valuesKeys2string($this->simpleArray, ';'));
-        self::assertEquals('0=Lorem 1=ipsum 2=dolor 3=sit 4=amet', Arrays::valuesKeys2string($this->simpleArray, ' '));
+    /**
+     * @param string $description         Description of test
+     * @param string $expected            Expected array converted to string
+     * @param array  $array               Data to be converted
+     * @param string $separator           (optional) Separator used between name-value pairs. Default: ",".
+     * @param string $valuesKeysSeparator (optional) Separator used between name and value. Default: "=".
+     * @param string $valuesWrapper       (optional) Wrapper used to wrap values, e.g. double-quote: key="value".
+     *                                    Default: "".
+     *
+     * @dataProvider provideArrayValuesKeysConverted2string
+     */
+    public function testValuesKeys2string(
+        $description,
+        $expected,
+        array $array,
+        $separator = ',',
+        $valuesKeysSeparator = '=',
+        $valuesWrapper = ''
+    ) {
+        self::assertSame(
+            $expected,
+            Arrays::valuesKeys2string($array, $separator, $valuesKeysSeparator, $valuesWrapper),
+            $description
+        );
 
-        self::assertEquals('0="Lorem" 1="ipsum" 2="dolor" 3="sit" 4="amet"', Arrays::valuesKeys2string($this->simpleArray, ' ', '=', '"'));
-        self::assertEquals('0="Lorem", 1="ipsum", 2="dolor", 3="sit", 4="amet"', Arrays::valuesKeys2string($this->simpleArray, ', ', '=', '"'));
+        self::assertSame(
+            '0=Lorem,1=ipsum,2=dolor,3=sit,4=amet',
+            Arrays::valuesKeys2string($this->simpleArray),
+            'Simple array'
+        );
+
+        self::assertSame(
+            '0=Lorem;1=ipsum;2=dolor;3=sit;4=amet',
+            Arrays::valuesKeys2string($this->simpleArray, ';'),
+            'Simple array (with custom separator)'
+        );
+
+        self::assertSame(
+            '0=Lorem 1=ipsum 2=dolor 3=sit 4=amet',
+            Arrays::valuesKeys2string($this->simpleArray, ' '),
+            'Simple array (with custom separator)'
+        );
+
+        self::assertSame(
+            '0="Lorem" 1="ipsum" 2="dolor" 3="sit" 4="amet"',
+            Arrays::valuesKeys2string($this->simpleArray, ' ', '=', '"'),
+            'Simple array (with custom separators)'
+        );
+
+        self::assertSame(
+            '0="Lorem", 1="ipsum", 2="dolor", 3="sit", 4="amet"',
+            Arrays::valuesKeys2string($this->simpleArray, ', ', '=', '"'),
+            'Simple array (with custom separators)'
+        );
     }
 
-    public function testValues2csv()
+    /**
+     * @param string $description Description of test
+     * @param string $expected    Expected array converted to csv string
+     * @param array  $array       Data to be converted. It have to be an array that represents database table.
+     * @param string $separator   (optional) Separator used between values. Default: ",".
+     *
+     * @dataProvider provideArrayValues2csv
+     */
+    public function testValues2csv($description, $expected, array $array, $separator = ',')
     {
-        self::assertEquals('', Arrays::values2csv($this->simpleArray));
+        self::assertSame($expected, Arrays::values2csv($array, $separator), $description);
+        self::assertSame('', Arrays::values2csv($this->simpleArray), 'Simple array');
 
-        self::assertEquals("lorem,ipsum,dolor,sit,amet\n"
+        self::assertSame("lorem,ipsum,dolor,sit,amet\n"
             . "consectetur,adipiscing,elit\n"
-            . 'donec,sagittis,fringilla,eleifend', Arrays::values2csv($this->twoDimensionsArray));
+            . 'donec,sagittis,fringilla,eleifend',
+            Arrays::values2csv($this->twoDimensionsArray),
+            'Two dimensions array'
+        );
     }
 
     public function testGetFirstKey()
@@ -93,6 +138,7 @@ class ArraysTest extends BaseTestCase
 
     public function testGetLastKey()
     {
+        self::assertNull(Arrays::getLastKey([]));
         self::assertEquals(4, Arrays::getLastKey($this->simpleArray));
         self::assertEquals('amet', Arrays::getLastKey($this->complexArray));
     }
@@ -146,6 +192,7 @@ class ArraysTest extends BaseTestCase
 
     public function testGetLastElementBreadCrumb()
     {
+        self::assertNull(Arrays::getLastElementBreadCrumb([]));
         self::assertEquals('4/amet', Arrays::getLastElementBreadCrumb($this->simpleArray));
         self::assertEquals('2/3/eleifend', Arrays::getLastElementBreadCrumb($this->twoDimensionsArray));
         self::assertEquals('amet/1/primis', Arrays::getLastElementBreadCrumb($this->complexArray));
@@ -279,6 +326,18 @@ letsTest[2] = value_2;';
         self::assertEquals($effect, Arrays::array2JavaScript($this->twoDimensionsArray, 'letsTest', true));
     }
 
+    /**
+     * @param string     $description Description of test case
+     * @param array|null $expected    Expected new array (with quoted elements)
+     * @param array      $array       The array to check for string values
+     *
+     * @dataProvider provideArrayToQuoteStrings
+     */
+    public function testQuoteStrings($description, $expected, array $array)
+    {
+        self::assertSame($expected, Arrays::quoteStrings($array), $description);
+    }
+
     public function testRemoveMarginalElement()
     {
         $array = $this->simpleArray;
@@ -343,7 +402,7 @@ letsTest[2] = value_2;';
 
     public function testSetKeysAsValuesEmptyArray()
     {
-        self::assertEquals([], Arrays::setKeysAsValues([]));
+        self::assertNull(Arrays::setKeysAsValues([]));
     }
 
     public function testSetKeysAsValuesSameKeysValues()
@@ -456,6 +515,7 @@ letsTest[2] = value_2;';
         /*
          * Negative cases
          */
+        self::assertFalse(Arrays::areKeysInArray([], []));
         self::assertFalse(Arrays::areKeysInArray([null], $this->simpleArray));
         self::assertFalse(Arrays::areKeysInArray([''], $this->simpleArray));
         self::assertFalse(Arrays::areKeysInArray(['dolorrr'], $this->simpleArrayWithKeys));
@@ -520,7 +580,7 @@ letsTest[2] = value_2;';
 
     public function testGetLastElementsPathsUsingEmptyArray()
     {
-        self::assertSame([], Arrays::getLastElementsPaths([]));
+        self::assertNull(Arrays::getLastElementsPaths([]));
     }
 
     public function testGetLastElementsPathsUsingDefaults()
@@ -585,9 +645,9 @@ letsTest[2] = value_2;';
         $pattern = '\d+';
 
         /*
-         * Complex array with strings and integers as keys
+         * Empty array
          */
-        self::assertFalse(Arrays::areAllKeysMatchedByPattern($this->complexArray, $pattern));
+        self::assertFalse(Arrays::areAllKeysMatchedByPattern([], $pattern));
 
         /*
          * Simple array with integers as keys only
@@ -595,9 +655,9 @@ letsTest[2] = value_2;';
         self::assertTrue(Arrays::areAllKeysMatchedByPattern($this->simpleArray, $pattern));
 
         /*
-         * Empty array
+         * Complex array with strings and integers as keys
          */
-        self::assertFalse(Arrays::areAllKeysMatchedByPattern([], $pattern));
+        self::assertFalse(Arrays::areAllKeysMatchedByPattern($this->complexArray, $pattern));
 
         $array = [
             'a' => 'b',
@@ -638,6 +698,7 @@ letsTest[2] = value_2;';
 
     public function testAreAllKeysIntegers()
     {
+        self::assertFalse(Arrays::areAllKeysIntegers([]));
         self::assertEquals(1, Arrays::areAllKeysIntegers($this->simpleArray));
         self::assertEquals(2, Arrays::areAllKeysIntegers($this->simpleArray));
         self::assertEquals('', Arrays::areAllKeysIntegers($this->complexArray));
@@ -885,8 +946,7 @@ letsTest[2] = value_2;';
         /*
          * Negative cases
          */
-        self::assertEmpty(Arrays::setPositions([]));
-        self::assertEquals([], Arrays::setPositions([]));
+        self::assertNull(Arrays::setPositions([]));
 
         /*
          * Positive case - 1-dimension array
@@ -983,7 +1043,7 @@ letsTest[2] = value_2;';
         /*
          * Negative cases
          */
-        self::assertEquals([], Arrays::trimRecursive([]));
+        self::assertSame([], Arrays::trimRecursive([]));
 
         /*
          * Positive cases
@@ -1125,7 +1185,7 @@ letsTest[2] = value_2;';
         /*
          * Empty array
          */
-        self::assertEmpty(Arrays::implodeSmart([], $separator));
+        self::assertNull(Arrays::implodeSmart([], $separator));
 
         /*
          * Simple, one-dimension array
@@ -1214,7 +1274,7 @@ letsTest[2] = value_2;';
         /*
          * Negative cases
          */
-        self::assertEquals([], Arrays::incrementIndexes([]));
+        self::assertNull(Arrays::incrementIndexes([]));
 
         /*
          * Positive cases
@@ -1454,7 +1514,7 @@ letsTest[2] = value_2;';
         /*
          * Basic cases
          */
-        self::assertEquals(1, Arrays::getDimensionsCount([]));
+        self::assertEquals(0, Arrays::getDimensionsCount([]));
         self::assertEquals(1, Arrays::getDimensionsCount(['']));
 
         /*
@@ -1485,6 +1545,11 @@ letsTest[2] = value_2;';
 
         self::assertTrue(Arrays::isMultiDimensional($this->twoDimensionsArray));
         self::assertTrue(Arrays::isMultiDimensional($this->complexArray));
+    }
+
+    public function testGetNonEmptyValuesUsingEmptyArray()
+    {
+        self::assertNull(Arrays::getNonEmptyValues([]));
     }
 
     /**
@@ -1855,12 +1920,6 @@ letsTest[2] = value_2;';
         $simpleObject = new SimpleToString('1234');
 
         yield[
-            'An empty array (no values to filter)',
-            [],
-            [],
-        ];
-
-        yield[
             'All values are empty',
             [
                 '',
@@ -1955,7 +2014,7 @@ letsTest[2] = value_2;';
         yield[
             'An empty array (no values to filter)',
             [],
-            '',
+            null,
         ];
 
         yield[
@@ -2032,7 +2091,7 @@ letsTest[2] = value_2;';
             'An empty array (no values to filter)',
             [],
             ' | ',
-            '',
+            null,
         ];
 
         yield[
@@ -2100,6 +2159,524 @@ letsTest[2] = value_2;';
             ],
             ';',
             'test 1;123;test 2;test 3;0;Instance with ID: A1XC90Z;456;Instance with ID: FF-45-0Z',
+        ];
+    }
+
+    public function provideArrayValuesKeysConverted2string()
+    {
+        yield[
+            'An empty array',
+            null,
+            [],
+        ];
+
+        yield[
+            'Empty string and null as value',
+            'test_1=,test_2=,test_3=3',
+            [
+                'test_1' => null,
+                'test_2' => '',
+                'test_3' => '3',
+            ],
+        ];
+
+        yield[
+            'Empty string and null as value (with custom separators)',
+            'test_1="" test_2="" test_3="3"',
+            [
+                'test_1' => null,
+                'test_2' => '',
+                'test_3' => '3',
+            ],
+            ' ',
+            '=',
+            '"',
+        ];
+
+        yield[
+            'Empty string as key',
+            '1=test_1,=test_2,3=test_3',
+            [
+                1   => 'test_1',
+                ''  => 'test_2',
+                '3' => 'test_3',
+            ],
+        ];
+
+        yield[
+            'Empty string as key (with custom separators)',
+            '1 => "test_1";  => "test_2"; 3 => "test_3"',
+            [
+                1   => 'test_1',
+                ''  => 'test_2',
+                '3' => 'test_3',
+            ],
+            '; ',
+            ' => ',
+            '"',
+        ];
+
+        yield[
+            'Mixed types of keys and values',
+            'test_1=test test,test_2=2,test_3=3.45',
+            [
+                'test_1' => 'test test',
+                'test_2' => 2,
+                'test_3' => 3.45,
+            ],
+        ];
+
+        yield[
+            'Mixed types of keys and values (with custom separators)',
+            'test_1 --> *test test* | test_2 --> *2* | test_3 --> *3.45*',
+            [
+                'test_1' => 'test test',
+                'test_2' => 2,
+                'test_3' => 3.45,
+            ],
+            ' | ',
+            ' --> ',
+            '*',
+        ];
+    }
+
+    public function provideArrayValues2csv()
+    {
+        yield[
+            'An empty array',
+            null,
+            [],
+        ];
+
+        yield[
+            'Empty string, and empty array and null as row',
+            "1,2,3\n5,6,",
+            [
+                'test_1' => '',
+                'test_2' => [],
+                'test_3' => null,
+                'test_4' => [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                    'ff' => '',
+                ],
+            ],
+        ];
+
+        yield[
+            'Empty string, and empty array and null as row (with custom separator)',
+            "1, 2, 3\n5, 6, ",
+            [
+                'test_1' => '',
+                'test_2' => [],
+                'test_3' => null,
+                'test_4' => [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                    'ff' => '',
+                ],
+            ],
+            ', ',
+        ];
+
+        yield[
+            'Empty string as key, non-array as value',
+            "1,2,3\n5,6,",
+            [
+                ''  => 'test_1',
+                1   => 'test_2',
+                '3' => [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                    'ff' => '',
+                ],
+            ],
+        ];
+
+        yield[
+            'Empty string as key, non-array as value (with custom separator)',
+            "1 | 2 | 3\n5 | 6 | ",
+            [
+                ''  => 'test_1',
+                1   => 'test_2',
+                '3' => [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                    'ff' => '',
+                ],
+            ],
+            ' | ',
+        ];
+
+        yield[
+            'Invalid structure, not like database table',
+            "1,2,3\n5,6\n7,8,9,10",
+            [
+                [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                ],
+                [
+                    7,
+                    8,
+                    9,
+                    10,
+                ],
+            ],
+        ];
+
+        yield[
+            'Invalid structure, not like database table (with custom separator)',
+            "1 <-> 2 <-> 3\n5 <-> 6\n7 <-> 8 <-> 9 <-> 10",
+            [
+                [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                ],
+                [
+                    7,
+                    8,
+                    9,
+                    10,
+                ],
+            ],
+            ' <-> ',
+        ];
+
+        yield[
+            'Mixed types of keys and values',
+            "1,2,3.45\n5,6,\n7,8,9,,10",
+            [
+                [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3.45,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                    null,
+                ],
+                [
+                    7,
+                    8,
+                    'qq' => 9,
+                    '',
+                    10,
+                ],
+            ],
+        ];
+
+        yield[
+            'Mixed types of keys and values (with custom separator)',
+            "1 // 2 // 3.45\n5 // 6 // \n7 // 8 // 9 //  // 10",
+            [
+                [
+                    'aa' => 1,
+                    'bb' => 2,
+                    'cc' => 3.45,
+                ],
+                [
+                    'dd' => 5,
+                    'ee' => 6,
+                    null,
+                ],
+                [
+                    7,
+                    8,
+                    'qq' => 9,
+                    '',
+                    10,
+                ],
+            ],
+            ' // ',
+        ];
+    }
+
+    public function provideArrayValues2string()
+    {
+        yield[
+            'An empty array',
+            null,
+            [],
+        ];
+
+        yield[
+            'Simple array',
+            'Test 1,Test 2,Test 3',
+            [
+                1 => 'Test 1',
+                2 => 'Test 2',
+                3 => 'Test 3',
+            ],
+        ];
+
+        yield[
+            'Simple array (with custom separator)',
+            'Test 1.Test 2.Test 3',
+            [
+                1 => 'Test 1',
+                2 => 'Test 2',
+                3 => 'Test 3',
+            ],
+            '',
+            '.',
+        ];
+
+        yield[
+            'Simple array (concrete column)',
+            'Test 2',
+            [
+                1 => 'Test 1',
+                2 => 'Test 2',
+                3 => 'Test 3',
+            ],
+            2,
+        ];
+
+        yield[
+            'Simple array (concrete column with custom separator)',
+            'Test 2',
+            [
+                1 => 'Test 1',
+                2 => 'Test 2',
+                3 => 'Test 3',
+            ],
+            2,
+            '.',
+        ];
+
+        yield[
+            'Complex array',
+            '1,2,3,test 1,test 2,test 3,,test 4,,bbb,3.45',
+            [
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                [
+                    'test 1',
+                    'test 2',
+                    [
+                        'test 3',
+                        '',
+                        'test 4',
+                    ],
+                ],
+                [],
+                [
+                    'a' => '',
+                    'b' => 'bbb',
+                    [],
+                    'c' => 3.45,
+                ],
+            ],
+        ];
+
+        yield[
+            '1st complex array (concrete column)',
+            '2,test 2,',
+            [
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                [
+                    'test 1',
+                    'test 2',
+                    [
+                        'test 3',
+                        '',
+                        'test 4',
+                    ],
+                ],
+                [],
+                [
+                    'a' => '',
+                    'b' => 'bbb',
+                    [],
+                    'c' => 3.45,
+                ],
+            ],
+            1,
+        ];
+
+        yield[
+            '2nd complex array (concrete column)',
+            'bb,1234,0xb',
+            [
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                [
+                    'a' => 'aa',
+                    'b' => 'bb',
+                    'c' => 'cc',
+                ],
+                [
+                    'a',
+                    'b',
+                    'c',
+                ],
+                [
+                    'a' => '',
+                    'b' => 1234,
+                ],
+                [
+                    'c' => 5678,
+                    'b' => '0xb',
+                ],
+            ],
+            'b',
+        ];
+
+        yield[
+            '3rd complex array (concrete column with custom separator)',
+            'bb - 1234 - 3xb - bbb',
+            [
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                [
+                    'a' => 'aa',
+                    'b' => 'bb',
+                    'c' => 'cc',
+                ],
+                [
+                    'a',
+                    'b' => [],
+                    'c',
+                ],
+                [
+                    'a' => '',
+                    'b' => 1234,
+                ],
+                [
+                    'c' => 5678,
+                    'b' => [
+                        'b1' => '0xb',
+                        'b2' => '1xb',
+                        'b'  => '3xb',
+                    ],
+                    [
+                        1,
+                        2,
+                        'a' => 'aaa',
+                        'b' => 'bbb',
+                    ],
+                ],
+            ],
+            'b',
+            ' - ',
+        ];
+    }
+
+    public function provideArrayToQuoteStrings()
+    {
+        yield[
+            'An empty array',
+            null,
+            [],
+        ];
+
+        yield[
+            'Simple array',
+            [
+                1,
+                2,
+                3,
+                '\'1\'',
+                '\'2\'',
+            ],
+            [
+                1,
+                2,
+                3,
+                '1',
+                '2',
+            ],
+        ];
+
+        yield[
+            'Complex array',
+            [
+                123,
+                '\'456\'',
+                [
+                    'x' => [
+                        0,
+                        '\'0\'',
+                        1 => '\'1\'',
+                        2 => 2,
+                    ],
+                    '\'y\'',
+                ],
+                444 => '\'\'',
+                [
+                    [
+                        [
+                            '\'test\'',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                123,
+                '456',
+                [
+                    'x' => [
+                        0,
+                        '0',
+                        1 => '1',
+                        2 => 2,
+                    ],
+                    'y',
+                ],
+                444 => '',
+                [
+                    [
+                        [
+                            'test',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 

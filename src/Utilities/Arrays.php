@@ -27,102 +27,137 @@ class Arrays
      * Converts given array's column to string.
      * Recursive call is made for multi-dimensional arrays.
      *
-     * @param array      $array          Array data to be converted
-     * @param string|int $arrayColumnKey (optional) Column name
-     * @param string     $separator      (optional) Separator used in resultant string
-     * @return string
+     * @param array      $array          Data to be converted
+     * @param string|int $arrayColumnKey (optional) Column name. Default: "".
+     * @param string     $separator      (optional) Separator used between values. Default: ",".
+     * @return string|null
      */
     public static function values2string(array $array, $arrayColumnKey = '', $separator = ',')
     {
-        $effect = '';
-
-        if (!empty($array)) {
-            foreach ($array as $key => $value) {
-                if (!empty($effect) &&
-                    (
-                        empty($arrayColumnKey) || (!is_array($value) && $key === $arrayColumnKey)
-                    )
-                ) {
-                    $effect .= $separator;
-                }
-
-                if (is_array($value)) {
-                    $effect .= self::values2string($value, $arrayColumnKey, $separator);
-                } elseif (empty($arrayColumnKey)) {
-                    $effect .= $value;
-                } elseif ($key === $arrayColumnKey) {
-                    $effect .= $array[$arrayColumnKey];
-                }
-            }
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
         }
 
-        return $effect;
+        $values = [];
+
+        foreach ($array as $key => $value) {
+            $appendMe = null;
+
+            if (is_array($value)) {
+                $appendMe = self::values2string($value, $arrayColumnKey, $separator);
+            } elseif (empty($arrayColumnKey)) {
+                $appendMe = $value;
+            } elseif ($key === $arrayColumnKey) {
+                $appendMe = $array[$arrayColumnKey];
+            }
+
+            /*
+             * Part to append is unknown?
+             * Let's go to next part
+             */
+            if (null === $appendMe) {
+                continue;
+            }
+
+            $values[] = $appendMe;
+        }
+
+        /*
+         * No values found?
+         * Nothing to do
+         */
+        if (empty($values)) {
+            return null;
+        }
+
+        return implode($separator, $values);
     }
 
     /**
      * Converts given array to string with keys, e.g. abc=1&def=2 or abc="1" def="2"
      *
-     * @param array  $array               Array data to be converted
-     * @param string $separator           (optional) Separator used between name-value pairs in resultant string
-     * @param string $valuesKeysSeparator (optional) Separator used between name and value in resultant string
-     * @param string $valuesWrapper       (optional) Wrapper used to wrap values, e.g. double-quote: key="value"
-     * @return string
+     * @param array  $array               Data to be converted
+     * @param string $separator           (optional) Separator used between name-value pairs. Default: ",".
+     * @param string $valuesKeysSeparator (optional) Separator used between name and value. Default: "=".
+     * @param string $valuesWrapper       (optional) Wrapper used to wrap values, e.g. double-quote: key="value".
+     *                                    Default: "".
+     * @return string|null
      */
-    public static function valuesKeys2string($array, $separator = ',', $valuesKeysSeparator = '=', $valuesWrapper = '')
-    {
-        $effect = '';
-
-        if (is_array($array) && !empty($array)) {
-            foreach ($array as $key => $value) {
-                if (!empty($effect)) {
-                    $effect .= $separator;
-                }
-
-                if (!empty($valuesWrapper)) {
-                    $value = sprintf('%s%s%s', $valuesWrapper, $value, $valuesWrapper);
-                }
-
-                $effect .= $key . $valuesKeysSeparator . $value;
-            }
+    public static function valuesKeys2string(
+        array $array,
+        $separator = ',',
+        $valuesKeysSeparator = '=',
+        $valuesWrapper = ''
+    ) {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
         }
 
-        return $effect;
+        $result = '';
+
+        foreach ($array as $key => $value) {
+            if (!empty($result)) {
+                $result .= $separator;
+            }
+
+            if (!empty($valuesWrapper)) {
+                $value = sprintf('%s%s%s', $valuesWrapper, $value, $valuesWrapper);
+            }
+
+            $result .= $key . $valuesKeysSeparator . $value;
+        }
+
+        return $result;
     }
 
     /**
      * Converts given array's rows to csv string
      *
-     * @param array  $array     Array data to be converted. It have to be an array that represents database table.
-     * @param string $separator (optional) Separator used in resultant string
-     * @return string
+     * @param array  $array     Data to be converted. It have to be an array that represents database table.
+     * @param string $separator (optional) Separator used between values. Default: ",".
+     * @return string|null
      */
-    public static function values2csv($array, $separator = ',')
+    public static function values2csv(array $array, $separator = ',')
     {
-        if (is_array($array) && !empty($array)) {
-            $rows = [];
-            $lineSeparator = "\n";
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
+        }
 
-            foreach ($array as $row) {
-                /*
-                 * I have to use html_entity_decode() function here, because some string values can contain
-                 * entities with semicolon and this can destroy the CSV column order.
-                 */
+        $rows = [];
+        $lineSeparator = "\n";
 
-                if (is_array($row) && !empty($row)) {
-                    foreach ($row as $key => $value) {
-                        $row[$key] = html_entity_decode($value);
-                    }
+        foreach ($array as $row) {
+            /*
+             * I have to use html_entity_decode() function here, because some string values can contain
+             * entities with semicolon and this can destroy the CSV column order.
+             */
 
-                    $rows[] = implode($separator, $row);
+            if (is_array($row) && !empty($row)) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = html_entity_decode($value);
                 }
-            }
 
-            if (!empty($rows)) {
-                return implode($lineSeparator, $rows);
+                $rows[] = implode($separator, $row);
             }
         }
 
-        return '';
+        if (empty($rows)) {
+            return '';
+        }
+
+        return implode($lineSeparator, $rows);
     }
 
     /**
@@ -242,12 +277,20 @@ class Arrays
     /**
      * Returns breadcrumb (a path) to the last element of array
      *
-     * @param array  $array     The array to get the breadcrumb
-     * @param string $separator (optional) Separator used to stick the elements
-     * @return string
+     * @param array  $array     Data to get the breadcrumb
+     * @param string $separator (optional) Separator used to stick the elements. Default: "/".
+     * @return string|null
      */
-    public static function getLastElementBreadCrumb($array, $separator = '/')
+    public static function getLastElementBreadCrumb(array $array, $separator = '/')
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
+        }
+
         $keys = array_keys($array);
         $keysCount = count($keys);
 
@@ -350,7 +393,7 @@ class Arrays
             return null;
         }
 
-        $effect = '';
+        $result = '';
         $counter = 0;
 
         $arrayCount = count($array);
@@ -366,14 +409,14 @@ class Arrays
         }
 
         if (!empty($jsVariableName) && is_string($jsVariableName)) {
-            $effect .= sprintf('var %s = ', $jsVariableName);
+            $result .= sprintf('var %s = ', $jsVariableName);
         }
 
-        $effect .= 'new Array(';
+        $result .= 'new Array(';
 
         if ($preserveIndexes || $isMultiDimensional) {
-            $effect .= $arrayCount;
-            $effect .= ');';
+            $result .= $arrayCount;
+            $result .= ');';
         }
 
         foreach ($array as $index => $value) {
@@ -397,20 +440,20 @@ class Arrays
                      * autoGeneratedVariable[1] = new Array(...);
                      */
                     if (1 === $counter) {
-                        $effect .= "\n";
+                        $result .= "\n";
                     }
 
-                    $effect .= $value . "\n";
-                    $effect .= sprintf('%s[%s] = %s;', $jsVariableName, Miscellaneous::quoteValue($index), $variable);
+                    $result .= $value . "\n";
+                    $result .= sprintf('%s[%s] = %s;', $jsVariableName, Miscellaneous::quoteValue($index), $variable);
 
                     if ($counter !== $arrayCount) {
-                        $effect .= "\n";
+                        $result .= "\n";
                     }
                 }
             } elseif ($preserveIndexes) {
                 if (!empty($jsVariableName)) {
                     $index = Miscellaneous::quoteValue($index);
-                    $effect .= sprintf("\n%s[%s] = %s;", $jsVariableName, $index, $value);
+                    $result .= sprintf("\n%s[%s] = %s;", $jsVariableName, $index, $value);
                 }
             } else {
                 $format = '%s';
@@ -419,44 +462,48 @@ class Arrays
                     $format .= ', ';
                 }
 
-                $effect .= sprintf($format, $value);
+                $result .= sprintf($format, $value);
             }
         }
 
         if (!$preserveIndexes && !$isMultiDimensional) {
-            $effect .= ');';
+            $result .= ');';
         }
 
-        return $effect;
+        return $result;
     }
 
     /**
-     * Quotes (adds quotes) to elements of an array that are strings
+     * Quotes (adds quotes) to elements that are strings and returns new array (with quoted elements)
      *
      * @param array $array The array to check for string values
-     * @return array
+     * @return array|null
      */
-    public static function quoteStrings($array)
+    public static function quoteStrings(array $array)
     {
-        $effect = $array;
-
-        if (is_array($array) && !empty($array)) {
-            $effect = [];
-
-            foreach ($array as $index => $value) {
-                if (is_array($value)) {
-                    $value = self::quoteStrings($value);
-                } elseif (is_string($value)) {
-                    if (!Regex::isQuoted($value)) {
-                        $value = '\'' . $value . '\'';
-                    }
-                }
-
-                $effect[$index] = $value;
-            }
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
         }
 
-        return $effect;
+        $result = [];
+
+        foreach ($array as $index => $value) {
+            if (is_array($value)) {
+                $value = self::quoteStrings($value);
+            } elseif (is_string($value)) {
+                if (!Regex::isQuoted($value)) {
+                    $value = '\'' . $value . '\'';
+                }
+            }
+
+            $result[$index] = $value;
+        }
+
+        return $result;
     }
 
     /**
@@ -495,6 +542,14 @@ class Arrays
      */
     public static function getLastKey(array $array)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
+        }
+
         $keys = array_keys($array);
 
         return end($keys);
@@ -543,9 +598,9 @@ class Arrays
      * @param bool  $before (optional) If is set to true, all elements before given needle are removed. Otherwise - all
      *                      after needle.
      */
-    public static function removeElements(&$array, $needle, $before = true)
+    public static function removeElements(array &$array, $needle, $before = true)
     {
-        if (is_array($array) && !empty($array)) {
+        if (!empty($array)) {
             if (!$before) {
                 $array = array_reverse($array, true);
             }
@@ -587,7 +642,7 @@ class Arrays
      *                                      value will be used with it's key, because other will be overridden.
      *                                      Otherwise - values are preserved and keys assigned to that values are
      *                                      returned as an array.
-     * @return array
+     * @return array|null
      *
      * Example of $ignoreDuplicatedValues = false:
      * - provided array
@@ -613,7 +668,7 @@ class Arrays
          * Nothing to do
          */
         if (empty($array)) {
-            return [];
+            return null;
         }
 
         $replaced = [];
@@ -724,8 +779,9 @@ class Arrays
      * ]
      *
      * @param string $string              The string to be converted
-     * @param string $separator           (optional) Separator used between name-value pairs in the string
-     * @param string $valuesKeysSeparator (optional) Separator used between name and value in the string
+     * @param string $separator           (optional) Separator used between name-value pairs in the string.
+     *                                    Default: "|".
+     * @param string $valuesKeysSeparator (optional) Separator used between name and value in the string. Default: ":".
      * @return array
      */
     public static function string2array($string, $separator = '|', $valuesKeysSeparator = ':')
@@ -759,52 +815,52 @@ class Arrays
      * Returns information if given keys exist in given array
      *
      * @param array $keys     The keys to find
-     * @param array $array    The array which maybe contains keys
+     * @param array $array    The array that maybe contains keys
      * @param bool  $explicit (optional) If is set to true, all keys should exist in given array. Otherwise - not all.
      * @return bool
      */
-    public static function areKeysInArray($keys, $array, $explicit = true)
+    public static function areKeysInArray(array $keys, array $array, $explicit = true)
     {
-        $effect = false;
+        $result = false;
 
-        if (is_array($array) && !empty($array)) {
+        if (!empty($array)) {
             $firstKey = true;
 
             foreach ($keys as $key) {
                 $exists = array_key_exists($key, $array);
 
                 if ($firstKey) {
-                    $effect = $exists;
+                    $result = $exists;
                     $firstKey = false;
                 } elseif ($explicit) {
-                    $effect = $effect && $exists;
+                    $result = $result && $exists;
 
-                    if (!$effect) {
+                    if (!$result) {
                         break;
                     }
                 } else {
-                    $effect = $effect || $exists;
+                    $result = $result || $exists;
 
-                    if ($effect) {
+                    if ($result) {
                         break;
                     }
                 }
             }
         }
 
-        return $effect;
+        return $result;
     }
 
     /**
      * Returns paths of the last elements
      *
      * @param array        $array           The array with elements
-     * @param string       $separator       (optional) Separator used in resultant strings. Default: ".".
+     * @param string       $separator       (optional) Separator used between elements. Default: ".".
      * @param string       $parentPath      (optional) Path of the parent element. Default: "".
      * @param string|array $stopIfMatchedBy (optional) Patterns of keys or paths that matched will stop the process
      *                                      of path building and including children of those keys or paths (recursive
-     *                                      will not be used for keys in lower level of given array)
-     * @return array
+     *                                      will not be used for keys in lower level of given array). Default: "".
+     * @return array|null
      *
      * Examples - $stopIfMatchedBy argument:
      * a) "\d+"
@@ -820,7 +876,7 @@ class Arrays
          * Nothing to do
          */
         if (empty($array)) {
-            return [];
+            return null;
         }
 
         if (!empty($stopIfMatchedBy)) {
@@ -906,12 +962,13 @@ class Arrays
      *                               first level only.
      * @return bool
      */
-    public static function areAllKeysMatchedByPattern($array, $pattern, $firstLevelOnly = false)
+    public static function areAllKeysMatchedByPattern(array $array, $pattern, $firstLevelOnly = false)
     {
         /*
-         * It's not an array or it's empty array?
+         * No elements?
+         * Nothing to do
          */
-        if (!is_array($array) || (is_array($array) && empty($array))) {
+        if (empty($array)) {
             return false;
         }
 
@@ -955,10 +1012,10 @@ class Arrays
      *
      * @param array $array          The array to check
      * @param bool  $firstLevelOnly (optional) If is set to true, all keys / indexes are checked. Otherwise - from the
-     *                              first level only.
+     *                              first level only (default behaviour).
      * @return bool
      */
-    public static function areAllKeysIntegers($array, $firstLevelOnly = false)
+    public static function areAllKeysIntegers(array $array, $firstLevelOnly = false)
     {
         $pattern = '\d+';
 
@@ -996,9 +1053,17 @@ class Arrays
      */
     public static function getValueByKeysPath(array $array, array $keys)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
+        }
+
         $value = null;
 
-        if (!empty($array) && self::issetRecursive($array, $keys)) {
+        if (self::issetRecursive($array, $keys)) {
             foreach ($keys as $key) {
                 $value = $array[$key];
                 array_shift($keys);
@@ -1042,23 +1107,29 @@ class Arrays
      */
     public static function issetRecursive(array $array, array $keys)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return false;
+        }
+
         $isset = false;
 
-        if (!empty($array)) {
-            foreach ($keys as $key) {
-                $isset = isset($array[$key]);
+        foreach ($keys as $key) {
+            $isset = isset($array[$key]);
 
-                if ($isset) {
-                    $newArray = $array[$key];
-                    array_shift($keys);
+            if ($isset) {
+                $newArray = $array[$key];
+                array_shift($keys);
 
-                    if (is_array($newArray) && !empty($keys)) {
-                        $isset = self::issetRecursive($newArray, $keys);
-                    }
+                if (is_array($newArray) && !empty($keys)) {
+                    $isset = self::issetRecursive($newArray, $keys);
                 }
-
-                break;
             }
+
+            break;
         }
 
         return $isset;
@@ -1113,22 +1184,28 @@ class Arrays
      * @param string $keyName       (optional) Name of key which will contain the position value
      * @param int    $startPosition (optional) Default, start value of the position for main / given array, not the
      *                              children
-     * @return array
+     * @return array|null
      */
     public static function setPositions(array $array, $keyName = self::POSITION_KEY_NAME, $startPosition = null)
     {
-        if (!empty($array)) {
-            $childPosition = 1;
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
+        }
 
-            if (null !== $startPosition) {
-                $array[$keyName] = $startPosition;
-            }
+        $childPosition = 1;
 
-            foreach ($array as &$value) {
-                if (is_array($value)) {
-                    $value = self::setPositions($value, $keyName, $childPosition);
-                    ++$childPosition;
-                }
+        if (null !== $startPosition) {
+            $array[$keyName] = $startPosition;
+        }
+
+        foreach ($array as &$value) {
+            if (is_array($value)) {
+                $value = self::setPositions($value, $keyName, $childPosition);
+                ++$childPosition;
             }
         }
 
@@ -1143,26 +1220,30 @@ class Arrays
      */
     public static function trimRecursive(array $array)
     {
-        $effect = $array;
-
-        if (!empty($array)) {
-            $effect = [];
-
-            foreach ($array as $key => $value) {
-                if (is_array($value)) {
-                    $effect[$key] = self::trimRecursive($value);
-                    continue;
-                }
-
-                if (is_string($value)) {
-                    $value = trim($value);
-                }
-
-                $effect[$key] = $value;
-            }
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return [];
         }
 
-        return $effect;
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result[$key] = self::trimRecursive($value);
+                continue;
+            }
+
+            if (is_string($value)) {
+                $value = trim($value);
+            }
+
+            $result[$key] = $value;
+        }
+
+        return $result;
     }
 
     /**
@@ -1255,7 +1336,7 @@ class Arrays
      *
      * @param array  $array     The array with elements to implode
      * @param string $separator Separator used to stick together elements of given array
-     * @return string
+     * @return string|null
      */
     public static function implodeSmart(array $array, $separator)
     {
@@ -1264,7 +1345,7 @@ class Arrays
          * Nothing to do
          */
         if (empty($array)) {
-            return '';
+            return null;
         }
 
         foreach ($array as &$element) {
@@ -1454,48 +1535,54 @@ class Arrays
      * @param int|null $startIndex    (optional) Index from which incrementation should be started. If not provided,
      *                                the first index / key will be used.
      * @param int      $incrementStep (optional) Value used for incrementation. The step of incrementation.
-     * @return array
+     * @return array|null
      */
     public static function incrementIndexes(array $array, $startIndex = null, $incrementStep = 1)
     {
-        if (!empty($array)) {
-            $valuesToIncrement = [];
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
+        }
 
+        $valuesToIncrement = [];
+
+        /*
+         * Start index not provided?
+         * Let's look for the first index / key of given array
+         */
+        if (null === $startIndex) {
+            $startIndex = self::getFirstKey($array);
+        }
+
+        /*
+         * Is the start index a numeric value?
+         * Other indexes / keys cannot be incremented
+         */
+        if (is_numeric($startIndex)) {
             /*
-             * Start index not provided?
-             * Let's look for the first index / key of given array
+             * 1st step:
+             * Get values which indexes should be incremented and remove those values from given array
              */
-            if (null === $startIndex) {
-                $startIndex = self::getFirstKey($array);
+            foreach ($array as $index => $value) {
+                if ($index < $startIndex) {
+                    continue;
+                }
+
+                $valuesToIncrement[$index] = $value;
+                unset($array[$index]);
             }
 
             /*
-             * Is the start index a numeric value?
-             * Other indexes / keys cannot be incremented
+             * 2nd step:
+             * Increment indexes of gathered values
              */
-            if (is_numeric($startIndex)) {
-                /*
-                 * 1st step:
-                 * Get values which indexes should be incremented and remove those values from given array
-                 */
-                foreach ($array as $index => $value) {
-                    if ($index < $startIndex) {
-                        continue;
-                    }
-
-                    $valuesToIncrement[$index] = $value;
-                    unset($array[$index]);
-                }
-
-                /*
-                 * 2nd step:
-                 * Increment indexes of gathered values
-                 */
-                if (!empty($valuesToIncrement)) {
-                    foreach ($valuesToIncrement as $oldIndex => $value) {
-                        $newIndex = $oldIndex + $incrementStep;
-                        $array[$newIndex] = $value;
-                    }
+            if (!empty($valuesToIncrement)) {
+                foreach ($valuesToIncrement as $oldIndex => $value) {
+                    $newIndex = $oldIndex + $incrementStep;
+                    $array[$newIndex] = $value;
                 }
             }
         }
@@ -1554,6 +1641,14 @@ class Arrays
      */
     public static function getDimensionsCount(array $array)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return 0;
+        }
+
         $dimensionsCount = 1;
 
         foreach ($array as $value) {
@@ -1577,7 +1672,7 @@ class Arrays
      * Returns non-empty values, e.g. without "" (empty string), null or []
      *
      * @param array $values The values to filter
-     * @return array
+     * @return array|null
      */
     public static function getNonEmptyValues(array $values)
     {
@@ -1586,7 +1681,7 @@ class Arrays
          * Nothing to do
          */
         if (empty($values)) {
-            return [];
+            return null;
         }
 
         return array_filter($values, function ($value) {
@@ -1602,10 +1697,18 @@ class Arrays
      *
      * @param array  $values    The values to filter
      * @param string $separator (optional) Separator used to implode the values. Default: ", ".
-     * @return string
+     * @return string|null
      */
     public static function getNonEmptyValuesAsString(array $values, $separator = ', ')
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($values)) {
+            return null;
+        }
+
         $nonEmpty = self::getNonEmptyValues($values);
 
         /*
@@ -1629,6 +1732,14 @@ class Arrays
      */
     private static function getNeighbour(array $array, $element, $next = true)
     {
+        /*
+         * No elements?
+         * Nothing to do
+         */
+        if (empty($array)) {
+            return null;
+        }
+
         $noNext = $next && self::isLastElement($array, $element);
         $noPrevious = !$next && self::isFirstElement($array, $element);
 
