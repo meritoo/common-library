@@ -67,7 +67,7 @@ $asString = (string)$address; // "4th Avenue 10/200, 00123, New York"
 
 Represents bank account. Contains properties:
 1. `$bankName` - name of bank
-2. $accountNumber` - number of bank's account
+2. `$accountNumber` - number of bank's account
 
 ##### New instance
 
@@ -172,6 +172,17 @@ New instance can be created using:
 	```php
     Version::fromString('1.0.2');
     ```
+
+##### Conversion to string (the `__toString()` method)
+
+Instance of `Version` may be represented as string that contains all properties separated by `.` (`$majorPart`.`$minorPart`.`$patchPart`).
+
+Example:
+
+```php
+$version = new Version(1, 0, 2);
+$asString = (string)$version; // "1.0.2"
+```
 
 # More
 
