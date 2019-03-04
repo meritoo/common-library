@@ -35,7 +35,7 @@ class EmptyFileExceptionTest extends BaseTestCase
     public function testMessage($emptyFilePath, $expectedMessage)
     {
         $exception = EmptyFileException::create($emptyFilePath);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

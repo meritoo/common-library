@@ -35,7 +35,9 @@ class SimpleToString
     }
 
     /**
-     * {@inheritdoc}
+     * Returns representation of object as string
+     *
+     * @return string
      */
     public function __toString()
     {

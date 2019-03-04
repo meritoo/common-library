@@ -88,7 +88,7 @@ class Version
     }
 
     /**
-     * Returns string representation of instance of this class
+     * Returns representation of object as string
      *
      * @return string
      */

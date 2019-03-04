@@ -263,7 +263,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
     }
 
     /**
-     * Returns an array representation of the collection
+     * Returns representation of object as array
      *
      * @return array
      */

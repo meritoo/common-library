@@ -28,6 +28,6 @@ class EmptyFilePathExceptionTest extends BaseTestCase
     public function testConstructorMessage()
     {
         $exception = EmptyFilePathException::create();
-        static::assertEquals('Path of the file is empty. Did you provide path of proper file?', $exception->getMessage());
+        static::assertSame('Path of the file is empty. Did you provide path of proper file?', $exception->getMessage());
     }
 }

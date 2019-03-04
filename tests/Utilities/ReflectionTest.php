@@ -410,7 +410,7 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetMaxNumberConstant()
     {
-        static::assertEquals(5, Reflection::getMaxNumberConstant(H::class));
+        static::assertSame(5, Reflection::getMaxNumberConstant(H::class));
     }
 
     public function testHasMethodUsingClassWithoutMethod()
@@ -450,7 +450,7 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetConstantValue()
     {
-        static::assertEquals(H::LOREM, Reflection::getConstantValue(H::class, 'LOREM'));
+        static::assertSame(H::LOREM, Reflection::getConstantValue(H::class, 'LOREM'));
     }
 
     public function testIsInterfaceImplementedUsingClassWithoutInterface()
@@ -484,7 +484,7 @@ class ReflectionTest extends BaseTestCase
 
         static::assertInstanceOf(ReflectionProperty::class, $property);
         static::assertTrue($property->isPrivate());
-        static::assertEquals('count', $property->getName());
+        static::assertSame('count', $property->getName());
     }
 
     public function testGetPropertyUsingClassWithProtectedProperty()
@@ -493,7 +493,7 @@ class ReflectionTest extends BaseTestCase
 
         static::assertInstanceOf(ReflectionProperty::class, $property);
         static::assertTrue($property->isProtected());
-        static::assertEquals('name', $property->getName());
+        static::assertSame('name', $property->getName());
     }
 
     /**

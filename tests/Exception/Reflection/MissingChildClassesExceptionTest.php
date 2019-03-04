@@ -36,7 +36,7 @@ class MissingChildClassesExceptionTest extends BaseTestCase
     public function testConstructorMessage($parentClass, $expectedMessage)
     {
         $exception = MissingChildClassesException::create($parentClass);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

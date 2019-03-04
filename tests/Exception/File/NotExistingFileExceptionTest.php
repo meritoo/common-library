@@ -35,7 +35,7 @@ class NotExistingFileExceptionTest extends BaseTestCase
     public function testConstructorMessage($notExistingFilePath, $expectedMessage)
     {
         $exception = NotExistingFileException::create($notExistingFilePath);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

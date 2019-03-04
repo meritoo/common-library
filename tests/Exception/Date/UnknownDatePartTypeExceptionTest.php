@@ -37,7 +37,7 @@ class UnknownDatePartTypeExceptionTest extends BaseTestCase
     public function testMessage($unknownDatePart, $value, $expectedMessage)
     {
         $exception = UnknownDatePartTypeException::createException($unknownDatePart, $value);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

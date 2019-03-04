@@ -35,7 +35,7 @@ class IncorrectColorHexLengthExceptionTest extends BaseTestCase
     public function testConstructorMessage($color, $expectedMessage)
     {
         $exception = IncorrectColorHexLengthException::create($color);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

@@ -36,7 +36,7 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
     public function testConstructorMessage($unknownType, $expectedMessage)
     {
         $exception = UnknownOopVisibilityTypeException::createException($unknownType);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

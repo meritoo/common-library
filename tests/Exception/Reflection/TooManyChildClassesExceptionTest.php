@@ -37,7 +37,7 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
     public function testConstructorMessage($parentClass, array $childClasses, $expectedMessage)
     {
         $exception = TooManyChildClassesException::create($parentClass, $childClasses);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

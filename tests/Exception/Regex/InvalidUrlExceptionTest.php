@@ -35,7 +35,7 @@ class InvalidUrlExceptionTest extends BaseTestCase
     public function testConstructorMessage($url, $expectedMessage)
     {
         $exception = InvalidUrlException::create($url);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

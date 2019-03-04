@@ -38,7 +38,7 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
     public function testConstructorMessage($source, $forClass, $expectedMessage)
     {
         $exception = CannotResolveClassNameException::create($source, $forClass);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

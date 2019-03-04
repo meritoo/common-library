@@ -36,7 +36,7 @@ class RepositoryTest extends BaseTestCase
         $items = [];
         Repository::replenishPositions($items);
 
-        static::assertEquals([], $items);
+        static::assertSame([], $items);
     }
 
     public function testReplenishPositionsUsingNotSortableObjects()
@@ -85,10 +85,10 @@ class RepositoryTest extends BaseTestCase
     public function testReplenishPositionsUsingArraysWithoutExtremePosition(array $items)
     {
         Repository::replenishPositions($items);
-        static::assertEquals($items, $items);
+        static::assertSame($items, $items);
 
         Repository::replenishPositions($items, false);
-        static::assertEquals($items, $items);
+        static::assertSame($items, $items);
     }
 
     /**
@@ -101,7 +101,7 @@ class RepositoryTest extends BaseTestCase
     public function testReplenishPositionsUsingArraysWithoutExtremePositionForce(array $items, $asLast, array $expected)
     {
         Repository::replenishPositions($items, $asLast, true);
-        static::assertEquals($expected, $items);
+        static::assertSame($expected, $items);
     }
 
     /**
@@ -114,7 +114,7 @@ class RepositoryTest extends BaseTestCase
     public function testReplenishPositionsUsingArraysWithExtremePositionForce(array $items, $asLast, array $expected)
     {
         Repository::replenishPositions($items, $asLast, true);
-        static::assertEquals($expected, $items);
+        static::assertSame($expected, $items);
     }
 
     /**
@@ -124,10 +124,10 @@ class RepositoryTest extends BaseTestCase
     public function testReplenishPositionsUsingObjectsWithoutExtremePosition(array $items)
     {
         Repository::replenishPositions($items);
-        static::assertEquals($items, $items);
+        static::assertSame($items, $items);
 
         Repository::replenishPositions($items, false);
-        static::assertEquals($items, $items);
+        static::assertSame($items, $items);
     }
 
     /**
@@ -171,7 +171,7 @@ class RepositoryTest extends BaseTestCase
      */
     public function testGetExtremePositionUsingArraysWithoutExtremePosition(array $items, $max, $expected)
     {
-        static::assertEquals($expected, Repository::getExtremePosition($items, $max));
+        static::assertSame($expected, Repository::getExtremePosition($items, $max));
     }
 
     /**
@@ -183,7 +183,7 @@ class RepositoryTest extends BaseTestCase
      */
     public function testGetExtremePositionUsingArraysWithExtremePosition(array $items, $max, $expected)
     {
-        static::assertEquals($expected, Repository::getExtremePosition($items, $max));
+        static::assertSame($expected, Repository::getExtremePosition($items, $max));
     }
 
     /**
@@ -195,7 +195,7 @@ class RepositoryTest extends BaseTestCase
      */
     public function testGetExtremePositionUsingObjectsWithoutExtremePosition(array $items, $max, $expected)
     {
-        static::assertEquals($expected, Repository::getExtremePosition($items, $max));
+        static::assertSame($expected, Repository::getExtremePosition($items, $max));
     }
 
     /**
@@ -207,7 +207,7 @@ class RepositoryTest extends BaseTestCase
      */
     public function testGetExtremePositionUsingObjectsWithExtremePosition(array $items, $max, $expected)
     {
-        static::assertEquals($expected, Repository::getExtremePosition($items, $max));
+        static::assertSame($expected, Repository::getExtremePosition($items, $max));
     }
 
     public function testGetEntityOrderedQueryBuilderUsingDefaults()

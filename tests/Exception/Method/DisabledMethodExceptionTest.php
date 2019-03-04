@@ -37,7 +37,7 @@ class DisabledMethodExceptionTest extends BaseTestCase
     public function testConstructorMessage($disabledMethod, $alternativeMethod, $expectedMessage)
     {
         $exception = DisabledMethodException::create($disabledMethod, $alternativeMethod);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

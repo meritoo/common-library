@@ -35,7 +35,7 @@ class InvalidColorHexValueExceptionTest extends BaseTestCase
     public function testConstructorMessage($color, $expectedMessage)
     {
         $exception = InvalidColorHexValueException::create($color);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

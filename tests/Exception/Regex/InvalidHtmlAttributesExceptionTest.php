@@ -35,7 +35,7 @@ class InvalidHtmlAttributesExceptionTest extends BaseTestCase
     public function testConstructorMessage($htmlAttributes, $expectedMessage)
     {
         $exception = InvalidHtmlAttributesException::create($htmlAttributes);
-        static::assertEquals($expectedMessage, $exception->getMessage());
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**
