@@ -137,6 +137,46 @@ $company = new Company(
 $asString = (string)$company; // "Test 1, 4th Avenue 10/200, 00123, New York, Bank 1, 12345"
 ```
 
+### Human
+
+##### Namespace
+
+`Meritoo\Common\ValueObject\Human`
+
+##### Info
+
+Represents human. Based on `\Meritoo\Common\Traits\ValueObject\HumanTrait` trait. Contains properties same as `HumanTrait` trait:
+1. `$firstName` - first name
+2. `$lastName` - last name
+3. `$email` - email address
+4. `$birthDate` - birth date
+
+##### New instance
+
+New instance can be created using constructor:
+
+```php
+new Human('John', 'Scott', 'john@scott.com', new \DateTime('2001-01-01'));
+```
+
+##### Methods
+
+Has getters for each property, e.g. `getFirstName()`, `getEmail()` etc.
+
+##### Conversion to string (the `__toString()` method)
+
+Instance of `Human` may be represented as string that contains first name, last name and email address (if provided).
+
+Example:
+
+```php
+$human1 = new Human('John', 'Scott');
+$asString1 = (string)$human1; // "John Scott"
+
+$human2 = new Human('John', 'Scott', 'john@scott.com', new \DateTime('2001-01-01'));
+$asString2 = (string)$human2; // "John Scott <john@scott.com>"
+```
+
 ### Version
 
 ##### Namespace

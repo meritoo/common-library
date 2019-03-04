@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 0.1.6
 
 1. Arrays > refactoring & more tests
+2. ValueObject > Human > represents a human
 
 # 0.1.5
 
