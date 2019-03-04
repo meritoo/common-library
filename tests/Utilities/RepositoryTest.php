@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities;
+namespace Meritoo\Test\Common\Utilities;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -14,8 +14,8 @@ use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Test\Utilities\Repository\Sortable;
 use Meritoo\Common\Utilities\Repository;
+use Meritoo\Test\Common\Utilities\Repository\Sortable;
 use stdClass;
 
 /**
@@ -220,7 +220,8 @@ class RepositoryTest extends BaseTestCase
             ->setMethods([
                 'createQueryBuilder',
             ])
-            ->getMock();
+            ->getMock()
+        ;
 
         $expectedQueryBuilder = new QueryBuilder($entityManager);
         $expectedQueryBuilder->from('any_table_name', 'qb');
@@ -228,7 +229,8 @@ class RepositoryTest extends BaseTestCase
         $entityRepository
             ->expects(static::once())
             ->method('createQueryBuilder')
-            ->willReturn($expectedQueryBuilder);
+            ->willReturn($expectedQueryBuilder)
+        ;
 
         $queryBuilder = Repository::getEntityOrderedQueryBuilder($entityRepository);
         $selectDQLPart = $queryBuilder->getDQLPart('select');
@@ -262,7 +264,8 @@ class RepositoryTest extends BaseTestCase
             ->setMethods([
                 'createQueryBuilder',
             ])
-            ->getMock();
+            ->getMock()
+        ;
 
         $expectedQueryBuilder = new QueryBuilder($entityManager);
         $expectedQueryBuilder->from('any_table_name', 'qb');
@@ -270,7 +273,8 @@ class RepositoryTest extends BaseTestCase
         $entityRepository
             ->expects(static::once())
             ->method('createQueryBuilder')
-            ->willReturn($expectedQueryBuilder);
+            ->willReturn($expectedQueryBuilder)
+        ;
 
         $queryBuilder = Repository::getEntityOrderedQueryBuilder($entityRepository, $property, $direction);
         $selectDQLPart = $queryBuilder->getDQLPart('select');

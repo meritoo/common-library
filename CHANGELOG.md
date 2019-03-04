@@ -6,6 +6,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. Arrays > refactoring & more tests
 2. ValueObject > Human > represents a human
+3. Tests > use `Meritoo\Test\Common` namespace (instead of `Meritoo\Common\Test`)
 
 # 0.1.5
 

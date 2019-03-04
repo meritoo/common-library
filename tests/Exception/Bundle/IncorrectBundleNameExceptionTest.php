@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Exception\Bundle;
+namespace Meritoo\Test\Common\Exception\Bundle;
 
 use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
 use Meritoo\Common\Test\Base\BaseTestCase;

@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities;
+namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
@@ -80,8 +80,8 @@ class LocaleTest extends BaseTestCase
     }
 
     /**
-     * @param int    $category       Named constant specifying the category of the functions affected by the locale setting.
-     *                               It's the same constant as required by setlocale() function.
+     * @param int    $category       Named constant specifying the category of the functions affected by the locale
+     *                               setting. It's the same constant as required by setlocale() function.
      * @param string $languageCode   Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
      * @param string $countryCode    Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
      * @param string $expectedLocale Expected locale

@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities\Repository;
+namespace Meritoo\Test\Common\Utilities\Repository;
 
 /**
  * Sortable object/entity.

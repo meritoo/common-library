@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Type;
+namespace Meritoo\Test\Common\Type;
 
 use DateTime;
 use Generator;
@@ -215,34 +215,6 @@ class DatePeriodTest extends BaseTypeTestCase
     }
 
     /**
-     * Returns all expected types of the tested type
-     *
-     * @return array
-     */
-    protected function getAllExpectedTypes()
-    {
-        return [
-            'LAST_MONTH' => DatePeriod::LAST_MONTH,
-            'LAST_WEEK'  => DatePeriod::LAST_WEEK,
-            'LAST_YEAR'  => DatePeriod::LAST_YEAR,
-            'NEXT_MONTH' => DatePeriod::NEXT_MONTH,
-            'NEXT_WEEK'  => DatePeriod::NEXT_WEEK,
-            'NEXT_YEAR'  => DatePeriod::NEXT_YEAR,
-            'THIS_MONTH' => DatePeriod::THIS_MONTH,
-            'THIS_WEEK'  => DatePeriod::THIS_WEEK,
-            'THIS_YEAR'  => DatePeriod::THIS_YEAR,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTestedTypeInstance()
-    {
-        return new DatePeriod();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function provideTypeToVerify()
@@ -276,5 +248,33 @@ class DatePeriodTest extends BaseTypeTestCase
             DatePeriod::THIS_YEAR,
             true,
         ];
+    }
+
+    /**
+     * Returns all expected types of the tested type
+     *
+     * @return array
+     */
+    protected function getAllExpectedTypes()
+    {
+        return [
+            'LAST_MONTH' => DatePeriod::LAST_MONTH,
+            'LAST_WEEK'  => DatePeriod::LAST_WEEK,
+            'LAST_YEAR'  => DatePeriod::LAST_YEAR,
+            'NEXT_MONTH' => DatePeriod::NEXT_MONTH,
+            'NEXT_WEEK'  => DatePeriod::NEXT_WEEK,
+            'NEXT_YEAR'  => DatePeriod::NEXT_YEAR,
+            'THIS_MONTH' => DatePeriod::THIS_MONTH,
+            'THIS_WEEK'  => DatePeriod::THIS_WEEK,
+            'THIS_YEAR'  => DatePeriod::THIS_YEAR,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTestedTypeInstance()
+    {
+        return new DatePeriod();
     }
 }

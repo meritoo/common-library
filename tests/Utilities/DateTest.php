@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities;
+namespace Meritoo\Test\Common\Utilities;
 
 use DateInterval;
 use DateTime;
@@ -680,7 +680,8 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * @param int        $period   The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
+     * @param int        $period   The period, type of period. One of DatePeriod class constants, e.g.
+     *                             DatePeriod::LAST_WEEK.
      * @param DatePeriod $expected Expected start and end date for given period
      *
      * @dataProvider provideCorrectPeriod
@@ -982,7 +983,9 @@ class DateTest extends BaseTestCase
             DatePeriod::NEXT_WEEK,
             new DatePeriod(
                 (new DateTime('this week'))->add(new DateInterval('P7D'))->setTime(0, 0, 0),
-                (new DateTime('this week'))->add(new DateInterval('P7D'))->add(new DateInterval('P6D'))->setTime(23, 59, 59)
+                (new DateTime('this week'))->add(new DateInterval('P7D'))
+                    ->add(new DateInterval('P6D'))
+                    ->setTime(23, 59, 59)
             ),
         ];
 

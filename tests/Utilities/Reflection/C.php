@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities\Reflection;
+namespace Meritoo\Test\Common\Utilities\Reflection;
 
 /**
  * The C class.

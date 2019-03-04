@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Test\Base;
+namespace Meritoo\Test\Common\Test\Base;
 
 use DateTime;
 use Generator;

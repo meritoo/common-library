@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Exception\Regex;
+namespace Meritoo\Test\Common\Exception\Regex;
 
 use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;

@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities;
+namespace Meritoo\Test\Common\Utilities;
 
 use DateTime;
 use Generator;
@@ -16,16 +16,16 @@ use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Test\Utilities\Reflection\A;
-use Meritoo\Common\Test\Utilities\Reflection\B;
-use Meritoo\Common\Test\Utilities\Reflection\C;
-use Meritoo\Common\Test\Utilities\Reflection\D;
-use Meritoo\Common\Test\Utilities\Reflection\E;
-use Meritoo\Common\Test\Utilities\Reflection\F;
-use Meritoo\Common\Test\Utilities\Reflection\G;
-use Meritoo\Common\Test\Utilities\Reflection\H;
-use Meritoo\Common\Test\Utilities\Reflection\I;
 use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Test\Common\Utilities\Reflection\A;
+use Meritoo\Test\Common\Utilities\Reflection\B;
+use Meritoo\Test\Common\Utilities\Reflection\C;
+use Meritoo\Test\Common\Utilities\Reflection\D;
+use Meritoo\Test\Common\Utilities\Reflection\E;
+use Meritoo\Test\Common\Utilities\Reflection\F;
+use Meritoo\Test\Common\Utilities\Reflection\G;
+use Meritoo\Test\Common\Utilities\Reflection\H;
+use Meritoo\Test\Common\Utilities\Reflection\I;
 use ReflectionProperty;
 
 /**
@@ -107,7 +107,7 @@ class ReflectionTest extends BaseTestCase
         /*
          * Existing class
          */
-        self::assertEquals('Meritoo\Common\Test\Utilities', Reflection::getClassNamespace(self::class));
+        self::assertEquals('Meritoo\Test\Common\Utilities', Reflection::getClassNamespace(self::class));
         self::assertEquals(DateTime::class, Reflection::getClassNamespace(new DateTime()));
 
         self::assertEquals(DateTime::class, Reflection::getClassNamespace([

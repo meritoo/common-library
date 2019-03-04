@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Exception\Reflection;
+namespace Meritoo\Test\Common\Exception\Reflection;
 
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Test\Base\BaseTestCase;

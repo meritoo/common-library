@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Type;
+namespace Meritoo\Test\Common\Type;
 
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
 use Meritoo\Common\Type\DatePartType;
@@ -19,29 +19,6 @@ use Meritoo\Common\Type\DatePartType;
  */
 class DatePartTypeTest extends BaseTypeTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAllExpectedTypes()
-    {
-        return [
-            'DAY'    => DatePartType::DAY,
-            'HOUR'   => DatePartType::HOUR,
-            'MINUTE' => DatePartType::MINUTE,
-            'MONTH'  => DatePartType::MONTH,
-            'SECOND' => DatePartType::SECOND,
-            'YEAR'   => DatePartType::YEAR,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTestedTypeInstance()
-    {
-        return new DatePartType();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -96,5 +73,28 @@ class DatePartTypeTest extends BaseTypeTestCase
             'year',
             true,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAllExpectedTypes()
+    {
+        return [
+            'DAY'    => DatePartType::DAY,
+            'HOUR'   => DatePartType::HOUR,
+            'MINUTE' => DatePartType::MINUTE,
+            'MONTH'  => DatePartType::MONTH,
+            'SECOND' => DatePartType::SECOND,
+            'YEAR'   => DatePartType::YEAR,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTestedTypeInstance()
+    {
+        return new DatePartType();
     }
 }

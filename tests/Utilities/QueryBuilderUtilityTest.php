@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities;
+namespace Meritoo\Test\Common\Utilities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
@@ -260,7 +260,8 @@ class QueryBuilderUtilityTest extends BaseTestCase
         $entityManager
             ->expects(static::any())
             ->method('getExpressionBuilder')
-            ->willReturn(new Expr());
+            ->willReturn(new Expr())
+        ;
 
         yield[
             (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm'),

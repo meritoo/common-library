@@ -36,7 +36,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Meritoo\\Common\\Test\\": "tests/"
+            "Meritoo\\Test\\Common\\": "tests/"
         }
     },
     "config": {

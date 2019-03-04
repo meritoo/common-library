@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Exception\File;
+namespace Meritoo\Test\Common\Exception\File;
 
 use Meritoo\Common\Exception\File\EmptyFilePathException;
 use Meritoo\Common\Test\Base\BaseTestCase;

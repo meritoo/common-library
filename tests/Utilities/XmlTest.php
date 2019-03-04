@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Test\Utilities;
+namespace Meritoo\Test\Common\Utilities;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Xml;
