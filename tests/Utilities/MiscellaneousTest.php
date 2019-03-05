@@ -29,9 +29,6 @@ class MiscellaneousTest extends BaseTestCase
     private $stringDotSeparated;
     private $stringWithoutSpaces;
 
-    /**
-     * @throws ReflectionException
-     */
     public function testConstructor()
     {
         static::assertHasNoConstructor(Miscellaneous::class);
@@ -382,7 +379,7 @@ class MiscellaneousTest extends BaseTestCase
         mkdir($directory1Path, 0777, true);
         mkdir($directory2Path, 0777, true);
 
-        self::assertTrue(Miscellaneous::removeDirectory(sys_get_temp_dir() . '/lorem', false));
+        self::assertTrue(Miscellaneous::removeDirectory(sys_get_temp_dir() . '/lorem'));
     }
 
     /**
@@ -651,10 +648,6 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(255, Miscellaneous::getValidColorComponent(255, false));
     }
 
-    /**
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     */
     public function testGetInvertedColorWithIncorrectLength()
     {
         $this->setExpectedException(IncorrectColorHexLengthException::class);
@@ -669,10 +662,6 @@ class MiscellaneousTest extends BaseTestCase
         Miscellaneous::getInvertedColor('1234567');
     }
 
-    /**
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     */
     public function testGetInvertedColorWithInvalidValue()
     {
         $this->setExpectedException(InvalidColorHexValueException::class);
@@ -684,10 +673,6 @@ class MiscellaneousTest extends BaseTestCase
         Miscellaneous::getInvertedColor('00ppqq');
     }
 
-    /**
-     * @throws IncorrectColorHexLengthException
-     * @throws InvalidColorHexValueException
-     */
     public function testGetInvertedColor()
     {
         /*
@@ -1501,10 +1486,6 @@ class MiscellaneousTest extends BaseTestCase
     protected function tearDown()
     {
         parent::tearDown();
-
-        unset($this->stringSmall);
-        unset($this->stringCommaSeparated);
-        unset($this->stringDotSeparated);
-        unset($this->stringWithoutSpaces);
+        unset($this->stringSmall, $this->stringCommaSeparated, $this->stringDotSeparated, $this->stringWithoutSpaces);
     }
 }

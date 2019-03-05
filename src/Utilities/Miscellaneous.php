@@ -467,14 +467,14 @@ class Miscellaneous
         }
 
         /*
-         * First step: replace strings, simple operation with strings
+         * 1st step: replace strings, simple operation with strings
          */
         if ($bothAreStrings) {
             $effect = str_replace($search, $replacement, $subject);
         }
 
         /*
-         * Second step: replace with regular expressions.
+         * 2nd step: replace with regular expressions.
          * Attention. Searched and replacement value should be the same type: strings or arrays.
          */
         if ($effect === $subject && ($bothAreStrings || $bothAreArrays)) {
@@ -492,7 +492,7 @@ class Miscellaneous
         }
 
         /*
-         * Third step: complex replace of the replacement defined as an array.
+         * 3rd step: complex replace of the replacement defined as an array.
          * It may be useful when you want to search for a one string and replace the string with multiple values.
          */
         if ($effect === $subject && $searchIsString && $replacementIsArray) {
