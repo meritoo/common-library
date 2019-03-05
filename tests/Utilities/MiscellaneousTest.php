@@ -14,7 +14,6 @@ use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Locale;
 use Meritoo\Common\Utilities\Miscellaneous;
-use ReflectionException;
 use stdClass;
 
 /**
@@ -226,57 +225,68 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals($this->stringSmall, Miscellaneous::replace($this->stringSmall, $search, $replacement3, true));
     }
 
-    public function testReplace()
+    /**
+     * @param string       $description  Description of test
+     * @param string|array $subject      The string or an array of strings to search and replace
+     * @param string|array $search       String or pattern or array of patterns to find. It may be: string, an array
+     *                                   of strings or an array of patterns.
+     * @param string|array $replacement  The string or an array of strings to replace. It may be: string or an array
+     *                                   of strings.
+     * @param  mixed       $result       Result of replacing
+     *
+     * @dataProvider provideEmptyValuesToReplace
+     */
+    public function testReplaceUsingEmptyValues($description, $subject, $search, $replacement, $result)
     {
-        /*
-         * Common variables
-         */
-        $quoteStrings = true;
+        static::assertSame($result, Miscellaneous::replace($subject, $search, $replacement), $description);
+    }
 
-        $subject = [
-            $this->stringSmall,
-            $this->stringDotSeparated,
-        ];
+    /**
+     * @param string $description Description of test
+     * @param string $subject     The string or an array of strings to search and replace
+     * @param string $search      String or pattern or array of patterns to find. It may be: string, an array of
+     *                            strings or an array of patterns.
+     * @param string $replacement The string or an array of strings to replace. It may be: string or an array of
+     *                            strings.
+     * @param  mixed $result      Result of replacing
+     *
+     * @dataProvider provideStringsToReplace
+     */
+    public function testReplaceUsingStrings($description, $subject, $search, $replacement, $result)
+    {
+        static::assertSame($result, Miscellaneous::replace($subject, $search, $replacement), $description);
+    }
 
-        /*
-         * Testing replace with an array
-         */
-        $search = [
-            '|ipsum|',
-            '|pellentesque|',
-        ];
+    /**
+     * @param string $description Description of test
+     * @param string $subject     The string or an array of strings to search and replace
+     * @param string $search      String or pattern or array of patterns to find. It may be: string, an array of
+     *                            strings or an array of patterns.
+     * @param string $replacement The string or an array of strings to replace. It may be: string or an array of
+     *                            strings.
+     * @param  mixed $result      Result of replacing
+     *
+     * @dataProvider provideRegexToReplace
+     */
+    public function testReplaceUsingRegex($description, $subject, $search, $replacement, $result)
+    {
+        static::assertSame($result, Miscellaneous::replace($subject, $search, $replacement), $description);
+    }
 
-        $replacement = [
-            'commodo',
-            'interdum',
-        ];
-
-        $replaced1 = Miscellaneous::replace($subject, $search, $replacement);
-        $replaced2 = Miscellaneous::replace($subject, $search, $replacement, true);
-
-        self::assertEquals('Lorem commodo dolor sit amet.', $replaced1[0]);
-        self::assertEquals('Etiam ullamcorper. Suspendisse a interdum dui, non felis.', $replaced1[1]);
-
-        self::assertEquals('Lorem commodo dolor sit amet.', $replaced2[0]);
-        self::assertEquals('Etiam ullamcorper. Suspendisse a interdum dui, non felis.', $replaced2[1]);
-
-        /*
-         * Testing replace with string
-         */
-        $searchString = 'ipsum';
-        $replacementString = 'commodo';
-
-        $replaced = Miscellaneous::replace($subject, $searchString, $replacementString, $quoteStrings);
-        self::assertEquals('Lorem \'commodo\' dolor sit amet.', $replaced[0]);
-
-        /*
-         * Testing replace with mixed values:
-         * - subject: array
-         * - search: string
-         * - replacement: string
-         */
-        $replacedMixed = Miscellaneous::replace($subject, $searchString, $replacement, $quoteStrings);
-        self::assertEquals('Lorem \'commodo\' dolor sit amet.', $replacedMixed[0]);
+    /**
+     * @param string $description Description of test
+     * @param string $subject     The string or an array of strings to search and replace
+     * @param string $search      String or pattern or array of patterns to find. It may be: string, an array of
+     *                            strings or an array of patterns.
+     * @param string $replacement The string or an array of strings to replace. It may be: string or an array of
+     *                            strings.
+     * @param  mixed $result      Result of replacing
+     *
+     * @dataProvider provideDataToReplaceWithQuoteStrings
+     */
+    public function testReplaceWithQuoteStrings($description, $subject, $search, $replacement, $result)
+    {
+        static::assertSame($result, Miscellaneous::replace($subject, $search, $replacement, true), $description);
     }
 
     public function testUppercaseFirst()
@@ -1153,6 +1163,322 @@ class MiscellaneousTest extends BaseTestCase
             5,
             false,
             '12300',
+        ];
+    }
+
+    public function provideEmptyValuesToReplace()
+    {
+        yield[
+            'An empty string as subject',
+            '',
+            'test',
+            'another test',
+            '',
+        ];
+
+        yield[
+            'An empty array as subject',
+            [],
+            'test',
+            'another test',
+            [],
+        ];
+
+        yield[
+            'Null as subject',
+            null,
+            'test',
+            'another test',
+            null,
+        ];
+
+        yield[
+            'An empty string to search',
+            'test',
+            '',
+            'another test',
+            'test',
+        ];
+
+        yield[
+            'An empty array to search',
+            'test',
+            [],
+            'another test',
+            'test',
+        ];
+
+        yield[
+            'Null to search',
+            'test',
+            null,
+            'another test',
+            'test',
+        ];
+
+        yield[
+            'An empty string as replacement',
+            'test',
+            'another test',
+            '',
+            'test',
+        ];
+
+        yield[
+            'An empty array as replacement',
+            'test',
+            'another test',
+            [],
+            'test',
+        ];
+
+        yield[
+            'Null as replacement',
+            'test',
+            'another test',
+            null,
+            'test',
+        ];
+    }
+
+    public function provideStringsToReplace()
+    {
+        yield[
+            'Different count of strings to search and replace - 1st part',
+            'Lorem ipsum dolor sit amet',
+            [
+                'ipsum',
+            ],
+            'commodo',
+            'Lorem ipsum dolor sit amet',
+        ];
+
+        yield[
+            'Different count of strings to search and replace - 2nd part',
+            'Lorem ipsum dolor sit amet',
+            'ipsum',
+            [
+                'commodo',
+            ],
+            'Lorem commodo dolor sit amet',
+        ];
+
+        yield[
+            'Replace 1 not existing word in 1 sentence (nothing to replace)',
+            'Lorem ipsum dolor sit amet',
+            'plum',
+            'commodo',
+            'Lorem ipsum dolor sit amet',
+        ];
+
+        yield[
+            'Replace 1 word in 1 sentence',
+            'Lorem ipsum dolor sit amet',
+            'ipsum',
+            'commodo',
+            'Lorem commodo dolor sit amet',
+        ];
+
+        yield[
+            'Replace 1 not existing word in 2 sentences (nothing to replace)',
+            [
+                'Lorem ipsum dolor sit amet',
+                'Maecenas sed diam eget risus varius blandit sit amet',
+            ],
+            'plum',
+            'commodo',
+            [
+                'Lorem ipsum dolor sit amet',
+                'Maecenas sed diam eget risus varius blandit sit amet',
+            ],
+        ];
+
+        yield[
+            'Replace 1 word in 2 sentences',
+            [
+                'Lorem ipsum dolor sit amet',
+                'Maecenas sed diam eget risus varius blandit sit amet',
+            ],
+            'amet',
+            'commodo',
+            [
+                'Lorem ipsum dolor sit commodo',
+                'Maecenas sed diam eget risus varius blandit sit commodo',
+            ],
+        ];
+    }
+
+    public function provideRegexToReplace()
+    {
+        yield[
+            'Different count of strings to search and replace - 1st part',
+            'Lorem ipsum dolor sit amet',
+            [
+                '|ipsum|',
+            ],
+            'commodo',
+            'Lorem ipsum dolor sit amet',
+        ];
+
+        yield[
+            'Different count of strings to search and replace - 2nd part',
+            'Lorem ipsum dolor sit amet',
+            '|ipsum|',
+            [
+                'commodo',
+            ],
+            'Lorem ipsum dolor sit amet',
+        ];
+
+        yield[
+            '1 pattern (word -> "")',
+            'Lorem ipsum dolor sit amet',
+            '|ipsum|',
+            '',
+            'Lorem  dolor sit amet',
+        ];
+
+        yield[
+            '1 pattern (word -> word)',
+            'Lorem ipsum dolor sit amet',
+            '|ipsum|',
+            'commodo',
+            'Lorem commodo dolor sit amet',
+        ];
+
+        yield[
+            '2 patterns (word -> word)',
+            'Lorem ipsum dolor sit amet',
+            [
+                '|ipsum|',
+                '|amet|',
+            ],
+            [
+                'commodo',
+                'egestas',
+            ],
+            'Lorem commodo dolor sit egestas',
+        ];
+
+        yield[
+            '1 word in 2 sentences',
+            [
+                'Lorem ipsum dolor sit amet',
+                'Maecenas sed diam eget risus varius blandit sit amet',
+            ],
+            '|amet|',
+            'commodo',
+            [
+                'Lorem ipsum dolor sit commodo',
+                'Maecenas sed diam eget risus varius blandit sit commodo',
+            ],
+        ];
+
+        yield[
+            '2 words in 2 sentences',
+            [
+                'Lorem ipsum dolor sit amet',
+                'Maecenas sed diam eget risus varius blandit sit amet',
+            ],
+            [
+                '|ipsum|',
+                '|amet|',
+            ],
+            [
+                'commodo',
+                'egestas',
+            ],
+            [
+                'Lorem commodo dolor sit egestas',
+                'Maecenas sed diam eget risus varius blandit sit egestas',
+            ],
+        ];
+    }
+
+    public function provideDataToReplaceWithQuoteStrings()
+    {
+        yield[
+            'An empty string as subject',
+            '',
+            'test',
+            'another test',
+            '',
+        ];
+
+        yield[
+            'An empty string to search',
+            'test',
+            '',
+            'another test',
+            'test',
+        ];
+
+        yield[
+            'An empty string as replacement',
+            'test',
+            'another test',
+            '',
+            'test',
+        ];
+
+        yield[
+            'Replace 1 not existing word in 1 sentence (nothing to replace)',
+            'Lorem ipsum dolor sit amet',
+            'plum',
+            'commodo',
+            'Lorem ipsum dolor sit amet',
+        ];
+
+        yield[
+            'Replace 1 word in 1 sentence',
+            'Lorem ipsum dolor sit amet',
+            'ipsum',
+            'commodo',
+            'Lorem \'commodo\' dolor sit amet',
+        ];
+
+        yield[
+            'Replace 1 word in 2 sentences',
+            [
+                'Lorem ipsum dolor sit amet',
+                'Maecenas sed diam eget risus varius blandit sit amet',
+            ],
+            'amet',
+            'commodo',
+            [
+                'Lorem ipsum dolor sit \'commodo\'',
+                'Maecenas sed diam eget risus varius blandit sit \'commodo\'',
+            ],
+        ];
+
+        yield[
+            '1 pattern (word -> "")',
+            'Lorem ipsum dolor sit amet',
+            '|ipsum|',
+            '',
+            'Lorem \'\' dolor sit amet',
+        ];
+
+        yield[
+            '1 pattern (word -> word)',
+            'Lorem ipsum dolor sit amet',
+            '|ipsum|',
+            'commodo',
+            'Lorem \'commodo\' dolor sit amet',
+        ];
+
+        yield[
+            '2 patterns (word -> word)',
+            'Lorem ipsum dolor sit amet',
+            [
+                '|ipsum|',
+                '|amet|',
+            ],
+            [
+                'commodo',
+                'egestas',
+            ],
+            'Lorem \'commodo\' dolor sit \'egestas\'',
         ];
     }
 
