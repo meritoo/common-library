@@ -328,6 +328,19 @@ class CollectionTest extends BaseTestCase
     }
 
     /**
+     * @param string     $description Description of test
+     * @param Collection $collection  Collection to search for element with given index
+     * @param mixed      $index       Index / key of the element
+     * @param mixed      $expected    Expected element with given index
+     *
+     * @dataProvider provideElementGetByIndex
+     */
+    public function testGetByIndex($description, Collection $collection, $index, $expected)
+    {
+        static::assertEquals($expected, $collection->getByIndex($index), $description);
+    }
+
+    /**
      * Provides element to add to collection
      *
      * @return Generator
@@ -405,6 +418,73 @@ class CollectionTest extends BaseTestCase
             5,
             'vv',
             $collection,
+        ];
+    }
+
+    public function provideElementGetByIndex()
+    {
+        yield[
+            'An empty collection and empty index',
+            new Collection(),
+            '',
+            null,
+        ];
+
+        yield[
+            'An empty collection and non-empty index',
+            new Collection(),
+            'test',
+            null,
+        ];
+
+        yield[
+            'Non-empty collection and not existing index',
+            new Collection([
+                'lorem' => 'ipsum',
+                'dolor' => 'sit',
+            ]),
+            'test',
+            null,
+        ];
+
+        yield[
+            'Collection with existing index',
+            new Collection([
+                'lorem' => 'ipsum',
+                'dolor' => 'sit',
+            ]),
+            'lorem',
+            'ipsum',
+        ];
+
+        yield[
+            'Collection with existing index (collection of arrays)',
+            new Collection([
+                [
+                    'lorem',
+                    'ipsum',
+                ],
+                [
+                    'dolor',
+                    'sit',
+                ],
+            ]),
+            0,
+            [
+                'lorem',
+                'ipsum',
+            ],
+        ];
+
+        yield[
+            'Collection with existing index (collection of objects)',
+            new Collection([
+                'x' => new \DateTime(),
+                'y' => new \DateTime('2001-01-01'),
+                'z' => new \DateTime('yesterday'),
+            ]),
+            'y',
+            new \DateTime('2001-01-01'),
         ];
     }
 

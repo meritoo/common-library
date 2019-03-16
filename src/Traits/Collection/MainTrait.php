@@ -189,6 +189,21 @@ trait MainTrait
     }
 
     /**
+     * Returns element with given index
+     *
+     * @param mixed $index Index / key of the element
+     * @return mixed|null
+     */
+    public function getByIndex($index)
+    {
+        if (isset($this->elements[$index])) {
+            return $this->elements[$index];
+        }
+
+        return null;
+    }
+
+    /**
      * Returns representation of object as array
      *
      * @return array
