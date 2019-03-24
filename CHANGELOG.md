@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 0.1.8
+
+1. Size, e.g. of image
+
 # 0.1.7
 
 1. Collection > create trait (to make it more flexible)

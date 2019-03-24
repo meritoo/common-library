@@ -625,6 +625,28 @@ class RegexTest extends BaseTestCase
     }
 
     /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public static function testIsSizeValueUsingEmptyValue($emptyValue)
+    {
+        self::assertFalse(Regex::isSizeValue($emptyValue));
+    }
+
+    /**
+     * @param string $description Description of test
+     * @param string $value       Value to verify
+     * @param string $separator   Separator used to split width and height
+     * @param bool   $expected    Expected result of verification
+     *
+     * @dataProvider provideSizeToVerify
+     */
+    public function testIsSizeValue($description, $value, $separator, $expected)
+    {
+        self::assertEquals($expected, Regex::isSizeValue($value, $separator), $description);
+    }
+
+    /**
      * @param string $value    Value that should be transformed to slug
      * @param string $expected Expected slug
      *
@@ -1785,6 +1807,191 @@ class RegexTest extends BaseTestCase
         yield[
             'ąęółńśżźć (ĄĘÓŁŃŚŻŹĆ)',
             'aeolnszzc-aeolnszzc',
+        ];
+    }
+
+    public function provideSizeToVerify()
+    {
+        yield[
+            'One number only',
+            200,
+            ' x ',
+            false,
+        ];
+
+        yield[
+            'One number only as string',
+            '200',
+            ' x ',
+            false,
+        ];
+
+        yield[
+            'The " " as invalid separator',
+            '200 100',
+            ' x ',
+            false,
+        ];
+
+        yield[
+            'The "|" as separator (invalid separator)',
+            '200 | 100',
+            ' x ',
+            false,
+        ];
+
+        yield[
+            'The "|" as invalid separator and no spaces around separator',
+            '200|100',
+            ' x ',
+            false,
+        ];
+
+        yield[
+            'The "X" as invalid separator',
+            '200 X 100',
+            ' x ',
+            false,
+        ];
+
+        yield[
+            'Simple, valid size',
+            '200 x 100',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces at the right of separator',
+            '200 x   100',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces at the left of separator',
+            '200   x 100',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces around separator',
+            '200   x   100',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces before width',
+            '   200 x 100',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces after height',
+            '200 x 100   ',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces before width and after height',
+            '   200 x 100   ',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces everywhere (1st)',
+            '   200   x 100   ',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces everywhere (2nd)',
+            '   200 x   100   ',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'Too much spaces everywhere (3rd)',
+            '   200   x   100   ',
+            ' x ',
+            true,
+        ];
+
+        yield[
+            'The " X " as custom separator',
+            '200 X 100',
+            ' X ',
+            true,
+        ];
+
+        yield[
+            'The "|" as custom separator',
+            '200|100',
+            '|',
+            true,
+        ];
+
+        yield[
+            'The " | " as custom separator',
+            '200 | 100',
+            ' | ',
+            true,
+        ];
+
+        yield[
+            'The "::" as custom separator',
+            '200::100',
+            '::',
+            true,
+        ];
+
+        yield[
+            'The " :: " as custom separator',
+            '200 :: 100',
+            ' :: ',
+            true,
+        ];
+
+        yield[
+            'The "." as custom separator',
+            '200.100',
+            '.',
+            true,
+        ];
+
+        yield[
+            'The " . " as custom separator',
+            '200 . 100',
+            ' . ',
+            true,
+        ];
+
+        yield[
+            'The "/" as custom separator',
+            '200/100',
+            '/',
+            true,
+        ];
+
+        yield[
+            'The " / " as custom separator',
+            '200 / 100',
+            ' / ',
+            true,
+        ];
+
+        yield[
+            'The " : " as custom separator and too much spaces everywhere',
+            '    200   :   100    ',
+            ' : ',
+            true,
         ];
     }
 

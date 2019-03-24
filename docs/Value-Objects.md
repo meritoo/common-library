@@ -177,6 +177,68 @@ $human2 = new Human('John', 'Scott', 'john@scott.com', new \DateTime('2001-01-01
 $asString2 = (string)$human2; // "John Scott <john@scott.com>"
 ```
 
+### Size
+
+##### Namespace
+
+`Meritoo\Common\ValueObject\Size`
+
+##### Info
+
+Size, e.g. of image. Contains properties:
+1. `width` - the width
+2. `height` - the height
+3. `unit` - unit used when width or height should be returned with unit, default: `"px"`
+4. `separator` - separator used when converting to string, default: `" x "`
+
+##### New instance
+
+New instance can be created using static methods:
+
+1. `fromArray()` - creates new instance from given array
+
+    ```php
+    // Using default "px" unit
+    Size::fromArray([200, 100]);
+
+    // With custom "mm" unit
+    Size::fromArray([200, 100], 'mm');
+    ```
+
+2. `fromString()` - creates new instance from given string
+
+    ```php
+    // Using default "px" unit and default " x " separator
+    Size::fromString('200 x 100');
+
+	// With custom "mm" unit and " X " separator
+    Size::fromString('200 X 100', 'mm', ' X ');
+    ```
+
+##### Methods
+
+Has:
+- getters and setters for `width` and `height` properties.
+- setter for `separator` property
+- `toString()` and `toArray()` methods that returns size represented as string and array
+
+##### Conversion to string (using `__toString()` method)
+
+Instance of `Size` may be represented as string that contains width and height separated by separator (default: `" x "`).
+
+Example:
+
+```php
+$size = Size::fromArray([200, 100]);
+
+// With default separator
+$asString1 = (string)$size; // "200 x 100"
+
+// With custom separator
+$size->setSeparator('X');
+$asString2 = (string)$size; // "200X100"
+```
+
 ### Version
 
 ##### Namespace
@@ -213,7 +275,11 @@ New instance can be created using:
     Version::fromString('1.0.2');
     ```
 
-##### Conversion to string (the `__toString()` method)
+##### Methods
+
+Has getters for each property: `getMajorPart()`, `getMinorPart()`, `getPatchPart()`.
+
+##### Conversion to string (using `__toString()` method)
 
 Instance of `Version` may be represented as string that contains all properties separated by `.` (`$majorPart`.`$minorPart`.`$patchPart`).
 

@@ -40,6 +40,18 @@ class Regex
         'color'            => '/^[a-f0-9]{6}$/i',
         'bundleName'       => '/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/',
         'binaryValue'      => '/[^\x20-\x7E\t\r\n]/',
+
+        /*
+         * Matches:
+         * - "200x125"
+         * - "200 x 125"
+         * - "200 x   125"
+         * - "   200 x   125"
+         * - "   200   x 125   "
+         *
+         * Contains "%s" that should be replaced with separator used to split width and height.
+         */
+        'size'             => '/^[\ ]*(\d+)[\ ]*%s[\ ]*(\d+)[\ ]*$/',
     ];
 
     /**
@@ -916,6 +928,56 @@ class Regex
         }
 
         $pattern = self::$patterns['binaryValue'];
+
+        return (bool)preg_match($pattern, $value);
+    }
+
+    /**
+     * Returns pattern used to validate / verify size
+     *
+     * @param string $separator (optional) Separator used to split width and height. Default: " x ".
+     * @return string
+     */
+    public static function getSizePattern($separator = ' x ')
+    {
+        $escapeMe = [
+            '/',
+            '|',
+            '.',
+            '(',
+            ')',
+            '[',
+            ']',
+        ];
+
+        $cleanSeparator = trim($separator);
+
+        if (in_array($cleanSeparator, $escapeMe, true)) {
+            // I have to escape special character of  regular expression that may be used as separator
+            $separator = str_replace($cleanSeparator, '\\' . $cleanSeparator, $separator);
+        }
+
+        return sprintf(self::$patterns['size'], $separator);
+    }
+
+    /**
+     * Returns information if given value is a size value
+     *
+     * @param string $value     Value to verify
+     * @param string $separator (optional) Separator used to split width and height. Default: " x ".
+     * @return bool
+     */
+    public static function isSizeValue($value, $separator = ' x ')
+    {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($value)) {
+            return false;
+        }
+
+        $pattern = self::getSizePattern($separator);
 
         return (bool)preg_match($pattern, $value);
     }
