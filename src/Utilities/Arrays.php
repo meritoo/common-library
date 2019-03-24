@@ -397,8 +397,8 @@ class Arrays
         $counter = 0;
 
         $arrayCount = count($array);
-        $array = self::quoteStrings($array);
-        $isMultiDimensional = self::isMultiDimensional($array);
+        $arrayPrepared = self::quoteStrings($array);
+        $isMultiDimensional = self::isMultiDimensional($arrayPrepared);
 
         /*
          * Name of the variable was not provided and it's a multi dimensional array?
@@ -419,7 +419,7 @@ class Arrays
             $result .= ');';
         }
 
-        foreach ($array as $index => $value) {
+        foreach ($arrayPrepared as $index => $value) {
             ++$counter;
 
             if (is_array($value)) {
@@ -1483,12 +1483,11 @@ class Arrays
                     }
 
                     $effect[$key] = $diff;
-
+                } elseif ($value !== $array2[$key]) {
                     /*
                      * Value is different than in 2nd array?
                      * OKay, I've got difference
                      */
-                } elseif ($value !== $array2[$key]) {
                     $effect[$key] = $value;
                 }
             } else {

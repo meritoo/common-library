@@ -22,7 +22,7 @@ class Version
      *
      * @var int
      */
-    private $majorPart;
+    protected $majorPart;
 
     /**
      * The "minor" part.
@@ -30,7 +30,7 @@ class Version
      *
      * @var int
      */
-    private $minorPart;
+    protected $minorPart;
 
     /**
      * The "patch" part.
@@ -38,7 +38,7 @@ class Version
      *
      * @var int
      */
-    private $patchPart;
+    protected $patchPart;
 
     /**
      * Class constructor
