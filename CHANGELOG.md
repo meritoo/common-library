@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.0.0
+
+1. Composer > support/require PHP 7.2+ (instead of 5.6+)
+
 # 0.1.8
 
 1. Size, e.g. of image
