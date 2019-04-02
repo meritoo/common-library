@@ -33,7 +33,7 @@ class UnknownTypeExceptionTest extends BaseTestCase
 
     public function testTheException()
     {
-        $this->setExpectedException(UnknownTestTypeException::class);
+        $this->expectException(UnknownTestTypeException::class);
         self::assertEmpty((new TestService())->getTranslatedType('test_3'));
     }
 }

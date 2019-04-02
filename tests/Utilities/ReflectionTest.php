@@ -135,7 +135,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testGetChildClassesInvalidClass($invalidClass)
     {
-        $this->setExpectedException(CannotResolveClassNameException::class);
+        $this->expectException(CannotResolveClassNameException::class);
 
         self::assertNull(Reflection::getChildClasses($invalidClass));
         self::assertNull(Reflection::getChildClasses(123));
@@ -143,7 +143,7 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetChildClassesNotExistingClass()
     {
-        $this->setExpectedException(CannotResolveClassNameException::class);
+        $this->expectException(CannotResolveClassNameException::class);
         self::assertEquals('', Reflection::getChildClasses('xyz'));
     }
 
@@ -174,13 +174,13 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetOneChildClassWithMissingChildClasses()
     {
-        $this->setExpectedException(MissingChildClassesException::class);
+        $this->expectException(MissingChildClassesException::class);
         self::assertEquals('LoremIpsum', Reflection::getOneChildClass(C::class));
     }
 
     public function testGetOneChildClassWithTooManyChildClasses()
     {
-        $this->setExpectedException(TooManyChildClassesException::class);
+        $this->expectException(TooManyChildClassesException::class);
 
         self::assertEquals(B::class, Reflection::getOneChildClass(A::class));
         self::assertEquals(C::class, Reflection::getOneChildClass(A::class));
@@ -208,7 +208,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testUsesTraitInvalidClass($class, $trait)
     {
-        $this->setExpectedException(CannotResolveClassNameException::class);
+        $this->expectException(CannotResolveClassNameException::class);
         self::assertNull(Reflection::usesTrait($class, $trait));
     }
 
@@ -218,7 +218,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testUsesTraitInvalidTrait($trait)
     {
-        $this->setExpectedException(CannotResolveClassNameException::class);
+        $this->expectException(CannotResolveClassNameException::class);
         self::assertNull(Reflection::usesTrait(DateTime::class, $trait));
     }
 
@@ -504,7 +504,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testSetPropertyValueUsingNotExistingProperty($object, $property)
     {
-        $this->setExpectedException(NotExistingPropertyException::class);
+        $this->expectException(NotExistingPropertyException::class);
         Reflection::setPropertyValue($object, $property, 'test test test');
     }
 
@@ -542,7 +542,7 @@ class ReflectionTest extends BaseTestCase
      */
     public function testSetPropertiesValuesUsingNotExistingProperties($object, array $propertiesValues)
     {
-        $this->setExpectedException(NotExistingPropertyException::class);
+        $this->expectException(NotExistingPropertyException::class);
         Reflection::setPropertiesValues($object, $propertiesValues);
     }
 

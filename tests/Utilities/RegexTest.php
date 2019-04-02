@@ -571,7 +571,7 @@ class RegexTest extends BaseTestCase
      */
     public function testGetValidColorHexValueUsingEmptyValue($emptyValue)
     {
-        $this->setExpectedException(IncorrectColorHexLengthException::class);
+        $this->expectException(IncorrectColorHexLengthException::class);
         Regex::getValidColorHexValue($emptyValue);
     }
 
@@ -590,7 +590,7 @@ class RegexTest extends BaseTestCase
      */
     public function testGetValidColorHexValueUsingIncorrectValue($incorrectColor)
     {
-        $this->setExpectedException(IncorrectColorHexLengthException::class);
+        $this->expectException(IncorrectColorHexLengthException::class);
         Regex::getValidColorHexValue($incorrectColor);
     }
 
@@ -609,7 +609,7 @@ class RegexTest extends BaseTestCase
      */
     public function testGetValidColorHexValueUsingInvalidValue($invalidColor)
     {
-        $this->setExpectedException(InvalidColorHexValueException::class);
+        $this->expectException(InvalidColorHexValueException::class);
         Regex::getValidColorHexValue($invalidColor);
     }
 

@@ -49,8 +49,8 @@ class BundleTest extends BaseTestCase
         $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
             . ' there everything ok?';
 
-        $message = sprintf($template, $bundleName);
-        $this->setExpectedException(IncorrectBundleNameException::class, $message);
+        $this->expectException(IncorrectBundleNameException::class);
+        $this->expectExceptionMessage(sprintf($template, $bundleName));
 
         Bundle::getBundleViewPath($viewPath, $bundleName);
     }
@@ -90,7 +90,7 @@ class BundleTest extends BaseTestCase
      */
     public function testGetShortBundleNameUsingEmptyValue($emptyValue)
     {
-        $this->setExpectedException(IncorrectBundleNameException::class);
+        $this->expectException(IncorrectBundleNameException::class);
         Bundle::getShortBundleName($emptyValue);
     }
 
@@ -102,7 +102,7 @@ class BundleTest extends BaseTestCase
      */
     public function testGetShortBundleNameUsingIncorrectBundleName($bundleName)
     {
-        $this->setExpectedException(IncorrectBundleNameException::class);
+        $this->expectException(IncorrectBundleNameException::class);
         Bundle::getShortBundleName($bundleName);
     }
 

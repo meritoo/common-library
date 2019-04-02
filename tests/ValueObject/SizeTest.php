@@ -131,7 +131,7 @@ class SizeTest extends BaseTestCase
      */
     public function testFromArrayUsingInvalidSizeAsArray(array $size)
     {
-        $this->setExpectedException(InvalidSizeDimensionsException::class);
+        $this->expectException(InvalidSizeDimensionsException::class);
         Size::fromArray($size);
     }
 
