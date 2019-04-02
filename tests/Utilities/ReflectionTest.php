@@ -76,22 +76,20 @@ class ReflectionTest extends BaseTestCase
         ]));
     }
 
-    public function testGetClassNameDuplicatedName()
+    /**
+     * A case when namespace of class contains name of class (name of class is duplicated, occurs twice)
+     */
+    public function testGetClassWhileNamespaceContainsClassName()
     {
-        /*
-         * Class with namespace containing name of class (duplicated string)
-         */
-        if (class_exists('Symfony\Bundle\SecurityBundle\SecurityBundle')) {
-            self::assertEquals(
-                'Symfony\Bundle\SecurityBundle\SecurityBundle',
-                Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle')
-            );
+        self::assertEquals(
+            'Meritoo\Common\Collection\Collection',
+            Reflection::getClassName(Collection::class)
+        );
 
-            self::assertEquals(
-                'SecurityBundle',
-                Reflection::getClassName('Symfony\Bundle\SecurityBundle\SecurityBundle', true)
-            );
-        }
+        self::assertEquals(
+            'Collection',
+            Reflection::getClassName(Collection::class, true)
+        );
     }
 
     public function testGetClassNamespaceNotExistingClass()
@@ -116,17 +114,15 @@ class ReflectionTest extends BaseTestCase
         ]));
     }
 
-    public function testGetClassNamespaceDuplicatedName()
+    /**
+     * A case when namespace of class contains name of class (name of class is duplicated, occurs twice)
+     */
+    public function testGetClassNamespaceWhileNamespaceContainsClassName()
     {
-        /*
-         * Class with namespace containing name of class (duplicated string)
-         */
-        if (class_exists('Symfony\Bundle\SecurityBundle\SecurityBundle')) {
-            self::assertEquals(
-                'Symfony\Bundle\SecurityBundle',
-                Reflection::getClassNamespace('Symfony\Bundle\SecurityBundle\SecurityBundle')
-            );
-        }
+        self::assertEquals(
+            'Meritoo\Common\Collection',
+            Reflection::getClassNamespace(Collection::class)
+        );
     }
 
     /**
