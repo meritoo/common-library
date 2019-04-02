@@ -1506,7 +1506,7 @@ class Arrays
      *
      * @param array $array   The array to verify
      * @param mixed $element The element who index / key is needed
-     * @return bool|null|mixed
+     * @return bool|mixed|null
      */
     public static function getIndexOf(array $array, $element)
     {
@@ -1594,7 +1594,7 @@ class Arrays
      *
      * @param array $array   The array with elements
      * @param mixed $element Element for who next element should be returned
-     * @return null|mixed
+     * @return mixed|null
      */
     public static function getNextElement(array $array, $element)
     {
@@ -1606,7 +1606,7 @@ class Arrays
      *
      * @param array $array   The array with elements
      * @param mixed $element Element for who previous element should be returned
-     * @return null|mixed
+     * @return mixed|null
      */
     public static function getPreviousElement(array $array, $element)
     {

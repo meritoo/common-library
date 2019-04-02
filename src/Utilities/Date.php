@@ -68,7 +68,7 @@ class Date
      *
      * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
      * @throws Exception
-     * @return null|DatePeriod
+     * @return DatePeriod|null
      */
     public static function getDatesForPeriod($period)
     {

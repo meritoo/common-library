@@ -577,7 +577,7 @@ class Reflection
      * @param string              $property Name of the property
      * @param int                 $filter   (optional) Filter of properties. Uses \ReflectionProperty class constants.
      *                                      By default all properties are allowed / processed.
-     * @return null|\ReflectionProperty
+     * @return \ReflectionProperty|null
      */
     public static function getProperty($class, $property, $filter = null)
     {

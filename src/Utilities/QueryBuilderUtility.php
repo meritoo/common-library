@@ -27,7 +27,7 @@ class QueryBuilderUtility
      * If null is returned, alias was not found.
      *
      * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
-     * @return null|string
+     * @return string|null
      */
     public static function getRootAlias(QueryBuilder $queryBuilder)
     {
@@ -52,7 +52,7 @@ class QueryBuilderUtility
      *
      * @param QueryBuilder $queryBuilder The query builder to verify
      * @param string       $property     Name of property that maybe is joined
-     * @return null|string
+     * @return string|null
      */
     public static function getJoinedPropertyAlias(QueryBuilder $queryBuilder, $property)
     {

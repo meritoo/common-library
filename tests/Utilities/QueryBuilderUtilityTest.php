@@ -33,7 +33,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
 
     /**
      * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
-     * @param null|string  $rootAlias    Expected root alias of given query builder
+     * @param string|null  $rootAlias    Expected root alias of given query builder
      *
      * @dataProvider provideQueryBuilderAndRootAlias
      */
@@ -45,7 +45,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
     /**
      * @param QueryBuilder $queryBuilder  The query builder to verify
      * @param string       $propertyName  Name of property that maybe is joined
-     * @param null|string  $propertyAlias Expected alias of given property joined in given query builder
+     * @param string|null  $propertyAlias Expected alias of given property joined in given query builder
      *
      * @dataProvider provideQueryBuilderAndPropertyAlias
      */
