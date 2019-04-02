@@ -108,7 +108,7 @@ class Version
      * @param string $version The version
      * @return Version|null
      */
-    public static function fromString($version)
+    public static function fromString(string $version)
     {
         $version = trim($version);
 

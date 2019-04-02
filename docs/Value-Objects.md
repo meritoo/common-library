@@ -239,6 +239,51 @@ $size->setSeparator('X');
 $asString2 = (string)$size; // "200X100"
 ```
 
+### Template
+
+##### Namespace
+
+`Meritoo\Common\ValueObject\Template`
+
+##### Info
+
+Template with placeholders that may be filled by real data. Contains properties:
+1. `$content` - raw string with placeholders (content of the template)
+
+##### New instance
+
+New instance can be created using constructor:
+
+```php
+new Template('First name: %first_name%');
+```
+
+Each placeholder should be wrapped by `%` character, e.g. `%first_name%`. If content of template is an empty string or does not contain 1 placeholder at least, an `Meritoo\Common\Exception\ValueObject\Template\InvalidContentException` exception will be thrown.
+
+Examples of invalid content of template:
+
+```php
+new Template(''); // An empty string
+new Template('test'); // Without placeholders
+new Template('This is %test'); // With starting tag only (invalid placeholder)
+```
+
+##### Methods
+
+Has 1 public method: `fill(array $values)`. Returns content of the template filled with given values (by replacing placeholders with their proper values).
+
+Example of usage:
+
+```php
+$template = new Template('My name is %name% and I am %profession%');
+$result = $template->fill([
+	'name'       => 'Jane',
+    'profession' => 'photographer',
+]); // "My name is Jane and I am photographer"
+```
+
+Throws an `Meritoo\Common\Exception\ValueObject\Template\NotEnoughValuesException` exception if there is not enough values (iow. more placeholders than values).
+
 ### Version
 
 ##### Namespace
@@ -263,13 +308,13 @@ New instance can be created using:
     ```
 
 2. Static methods:
-	1. `fromArray()` - creates new instance using given version as array
+	1. `fromArray(array $version)` - creates new instance using given version as array
 
 	```php
 	Version::fromArray([1, 0, 2]);
 	```
 
-	2. `fromString()` - creates new instance using given version as string:
+	2. `fromString(string $version)` - creates new instance using given version as string:
 
 	```php
     Version::fromString('1.0.2');
