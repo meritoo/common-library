@@ -56,7 +56,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
 
     public function testSetCriteriaWithoutCriteria()
     {
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
         $queryBuilder = new QueryBuilder($entityManager);
         $newQueryBuilder = QueryBuilderUtility::setCriteria($queryBuilder);
 
@@ -72,7 +72,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
             'ipsum' => 22,
         ];
 
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
         $queryBuilder = new QueryBuilder($entityManager);
         $newQueryBuilder = QueryBuilderUtility::setCriteria($queryBuilder, $criteria);
 
@@ -114,7 +114,13 @@ class QueryBuilderUtilityTest extends BaseTestCase
             'flush',
         ];
 
-        $entityManager = $this->getMock(EntityManager::class, $methods, [], '', false);
+        $entityManager = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods($methods)
+            ->getMock()
+        ;
+
         $entities1 = [];
 
         $entities2 = [
@@ -132,7 +138,13 @@ class QueryBuilderUtilityTest extends BaseTestCase
             'flush',
         ];
 
-        $entityManager = $this->getMock(EntityManager::class, $methods, [], '', false);
+        $entityManager = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods($methods)
+            ->getMock()
+        ;
+
         $entities1 = [];
 
         $entities2 = [
@@ -165,7 +177,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
      */
     public function provideQueryBuilderAndRootAlias()
     {
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
         yield[
             new QueryBuilder($entityManager),
@@ -192,7 +204,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
      */
     public function provideQueryBuilderAndPropertyAlias()
     {
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
         yield[
             new QueryBuilder($entityManager),
@@ -255,7 +267,12 @@ class QueryBuilderUtilityTest extends BaseTestCase
      */
     public function provideQueryBuilderAndCriteria()
     {
-        $entityManager = $this->getMock(EntityManager::class, ['getExpressionBuilder'], [], '', false);
+        $entityManager = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getExpressionBuilder'])
+            ->getMock()
+        ;
 
         $entityManager
             ->expects(static::any())
@@ -295,7 +312,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
      */
     public function provideQueryBuilderAndParameters()
     {
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
         yield[
             new QueryBuilder($entityManager),

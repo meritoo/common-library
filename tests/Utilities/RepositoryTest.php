@@ -212,7 +212,7 @@ class RepositoryTest extends BaseTestCase
 
     public function testGetEntityOrderedQueryBuilderUsingDefaults()
     {
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $entityRepository = $this
             ->getMockBuilder(EntityRepository::class)
@@ -256,7 +256,7 @@ class RepositoryTest extends BaseTestCase
      */
     public function testGetEntityOrderedQueryBuilder($property, $direction, $expectedOrderBy)
     {
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $entityRepository = $this
             ->getMockBuilder(EntityRepository::class)
