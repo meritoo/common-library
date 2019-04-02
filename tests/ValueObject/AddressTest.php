@@ -94,7 +94,7 @@ class AddressTest extends BaseTestCase
         static::assertSame('00111, Saint Louis', (string)$this->addressWithoutStreet);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

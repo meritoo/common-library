@@ -2683,7 +2683,7 @@ letsTest[2] = value_2;';
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -2793,7 +2793,7 @@ letsTest[2] = value_2;';
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
