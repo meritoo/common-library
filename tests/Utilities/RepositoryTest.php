@@ -236,12 +236,14 @@ class RepositoryTest extends BaseTestCase
         $selectDQLPart = $queryBuilder->getDQLPart('select');
         $whereDQLPart = $queryBuilder->getDQLPart('where');
         $orderDQLPart = $queryBuilder->getDQLPart('orderBy');
+        $rootAliases = $queryBuilder->getRootAliases();
 
         /* @var OrderBy $orderBy */
         $orderBy = $orderDQLPart[0];
 
         static::assertInstanceOf(QueryBuilder::class, $queryBuilder);
-        static::assertArraySubset(['qb'], $queryBuilder->getRootAliases());
+        static::assertArrayHasKey(0, $rootAliases);
+        static::assertSame('qb', $rootAliases[0]);
         static::assertSame([], $selectDQLPart);
         static::assertNull($whereDQLPart);
         static::assertSame(['qb.name ASC'], $orderBy->getParts());
@@ -280,9 +282,11 @@ class RepositoryTest extends BaseTestCase
         $selectDQLPart = $queryBuilder->getDQLPart('select');
         $whereDQLPart = $queryBuilder->getDQLPart('where');
         $orderDQLPart = $queryBuilder->getDQLPart('orderBy');
+        $rootAliases = $queryBuilder->getRootAliases();
 
         static::assertInstanceOf(QueryBuilder::class, $queryBuilder);
-        static::assertArraySubset(['qb'], $queryBuilder->getRootAliases());
+        static::assertArrayHasKey(0, $rootAliases);
+        static::assertSame('qb', $rootAliases[0]);
         static::assertSame([], $selectDQLPart);
         static::assertNull($whereDQLPart);
 
