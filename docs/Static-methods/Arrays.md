@@ -68,11 +68,12 @@ File: `src/Utilities/Arrays.php`
 # More
 
 1. [Base test case (with common methods and data providers)](../Base-test-case.md)
-2. [Collection of elements](../Collection-of-elements.md)
-3. [Exceptions](../Exceptions.md)
-4. [Static methods](../Static-methods.md)
+2. [Collection of elements](../Collection/Collection.md)
+3. [Templates](../Collection/Templates.md)
+4. [Exceptions](../Exceptions.md)
+5. [Static methods](../Static-methods.md)
    1. [**Arrays**](Arrays.md)
    2. [Regex](Regex.md)
-5. [Value Objects](../Value-Objects.md)
+6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

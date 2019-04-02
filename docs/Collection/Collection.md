@@ -2,9 +2,15 @@
 
 Common and useful classes, methods, exceptions etc.
 
-# Collection of elements
+# Collection
 
-Located here: `Meritoo\Common\Collection\Collection`. It's a set of some elements, e.g. objects. It's iterable and countable. Provides very useful methods. Some of them:
+### Namespace
+
+`Meritoo\Common\Collection\Collection`
+
+### Info
+
+It's a set of some elements, e.g. objects. It's iterable and countable. Provides very useful methods. Some of them:
 - `getFirst()` - returns the first element in the collection
 - `getLast()` - returns the last element in the collection
 - `isEmpty()` - returns information if collection is empty
@@ -42,12 +48,13 @@ var_dump($simpleCollection->has('dolor')); // bool(true)
 
 # More
 
-1. [Base test case (with common methods and data providers)](Base-test-case.md)
-2. [**Collection of elements**](Collection-of-elements.md)
-3. [Exceptions](Exceptions.md)
-4. [Static methods](Static-methods.md)
-   1. [Arrays](Static-methods/Arrays.md)
-   2. [Regex](Static-methods/Regex.md)
-5. [Value Objects](Value-Objects.md)
+1. [Base test case (with common methods and data providers)](../Base-test-case.md)
+2. [**Collection of elements**](Collection.md)
+3. [Templates](Templates.md)
+4. [Exceptions](../Exceptions.md)
+5. [Static methods](../Static-methods.md)
+   1. [Arrays](../Static-methods/Arrays.md)
+   2. [Regex](../Static-methods/Regex.md)
+6. [Value Objects](../Value-Objects.md)
 
-[&lsaquo; Back to `Readme`](../README.md)
+[&lsaquo; Back to `Readme`](../../README.md)
