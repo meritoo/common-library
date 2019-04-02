@@ -133,7 +133,7 @@ class BaseTestCaseTest extends BaseTestCase
         }
 
         $expectedContains = sprintf('/data/tests/%s%s', $directoryPath, $fileName);
-        static::assertContains($expectedContains, $path);
+        static::assertStringContainsString($expectedContains, $path);
     }
 
     /**
