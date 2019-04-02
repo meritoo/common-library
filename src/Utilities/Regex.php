@@ -25,7 +25,7 @@ class Regex
      * @var array
      */
     private static $patterns = [
-        'email'            => '/^[\w-.]{2,}@[\w-]+\.[\w]{2,}+$/',
+        'email'            => '/^[\w\-.]{2,}@[\w\-]+\.[\w]{2,}+$/',
         'phone'            => '/^\+?[0-9 ]+$/',
         'camelCasePart'    => '/([a-z]|[A-Z]){1}[a-z]*/',
         'urlProtocol'      => '/^([a-z]+:\/\/)',
