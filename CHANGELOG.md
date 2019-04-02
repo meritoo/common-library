@@ -8,6 +8,7 @@ Common and useful classes, methods, exceptions etc.
 character class at offset 4" bug
 2. Collection/storage of templates
 3. Template with placeholders that may be filled by real data
+4. RenderableInterface > something that may be rendered
 
 # 1.0.0
 
