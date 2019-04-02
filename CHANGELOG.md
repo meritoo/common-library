@@ -2,6 +2,13 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.0.1
+
+1. Regex > make compatible with PHP 7.3 Tests > Regex > fix "preg_match(): Compilation failed: invalid range in 
+character class at offset 4" bug
+2. Collection/storage of templates
+3. Template with placeholders that may be filled by real data
+
 # 1.0.0
 
 1. Composer > support/require PHP 7.2+ (instead of 5.6+)
