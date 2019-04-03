@@ -8,6 +8,7 @@ Common and useful classes, methods, exceptions etc.
 2. Phing > configuration > minor updates
 3. Implement Mutation Testing Framework (infection/infection package)
 4. Travis CI > run many tasks using Phing (instead of PHPUnit only)
+5. Fix integration with [Coveralls](https://www.coveralls.io) (available as the badge in [README.md](README.md))
 
 # 1.0.1
 
