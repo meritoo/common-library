@@ -347,27 +347,30 @@ class CollectionTest extends BaseTestCase
      */
     public function provideElementToAdd()
     {
-        $collection = new Collection();
-
         yield[
-            'test1',
+            'This is test 1',
             1,
             0,
-            $collection,
+            new Collection(),
         ];
 
         yield[
-            'test2',
+            'This is test 2',
             2,
             1,
-            $collection,
+            new Collection([
+                'I am 1st',
+            ]),
         ];
 
         yield[
-            'test3',
+            'This is test 3',
             3,
             2,
-            $collection,
+            new Collection([
+                'I am 1st',
+                'I am 2nd',
+            ]),
         ];
     }
 
@@ -378,46 +381,58 @@ class CollectionTest extends BaseTestCase
      */
     public function provideElementToAddWithIndex()
     {
-        $collection = new Collection();
-
         yield[
+            'This is test 1',
             'test1',
-            'aa',
             1,
-            'aa',
-            $collection,
+            'test1',
+            new Collection(),
         ];
 
         yield[
+            'This is test 2',
             'test2',
-            'oo',
             2,
-            'oo',
-            $collection,
+            'test2',
+            new Collection([
+                'test1' => 'I am 1st',
+            ]),
         ];
 
         yield[
-            'test3',
+            'This is test 3',
             null,
             3,
             0,
-            $collection,
+            new Collection([
+                'test1' => 'I am 1st',
+                'test2' => 'I am 2nd',
+            ]),
         ];
 
         yield[
-            'test4',
+            'This is test 4',
             '',
             4,
             1,
-            $collection,
+            new Collection([
+                'test1' => 'I am 1st',
+                'test2' => 'I am 2nd',
+                'I am 3rd',
+            ]),
         ];
 
         yield[
+            'This is test 5',
             'test5',
-            'vv',
             5,
-            'vv',
-            $collection,
+            'test5',
+            new Collection([
+                'test1' => 'I am 1st',
+                'test2' => 'I am 2nd',
+                2       => 'I am 3rd',
+                3       => 'I am 4th',
+            ]),
         ];
     }
 

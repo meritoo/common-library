@@ -60,6 +60,15 @@ class UriTest extends BaseTestCase
      */
     public function testReplenishProtocol($expected, $url, $protocol = '')
     {
+        /*
+         * Required to get protocol when it's not provided and to void test failure:
+         *
+         * Failed asserting that two strings are identical.
+         * Expected :'://test'
+         * Actual   :'http://test'
+         */
+        $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
+
         self::assertSame($expected, Uri::replenishProtocol($url, $protocol));
     }
 
@@ -251,7 +260,7 @@ class UriTest extends BaseTestCase
     public function provideUrlToReplenishProtocol()
     {
         yield[
-            '://test',
+            'http://test',
             'test',
             '',
         ];
