@@ -39,10 +39,6 @@ composer.php = php
 # System directories
 #
 dir.src = ${project.basedir}/src
-dir.var = ${project.basedir}/tests/Resources/var
-dir.cache = ${dir.var}/cache
-dir.logs = ${dir.var}/log
-dir.sessions = ${dir.var}/sessions
 dir.data = ${project.basedir}/data
 dir.tests = ${project.basedir}/tests
 

@@ -76,11 +76,6 @@
         </if>
 
         <foreach list="${directoriesToCheck}" param="directory" target="app:clean:check"/>
-
-        <touch file="${dir.cache}/.gitkeep"/>
-        <touch file="${dir.logs}/.gitkeep"/>
-        <touch file="${dir.sessions}/.gitkeep"/>
-
         <foreach list="${directoriesToEmpty}" param="directory" target="app:permissions"/>
     </target>
 
