@@ -43,10 +43,7 @@
     <!-- Check target -->
     <target name="build:check"
             depends="check:cs,
-                    check:md,
-                    check:cpd,
-                    check:depend,
-                    check:loc"
+                    check:cpd"
     />
 
     <!-- Test target -->
@@ -72,32 +69,6 @@
         </phpcpd>
     </target>
 
-    <!-- Mess detector -->
-    <target name="check:md" depends="build:prepare">
-        <phpmd rulesets="codesize,controversial,design,naming,unusedcode">
-            <fileset refid="sourcecode"/>
-            <formatter type="html" outfile="${dir.reports}/phpmd.html"/>
-            <formatter type="text" outfile="${dir.reports}/phpmd.txt"/>
-        </phpmd>
-    </target>
-
-    <!-- Code dependency -->
-    <target name="check:depend" depends="build:prepare">
-        <phpdepend>
-            <fileset refid="sourcecode"/>
-            <logger type="jdepend-xml" outfile="${dir.reports.pdepend}/jdepend.xml"/>
-            <logger type="jdepend-chart" outfile="${dir.reports.pdepend}/dependencies.svg"/>
-            <logger type="overview-pyramid" outfile="${dir.reports.pdepend}/overview-pyramid.svg"/>
-        </phpdepend>
-    </target>
-
-    <!-- Measure the size and analyzing the structure of a project -->
-    <target name="check:loc" depends="build:prepare">
-        <phploc reportType="txt" reportName="phploc" reportDirectory="${dir.reports}">
-            <fileset refid="sourcecode"/>
-        </phploc>
-    </target>
-
     <!-- PHPUnit tests -->
     <target name="test:phpunit" depends="build:prepare">
         <exec command="${tests.phpunit.command}" passthru="true"/>
@@ -116,7 +87,6 @@
     <!-- Project build prepare -->
     <target name="build:prepare" depends="build:clean">
         <mkdir dir="${dir.reports}"/>
-        <mkdir dir="${dir.reports.pdepend}"/>
         <mkdir dir="${dir.reports.coverage}"/>
     </target>
 

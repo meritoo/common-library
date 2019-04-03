@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.0.2
+
+1. Phing > remove old and unused tools
+
 # 1.0.1
 
 1. Regex > make compatible with PHP 7.3 Tests > Regex > fix "preg_match(): Compilation failed: invalid range in 
