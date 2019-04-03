@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 1.0.2
 
 1. Phing > remove old and unused tools
+2. Phing > configuration > minor updates
 
 # 1.0.1
 

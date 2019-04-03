@@ -57,7 +57,7 @@
             <fileset refid="sourcecode"/>
             <formatter type="checkstyle" outfile="${dir.reports}/checkstyle.xml"/>
             <formatter type="csv" outfile="${dir.reports}/checkstyle.csv"/>
-            <formatter type="summary" outfile="${dir.reports}/checkstyle_summary.txt"/>
+            <formatter type="summary" outfile="${dir.reports}/checkstyle-summary.txt"/>
         </phpcodesniffer>
     </target>
 
@@ -65,7 +65,7 @@
     <target name="check:cpd" depends="build:prepare">
         <phpcpd>
             <fileset refid="sourcecode"/>
-            <formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml"/>
+            <formatter type="pmd" outfile="${dir.reports}/copy-paste-detector.xml"/>
         </phpcpd>
     </target>
 
