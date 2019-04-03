@@ -112,6 +112,46 @@ docker-compose run --rm phpunit --verbose --no-coverage
 I have to use [squizlabs/php_codesniffer](https://packagist.org/packages/squizlabs/php_codesniffer) `^2.9` instead of
 `^3.3`, because [Phing doesn't support 3.x PHP_CodeSniffer](https://github.com/phingofficial/phing/issues/716).
 
+# Mutation Tests
+
+Served by [Infection — Mutation Testing Framework](https://infection.github.io).
+
+### Running tests
+
+```bash
+docker-compose exec php vendor/bin/infection --threads=5
+```
+
+or
+
+```bash
+docker-compose exec php phing -f phing/tests.xml test:infection
+```
+
+### Result of testing
+
+##### Terminal
+
+Example of output:
+```bash
+125 mutations were generated:
+     105 mutants were killed
+       3 mutants were not covered by tests
+       5 covered mutants were not detected
+       0 errors were encountered
+      12 time outs were encountered
+
+Metrics:
+         Mutation Score Indicator (MSI): 93%
+         Mutation Code Coverage: 97%
+         Covered Code MSI: 95%
+```
+
+##### Stored in `build/reports/infection` directory
+
+* `build/reports/infection/infection-log.txt`
+* `build/reports/infection/summary-log.txt`
+
 # Other
 
 Rebuild project and run tests by running command:

@@ -77,5 +77,7 @@ tests.database = ${dir.data.temporary}/database.sqlite
 
 # Paths of frameworks used to run tests:
 # - PHPUnit (unit tests)
+# - Infection (mutation tests)
 #
-tests.phpunit.command = ./vendor/bin/phpunit --verbose
+tests.phpunit.command = ./vendor/bin/phpunit --verbose --no-coverage
+tests.mutation.command = ./vendor/bin/infection --threads=5

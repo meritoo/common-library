@@ -6,6 +6,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. Phing > remove old and unused tools
 2. Phing > configuration > minor updates
+3. Implement Mutation Testing Framework (infection/infection package)
 
 # 1.0.1
 
