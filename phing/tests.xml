@@ -43,7 +43,8 @@
     <!-- Check target -->
     <target name="build:check"
             depends="check:cs,
-                    check:cpd"
+                    check:cpd,
+                    check:phpstan"
     />
 
     <!-- Test target -->
@@ -67,6 +68,11 @@
             <fileset refid="sourcecode"/>
             <formatter type="pmd" outfile="${dir.reports}/copy-paste-detector.xml"/>
         </phpcpd>
+    </target>
+
+    <!-- Run static analysis -->
+    <target name="check:phpstan" depends="build:prepare">
+        <exec command="${check.phpstan.command}" passthru="true"/>
     </target>
 
     <!-- PHPUnit tests -->
