@@ -11,6 +11,7 @@ Common and useful classes, methods, exceptions etc.
 5. Fix integration with [Coveralls](https://www.coveralls.io) (available as the badge in [README.md](README.md))
 6. Implement [PHPStan](https://github.com/phpstan/phpstan)
 7. PHPUnit > execute tests in random order
+8. Implement [Psalm](https://github.com/vimeo/psalm)
 
 # 1.0.1
 
