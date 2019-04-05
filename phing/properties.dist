@@ -67,6 +67,7 @@ dir.docker.logs = ${dir.docker}/logs/nginx
 # - PHPStan
 #
 check.phpstan.command = ./vendor/bin/phpstan analyse
+check.php_coveralls.command = ./vendor/bin/php-coveralls --ansi -v
 
 # --------------------------------------------------------------------------------
 # Testing

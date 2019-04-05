@@ -14,6 +14,7 @@ Common and useful classes, methods, exceptions etc.
 8. Implement [Psalm](https://github.com/vimeo/psalm)
 9. Infection (Mutation Testing Framework) > fix bugs while running (generate proper code coverage, bugs while running
 tests randomly)
+10. Phing > php-coveralls > add task
 
 # 1.0.1
 
