@@ -49,7 +49,8 @@
 
     <!-- Test target -->
     <target name="build:test"
-            depends="test:phpunit, test:infection"
+            depends="test:phpunit,
+                    test:infection"
     />
 
     <!-- Symfony2 code sniffer -->
