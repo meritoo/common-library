@@ -176,14 +176,22 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetOneChildClassWithTooManyChildClasses()
     {
-        $this->expectException(TooManyChildClassesException::class);
+        // Required to get all classes by get_declared_classes() function and avoid failure:
+        //
+        // Failed asserting that exception of type "Meritoo\Common\Exception\Reflection\TooManyChildClassesException"
+        // is thrown
+        new C();
 
-        self::assertEquals(B::class, Reflection::getOneChildClass(A::class));
-        self::assertEquals(C::class, Reflection::getOneChildClass(A::class));
+        $this->expectException(TooManyChildClassesException::class);
+        Reflection::getOneChildClass(A::class);
     }
 
     public function testGetOneChildClass()
     {
+        // Required to get all classes by get_declared_classes() function and avoid throw of
+        // Meritoo\Common\Exception\Reflection\MissingChildClassesException exception
+        new C();
+
         self::assertEquals(C::class, Reflection::getOneChildClass(B::class));
     }
 

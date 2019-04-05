@@ -229,7 +229,7 @@ class MiscellaneousTest extends BaseTestCase
      *                                   of strings or an array of patterns.
      * @param string|array $replacement  The string or an array of strings to replace. It may be: string or an array
      *                                   of strings.
-     * @param  mixed       $result       Result of replacing
+     * @param mixed        $result       Result of replacing
      *
      * @dataProvider provideEmptyValuesToReplace
      */
@@ -245,7 +245,7 @@ class MiscellaneousTest extends BaseTestCase
      *                            strings or an array of patterns.
      * @param string $replacement The string or an array of strings to replace. It may be: string or an array of
      *                            strings.
-     * @param  mixed $result      Result of replacing
+     * @param mixed  $result      Result of replacing
      *
      * @dataProvider provideStringsToReplace
      */
@@ -261,7 +261,7 @@ class MiscellaneousTest extends BaseTestCase
      *                            strings or an array of patterns.
      * @param string $replacement The string or an array of strings to replace. It may be: string or an array of
      *                            strings.
-     * @param  mixed $result      Result of replacing
+     * @param mixed  $result      Result of replacing
      *
      * @dataProvider provideRegexToReplace
      */
@@ -277,7 +277,7 @@ class MiscellaneousTest extends BaseTestCase
      *                            strings or an array of patterns.
      * @param string $replacement The string or an array of strings to replace. It may be: string or an array of
      *                            strings.
-     * @param  mixed $result      Result of replacing
+     * @param mixed  $result      Result of replacing
      *
      * @dataProvider provideDataToReplaceWithQuoteStrings
      */
@@ -376,8 +376,17 @@ class MiscellaneousTest extends BaseTestCase
         $directory1Path = sys_get_temp_dir() . '/lorem/ipsum';
         $directory2Path = sys_get_temp_dir() . '/lorem/dolor/sit';
 
-        mkdir($directory1Path, 0777, true);
-        mkdir($directory2Path, 0777, true);
+        // Directory does not exist? Let's create it
+        // Required to avoid test failure
+        if (!file_exists($directory1Path)) {
+            mkdir($directory1Path, 0777, true);
+        }
+
+        // Directory does not exist? Let's create it
+        // Required to avoid test failure
+        if (!file_exists($directory2Path)) {
+            mkdir($directory2Path, 0777, true);
+        }
 
         self::assertTrue(Miscellaneous::removeDirectory(sys_get_temp_dir() . '/lorem'));
     }

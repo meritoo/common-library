@@ -15,6 +15,7 @@ use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\DatePeriod;
 use Meritoo\Common\Utilities\Date;
+use Meritoo\Common\Utilities\Locale;
 
 /**
  * Test case of the Date methods (only static functions)
@@ -200,6 +201,12 @@ class DateTest extends BaseTestCase
 
     public function testGetCurrentDayOfWeekName()
     {
+        // Required to avoid failure:
+        //
+        // Failed asserting that 'giovedì' matches PCRE pattern
+        // "/^Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday$/"
+        Locale::setLocale(LC_ALL, 'en', 'US');
+
         $days = [
             'Monday',
             'Tuesday',

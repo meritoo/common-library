@@ -10,6 +10,7 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Arrays;
+use Meritoo\Common\Utilities\Locale;
 use Meritoo\Test\Common\Utilities\Arrays\SimpleToString;
 
 /**
@@ -42,6 +43,13 @@ class ArraysTest extends BaseTestCase
      */
     public function testValues2string($description, $expected, array $array, $arrayColumnKey = '', $separator = ',')
     {
+        // Required to avoid failure:
+        //
+        // Failed asserting that two strings are identical
+        // 1,2,3,test 1,test 2,test 3,,test 4,,bbb,3.45 - expected
+        // 1,2,3,test 1,test 2,test 3,,test 4,,bbb,3,45 - actual
+        Locale::setLocale(LC_ALL, 'en', 'US');
+
         self::assertSame($expected, Arrays::values2string($array, $arrayColumnKey, $separator), $description);
     }
 
@@ -64,6 +72,13 @@ class ArraysTest extends BaseTestCase
         $valuesKeysSeparator = '=',
         $valuesWrapper = ''
     ) {
+        // Required to avoid failure:
+        //
+        // Failed asserting that two strings are identical
+        // test_1=test test,test_2=2,test_3=3.45 - expected
+        // test_1=test test,test_2=2,test_3=3,45 - actual
+        Locale::setLocale(LC_ALL, 'en', 'US');
+
         self::assertSame(
             $expected,
             Arrays::valuesKeys2string($array, $separator, $valuesKeysSeparator, $valuesWrapper),
@@ -111,6 +126,13 @@ class ArraysTest extends BaseTestCase
      */
     public function testValues2csv($description, $expected, array $array, $separator = ',')
     {
+        // Required to avoid failure:
+        //
+        // Failed asserting that two strings are identical
+        // 1,2,3.45 - expected
+        // 1,2,3,45 - actual
+        Locale::setLocale(LC_ALL, 'en', 'US');
+
         self::assertSame($expected, Arrays::values2csv($array, $separator), $description);
         self::assertSame('', Arrays::values2csv($this->simpleArray), 'Simple array');
 

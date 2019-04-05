@@ -4,6 +4,7 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.0/phpunit.xsd"
+        backupGlobals="false"
         bootstrap="vendor/autoload.php"
         colors="true"
         executionOrder="random"
@@ -27,6 +28,8 @@
 
     <logging>
         <log type="coverage-html" target="build/reports/phpunit-coverage/html"/>
+        <log type="coverage-xml" target="build/reports/infection/coverage-xml"/>
+        <log type="junit" target="build/reports/infection/phpunit.junit.xml"/>
         <log type="coverage-clover" target="build/reports/coveralls/clover.xml"/>
     </logging>
 </phpunit>
