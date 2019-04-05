@@ -26,7 +26,7 @@
     </filter>
 
     <logging>
-        <log type="coverage-html" target="build/reports/phpunit_coverage/html"/>
+        <log type="coverage-html" target="build/reports/phpunit-coverage/html"/>
         <log type="coverage-clover" target="build/reports/coveralls/clover.xml"/>
     </logging>
 </phpunit>
