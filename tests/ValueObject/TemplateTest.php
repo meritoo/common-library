@@ -13,6 +13,7 @@ use Meritoo\Common\Exception\ValueObject\Template\InvalidContentException;
 use Meritoo\Common\Exception\ValueObject\Template\NotEnoughValuesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Common\ValueObject\Template;
 
 /**
@@ -48,6 +49,18 @@ class TemplateTest extends BaseTestCase
         $this->expectExceptionMessage($exceptionMessage);
 
         new Template($content);
+    }
+
+    /**
+     * @param string $description Description of test
+     * @param string $content     Raw string with placeholders (content of the template)
+     *
+     * @dataProvider provideValidContent
+     */
+    public function testIsValidUsingValidContent(string $description, string $content): void
+    {
+        $template = new Template($content);
+        static::assertSame($content, Reflection::getPropertyValue($template, 'content', true), $description);
     }
 
     /**
@@ -210,6 +223,24 @@ class TemplateTest extends BaseTestCase
                 'current location' => 'NY, USA',
             ],
             'My name is Jane Brown and I live in NY, USA',
+        ];
+    }
+
+    public function provideValidContent(): ?Generator
+    {
+        yield[
+            'Template with 1 placeholder',
+            '%test%',
+        ];
+
+        yield[
+            'Template with 2 placeholders',
+            'My name is %name% and I am %profession%',
+        ];
+
+        yield[
+            'Template with 2 placeholders that contains space',
+            'My name is %first name% %last name% and I live in %current location%',
         ];
     }
 }

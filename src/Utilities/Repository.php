@@ -204,13 +204,6 @@ class Repository
      */
     private static function isSorted($item)
     {
-        // Not sortable?
-        if (!self::isSortable($item)) {
-            return false;
-        }
-
-        // It's an object or it's an array and position has been set?
-
         return
             (is_object($item) && null !== $item->getPosition())
             ||

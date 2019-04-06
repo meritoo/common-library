@@ -73,6 +73,19 @@ class RepositoryTest extends BaseTestCase
     }
 
     /**
+     * @param string $description Description of test
+     * @param array  $items       Objects who have "getPosition()" and "setPosition()" methods or arrays
+     * @param array  $expected    Expected items with positions replenished
+     *
+     * @dataProvider provideSortedItems
+     */
+    public function testReplenishPositionsUsingSortedItems(string $description, array $items, array $expected)
+    {
+        Repository::replenishPositions($items);
+        static::assertSame($expected, $items, $description);
+    }
+
+    /**
      * @param array $items Objects who have "getPosition()" and "setPosition()" methods or arrays
      * @dataProvider provideArraysWithoutExtremePosition
      */
@@ -831,6 +844,90 @@ class RepositoryTest extends BaseTestCase
             'first_name',
             'DESC',
             'qb.first_name DESC',
+        ];
+    }
+
+    public function provideSortedItems()
+    {
+        $sortable1 = new Sortable();
+        $sortable1->setPosition(1);
+
+        $sortable2 = new Sortable();
+        $sortable2->setPosition(2);
+
+        $sortable3 = new Sortable();
+        $sortable3->setPosition(309);
+
+        yield[
+            'An array with 1 item only',
+            [
+                [
+                    'test 1',
+                    'position' => 1,
+                ],
+            ],
+            [
+                [
+                    'test 1',
+                    'position' => 1,
+                ],
+            ],
+        ];
+
+        yield[
+            'An array with more than 1 item',
+            [
+                [
+                    'test 1',
+                    'position' => 1,
+                ],
+                [
+                    'test 2',
+                    'position' => 2,
+                ],
+                [
+                    'test 3',
+                    'position' => 309,
+                ],
+            ],
+            [
+                [
+                    'test 1',
+                    'position' => 1,
+                ],
+                [
+                    'test 2',
+                    'position' => 2,
+                ],
+                [
+                    'test 3',
+                    'position' => 309,
+                ],
+            ],
+        ];
+
+        yield[
+            '1 object only',
+            [
+                $sortable1,
+            ],
+            [
+                $sortable1,
+            ],
+        ];
+
+        yield[
+            'More than 1 object',
+            [
+                $sortable1,
+                $sortable2,
+                $sortable3,
+            ],
+            [
+                $sortable1,
+                $sortable2,
+                $sortable3,
+            ],
         ];
     }
 }
