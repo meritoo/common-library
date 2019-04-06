@@ -18,12 +18,15 @@ use Meritoo\Common\Type\OopVisibilityType;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers    \Meritoo\Common\Exception\Base\UnknownTypeException
  */
 class UnknownTypeExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownTestTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(UnknownTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     public function testWithoutException()
@@ -46,9 +49,9 @@ class UnknownTypeExceptionTest extends BaseTestCase
  */
 class TestType extends BaseType
 {
-    const TEST_1 = 'test_1';
+    public const TEST_1 = 'test_1';
 
-    const TEST_2 = 'test_2';
+    public const TEST_2 = 'test_2';
 }
 
 /**
@@ -56,6 +59,9 @@ class TestType extends BaseType
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers    \Meritoo\Common\Exception\Base\UnknownTypeException
  */
 class UnknownTestTypeException extends UnknownTypeException
 {
@@ -67,10 +73,7 @@ class UnknownTestTypeException extends UnknownTypeException
      */
     public static function createException($unknownType)
     {
-        /* @var UnknownTestTypeException $exception */
-        $exception = parent::create($unknownType, new TestType(), 'type of something used for testing');
-
-        return $exception;
+        return parent::create($unknownType, new TestType(), 'type of something used for testing');
     }
 }
 

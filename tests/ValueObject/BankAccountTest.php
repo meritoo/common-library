@@ -17,6 +17,9 @@ use Meritoo\Common\ValueObject\BankAccount;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\ValueObject\BankAccount
  */
 class BankAccountTest extends BaseTestCase
 {
@@ -29,6 +32,17 @@ class BankAccountTest extends BaseTestCase
      * @var BankAccount
      */
     private $bankAccount;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->emptyBankAccount = new BankAccount('', '');
+        $this->bankAccount = new BankAccount('Bank of America', '1234567890');
+    }
 
     public function testConstructor()
     {
@@ -56,16 +70,5 @@ class BankAccountTest extends BaseTestCase
     {
         static::assertSame('', (string)$this->emptyBankAccount);
         static::assertSame('Bank of America, 1234567890', (string)$this->bankAccount);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->emptyBankAccount = new BankAccount('', '');
-        $this->bankAccount = new BankAccount('Bank of America', '1234567890');
     }
 }

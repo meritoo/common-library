@@ -31,9 +31,7 @@ class F
         $this->username = $username;
         $this->gInstance = new G($firstName, $lastName);
 
-        /*
-         * Called to avoid "Unused private method getAccountBalance" warning only
-         */
+        // Called to avoid "Unused private method getAccountBalance" warning only
         $this->getAccountBalance();
     }
 

@@ -29,7 +29,7 @@ class Date
      *
      * @var string
      */
-    const DATE_DIFFERENCE_UNIT_DAYS = 'days';
+    public const DATE_DIFFERENCE_UNIT_DAYS = 'days';
 
     /**
      * The 'hours' unit of date difference.
@@ -37,7 +37,7 @@ class Date
      *
      * @var string
      */
-    const DATE_DIFFERENCE_UNIT_HOURS = 'hours';
+    public const DATE_DIFFERENCE_UNIT_HOURS = 'hours';
 
     /**
      * The 'minutes' unit of date difference.
@@ -45,7 +45,7 @@ class Date
      *
      * @var string
      */
-    const DATE_DIFFERENCE_UNIT_MINUTES = 'minutes';
+    public const DATE_DIFFERENCE_UNIT_MINUTES = 'minutes';
 
     /**
      * The 'months' unit of date difference.
@@ -53,7 +53,7 @@ class Date
      *
      * @var string
      */
-    const DATE_DIFFERENCE_UNIT_MONTHS = 'months';
+    public const DATE_DIFFERENCE_UNIT_MONTHS = 'months';
 
     /**
      * The 'years' unit of date difference.
@@ -61,14 +61,14 @@ class Date
      *
      * @var string
      */
-    const DATE_DIFFERENCE_UNIT_YEARS = 'years';
+    public const DATE_DIFFERENCE_UNIT_YEARS = 'years';
 
     /**
      * Returns date's period (that contains start and end date) for given period
      *
      * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
      * @throws Exception
-     * @return DatePeriod|null
+     * @return null|DatePeriod
      */
     public static function getDatesForPeriod($period)
     {
@@ -183,7 +183,7 @@ class Date
      *
      * @param string $format (optional) Format of returned value. A string acceptable by the DateTime::format()
      *                       method.
-     * @return string|null
+     * @return null|string
      */
     public static function generateRandomTime($format = 'H:i:s')
     {
@@ -213,9 +213,7 @@ class Date
             $seconds[] = $i;
         }
 
-        /*
-         * Prepare random time (hour, minute and second)
-         */
+        // Prepare random time (hour, minute and second)
         $hour = $hours[array_rand($hours)];
         $minute = $minutes[array_rand($minutes)];
         $second = $seconds[array_rand($seconds)];
@@ -259,23 +257,17 @@ class Date
         $month = (int)$month;
         $day = (int)$day;
 
-        /*
-         * Oops, incorrect year
-         */
+        // Oops, given year is incorrect
         if ($year <= 0) {
             throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
         }
 
-        /*
-         * Oops, incorrect month
-         */
+        // Oops, given month is incorrect
         if ($month < 1 || $month > 12) {
             throw UnknownDatePartTypeException::createException(DatePartType::MONTH, $month);
         }
 
-        /*
-         * Oops, incorrect day
-         */
+        // Oops, given day is incorrect
         if ($day < 1 || $day > 31) {
             throw UnknownDatePartTypeException::createException(DatePartType::DAY, $day);
         }
@@ -353,8 +345,8 @@ class Date
      * If the unit of date difference is null, all units are returned in array (units are keys of the array).
      * Otherwise - one, integer value is returned.
      *
-     * @param string|DateTime $dateStart      The start date
-     * @param string|DateTime $dateEnd        The end date
+     * @param DateTime|string $dateStart      The start date
+     * @param DateTime|string $dateEnd        The end date
      * @param string          $differenceUnit (optional) Unit of date difference. One of this class
      *                                        DATE_DIFFERENCE_UNIT_* constants. If is set to null all units are
      *                                        returned in the array.
@@ -401,9 +393,7 @@ class Date
         if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_YEARS === $differenceUnit) {
             $diff = $end->diff($start);
 
-            /*
-             * Difference between dates in years should be returned only?
-             */
+            // Difference between dates in years should be returned only?
             if (self::DATE_DIFFERENCE_UNIT_YEARS === $differenceUnit) {
                 return $diff->y;
             }
@@ -414,9 +404,7 @@ class Date
         if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MONTHS === $differenceUnit) {
             $diff = $end->diff($start);
 
-            /*
-             * Difference between dates in months should be returned only?
-             */
+            // Difference between dates in months should be returned only?
             if (self::DATE_DIFFERENCE_UNIT_MONTHS === $differenceUnit) {
                 return $diff->m;
             }
@@ -427,55 +415,41 @@ class Date
         if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits, true)) {
             $days = (int)floor($dateDiff / $daySeconds);
 
-            /*
-             * Difference between dates in days should be returned only?
-             */
+            // Difference between dates in days should be returned only?
             if (self::DATE_DIFFERENCE_UNIT_DAYS === $differenceUnit) {
                 return $days;
             }
 
-            /*
-             * All units should be returned?
-             */
+            // All units should be returned?
             if (null === $differenceUnit) {
                 $difference[self::DATE_DIFFERENCE_UNIT_DAYS] = $days;
             }
 
-            /*
-             * Calculation for later usage
-             */
+            // Calculation for later usage
             $daysInSeconds = $days * $daySeconds;
         }
 
         if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits, true)) {
             $hours = (int)floor(($dateDiff - $daysInSeconds) / $hourSeconds);
 
-            /*
-             * Difference between dates in hours should be returned only?
-             */
+            // Difference between dates in hours should be returned only?
             if (self::DATE_DIFFERENCE_UNIT_HOURS === $differenceUnit) {
                 return $hours;
             }
 
-            /*
-             * All units should be returned?
-             */
+            // All units should be returned?
             if (null === $differenceUnit) {
                 $difference[self::DATE_DIFFERENCE_UNIT_HOURS] = $hours;
             }
 
-            /*
-             * Calculation for later usage
-             */
+            // Calculation for later usage
             $hoursInSeconds = $hours * $hourSeconds;
         }
 
         if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MINUTES === $differenceUnit) {
             $minutes = (int)floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
 
-            /*
-             * Difference between dates in minutes should be returned only?
-             */
+            // Difference between dates in minutes should be returned only?
             if (self::DATE_DIFFERENCE_UNIT_MINUTES === $differenceUnit) {
                 return $minutes;
             }
@@ -583,7 +557,7 @@ class Date
      * @param string $dateFormat           (optional) Format of date used to verify if given value is actually a date.
      *                                     It should be format matched to the given value, e.g. "Y-m-d H:i" for
      *                                     "2015-01-01 10:00" value. Default: "Y-m-d".
-     * @return DateTime|bool
+     * @return bool|DateTime
      */
     public static function getDateTime($value, $allowCompoundFormats = false, $dateFormat = 'Y-m-d')
     {
@@ -710,28 +684,19 @@ class Date
             return false;
         }
 
-        /*
-         * Datetime to string
-         */
         $formatted = (new DateTime())->format($format);
 
-        /*
-         * Formatted date it's the format who is validated?
-         * The format is invalid
-         */
+        // Formatted date it's the format who is validated?
+        // The format is invalid
         if ($formatted === $format) {
             return false;
         }
 
-        /*
-         * Validate the format used to create the datetime
-         */
+        // Validate the format used to create the datetime
         $fromFormat = DateTime::createFromFormat($format, $formatted);
 
-        /*
-         * It's instance of DateTime?
-         * The format is valid
-         */
+        // It's instance of DateTime?
+        // The format is valid
         if ($fromFormat instanceof DateTime) {
             return true;
         }

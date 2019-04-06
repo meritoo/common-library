@@ -27,9 +27,6 @@ class UnknownOopVisibilityTypeException extends UnknownTypeException
      */
     public static function createException($unknownType)
     {
-        /* @var UnknownOopVisibilityTypeException $exception */
-        $exception = parent::create($unknownType, new OopVisibilityType(), 'OOP-related visibility');
-
-        return $exception;
+        return parent::create($unknownType, new OopVisibilityType(), 'OOP-related visibility');
     }
 }

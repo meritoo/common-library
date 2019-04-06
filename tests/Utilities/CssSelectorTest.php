@@ -16,6 +16,9 @@ use Meritoo\Common\Utilities\CssSelector;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\CssSelector
  */
 class CssSelectorTest extends BaseTestCase
 {

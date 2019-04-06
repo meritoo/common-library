@@ -27,7 +27,7 @@ class QueryBuilderUtility
      * If null is returned, alias was not found.
      *
      * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
-     * @return string|null
+     * @return null|string
      */
     public static function getRootAlias(QueryBuilder $queryBuilder)
     {
@@ -52,7 +52,7 @@ class QueryBuilderUtility
      *
      * @param QueryBuilder $queryBuilder The query builder to verify
      * @param string       $property     Name of property that maybe is joined
-     * @return string|null
+     * @return null|string
      */
     public static function getJoinedPropertyAlias(QueryBuilder $queryBuilder, $property)
     {
@@ -70,7 +70,7 @@ class QueryBuilderUtility
         $pattern = sprintf($patternTemplate, $property);
 
         foreach ($joins as $joinExpressions) {
-            /* @var $expression Join */
+            /** @var Join $expression */
             foreach ($joinExpressions as $expression) {
                 $joinedProperty = $expression->getJoin();
 
@@ -90,7 +90,7 @@ class QueryBuilderUtility
      * @param array        $criteria     (optional) The criteria used in WHERE clause. It may simple array with pairs
      *                                   key-value or an array of arrays where second element of sub-array is the
      *                                   comparison operator. Example below.
-     * @param string|null  $alias        (optional) Alias used in the query
+     * @param null|string  $alias        (optional) Alias used in the query
      * @return QueryBuilder
      *
      * Example of the $criteria argument:
@@ -173,9 +173,7 @@ class QueryBuilderUtility
             $entityManager->remove($entity);
         }
 
-        /*
-         * The deleted objects should be flushed?
-         */
+        // The deleted objects should be flushed?
         if ($flushDeleted) {
             $entityManager->flush();
         }

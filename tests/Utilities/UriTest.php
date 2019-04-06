@@ -17,6 +17,9 @@ use Meritoo\Common\Utilities\Uri;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Uri
  */
 class UriTest extends BaseTestCase
 {

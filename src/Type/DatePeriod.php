@@ -26,63 +26,63 @@ class DatePeriod extends BaseType
      *
      * @var int
      */
-    const LAST_MONTH = 4;
+    public const LAST_MONTH = 4;
 
     /**
      * The period constant: last week
      *
      * @var int
      */
-    const LAST_WEEK = 1;
+    public const LAST_WEEK = 1;
 
     /**
      * The period constant: last year
      *
      * @var int
      */
-    const LAST_YEAR = 7;
+    public const LAST_YEAR = 7;
 
     /**
      * The period constant: next month
      *
      * @var int
      */
-    const NEXT_MONTH = 6;
+    public const NEXT_MONTH = 6;
 
     /**
      * The period constant: next week
      *
      * @var int
      */
-    const NEXT_WEEK = 3;
+    public const NEXT_WEEK = 3;
 
     /**
      * The period constant: next year
      *
      * @var int
      */
-    const NEXT_YEAR = 9;
+    public const NEXT_YEAR = 9;
 
     /**
      * The period constant: this month
      *
      * @var int
      */
-    const THIS_MONTH = 5;
+    public const THIS_MONTH = 5;
 
     /**
      * The period constant: this week
      *
      * @var int
      */
-    const THIS_WEEK = 2;
+    public const THIS_WEEK = 2;
 
     /**
      * The period constant: this year
      *
      * @var int
      */
-    const THIS_YEAR = 8;
+    public const THIS_YEAR = 8;
 
     /**
      * The start date of period
@@ -114,23 +114,20 @@ class DatePeriod extends BaseType
      * Returns formatted one of the period's date: start date or end date
      *
      * @param string $format    Format used to format the date
-     * @param bool   $startDate (optional) If is set to true, start date is formatted. Otherwise - end date.
+     * @param bool   $startDate (optional) If is set to true, start date will be formatted. Otherwise - end date.
      * @return string
      */
     public function getFormattedDate($format, $startDate = true)
     {
         $date = $this->getEndDate();
 
-        /*
-         * Start date should be formatted?
-         */
+        // Start date should be formatted?
         if ($startDate) {
             $date = $this->getStartDate();
         }
 
-        /*
-         * Unknown date or format is invalid?
-         */
+        // Unknown date or format is invalid?
+        // Nothing to do
         if (null === $date || !Date::isValidDateFormat($format)) {
             return '';
         }

@@ -8,8 +8,6 @@
 
 namespace Meritoo\Common\Utilities;
 
-use stdClass;
-
 /**
  * Useful Composer-related methods (only static functions)
  *
@@ -23,14 +21,14 @@ class Composer
      *
      * @var string
      */
-    const FILE_NAME_MAIN = 'composer.json';
+    public const FILE_NAME_MAIN = 'composer.json';
 
     /**
      * Returns value from composer.json file
      *
      * @param string $composerJsonPath Path of composer.json file
      * @param string $nodeName         Name of node who value should be returned
-     * @return string|null
+     * @return null|string
      */
     public static function getValue($composerJsonPath, $nodeName)
     {
@@ -63,7 +61,6 @@ class Composer
             return null;
         }
 
-        /* @var stdClass $data */
         return $data->{$nodeName};
     }
 }

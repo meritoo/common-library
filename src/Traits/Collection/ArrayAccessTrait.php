@@ -57,7 +57,7 @@ trait ArrayAccessTrait
     /**
      * Returns information if element with given index/key exists
      *
-     * @param string|int $index The index/key of element
+     * @param int|string $index The index/key of element
      * @return bool
      */
     private function exists($index)

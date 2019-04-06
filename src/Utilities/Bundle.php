@@ -25,7 +25,7 @@ class Bundle
      * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
      * @param string $extension  (optional) Extension of the view / template (default: "html.twig")
      * @throws IncorrectBundleNameException
-     * @return string|null
+     * @return null|string
      */
     public static function getBundleViewPath($viewPath, $bundleName, $extension = 'html.twig')
     {
@@ -37,23 +37,17 @@ class Bundle
             return null;
         }
 
-        /*
-         * Given name of bundle is invalid?
-         */
+        // Oops, given name of bundle is invalid
         if (!Regex::isValidBundleName($bundleName)) {
             throw IncorrectBundleNameException::create($bundleName);
         }
 
-        /*
-         * Path of the view / template doesn't end with given extension?
-         */
+        // Make sure that path of the view / template ends with given extension
         if (!Regex::endsWith($viewPath, $extension)) {
             $viewPath = sprintf('%s.%s', $viewPath, $extension);
         }
 
-        /*
-         * Prepare short name of bundle and path of view / template with "/" (instead of ":")
-         */
+        // Prepare short name of bundle and path of view / template with "/" (instead of ":")
         $shortBundleName = static::getShortBundleName($bundleName);
         $viewPath = str_replace(':', '/', $viewPath);
 
@@ -65,13 +59,11 @@ class Bundle
      *
      * @param string $fullBundleName Full name of the bundle, e.g. "MyExtraBundle"
      * @throws IncorrectBundleNameException
-     * @return string|null
+     * @return null|string
      */
     public static function getShortBundleName($fullBundleName)
     {
-        /*
-         * Given name of bundle is invalid?
-         */
+        // Oops, given name of bundle is invalid
         if (!Regex::isValidBundleName($fullBundleName)) {
             if (!is_string($fullBundleName)) {
                 $fullBundleName = gettype($fullBundleName);

@@ -19,19 +19,19 @@ class OopVisibilityType extends BaseType
      *
      * @var int
      */
-    const IS_PRIVATE = 3;
+    public const IS_PRIVATE = 3;
 
     /**
      * The "protected" visibility of OOP
      *
      * @var int
      */
-    const IS_PROTECTED = 2;
+    public const IS_PROTECTED = 2;
 
     /**
      * The "public" visibility of OOP
      *
      * @var int
      */
-    const IS_PUBLIC = 1;
+    public const IS_PUBLIC = 1;
 }

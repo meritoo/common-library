@@ -74,7 +74,7 @@ class Reflection
      * Constants whose values are integers are considered only.
      *
      * @param object|string $class The object or name of object's class
-     * @return int|null
+     * @return null|int
      */
     public static function getMaxNumberConstant($class)
     {
@@ -249,6 +249,7 @@ class Reflection
 
                             $value = $object->{$getterName}();
                             $valueFound = true;
+
                             break;
                         }
                     }
@@ -275,7 +276,7 @@ class Reflection
      * Returns values of given property for given objects.
      * Looks for proper getter for the property.
      *
-     * @param Collection|object|array $objects  The objects that should contain given property. It may be also one
+     * @param array|Collection|object $objects  The objects that should contain given property. It may be also one
      *                                          object.
      * @param string                  $property Name of the property that contains a value
      * @param bool                    $force    (optional) If is set to true, try to retrieve value even if the
@@ -316,7 +317,7 @@ class Reflection
      * @param array|object|string $source           An array of objects, namespaces, object or namespace
      * @param bool                $withoutNamespace (optional) If is set to true, namespace is omitted. Otherwise -
      *                                              not, full name of class is returned, with namespace.
-     * @return string|null
+     * @return null|string
      */
     public static function getClassName($source, $withoutNamespace = false)
     {
@@ -338,9 +339,7 @@ class Reflection
             $source = Arrays::getFirstElement($source);
         }
 
-        /*
-         * Let's prepare name of class
-         */
+        // Let's prepare name of class
         if (is_object($source)) {
             $name = get_class($source);
         } elseif (is_string($source) && (class_exists($source) || trait_exists($source))) {
@@ -472,7 +471,7 @@ class Reflection
      * Returns a parent class or false if there is no parent class
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
-     * @return \ReflectionClass|bool
+     * @return bool|\ReflectionClass
      */
     public static function getParentClass($source)
     {
@@ -489,7 +488,7 @@ class Reflection
      * @param array|object|string $class Class who child classes should be returned. An array of objects, strings,
      *                                   object or string.
      * @throws CannotResolveClassNameException
-     * @return array|null
+     * @return null|array
      */
     public static function getChildClasses($class)
     {
@@ -505,9 +504,7 @@ class Reflection
 
         $className = self::getClassName($class);
 
-        /*
-         * Oops, cannot resolve class
-         */
+        // Oops, cannot resolve class
         if (null === $className) {
             throw CannotResolveClassNameException::create($class);
         }
@@ -577,7 +574,7 @@ class Reflection
      * @param string              $property Name of the property
      * @param int                 $filter   (optional) Filter of properties. Uses \ReflectionProperty class constants.
      *                                      By default all properties are allowed / processed.
-     * @return \ReflectionProperty|null
+     * @return null|\ReflectionProperty
      */
     public static function getProperty($class, $property, $filter = null)
     {
@@ -585,7 +582,7 @@ class Reflection
         $properties = self::getProperties($className, $filter);
 
         if (!empty($properties)) {
-            /* @var $reflectionProperty \ReflectionProperty */
+            /** @var \ReflectionProperty $reflectionProperty */
             foreach ($properties as $reflectionProperty) {
                 if ($reflectionProperty->getName() === $property) {
                     return $reflectionProperty;
@@ -604,23 +601,19 @@ class Reflection
      * @param bool                $verifyParents If is set to true, parent classes are verified if they use given
      *                                           trait. Otherwise - not.
      * @throws CannotResolveClassNameException
-     * @return bool|null
+     * @return null|bool
      */
     public static function usesTrait($class, $trait, $verifyParents = false)
     {
         $className = self::getClassName($class);
         $traitName = self::getClassName($trait);
 
-        /*
-         * Oops, cannot resolve class
-         */
+        // Oops, cannot resolve class
         if (null === $className || '' === $className) {
             throw CannotResolveClassNameException::create($class);
         }
 
-        /*
-         * Oops, cannot resolve trait
-         */
+        // Oops, cannot resolve trait
         if (null === $traitName || '' === $traitName) {
             throw new CannotResolveClassNameException($class, false);
         }
@@ -646,7 +639,7 @@ class Reflection
      * If given class does not extend another, returns null.
      *
      * @param array|object|string $class An array of objects, namespaces, object or namespace
-     * @return string|null
+     * @return null|string
      */
     public static function getParentClassName($class)
     {
@@ -673,9 +666,7 @@ class Reflection
     {
         $reflectionProperty = self::getProperty($object, $property);
 
-        /*
-         * Oops, property does not exist
-         */
+        // Oops, property does not exist
         if (null === $reflectionProperty) {
             throw NotExistingPropertyException::create($object, $property);
         }

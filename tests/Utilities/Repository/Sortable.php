@@ -35,6 +35,16 @@ class Sortable
     }
 
     /**
+     * Returns representation of object as string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s (position: %d)', self::class, $this->getPosition());
+    }
+
+    /**
      * Returns position used while sorting
      *
      * @return int
@@ -52,15 +62,5 @@ class Sortable
     public function setPosition($position)
     {
         $this->position = $position;
-    }
-
-    /**
-     * Returns representation of object as string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return sprintf('%s (position: %d)', self::class, $this->getPosition());
     }
 }

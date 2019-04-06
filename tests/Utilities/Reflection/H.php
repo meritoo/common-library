@@ -17,11 +17,11 @@ namespace Meritoo\Test\Common\Utilities\Reflection;
  */
 class H
 {
-    const DOLOR = 'sit';
+    public const DOLOR = 'sit';
 
-    const LOREM = 'ipsum';
+    public const LOREM = 'ipsum';
 
-    const MAX_USERS = 5;
+    public const MAX_USERS = 5;
 
-    const MIN_USERS = 2;
+    public const MIN_USERS = 2;
 }

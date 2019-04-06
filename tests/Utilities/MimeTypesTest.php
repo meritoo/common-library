@@ -17,6 +17,9 @@ use Meritoo\Common\Utilities\MimeTypes;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\MimeTypes
  */
 class MimeTypesTest extends BaseTestCase
 {

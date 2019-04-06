@@ -18,6 +18,9 @@ use Meritoo\Test\Common\Utilities\Arrays\SimpleToString;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Arrays
  */
 class ArraysTest extends BaseTestCase
 {
@@ -26,6 +29,132 @@ class ArraysTest extends BaseTestCase
     private $twoDimensionsArray;
     private $complexArray;
     private $superComplexArray;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->simpleArray = [
+            'Lorem',
+            'ipsum',
+            'dolor',
+            'sit',
+            'amet',
+        ];
+
+        $this->simpleArrayWithKeys = [
+            'Lorem' => 'ipsum',
+            'dolor' => 'sit',
+            'amet'  => 'consectetur',
+        ];
+
+        $this->twoDimensionsArray = [
+            [
+                'lorem',
+                'ipsum',
+                'dolor',
+                'sit',
+                'amet',
+            ],
+            [
+                'consectetur',
+                'adipiscing',
+                'elit',
+            ],
+            [
+                'donec',
+                'sagittis',
+                'fringilla',
+                'eleifend',
+            ],
+        ];
+
+        $this->complexArray = [
+            'lorem'       => [
+                'ipsum' => [
+                    'dolor' => 'sit',
+                    'diam'  => [
+                        'non' => 'egestas',
+                    ],
+                ],
+            ],
+            'consectetur' => 'adipiscing',
+            'mollis'      => 1234,
+            2             => [],
+            'sit'         => [
+                'nullam'  => 'donec',
+                'aliquet' => [
+                    'vitae' => [
+                        'ligula' => 'quis',
+                    ],
+                ],
+                'elit',
+            ],
+            'amet'        => [
+                'iaculis',
+                'primis',
+            ],
+        ];
+
+        $this->superComplexArray = [
+            'ipsum'  => [
+                'quis' => [
+                    'vestibulum' => [
+                        'porta-1' => [
+                            'turpis',
+                            'urna',
+                        ],
+                        'porta-2' => [
+                            'tortor' => [
+                                'in' => [
+                                    'dui',
+                                    'dolor' => [
+                                        'aliquam',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'porta-3' => [
+                            1,
+                            2,
+                            3,
+                        ],
+                    ],
+                ],
+            ],
+            'primis' => [
+                [
+                    'in',
+                    'faucibus',
+                    'orci',
+                ],
+                [
+                    'luctus',
+                    'et',
+                    'ultrices',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset(
+            $this->simpleArray,
+            $this->simpleArrayWithKeys,
+            $this->twoDimensionsArray,
+            $this->complexArray,
+            $this->superComplexArray
+        );
+    }
 
     public function testConstructor()
     {
@@ -136,7 +265,8 @@ class ArraysTest extends BaseTestCase
         self::assertSame($expected, Arrays::values2csv($array, $separator), $description);
         self::assertSame('', Arrays::values2csv($this->simpleArray), 'Simple array');
 
-        self::assertSame("lorem,ipsum,dolor,sit,amet\n"
+        self::assertSame(
+            "lorem,ipsum,dolor,sit,amet\n"
             . "consectetur,adipiscing,elit\n"
             . 'donec,sagittis,fringilla,eleifend',
             Arrays::values2csv($this->twoDimensionsArray),
@@ -146,14 +276,10 @@ class ArraysTest extends BaseTestCase
 
     public function testGetFirstKey()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getFirstKey([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals(0, Arrays::getFirstKey($this->simpleArray));
         self::assertEquals('lorem', Arrays::getFirstKey($this->complexArray));
     }
@@ -167,14 +293,10 @@ class ArraysTest extends BaseTestCase
 
     public function testGetFirstElement()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getFirstElement([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals('Lorem', Arrays::getFirstElement($this->simpleArray));
         self::assertEquals('Lorem', Arrays::getFirstElement($this->simpleArray));
         self::assertEquals('lorem', Arrays::getFirstElement($this->twoDimensionsArray, false));
@@ -191,14 +313,10 @@ class ArraysTest extends BaseTestCase
 
     public function testGetLastElement()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getLastElement([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals('amet', Arrays::getLastElement($this->simpleArray));
         self::assertEquals('eleifend', Arrays::getLastElement($this->twoDimensionsArray, false));
         self::assertEquals('primis', Arrays::getLastElement($this->complexArray, false));
@@ -222,14 +340,10 @@ class ArraysTest extends BaseTestCase
 
     public function testGetLastRow()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getLastRow([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals([], Arrays::getLastRow($this->simpleArray));
         self::assertEquals([], Arrays::getLastRow($this->simpleArrayWithKeys));
 
@@ -275,14 +389,10 @@ class ArraysTest extends BaseTestCase
 
     public function testArray2JavaScript()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::array2JavaScript([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals('new Array(\'Lorem\', \'ipsum\', \'dolor\', \'sit\', \'amet\');', Arrays::array2JavaScript($this->simpleArray));
         self::assertEquals('var letsTest = new Array(\'Lorem\', \'ipsum\', \'dolor\', \'sit\', \'amet\');', Arrays::array2JavaScript($this->simpleArray, 'letsTest'));
 
@@ -350,7 +460,7 @@ letsTest[2] = value_2;';
 
     /**
      * @param string     $description Description of test case
-     * @param array|null $expected    Expected new array (with quoted elements)
+     * @param null|array $expected    Expected new array (with quoted elements)
      * @param array      $array       The array to check for string values
      *
      * @dataProvider provideArrayToQuoteStrings
@@ -365,9 +475,7 @@ letsTest[2] = value_2;';
         $array = $this->simpleArray;
         $string = 'Lorem ipsum';
 
-        /*
-         * Removing first element
-         */
+        // Removing first element
         self::assertSame([
             0 => 'Lorem',
             1 => 'ipsum',
@@ -376,9 +484,7 @@ letsTest[2] = value_2;';
         ], Arrays::removeMarginalElement($array));
         self::assertEquals('Lorem ipsu', Arrays::removeMarginalElement($string));
 
-        /*
-         * Removing last element
-         */
+        // Removing last element
         self::assertSame([
             1 => 'ipsum',
             2 => 'dolor',
@@ -489,14 +595,10 @@ letsTest[2] = value_2;';
 
     public function testGetNonArrayElementsCount()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getNonArrayElementsCount([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals(5, Arrays::getNonArrayElementsCount($this->simpleArray));
         self::assertEquals(3, Arrays::getNonArrayElementsCount($this->simpleArrayWithKeys));
         self::assertEquals(12, Arrays::getNonArrayElementsCount($this->twoDimensionsArray));
@@ -504,15 +606,11 @@ letsTest[2] = value_2;';
 
     public function testString2array()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::string2array(''));
         self::assertNull(Arrays::string2array(null));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         $array = [
             'light' => '#fff',
             'dark'  => '#000',
@@ -534,9 +632,7 @@ letsTest[2] = value_2;';
 
     public function testAreKeysInArray()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertFalse(Arrays::areKeysInArray([], []));
         self::assertFalse(Arrays::areKeysInArray([null], $this->simpleArray));
         self::assertFalse(Arrays::areKeysInArray([''], $this->simpleArray));
@@ -552,9 +648,7 @@ letsTest[2] = value_2;';
         self::assertFalse(Arrays::areKeysInArray($keys1, $this->complexArray));
         self::assertFalse(Arrays::areKeysInArray($keys1, $this->complexArray, false));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         $keys12 = [
             2,
             'mollis',
@@ -607,9 +701,7 @@ letsTest[2] = value_2;';
 
     public function testGetLastElementsPathsUsingDefaults()
     {
-        /*
-         * Using default separator and other default arguments
-         */
+        // Using default separator and other default arguments
         $expected = [
             'lorem.ipsum.dolor'        => 'sit',
             'lorem.ipsum.diam.non'     => 'egestas',
@@ -628,9 +720,7 @@ letsTest[2] = value_2;';
 
     public function testGetLastElementsPathsUsingCustomSeparator()
     {
-        /*
-         * Using custom separator
-         */
+        // Using custom separator
         $separator = ' -> ';
         $expected = [
             sprintf('lorem%sipsum%sdolor', $separator, $separator)                     => 'sit',
@@ -649,7 +739,7 @@ letsTest[2] = value_2;';
     }
 
     /**
-     * @param string|array $stopIfMatchedBy Patterns of keys or paths that matched will stop the process of path
+     * @param array|string $stopIfMatchedBy Patterns of keys or paths that matched will stop the process of path
      *                                      building and including children of those keys or paths (recursive will
      *                                      not be used for keys in lower level of given array)
      * @param string       $separator       Separator used in resultant strings. Default: ".".
@@ -666,19 +756,13 @@ letsTest[2] = value_2;';
     {
         $pattern = '\d+';
 
-        /*
-         * Empty array
-         */
+        // Empty array
         self::assertFalse(Arrays::areAllKeysMatchedByPattern([], $pattern));
 
-        /*
-         * Simple array with integers as keys only
-         */
+        // Simple array with integers as keys only
         self::assertTrue(Arrays::areAllKeysMatchedByPattern($this->simpleArray, $pattern));
 
-        /*
-         * Complex array with strings and integers as keys
-         */
+        // Complex array with strings and integers as keys
         self::assertFalse(Arrays::areAllKeysMatchedByPattern($this->complexArray, $pattern));
 
         $array = [
@@ -686,33 +770,23 @@ letsTest[2] = value_2;';
             'c' => 'd',
         ];
 
-        /*
-         * Yet another simple array, but with strings as keys
-         */
+        // Yet another simple array, but with strings as keys
         self::assertFalse(Arrays::areAllKeysMatchedByPattern($array, $pattern));
 
-        /*
-         * The same array with another pattern
-         */
+        // The same array with another pattern
         $pattern = '\w+';
         self::assertTrue(Arrays::areAllKeysMatchedByPattern($array, $pattern));
 
-        /*
-         * The same array with mixed keys (strings and integers as keys)
-         */
+        // The same array with mixed keys (strings and integers as keys)
         $array[1] = 'x';
         $pattern = '\d+';
         self::assertFalse(Arrays::areAllKeysMatchedByPattern($array, $pattern));
 
-        /*
-         * Multidimensional array - negative case
-         */
+        // Multidimensional array - negative case
         $array['e'] = ['f' => 'g'];
         self::assertFalse(Arrays::areAllKeysMatchedByPattern($array, $pattern));
 
-        /*
-         * Multidimensional array - positive case
-         */
+        // Multidimensional array - positive case
         unset($array[1]);
         $pattern = '\w+';
         self::assertTrue(Arrays::areAllKeysMatchedByPattern($array, $pattern));
@@ -728,14 +802,10 @@ letsTest[2] = value_2;';
 
     public function testIssetRecursive()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertFalse(Arrays::issetRecursive([], []));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         $unExistingKeys = [
             'a',
             'b',
@@ -778,14 +848,10 @@ letsTest[2] = value_2;';
 
     public function testGetValueByKeysPath()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getValueByKeysPath([], []));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertNull(Arrays::getValueByKeysPath($this->simpleArray, []));
         self::assertEquals('ipsum', Arrays::getValueByKeysPath($this->simpleArray, [1]));
         self::assertEquals('sit', Arrays::getValueByKeysPath($this->simpleArray, [3]));
@@ -839,14 +905,10 @@ letsTest[2] = value_2;';
 
     public function testGetAllValuesOfKey()
     {
-        /*
-         * Positive case - 1-dimension array
-         */
+        // Positive case - 1-dimension array
         self::assertEquals(['ipsum'], Arrays::getAllValuesOfKey($this->simpleArray, 1));
 
-        /*
-         * Positive case - 2-dimensions array
-         */
+        // Positive case - 2-dimensions array
         $effect = [
             [
                 'lorem',
@@ -861,14 +923,10 @@ letsTest[2] = value_2;';
 
         self::assertEquals($effect, Arrays::getAllValuesOfKey($this->twoDimensionsArray, 0));
 
-        /*
-         * Positive case - multi-dimensions array
-         */
+        // Positive case - multi-dimensions array
         self::assertEquals(['primis'], Arrays::getAllValuesOfKey($this->complexArray, 1));
 
-        /*
-         * Positive case - multi-dimensions array
-         */
+        // Positive case - multi-dimensions array
         $effect = [
             0 => [
                 'in' => [
@@ -885,22 +943,16 @@ letsTest[2] = value_2;';
 
     public function testKsortRecursive()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         $array = [];
         self::assertNull(Arrays::ksortRecursive($array));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals($this->simpleArray, Arrays::ksortRecursive($this->simpleArray));
         self::assertEquals($this->simpleArray, Arrays::ksortRecursive($this->simpleArray, SORT_NUMERIC));
         self::assertEquals($this->twoDimensionsArray, Arrays::ksortRecursive($this->twoDimensionsArray));
 
-        /*
-         * Positive case - multi-dimensions array
-         */
+        // Positive case - multi-dimensions array
         $effect = [
             'amet'        => [
                 'iaculis',
@@ -930,9 +982,7 @@ letsTest[2] = value_2;';
 
         self::assertEquals($effect, Arrays::ksortRecursive($this->complexArray));
 
-        /*
-         * Positive case - multi-dimensions array - with options of ksort() function
-         */
+        // Positive case - multi-dimensions array - with options of ksort() function
         $effect = [
             2             => [],
             'amet'        => [
@@ -965,23 +1015,17 @@ letsTest[2] = value_2;';
 
     public function testSetPositions()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::setPositions([]));
 
-        /*
-         * Positive case - 1-dimension array
-         */
+        // Positive case - 1-dimension array
         $array = [
             'abc',
         ];
 
         self::assertEquals($array, Arrays::setPositions($array));
 
-        /*
-         * Positive case - 2-dimensions array
-         */
+        // Positive case - 2-dimensions array
         $effect = $this->twoDimensionsArray;
         $effect[0][Arrays::POSITION_KEY_NAME] = 1;
         $effect[1][Arrays::POSITION_KEY_NAME] = 2;
@@ -989,9 +1033,7 @@ letsTest[2] = value_2;';
 
         self::assertEquals($effect, Arrays::setPositions($this->twoDimensionsArray));
 
-        /*
-         * Positive case - multi-level array
-         */
+        // Positive case - multi-level array
         $array = [
             'lorem',
             'ipsum' => [
@@ -1034,9 +1076,7 @@ letsTest[2] = value_2;';
 
         self::assertEquals($effect, Arrays::setPositions($array));
 
-        /*
-         * Positive case - non-default name of key with position value & 2-dimensions array
-         */
+        // Positive case - non-default name of key with position value & 2-dimensions array
         $keyName = 'level';
         $effect = $this->twoDimensionsArray;
 
@@ -1046,9 +1086,7 @@ letsTest[2] = value_2;';
 
         self::assertEquals($effect, Arrays::setPositions($this->twoDimensionsArray, $keyName));
 
-        /*
-         * Positive case - non-default start value of position & 2-dimensions array
-         */
+        // Positive case - non-default start value of position & 2-dimensions array
         $startPosition = 5;
         $effect = $this->twoDimensionsArray;
 
@@ -1062,14 +1100,10 @@ letsTest[2] = value_2;';
 
     public function testTrimRecursive()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertSame([], Arrays::trimRecursive([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals(['a'], Arrays::trimRecursive([' a ']));
         self::assertEquals([
             'a',
@@ -1126,14 +1160,10 @@ letsTest[2] = value_2;';
 
     public function testSortByCustomKeysOrder()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::sortByCustomKeysOrder([], []));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals([0], Arrays::sortByCustomKeysOrder([0], []));
         self::assertEquals($this->simpleArray, Arrays::sortByCustomKeysOrder($this->simpleArray, []));
 
@@ -1204,19 +1234,13 @@ letsTest[2] = value_2;';
     {
         $separator = '/';
 
-        /*
-         * Empty array
-         */
+        // Empty array
         self::assertNull(Arrays::implodeSmart([], $separator));
 
-        /*
-         * Simple, one-dimension array
-         */
+        // Simple, one-dimension array
         self::assertEquals(implode($separator, $this->simpleArray), Arrays::implodeSmart($this->simpleArray, $separator));
 
-        /*
-         * An array with elements that contain separator
-         */
+        // An array with elements that contain separator
         $array = [
             'lorem' . $separator,
             'ipsum',
@@ -1229,9 +1253,7 @@ letsTest[2] = value_2;';
             'dolor',
         ]), Arrays::implodeSmart($array, $separator));
 
-        /*
-         * Complex array
-         */
+        // Complex array
         self::assertEquals(implode($separator, [
             'donec',
             'quis',
@@ -1241,51 +1263,39 @@ letsTest[2] = value_2;';
 
     public function testGetNextElement()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getNextElement($this->simpleArray, 'amet'));
         self::assertNull(Arrays::getNextElement($this->simpleArray, 'xyz'));
         self::assertNull(Arrays::getNextElement($this->simpleArray, 0));
         self::assertNull(Arrays::getNextElement([], ''));
         self::assertNull(Arrays::getNextElement([], null));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals('ipsum', Arrays::getNextElement($this->simpleArray, 'Lorem'));
         self::assertEquals('sit', Arrays::getNextElement($this->simpleArray, 'dolor'));
     }
 
     public function testGetPreviousElement()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::getPreviousElement($this->simpleArray, 'Lorem'));
         self::assertNull(Arrays::getPreviousElement($this->simpleArray, 'xyz'));
         self::assertNull(Arrays::getPreviousElement($this->simpleArray, 0));
         self::assertNull(Arrays::getPreviousElement([], ''));
         self::assertNull(Arrays::getPreviousElement([], null));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals('ipsum', Arrays::getPreviousElement($this->simpleArray, 'dolor'));
         self::assertEquals('sit', Arrays::getPreviousElement($this->simpleArray, 'amet'));
     }
 
     public function testGetIndexOf()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertFalse(Arrays::getIndexOf([], 'a'));
         self::assertNull(Arrays::getIndexOf($this->simpleArray, 'loremmm'));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertEquals(1, Arrays::getIndexOf($this->simpleArray, 'ipsum'));
         self::assertEquals('dolor', Arrays::getIndexOf($this->simpleArrayWithKeys, 'sit'));
         self::assertEquals('mollis', Arrays::getIndexOf($this->complexArray, 1234));
@@ -1293,14 +1303,10 @@ letsTest[2] = value_2;';
 
     public function testIncrementIndexes()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::incrementIndexes([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         $array = [
             1 => 'Lorem',
             2 => 'ipsum',
@@ -1331,9 +1337,7 @@ letsTest[2] = value_2;';
 
     public function testAreAllValuesEmpty()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertFalse(Arrays::areAllValuesEmpty([]));
         self::assertFalse(Arrays::areAllValuesEmpty([], true));
         self::assertFalse(Arrays::areAllValuesEmpty($this->simpleArray));
@@ -1353,9 +1357,7 @@ letsTest[2] = value_2;';
         ];
         self::assertFalse(Arrays::areAllValuesEmpty($array, true));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         $array = [
             '',
             0,
@@ -1371,15 +1373,11 @@ letsTest[2] = value_2;';
 
     public function testDiffRecursive()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertEquals([], Arrays::arrayDiffRecursive([], []));
         self::assertEquals([], Arrays::arrayDiffRecursive([], [], true));
 
-        /*
-         * Positive cases - full comparison (keys and values)
-         */
+        // Positive cases - full comparison (keys and values)
         self::assertEquals(['a'], Arrays::arrayDiffRecursive(['a'], []));
         self::assertEquals([], Arrays::arrayDiffRecursive([], ['a']));
         self::assertEquals([], Arrays::arrayDiffRecursive($this->simpleArray, $this->simpleArray));
@@ -1432,9 +1430,7 @@ letsTest[2] = value_2;';
 
         self::assertEquals($this->twoDimensionsArray[1], Arrays::arrayDiffRecursive($this->twoDimensionsArray[1], $this->twoDimensionsArray));
 
-        /*
-         * Positive cases - simple comparison (values only)
-         */
+        // Positive cases - simple comparison (values only)
         self::assertEquals(['a'], Arrays::arrayDiffRecursive(['a'], [], true));
 
         $array = [
@@ -1533,35 +1529,25 @@ letsTest[2] = value_2;';
 
     public function testGetDimensionsCount()
     {
-        /*
-         * Basic cases
-         */
+        // Basic cases
         self::assertEquals(0, Arrays::getDimensionsCount([]));
         self::assertEquals(1, Arrays::getDimensionsCount(['']));
 
-        /*
-         * Simple cases
-         */
+        // Simple cases
         self::assertEquals(1, Arrays::getDimensionsCount($this->simpleArray));
         self::assertEquals(1, Arrays::getDimensionsCount($this->simpleArrayWithKeys));
 
-        /*
-         * Complex cases
-         */
+        // Complex cases
         self::assertEquals(2, Arrays::getDimensionsCount($this->twoDimensionsArray));
         self::assertEquals(4, Arrays::getDimensionsCount($this->complexArray));
     }
 
     public function testIsMultiDimensional()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertNull(Arrays::isMultiDimensional([]));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertFalse(Arrays::isMultiDimensional($this->simpleArray));
         self::assertFalse(Arrays::isMultiDimensional($this->simpleArrayWithKeys));
 
@@ -1717,9 +1703,7 @@ letsTest[2] = value_2;';
      */
     public function provideStopIfMatchedByForGetLastElementsPaths()
     {
-        /*
-         * Special exception: do not use, stop recursive on the "diam" key
-         */
+        // Special exception: do not use, stop recursive on the "diam" key
         yield[
             'diam',
             '.',
@@ -1780,9 +1764,7 @@ letsTest[2] = value_2;';
             ],
         ];
 
-        /*
-         * Stop building of paths on more sophisticated keys
-         */
+        // Stop building of paths on more sophisticated keys
         yield[
             [
                 'porta\-\d+',
@@ -1857,9 +1839,7 @@ letsTest[2] = value_2;';
             ],
         ];
 
-        /*
-         * Stop building of paths on these paths (verify paths only)
-         */
+        // Stop building of paths on these paths (verify paths only)
         yield[
             [
                 'ipsum > quis > vestibulum > porta-1',
@@ -1894,9 +1874,7 @@ letsTest[2] = value_2;';
             ],
         ];
 
-        /*
-         * Stop building of paths if path contains any of these part (verify part of paths only)
-         */
+        // Stop building of paths if path contains any of these part (verify part of paths only)
         yield[
             [
                 'vestibulum > porta-1',
@@ -2700,131 +2678,5 @@ letsTest[2] = value_2;';
                 ],
             ],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->simpleArray = [
-            'Lorem',
-            'ipsum',
-            'dolor',
-            'sit',
-            'amet',
-        ];
-
-        $this->simpleArrayWithKeys = [
-            'Lorem' => 'ipsum',
-            'dolor' => 'sit',
-            'amet'  => 'consectetur',
-        ];
-
-        $this->twoDimensionsArray = [
-            [
-                'lorem',
-                'ipsum',
-                'dolor',
-                'sit',
-                'amet',
-            ],
-            [
-                'consectetur',
-                'adipiscing',
-                'elit',
-            ],
-            [
-                'donec',
-                'sagittis',
-                'fringilla',
-                'eleifend',
-            ],
-        ];
-
-        $this->complexArray = [
-            'lorem'       => [
-                'ipsum' => [
-                    'dolor' => 'sit',
-                    'diam'  => [
-                        'non' => 'egestas',
-                    ],
-                ],
-            ],
-            'consectetur' => 'adipiscing',
-            'mollis'      => 1234,
-            2             => [],
-            'sit'         => [
-                'nullam'  => 'donec',
-                'aliquet' => [
-                    'vitae' => [
-                        'ligula' => 'quis',
-                    ],
-                ],
-                'elit',
-            ],
-            'amet'        => [
-                'iaculis',
-                'primis',
-            ],
-        ];
-
-        $this->superComplexArray = [
-            'ipsum'  => [
-                'quis' => [
-                    'vestibulum' => [
-                        'porta-1' => [
-                            'turpis',
-                            'urna',
-                        ],
-                        'porta-2' => [
-                            'tortor' => [
-                                'in' => [
-                                    'dui',
-                                    'dolor' => [
-                                        'aliquam',
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'porta-3' => [
-                            1,
-                            2,
-                            3,
-                        ],
-                    ],
-                ],
-            ],
-            'primis' => [
-                [
-                    'in',
-                    'faucibus',
-                    'orci',
-                ],
-                [
-                    'luctus',
-                    'et',
-                    'ultrices',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset(
-            $this->simpleArray,
-            $this->simpleArrayWithKeys,
-            $this->twoDimensionsArray,
-            $this->complexArray,
-            $this->superComplexArray
-        );
     }
 }

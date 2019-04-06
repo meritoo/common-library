@@ -90,9 +90,7 @@ class Uri
          * $matches[2] - protocol version, e.g. 1.1
          */
 
-        /*
-         * Oops, cannot match protocol
-         */
+        // Oops, cannot match protocol
         if (0 === $matchCount) {
             return '';
         }
@@ -244,9 +242,7 @@ class Uri
         $currentUrl = self::getServerNameOrIp(true);
         $url = self::replenishProtocol($url);
 
-        /*
-         * Let's prepare pattern of current url
-         */
+        // Let's prepare pattern of current url
         $search = [
             ':',
             '/',
@@ -274,9 +270,7 @@ class Uri
      */
     public static function replenishProtocol($url, $protocol = '')
     {
-        /*
-         * Let's trim the url
-         */
+        // Let's trim the url
         if (is_string($url)) {
             $url = trim($url);
         }
@@ -297,9 +291,7 @@ class Uri
             return $url;
         }
 
-        /*
-         * Protocol is not provided?
-         */
+        // Protocol is not provided?
         if (empty($protocol)) {
             $protocol = self::getProtocolName();
         }

@@ -21,6 +21,9 @@ use stdClass;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Miscellaneous
  */
 class MiscellaneousTest extends BaseTestCase
 {
@@ -28,6 +31,28 @@ class MiscellaneousTest extends BaseTestCase
     private $stringCommaSeparated;
     private $stringDotSeparated;
     private $stringWithoutSpaces;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->stringSmall = 'Lorem ipsum dolor sit amet.';
+        $this->stringCommaSeparated = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+        $this->stringDotSeparated = 'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.';
+        $this->stringWithoutSpaces = 'LoremIpsumDolorSitAmetConsecteturAdipiscingElit';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->stringSmall, $this->stringCommaSeparated, $this->stringDotSeparated, $this->stringWithoutSpaces);
+    }
 
     public function testConstructor()
     {
@@ -93,24 +118,16 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetFileNameFromPath()
     {
-        /*
-         * Path with file
-         */
+        // Path with file
         self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/sit.amet.JPG'));
 
-        /*
-         * Path without file
-         */
+        // Path without file
         self::assertEquals('', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/sit-amet'));
 
-        /*
-         * Path with a dot "." in name of directory
-         */
+        // Path with a dot "." in name of directory
         self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum.dolor/sit.amet.JPG'));
 
-        /*
-         * Relative path
-         */
+        // Relative path
         self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum/../dolor/sit.amet.JPG'));
     }
 
@@ -119,14 +136,10 @@ class MiscellaneousTest extends BaseTestCase
         $originalFileName = 'Lorem.ipsum-dolor.sit.JPG';
         $pattern = '|^lorem\-ipsum\-dolor\-sit\-[a-z0-9.-]+\.jpg$|';
 
-        /*
-         * With object ID
-         */
+        // With object ID
         $uniqueFileName1 = Miscellaneous::getUniqueFileName($originalFileName, 123);
 
-        /*
-         * Without object ID
-         */
+        // Without object ID
         $uniqueFileName2 = Miscellaneous::getUniqueFileName($originalFileName);
 
         $isCorrect1 = (bool)preg_match($pattern, $uniqueFileName1);
@@ -200,7 +213,7 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * @param string|array $search An empty value to find
+     * @param array|string $search An empty value to find
      * @dataProvider provideEmptyValue
      */
     public function testReplaceEmptyValue($search)
@@ -224,10 +237,10 @@ class MiscellaneousTest extends BaseTestCase
 
     /**
      * @param string       $description  Description of test
-     * @param string|array $subject      The string or an array of strings to search and replace
-     * @param string|array $search       String or pattern or array of patterns to find. It may be: string, an array
+     * @param array|string $subject      The string or an array of strings to search and replace
+     * @param array|string $search       String or pattern or array of patterns to find. It may be: string, an array
      *                                   of strings or an array of patterns.
-     * @param string|array $replacement  The string or an array of strings to replace. It may be: string or an array
+     * @param array|string $replacement  The string or an array of strings to replace. It may be: string or an array
      *                                   of strings.
      * @param mixed        $result       Result of replacing
      *
@@ -328,9 +341,7 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetOperatingSystemNameServer()
     {
-        /*
-         * While running Docker OS is a Linux
-         */
+        // While running Docker OS is a Linux
         self::assertEquals('Linux', Miscellaneous::getOperatingSystemNameServer());
     }
 
@@ -531,9 +542,7 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testConcatenatePathsInNixOs()
     {
-        /*
-         * For *nix operating system
-         */
+        // For *nix operating system
         $paths1 = [
             'first/directory',
             'second/one',
@@ -546,9 +555,7 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testConcatenatePathsInWindowsOs()
     {
-        /*
-         * For Windows operating system
-         */
+        // For Windows operating system
         $paths2 = [
             'C:\first\directory',
             'second\one',
@@ -597,18 +604,14 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testIsBetween()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertFalse(Miscellaneous::isBetween(0, 0, 0));
         self::assertFalse(Miscellaneous::isBetween('0', '0', '0'));
         self::assertFalse(Miscellaneous::isBetween(0, 0, 1));
         self::assertFalse(Miscellaneous::isBetween(-1, -1, -1));
         self::assertFalse(Miscellaneous::isBetween(1.2, 0.1, 1.1));
 
-        /*
-         * Positive cases
-         */
+        // Positive cases
         self::assertTrue(Miscellaneous::isBetween(1, 0, 2));
         self::assertTrue(Miscellaneous::isBetween('1', '0', '2'));
         self::assertTrue(Miscellaneous::isBetween(-1, -2, 2));
@@ -628,9 +631,7 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetValidColorComponent()
     {
-        /*
-         * Negative cases
-         */
+        // Negative cases
         self::assertEquals(0, Miscellaneous::getValidColorComponent(null));
         self::assertEquals(0, Miscellaneous::getValidColorComponent(''));
         self::assertEquals(0, Miscellaneous::getValidColorComponent('0'));
@@ -638,18 +639,14 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(0, Miscellaneous::getValidColorComponent(256));
         self::assertEquals(0, Miscellaneous::getValidColorComponent(256, false));
 
-        /*
-         * Positive cases - part 1
-         */
+        // Positive cases - part 1
         self::assertEquals(1, Miscellaneous::getValidColorComponent(1));
         self::assertEquals('0a', Miscellaneous::getValidColorComponent(10));
         self::assertEquals('0f', Miscellaneous::getValidColorComponent(15));
         self::assertEquals(64, Miscellaneous::getValidColorComponent(100));
         self::assertEquals('ff', Miscellaneous::getValidColorComponent(255));
 
-        /*
-         * Positive cases - part 2
-         */
+        // Positive cases - part 2
         self::assertEquals(1, Miscellaneous::getValidColorComponent(1, false));
         self::assertEquals(10, Miscellaneous::getValidColorComponent(10, false));
         self::assertEquals(15, Miscellaneous::getValidColorComponent(15, false));
@@ -684,9 +681,7 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testGetInvertedColor()
     {
-        /*
-         * Simple cases
-         */
+        // Simple cases
         self::assertEquals('000000', Miscellaneous::getInvertedColor('fff'));
         self::assertEquals('ffffff', Miscellaneous::getInvertedColor('000'));
         self::assertEquals('000000', Miscellaneous::getInvertedColor('ffffff'));
@@ -694,18 +689,14 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals('#000000', Miscellaneous::getInvertedColor('#ffffff'));
         self::assertEquals('#ffffff', Miscellaneous::getInvertedColor('#000000'));
 
-        /*
-         * Advanced cases - part 1
-         */
+        // Advanced cases - part 1
         self::assertEquals('ffffee', Miscellaneous::getInvertedColor('001'));
         self::assertEquals('ffeeff', Miscellaneous::getInvertedColor('010'));
         self::assertEquals('eeffff', Miscellaneous::getInvertedColor('100'));
         self::assertEquals('333333', Miscellaneous::getInvertedColor('ccc'));
         self::assertEquals('333333', Miscellaneous::getInvertedColor('CCC'));
 
-        /*
-         * Advanced cases - part 2
-         */
+        // Advanced cases - part 2
         self::assertEquals('3e3e3e', Miscellaneous::getInvertedColor('c1c1c1'));
         self::assertEquals('3e3e3e', Miscellaneous::getInvertedColor('C1C1C1'));
         self::assertEquals('#dd5a01', Miscellaneous::getInvertedColor('#22a5fe'));
@@ -713,9 +704,7 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals('#464646', Miscellaneous::getInvertedColor('#b9b9b9'));
         self::assertEquals('#080808', Miscellaneous::getInvertedColor('#f7f7f7'));
 
-        /*
-         * Advanced cases - verification
-         */
+        // Advanced cases - verification
         self::assertEquals('000011', Miscellaneous::getInvertedColor('ffffee'));
         self::assertEquals('cccccc', Miscellaneous::getInvertedColor('333333'));
         self::assertEquals('#22a5fe', Miscellaneous::getInvertedColor('#dd5a01'));
@@ -1474,27 +1463,5 @@ class MiscellaneousTest extends BaseTestCase
             ],
             'Lorem \'commodo\' dolor sit \'egestas\'',
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->stringSmall = 'Lorem ipsum dolor sit amet.';
-        $this->stringCommaSeparated = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
-        $this->stringDotSeparated = 'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.';
-        $this->stringWithoutSpaces = 'LoremIpsumDolorSitAmetConsecteturAdipiscingElit';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        unset($this->stringSmall, $this->stringCommaSeparated, $this->stringDotSeparated, $this->stringWithoutSpaces);
     }
 }

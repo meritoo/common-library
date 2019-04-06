@@ -27,7 +27,7 @@ class Miscellaneous
      *                              Otherwise - only content of given directory is returned.
      * @param int    $maxFilesCount (optional) Maximum files that will be returned. If it's null, all files are
      *                              returned.
-     * @return array|null
+     * @return null|array
      */
     public static function getDirectoryContent($directoryPath, $recursive = false, $maxFilesCount = null)
     {
@@ -222,11 +222,6 @@ class Miscellaneous
      */
     public static function getUniqueFileName($originalFileName, $objectId = 0)
     {
-        /*
-         * Get parts of the file name:
-         * - without extension
-         * - and... the extension
-         */
         $withoutExtension = self::getFileNameWithoutExtension($originalFileName);
         $extension = self::getFileExtension($originalFileName, true);
 
@@ -238,20 +233,13 @@ class Miscellaneous
          */
         $withoutExtension = Urlizer::urlize($withoutExtension);
 
-        /*
-         * Now I have to complete the template used to build / generate unique name
-         */
+        // Now I have to complete the template used to build / generate unique name
         $template = '%s-%s.%s'; // [file's name]-[unique key].[file's extension]
 
-        /*
-         * Add some uniqueness
-         */
+        // Add some uniqueness
         $unique = self::getUniqueString(mt_rand());
 
-        /*
-         * Finally build and return the unique name
-         */
-
+        // Finally build and return the unique name
         if ($objectId > 0) {
             $template = '%s-%s-%s.%s'; // [file's name]-[unique key]-[object ID].[file's extension]
 
@@ -345,9 +333,7 @@ class Miscellaneous
 
         $converted = $converter->transliterate($string);
 
-        /*
-         * Make the string lowercase and human-readable
-         */
+        // Make the string lowercase and human-readable
         if ($lowerCaseHuman) {
             $matches = [];
             $matchCount = preg_match_all('|[A-Z]{1}[^A-Z]*|', $converted, $matches);
@@ -390,10 +376,10 @@ class Miscellaneous
      * Replaces part of string with other string or strings.
      * There is a few combination of what should be searched and with what it should be replaced.
      *
-     * @param string|array $subject      The string or an array of strings to search and replace
-     * @param string|array $search       String or pattern or array of patterns to find. It may be: string, an array
+     * @param array|string $subject      The string or an array of strings to search and replace
+     * @param array|string $search       String or pattern or array of patterns to find. It may be: string, an array
      *                                   of strings or an array of patterns.
-     * @param string|array $replacement  The string or an array of strings to replace. It may be: string or an array
+     * @param array|string $replacement  The string or an array of strings to replace. It may be: string or an array
      *                                   of strings.
      * @param bool         $quoteStrings (optional) If is set to true, strings are surrounded with single quote sign
      * @return string
@@ -466,9 +452,7 @@ class Miscellaneous
             }
         }
 
-        /*
-         * 1st step: replace strings, simple operation with strings
-         */
+        // 1st step: replace strings, simple operation with strings
         if ($bothAreStrings) {
             $effect = str_replace($search, $replacement, $subject);
         }
@@ -503,15 +487,10 @@ class Miscellaneous
                 $effect = [];
             }
 
-            /*
-             * I have to make the subject an array...
-             */
             $subject = Arrays::makeArray($subject);
 
-            /*
-             * ...and use iterate through the subjects,
-             * because explode() function expects strings as both arguments (1st and 2nd)
-             */
+            // I have to iterate through the subjects, because explode() function expects strings as both arguments
+            // (1st and 2nd)
             foreach ($subject as $subSubject) {
                 $subEffect = '';
 
@@ -521,9 +500,7 @@ class Miscellaneous
                 foreach ($exploded as $key => $item) {
                     $subEffect .= $item;
 
-                    /*
-                     * The replacement shouldn't be included when the searched string was not found
-                     */
+                    // The replacement shouldn't be included when the searched string was not found
                     if ($explodedCount > 1 && $key < $explodedCount - 1 && isset($replacement[$key])) {
                         $subEffect .= $replacement[$key];
                     }
@@ -531,6 +508,7 @@ class Miscellaneous
 
                 if ($subjectIsArray) {
                     $effect[] = $subEffect;
+
                     continue;
                 }
 
@@ -571,7 +549,6 @@ class Miscellaneous
     public static function getOperatingSystemNameServer()
     {
         return PHP_OS;
-
         /*
          * Previous version:
          * return php_uname('s');
@@ -668,7 +645,7 @@ class Miscellaneous
                     $spacePosition = mb_strrpos($lineWithAberration, ' ', 0, $encoding);
 
                     if (false !== $spacePosition && 0 < $spacePosition) {
-                        /* @var int $spacePosition */
+                        /** @var int $spacePosition */
                         $perLine = $spacePosition;
                         $insertSeparator = true;
                     }
@@ -705,7 +682,7 @@ class Miscellaneous
      * @param string $directoryPath Directory path
      * @param bool   $contentOnly   (optional) If is set to true, only content of the directory is removed, not
      *                              directory itself. Otherwise - directory is removed too (default behaviour).
-     * @return bool|null
+     * @return null|bool
      */
     public static function removeDirectory($directoryPath, $contentOnly = false)
     {
@@ -735,9 +712,7 @@ class Miscellaneous
             }
         }
 
-        /*
-         * Directory should be removed too?
-         */
+        // Directory should be removed too?
         if (!$contentOnly) {
             return rmdir($directoryPath);
         }
@@ -789,7 +764,7 @@ class Miscellaneous
      * Make a string's first character lowercase
      *
      * @param string    $text          The text to get first character lowercase
-     * @param bool|null $restLowercase (optional) Information that to do with rest of given string
+     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
      * @return string
      *
      * Values of the $restLowercase argument:
@@ -818,7 +793,7 @@ class Miscellaneous
      * Make a string's first character uppercase
      *
      * @param string    $text          The text to get uppercase
-     * @param bool|null $restLowercase (optional) Information that to do with rest of given string
+     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
      * @return string
      *
      * Values of the $restLowercase argument:
@@ -932,7 +907,7 @@ class Miscellaneous
      *
      * @param string $string    The string to check
      * @param string $separator The separator which divides elements of string
-     * @return string|null
+     * @return null|string
      */
     public static function getLastElementOfString($string, $separator)
     {
@@ -980,30 +955,23 @@ class Miscellaneous
      * - concatenatePaths(['path/first', 'path/second', 'path/third']);
      * - concatenatePaths('path/first', 'path/second', 'path/third');
      *
-     * @param string|array $paths Paths co concatenate. As described above: an array of paths / strings or strings
+     * @param array|string $paths Paths co concatenate. As described above: an array of paths / strings or strings
      *                            passed as following arguments.
      * @return string
      */
     public static function concatenatePaths($paths)
     {
-        /*
-         * If paths are not provided as array, get the paths from methods' arguments
-         */
+        // If paths are not provided as array, get the paths from methods' arguments
         if (!is_array($paths)) {
             $paths = func_get_args();
         }
 
-        /*
-         * No paths provided?
-         * Nothing to do
-         */
+        // No paths provided?
+        // Nothing to do
         if (empty($paths)) {
             return '';
         }
 
-        /*
-         * Some useful variables
-         */
         $concatenated = '';
         $firstWindowsBased = false;
         $separator = DIRECTORY_SEPARATOR;
@@ -1011,16 +979,12 @@ class Miscellaneous
         foreach ($paths as $path) {
             $path = trim($path);
 
-            /*
-             * Empty paths are useless
-             */
+            // Empty paths are useless
             if (empty($path)) {
                 continue;
             }
 
-            /*
-             * Does the first path is a Windows-based path?
-             */
+            // Does the first path is a Windows-based path?
             if (Arrays::isFirstElement($paths, $path)) {
                 $firstWindowsBased = Regex::isWindowsBasedPath($path);
 
@@ -1029,14 +993,10 @@ class Miscellaneous
                 }
             }
 
-            /*
-             * Remove the starting / beginning directory's separator
-             */
+            // Remove the starting / beginning directory's separator
             $path = self::removeStartingDirectorySeparator($path, $separator);
 
-            /*
-             * Removes the ending directory's separator
-             */
+            // Removes the ending directory's separator
             $path = self::removeEndingDirectorySeparator($path, $separator);
 
             /*
@@ -1046,12 +1006,11 @@ class Miscellaneous
              */
             if ($firstWindowsBased && empty($concatenated)) {
                 $concatenated = $path;
+
                 continue;
             }
 
-            /*
-             * Concatenate the paths / strings with OS-related directory separator between them (slash or backslash)
-             */
+            // Concatenate the paths / strings with OS-related directory separator between them (slash or backslash)
             $concatenated = sprintf('%s%s%s', $concatenated, $separator, $path);
         }
 
@@ -1138,22 +1097,23 @@ class Miscellaneous
             switch ($globalSourceType) {
                 case INPUT_GET:
                     $globalSource = $_GET;
-                    break;
 
+                    break;
                 case INPUT_POST:
                     $globalSource = $_POST;
-                    break;
 
+                    break;
                 case INPUT_COOKIE:
                     $globalSource = $_COOKIE;
-                    break;
 
+                    break;
                 case INPUT_SERVER:
                     $globalSource = $_SERVER;
-                    break;
 
+                    break;
                 case INPUT_ENV:
                     $globalSource = $_ENV;
+
                     break;
             }
 
@@ -1201,6 +1161,7 @@ class Miscellaneous
         for ($i = ($length - $textLength); 0 < $i; --$i) {
             if ($before) {
                 $text = '0' . $text;
+
                 continue;
             }
 
@@ -1213,9 +1174,9 @@ class Miscellaneous
     /**
      * Returns information if given value is located in interval between given utmost left and right values
      *
-     * @param int|float $value Value to verify
-     * @param int|float $left  Left utmost value of interval
-     * @param int|float $right Right utmost value of interval
+     * @param float|int $value Value to verify
+     * @param float|int $left  Left utmost value of interval
+     * @param float|int $right Right utmost value of interval
      * @return bool
      */
     public static function isBetween($value, $left, $right)
@@ -1277,9 +1238,7 @@ class Miscellaneous
      */
     public static function getInvertedColor($color)
     {
-        /*
-         * Prepare the color for later usage
-         */
+        // Prepare the color for later usage
         $color = trim($color);
         $withHash = Regex::startsWith($color, '#');
 
@@ -1289,23 +1248,17 @@ class Miscellaneous
          */
         $validColor = Regex::getValidColorHexValue($color);
 
-        /*
-         * Grab color's components
-         */
+        // Grab color's components
         $red = hexdec(substr($validColor, 0, 2));
         $green = hexdec(substr($validColor, 2, 2));
         $blue = hexdec(substr($validColor, 4, 2));
 
-        /*
-         * Calculate inverted color's components
-         */
+        // Calculate inverted color's components
         $redInverted = self::getValidColorComponent(255 - $red);
         $greenInverted = self::getValidColorComponent(255 - $green);
         $blueInverted = self::getValidColorComponent(255 - $blue);
 
-        /*
-         * Voila, here is the inverted color
-         */
+        // Voila, here is the inverted color
         $invertedColor = sprintf('%s%s%s', $redInverted, $greenInverted, $blueInverted);
 
         if ($withHash) {
@@ -1328,9 +1281,7 @@ class Miscellaneous
         $fileName = 'composer.json';
         $directoryPath = __DIR__;
 
-        /*
-         * Path of directory it's not the path of last directory?
-         */
+        // Path of directory it's not the path of last directory?
         while (DIRECTORY_SEPARATOR !== $directoryPath) {
             $filePath = static::concatenatePaths($directoryPath, $fileName);
 

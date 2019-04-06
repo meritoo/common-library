@@ -16,6 +16,9 @@ use Meritoo\Common\Utilities\Bootstrap4CssSelector;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Bootstrap4CssSelector
  */
 class Bootstrap4CssSelectorTest extends BaseTestCase
 {

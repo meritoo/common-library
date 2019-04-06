@@ -10,7 +10,6 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
@@ -23,6 +22,9 @@ use stdClass;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers    \Meritoo\Common\Utilities\Repository
  */
 class RepositoryTest extends BaseTestCase
 {
@@ -53,27 +55,19 @@ class RepositoryTest extends BaseTestCase
             new stdClass(),
         ];
 
-        /*
-         * Using defaults
-         */
+        // Using defaults
         Repository::replenishPositions($before);
         static::assertEquals($before, $after);
 
-        /*
-         * Place items at the top
-         */
+        // Place items at the top
         Repository::replenishPositions($before, false);
         static::assertEquals($before, $after);
 
-        /*
-         * Set positions even there is no extreme position (at the end)
-         */
+        // Set positions even there is no extreme position (at the end)
         Repository::replenishPositions($before, true, true);
         static::assertEquals($before, $after);
 
-        /*
-         * Set positions even there is no extreme position (at the top)
-         */
+        // Set positions even there is no extreme position (at the top)
         Repository::replenishPositions($before, false, true);
         static::assertEquals($before, $after);
     }
@@ -238,7 +232,7 @@ class RepositoryTest extends BaseTestCase
         $orderDQLPart = $queryBuilder->getDQLPart('orderBy');
         $rootAliases = $queryBuilder->getRootAliases();
 
-        /* @var OrderBy $orderBy */
+        /** @var OrderBy $orderBy */
         $orderBy = $orderDQLPart[0];
 
         static::assertInstanceOf(QueryBuilder::class, $queryBuilder);
@@ -293,7 +287,7 @@ class RepositoryTest extends BaseTestCase
         if (empty($property)) {
             static::assertSame([], $orderDQLPart);
         } else {
-            /* @var OrderBy $orderBy */
+            /** @var OrderBy $orderBy */
             $orderBy = $orderDQLPart[0];
 
             static::assertSame([$expectedOrderBy], $orderBy->getParts());

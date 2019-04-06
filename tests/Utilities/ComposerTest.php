@@ -17,6 +17,9 @@ use Meritoo\Common\Utilities\Composer;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Composer
  */
 class ComposerTest extends BaseTestCase
 {
@@ -26,6 +29,16 @@ class ComposerTest extends BaseTestCase
      * @var string
      */
     private $composerJsonPath;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->composerJsonPath = $this->getFilePathForTesting(Composer::FILE_NAME_MAIN);
+    }
 
     public function testConstructor()
     {
@@ -79,15 +92,5 @@ class ComposerTest extends BaseTestCase
             'version',
             '1.0.2',
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->composerJsonPath = $this->getFilePathForTesting(Composer::FILE_NAME_MAIN);
     }
 }

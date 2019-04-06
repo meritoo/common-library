@@ -33,6 +33,9 @@ use ReflectionProperty;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Reflection
  */
 class ReflectionTest extends BaseTestCase
 {
@@ -53,18 +56,14 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetClassNameNotExistingClass()
     {
-        /*
-         * Not existing class
-         */
+        // Not existing class
         self::assertEquals('', Reflection::getClassName('xyz'));
         self::assertEquals('', Reflection::getClassName('xyz', true));
     }
 
     public function testGetClassNameExistingClass()
     {
-        /*
-         * Existing class
-         */
+        // Existing class
         self::assertEquals(self::class, Reflection::getClassName(self::class));
         self::assertEquals('ReflectionTest', Reflection::getClassName(self::class, true));
         self::assertEquals(DateTime::class, Reflection::getClassName(new DateTime()));
@@ -94,17 +93,13 @@ class ReflectionTest extends BaseTestCase
 
     public function testGetClassNamespaceNotExistingClass()
     {
-        /*
-         * Not existing class
-         */
+        // Not existing class
         self::assertEquals('', Reflection::getClassNamespace('xyz'));
     }
 
     public function testGetClassNamespaceExistingClass()
     {
-        /*
-         * Existing class
-         */
+        // Existing class
         self::assertEquals('Meritoo\Test\Common\Utilities', Reflection::getClassNamespace(self::class));
         self::assertEquals(DateTime::class, Reflection::getClassNamespace(new DateTime()));
 

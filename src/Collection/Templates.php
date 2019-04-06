@@ -30,7 +30,6 @@ class Templates extends Collection
      */
     public function findTemplate(string $index): Template
     {
-        /* @var Template $template */
         $template = $this->getByIndex($index);
 
         if ($template instanceof Template) {

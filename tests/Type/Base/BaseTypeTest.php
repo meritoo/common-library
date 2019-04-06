@@ -17,6 +17,9 @@ use Meritoo\Common\Type\Base\BaseType;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Type\Base\BaseType
  */
 class BaseTypeTest extends BaseTestCase
 {
@@ -199,7 +202,7 @@ class TestEmptyType extends BaseType
  */
 class TestType extends BaseType
 {
-    const TEST_1 = 'test_1';
+    public const TEST_1 = 'test_1';
 
-    const TEST_2 = 'test_2';
+    public const TEST_2 = 'test_2';
 }

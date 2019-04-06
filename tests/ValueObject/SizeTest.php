@@ -18,6 +18,9 @@ use Meritoo\Common\ValueObject\Size;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\ValueObject\Size
  */
 class SizeTest extends BaseTestCase
 {
@@ -32,12 +35,12 @@ class SizeTest extends BaseTestCase
 
     /**
      * @param string    $description Description of test
-     * @param Size|null $size        Size to convert
+     * @param null|Size $size        Size to convert
      * @param string    $expected    Expected result
      *
      * @dataProvider provideSizeForConvertingToString
      */
-    public function test__toString($description, $size, $expected)
+    public function testToStringConverting($description, $size, $expected)
     {
         static::assertEquals($expected, (string)$size, $description);
     }
@@ -57,7 +60,7 @@ class SizeTest extends BaseTestCase
      * @param string     $description Description of test
      * @param Size       $size        Size to get width
      * @param bool       $withUnit    If is set to true, width is returned with unit ("px"). Otherwise - without.
-     * @param string|int $expected    Expected width
+     * @param int|string $expected    Expected width
      *
      * @dataProvider provideSizeToGetWidth
      */
@@ -70,7 +73,7 @@ class SizeTest extends BaseTestCase
      * @param string     $description Description of test
      * @param Size       $size        Size to set width
      * @param int|string $width       The width
-     * @param string|int $expected    Expected width
+     * @param int|string $expected    Expected width
      *
      * @dataProvider provideSizeToSetWidth
      */
@@ -86,7 +89,7 @@ class SizeTest extends BaseTestCase
      * @param string     $description Description of test
      * @param Size       $size        Size to get width
      * @param bool       $withUnit    If is set to true, width is returned with unit ("px"). Otherwise - without.
-     * @param string|int $expected    Expected width
+     * @param int|string $expected    Expected width
      *
      * @dataProvider provideSizeToGetHeight
      */
@@ -99,7 +102,7 @@ class SizeTest extends BaseTestCase
      * @param string     $description Description of test
      * @param Size       $size        Size to set height
      * @param int|string $height      The height
-     * @param string|int $expected    Expected height
+     * @param int|string $expected    Expected height
      *
      * @dataProvider provideSizeToSetHeight
      */
@@ -167,7 +170,7 @@ class SizeTest extends BaseTestCase
      * @param string    $size        The size represented as string (width and height separated by "x")
      * @param string    $unit        Unit used when width or height should be returned with unit
      * @param string    $separator   Separator used to split width and height
-     * @param Size|null $expected    Expected result
+     * @param null|Size $expected    Expected result
      *
      * @dataProvider provideSizeForFromString
      */

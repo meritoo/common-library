@@ -18,6 +18,9 @@ use Meritoo\Common\Utilities\Bundle;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Bundle
  */
 class BundleTest extends BaseTestCase
 {

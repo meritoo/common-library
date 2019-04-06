@@ -19,6 +19,9 @@ use Meritoo\Common\Type\OopVisibilityType;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException
  */
 class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
 {

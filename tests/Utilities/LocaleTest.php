@@ -18,6 +18,9 @@ use ReflectionException;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Locale
  */
 class LocaleTest extends BaseTestCase
 {

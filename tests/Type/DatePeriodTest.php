@@ -19,6 +19,9 @@ use Meritoo\Common\Type\OopVisibilityType;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Type\DatePeriod
  */
 class DatePeriodTest extends BaseTypeTestCase
 {
@@ -151,9 +154,7 @@ class DatePeriodTest extends BaseTypeTestCase
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
 
-        /*
-         * For start date
-         */
+        // For start date
         yield[
             new DatePeriod($startDate, $endDate),
             'Y',
@@ -182,9 +183,7 @@ class DatePeriodTest extends BaseTypeTestCase
             '2001-01-01 00:00',
         ];
 
-        /*
-         * For end date
-         */
+        // For end date
         yield[
             new DatePeriod($startDate, $endDate),
             'Y',

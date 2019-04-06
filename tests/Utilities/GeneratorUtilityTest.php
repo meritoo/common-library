@@ -16,6 +16,9 @@ use Meritoo\Common\Utilities\GeneratorUtility;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\GeneratorUtility
  */
 class GeneratorUtilityTest extends BaseTestCase
 {
@@ -26,9 +29,7 @@ class GeneratorUtilityTest extends BaseTestCase
 
     public function testGetGeneratorElements()
     {
-        /*
-         * Generator that provides boolean value
-         */
+        // Generator that provides boolean value
         $elements = [
             [false],
             [true],
@@ -46,15 +47,11 @@ class GeneratorUtilityTest extends BaseTestCase
             [[]],
         ];
 
-        /*
-         * Generator that provides an empty value
-         */
+        // Generator that provides an empty value
         $generator = $this->provideEmptyValue();
         self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
 
-        /*
-         * Generator that provides instance of DateTime class
-         */
+        // Generator that provides instance of DateTime class
         $generator = $this->provideDateTimeInstance();
         self::assertCount(4, GeneratorUtility::getGeneratorElements($generator));
     }

@@ -22,6 +22,9 @@ use Meritoo\Common\Utilities\Locale;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\Date
  */
 class DateTest extends BaseTestCase
 {
@@ -89,14 +92,10 @@ class DateTest extends BaseTestCase
 
     public function testGetDateTimeConcreteDates()
     {
-        /*
-         * Using the standard date format provided by the tested method
-         */
+        // Using the standard date format provided by the tested method
         self::assertInstanceOf(DateTime::class, Date::getDateTime('2015-03-20'));
 
-        /*
-         * Using custom date format
-         */
+        // Using custom date format
         self::assertInstanceOf(DateTime::class, Date::getDateTime('2015-03-20 11:30', false, 'Y-m-d H:i'));
         self::assertInstanceOf(DateTime::class, Date::getDateTime('20.03.2015', false, 'd.m.Y'));
     }
@@ -248,8 +247,8 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * @param string|DateTime $dateStart The start date
-     * @param string|DateTime $dateEnd   The end date
+     * @param DateTime|string $dateStart The start date
+     * @param DateTime|string $dateEnd   The end date
      *
      * @dataProvider provideEmptyDatesForDateDifference
      */
@@ -266,9 +265,7 @@ class DateTest extends BaseTestCase
 
     public function testGetDateDifferenceOneDay()
     {
-        /*
-         * Difference of 1 day
-         */
+        // Difference of 1 day
         $dateStart = '2017-01-01';
         $dateEnd = '2017-01-02';
 
@@ -298,9 +295,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(0, Date::getDateDifference($dateStart, $dateEnd, Date::DATE_DIFFERENCE_UNIT_MINUTES));
         self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
 
-        /*
-         * Difference of 1 day (using the relative date format)
-         */
+        // Difference of 1 day (using the relative date format)
         $effect = [
             Date::DATE_DIFFERENCE_UNIT_YEARS   => 0,
             Date::DATE_DIFFERENCE_UNIT_MONTHS  => 0,
@@ -318,9 +313,7 @@ class DateTest extends BaseTestCase
 
     public function testGetDateDifferenceOneDayTwoHours()
     {
-        /*
-         * Difference of 1 day, 2 hours and 15 minutes
-         */
+        // Difference of 1 day, 2 hours and 15 minutes
         $dateStart = '2017-01-01 12:00';
         $dateEnd = '2017-01-02 14:15';
 
@@ -353,9 +346,7 @@ class DateTest extends BaseTestCase
 
     public function testGetDateDifferenceOneMonthFortyOneDays()
     {
-        /*
-         * Difference of 1 month, 41 days, 4 hours and 30 minutes
-         */
+        // Difference of 1 month, 41 days, 4 hours and 30 minutes
         $dateStart = '2017-01-01 12:00';
         $dateEnd = '2017-02-11 16:30';
 
@@ -516,9 +507,7 @@ class DateTest extends BaseTestCase
 
     public function testGetDateDifferenceNoDifference()
     {
-        /*
-         * No difference
-         */
+        // No difference
         $dateStart = '2017-01-01 12:00';
         $dateEnd = $dateStart;
 
@@ -572,18 +561,14 @@ class DateTest extends BaseTestCase
 
     public function testGetDatesCollection()
     {
-        /*
-         * 1 date only
-         */
+        // 1 date only
         $effect = [
             1 => new DateTime('2017-01-02'),
         ];
 
         self::assertEquals($effect, Date::getDatesCollection(new DateTime('2017-01-01'), 1));
 
-        /*
-         * 3 dates with default date interval (days)
-         */
+        // 3 dates with default date interval (days)
         $effect = [
             1 => new DateTime('2017-01-02'),
             2 => new DateTime('2017-01-03'),
@@ -592,9 +577,7 @@ class DateTest extends BaseTestCase
 
         self::assertEquals($effect, Date::getDatesCollection(new DateTime('2017-01-01'), 3));
 
-        /*
-         * 3 dates with custom date interval (hours)
-         */
+        // 3 dates with custom date interval (hours)
         $effect = [
             1 => new DateTime('2017-01-01 10:30'),
             2 => new DateTime('2017-01-01 11:30'),
@@ -603,9 +586,7 @@ class DateTest extends BaseTestCase
 
         self::assertEquals($effect, Date::getDatesCollection(new DateTime('2017-01-01 09:30'), 3, 'PT%dH'));
 
-        /*
-         * 3 dates with custom date interval (months)
-         */
+        // 3 dates with custom date interval (months)
         $effect = [
             1 => new DateTime('2017-02-01'),
             2 => new DateTime('2017-03-01'),
@@ -705,42 +686,32 @@ class DateTest extends BaseTestCase
      */
     public function provideIncorrectDateTimeValue()
     {
-        /*
-         * Incorrect one-character values
-         */
+        // Incorrect one-character values
         yield['a'];
         yield['m'];
 
-        /*
-         * Incorrect strings
-         */
+        // Incorrect strings
         yield['ss'];
         yield['sss'];
         yield['mm'];
         yield['yy'];
         yield['yyyy'];
 
-        /*
-         * Incorrect integer values
-         */
+        // Incorrect integer values
         yield[1];
         yield[10];
         yield[15];
         yield[100];
         yield[1000];
 
-        /*
-         * Incorrect string / numeric values
-         */
+        // Incorrect string / numeric values
         yield['1'];
         yield['10'];
         yield['15'];
         yield['100'];
         yield['1000'];
 
-        /*
-         * Incorrect dates
-         */
+        // Incorrect dates
         yield['0-0-0'];
         yield['20-01-01'];
         yield['2015-0-0'];

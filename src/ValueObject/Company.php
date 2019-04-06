@@ -44,7 +44,7 @@ class Company
      *
      * @param string           $name        Name of company
      * @param Address          $address     Address of company
-     * @param BankAccount|null $bankAccount (optional) Bank account of company
+     * @param null|BankAccount $bankAccount (optional) Bank account of company
      */
     public function __construct($name, Address $address, BankAccount $bankAccount = null)
     {
@@ -92,7 +92,7 @@ class Company
     /**
      * Returns bank account of company
      *
-     * @return BankAccount|null
+     * @return null|BankAccount
      */
     public function getBankAccount()
     {

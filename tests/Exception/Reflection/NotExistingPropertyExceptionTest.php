@@ -17,6 +17,9 @@ use Meritoo\Common\Type\OopVisibilityType;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Exception\Reflection\NotExistingPropertyException
  */
 class NotExistingPropertyExceptionTest extends BaseTestCase
 {

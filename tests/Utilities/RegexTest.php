@@ -6,23 +6,48 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Common\Utilities;
+namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Utilities\Regex;
 
 /**
  * Test case of the useful regular expressions methods
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers    \Meritoo\Common\Utilities\Regex
  */
 class RegexTest extends BaseTestCase
 {
     private $simpleText;
     private $camelCaseText;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->simpleText = 'lorem ipsum dolor sit';
+        $simpleUppercase = ucwords($this->simpleText);
+        $this->camelCaseText = str_replace(' ', '', lcfirst($simpleUppercase)); // 'loremIpsumDolorSit'
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->simpleText, $this->camelCaseText);
+    }
 
     public function testConstructor()
     {
@@ -171,23 +196,17 @@ class RegexTest extends BaseTestCase
 
     public function testStartsWithDirectorySeparator()
     {
-        /*
-         * Not provided, default separator
-         */
+        // Not provided, default separator
         self::assertTrue(Regex::startsWithDirectorySeparator('/my/extra/directory'));
         self::assertFalse(Regex::startsWithDirectorySeparator('my/extra/directory'));
 
-        /*
-         * Slash as separator
-         */
+        // Slash as separator
         $separatorSlash = '/';
 
         self::assertTrue(Regex::startsWithDirectorySeparator('/my/extra/directory', $separatorSlash));
         self::assertFalse(Regex::startsWithDirectorySeparator('my/extra/directory', $separatorSlash));
 
-        /*
-         * Backslash as separator
-         */
+        // Backslash as separator
         $separatorBackslash = '\\';
 
         self::assertTrue(Regex::startsWithDirectorySeparator('\my\extra\directory', $separatorBackslash));
@@ -196,23 +215,17 @@ class RegexTest extends BaseTestCase
 
     public function testEndsWithDirectorySeparator()
     {
-        /*
-         * Not provided, default separator
-         */
+        // Not provided, default separator
         self::assertTrue(Regex::endsWithDirectorySeparator('my simple text/'));
         self::assertFalse(Regex::endsWithDirectorySeparator('my simple text'));
 
-        /*
-         * Slash as separator
-         */
+        // Slash as separator
         $separatorSlash = '/';
 
         self::assertTrue(Regex::endsWithDirectorySeparator('my simple text/', $separatorSlash));
         self::assertFalse(Regex::endsWithDirectorySeparator('my simple text', $separatorSlash));
 
-        /*
-         * Backslash as separator
-         */
+        // Backslash as separator
         $separatorBackslash = '\\';
 
         self::assertTrue(Regex::endsWithDirectorySeparator('my simple text\\', $separatorBackslash));
@@ -912,17 +925,13 @@ class RegexTest extends BaseTestCase
             false,
         ];
 
-        /*
-         * Microsoft sp. z o.o.
-         */
+        // Microsoft sp. z o.o.
         yield[
             '5270103391',
             true,
         ];
 
-        /*
-         * Onet S.A.
-         */
+        // Onet S.A.
         yield[
             '7340009469',
             true,
@@ -1993,26 +2002,5 @@ class RegexTest extends BaseTestCase
             ' : ',
             true,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->simpleText = 'lorem ipsum dolor sit';
-        $simpleUppercase = ucwords($this->simpleText);
-        $this->camelCaseText = str_replace(' ', '', lcfirst($simpleUppercase)); // 'loremIpsumDolorSit'
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        unset($this->simpleText, $this->camelCaseText);
     }
 }

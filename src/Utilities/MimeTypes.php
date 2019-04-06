@@ -706,9 +706,6 @@ class MimeTypes
                 continue;
             }
 
-            /*
-             * Extensions should be returned as upper case?
-             */
             if ($asUpperCase) {
                 if (is_array($extension)) {
                     array_walk($extension, function (&$value) {
@@ -729,7 +726,7 @@ class MimeTypes
      * Returns extension for given mime type
      *
      * @param string $mimeType The mime type, e.g. "video/mpeg"
-     * @return string|array
+     * @return array|string
      */
     public static function getExtension($mimeType)
     {
@@ -772,29 +769,24 @@ class MimeTypes
             return '';
         }
 
-        /*
-         * 1st possibility: the finfo class
-         */
+        // 1st possibility: the finfo class
         if (class_exists('finfo')) {
             $finfo = new \finfo();
 
             return $finfo->file($filePath, FILEINFO_MIME_TYPE);
         }
 
-        /*
-         * 2nd possibility: the mime_content_type function
-         */
+        // 2nd possibility: the mime_content_type function
         if (function_exists('mime_content_type')) {
             return mime_content_type($filePath);
         }
 
-        /*
-         * Oops, there is no possibility to read the mime type
-         */
+        // Oops, there is no possibility to read the mime type
         $template = 'Neither \'finfo\' class nor \'mime_content_type\' function exists. There is no way to read the'
             . ' mime type of file \'%s\'.';
 
         $message = sprintf($template, $filePath);
+
         throw new \RuntimeException($message);
     }
 

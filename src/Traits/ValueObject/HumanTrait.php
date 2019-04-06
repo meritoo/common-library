@@ -99,7 +99,7 @@ trait HumanTrait
     /**
      * Returns email address
      *
-     * @return string|null
+     * @return null|string
      */
     public function getEmail()
     {
@@ -109,7 +109,7 @@ trait HumanTrait
     /**
      * Returns birth date
      *
-     * @return \DateTime|null
+     * @return null|\DateTime
      */
     public function getBirthDate()
     {

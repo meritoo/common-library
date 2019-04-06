@@ -195,7 +195,7 @@ class Size
      * @param string $size      The size represented as string (width and height separated by given separator)
      * @param string $unit      (optional) Unit used when width or height should be returned with unit. Default: "px".
      * @param string $separator (optional) Separator used to split width and height. Default: " x ".
-     * @return Size|null
+     * @return null|Size
      */
     public static function fromString($size, $unit = 'px', $separator = ' x ')
     {
@@ -223,7 +223,7 @@ class Size
      *
      * @param array  $array The size represented as array
      * @param string $unit  (optional) Unit used when width or height should be returned with unit. Default: "px".
-     * @return Size|null
+     * @return null|Size
      */
     public static function fromArray(array $array, $unit = 'px')
     {

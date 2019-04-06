@@ -19,6 +19,9 @@ use Meritoo\Common\Type\OopVisibilityType;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Collection\Collection
  */
 class CollectionTest extends BaseTestCase
 {
@@ -42,6 +45,24 @@ class CollectionTest extends BaseTestCase
      * @var array
      */
     private $simpleElements;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->simpleElements = [
+            'lorem',
+            'ipsum',
+            123 => 'dolor',
+            345 => 'sit',
+        ];
+
+        $this->emptyCollection = new Collection();
+        $this->simpleCollection = new Collection($this->simpleElements);
+    }
 
     public function testEmptyCollection()
     {
@@ -501,23 +522,5 @@ class CollectionTest extends BaseTestCase
             'y',
             new \DateTime('2001-01-01'),
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->simpleElements = [
-            'lorem',
-            'ipsum',
-            123 => 'dolor',
-            345 => 'sit',
-        ];
-
-        $this->emptyCollection = new Collection();
-        $this->simpleCollection = new Collection($this->simpleElements);
     }
 }

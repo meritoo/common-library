@@ -58,6 +58,7 @@ trait MainTrait
             foreach ($elements as $index => $element) {
                 if ($useIndexes) {
                     $this->add($element, $index);
+
                     continue;
                 }
 
@@ -93,6 +94,7 @@ trait MainTrait
             foreach ($this->elements as $index => $existing) {
                 if ($element === $existing) {
                     unset($this->elements[$index]);
+
                     break;
                 }
             }
@@ -150,7 +152,7 @@ trait MainTrait
      * Returns previous element for given element
      *
      * @param mixed $element The element to verify
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getPrevious($element)
     {
@@ -161,7 +163,7 @@ trait MainTrait
      * Returns next element for given element
      *
      * @param mixed $element The element to verify
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getNext($element)
     {
@@ -192,7 +194,7 @@ trait MainTrait
      * Returns element with given index
      *
      * @param mixed $index Index / key of the element
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getByIndex($index)
     {

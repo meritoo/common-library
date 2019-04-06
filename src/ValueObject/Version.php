@@ -55,6 +55,16 @@ class Version
     }
 
     /**
+     * Returns representation of object as string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%d.%d.%d', $this->getMajorPart(), $this->getMinorPart(), $this->getPatchPart());
+    }
+
+    /**
      * Returns the "major" part.
      * Incremented when you make incompatible API changes.
      *
@@ -88,16 +98,6 @@ class Version
     }
 
     /**
-     * Returns representation of object as string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return sprintf('%d.%d.%d', $this->getMajorPart(), $this->getMinorPart(), $this->getPatchPart());
-    }
-
-    /**
      * Returns new instance based on given version as string.
      * Given version should contain 3 dot-separated integers, 1 per each part ("major", "minor" and "patch").
      *
@@ -106,7 +106,7 @@ class Version
      * "10.4.0";
      *
      * @param string $version The version
-     * @return Version|null
+     * @return null|Version
      */
     public static function fromString(string $version)
     {
@@ -148,7 +148,7 @@ class Version
      * [10, 4, 0];
      *
      * @param array $version The version
-     * @return Version|null
+     * @return null|Version
      */
     public static function fromArray(array $version)
     {

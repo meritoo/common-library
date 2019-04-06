@@ -24,7 +24,7 @@ class Repository
      *
      * @var string
      */
-    const POSITION_KEY = 'position';
+    public const POSITION_KEY = 'position';
 
     /**
      * Replenishes positions of given items
@@ -57,24 +57,17 @@ class Repository
         }
 
         foreach ($items as &$item) {
-            /*
-             * The item is not sortable?
-             */
+            // Not sortable?
             if (!self::isSortable($item)) {
                 continue;
             }
 
-            /*
-             * Position has been set?
-             * Nothing to do
-             */
+            // Sorted already (position has been set)?
             if (self::isSorted($item)) {
                 continue;
             }
 
-            /*
-             * Calculate position
-             */
+            // Calculate position
             if ($asLast) {
                 ++$position;
             } else {
@@ -87,6 +80,7 @@ class Repository
              */
             if (is_object($item)) {
                 $item->setPosition($position);
+
                 continue;
             }
 
@@ -118,31 +112,23 @@ class Repository
         $extreme = null;
 
         foreach ($items as $item) {
-            /*
-             * The item is not sortable?
-             */
+            // Not sortable?
             if (!self::isSortable($item)) {
                 continue;
             }
 
             $position = null;
 
-            /*
-             * Let's grab the position
-             */
+            // Let's grab the position
             if (is_object($item)) {
                 $position = $item->getPosition();
             } elseif (array_key_exists(static::POSITION_KEY, $item)) {
                 $position = $item[static::POSITION_KEY];
             }
 
-            /*
-             * Maximum value is expected?
-             */
+            // Maximum value is expected?
             if ($max) {
-                /*
-                 * Position was found and it's larger than previously found position (the extreme position)?
-                 */
+                // Position was found and it's larger than previously found position (the extreme position)?
                 if (null === $extreme || (null !== $position && $position > $extreme)) {
                     $extreme = $position;
                 }
@@ -218,17 +204,12 @@ class Repository
      */
     private static function isSorted($item)
     {
-        /*
-         * Given item is not sortable?
-         */
+        // Not sortable?
         if (!self::isSortable($item)) {
             return false;
         }
 
-        /*
-         * It's an object or it's an array
-         * and position has been set?
-         */
+        // It's an object or it's an array and position has been set?
 
         return
             (is_object($item) && null !== $item->getPosition())

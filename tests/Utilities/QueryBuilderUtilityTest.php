@@ -23,6 +23,9 @@ use Meritoo\Common\Utilities\QueryBuilderUtility;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Utilities\QueryBuilderUtility
  */
 class QueryBuilderUtilityTest extends BaseTestCase
 {
@@ -33,7 +36,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
 
     /**
      * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
-     * @param string|null  $rootAlias    Expected root alias of given query builder
+     * @param null|string  $rootAlias    Expected root alias of given query builder
      *
      * @dataProvider provideQueryBuilderAndRootAlias
      */
@@ -45,7 +48,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
     /**
      * @param QueryBuilder $queryBuilder  The query builder to verify
      * @param string       $propertyName  Name of property that maybe is joined
-     * @param string|null  $propertyAlias Expected alias of given property joined in given query builder
+     * @param null|string  $propertyAlias Expected alias of given property joined in given query builder
      *
      * @dataProvider provideQueryBuilderAndPropertyAlias
      */
@@ -93,9 +96,7 @@ class QueryBuilderUtilityTest extends BaseTestCase
         $criteriaCount = count($criteria);
         $nullsCount = 0;
 
-        /*
-         * I have to verify count/amount of NULLs and decrease $criteriaCount, because for null parameter is not added
-         */
+        // I have to verify count/amount of NULLs and decrease $criteriaCount, because for null parameter is not added
         array_walk($criteria, function ($value) use (&$nullsCount) {
             if (null === $value) {
                 ++$nullsCount;

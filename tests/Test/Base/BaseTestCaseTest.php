@@ -19,6 +19,9 @@ use Meritoo\Common\Utilities\GeneratorUtility;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Test\Base\BaseTestCase
  */
 class BaseTestCaseTest extends BaseTestCase
 {
@@ -67,16 +70,16 @@ class BaseTestCaseTest extends BaseTestCase
         $generator = (new SimpleTestCase())->provideDateTimeInstance();
         $generatedElements = GeneratorUtility::getGeneratorElements($generator);
 
-        /* @var DateTime $instance1 */
+        /** @var DateTime $instance1 */
         $instance1 = $generatedElements[0][0];
 
-        /* @var DateTime $instance2 */
+        /** @var DateTime $instance2 */
         $instance2 = $generatedElements[1][0];
 
-        /* @var DateTime $instance3 */
+        /** @var DateTime $instance3 */
         $instance3 = $generatedElements[2][0];
 
-        /* @var DateTime $instance4 */
+        /** @var DateTime $instance4 */
         $instance4 = $generatedElements[3][0];
 
         self::assertCount(count($expectedElements), $generatedElements);
@@ -170,6 +173,9 @@ class BaseTestCaseTest extends BaseTestCase
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @coversNothing
  */
 class SimpleTestCase extends BaseTestCase
 {

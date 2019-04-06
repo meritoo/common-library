@@ -17,6 +17,9 @@ use Meritoo\Common\ValueObject\Human;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\ValueObject\Human
  */
 class HumanTest extends BaseTestCase
 {

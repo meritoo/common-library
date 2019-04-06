@@ -271,7 +271,7 @@ class Regex
 
                 eval(sprintf('$isEqual = %s%s;', $value, $filterExpression));
 
-                /* @var bool $isEqual */
+                /** @var bool $isEqual */
                 $remove = !$isEqual;
             }
 
@@ -317,6 +317,7 @@ class Regex
                 $effect = $effect && $matched;
             } elseif ($matched) {
                 $effect = $matched;
+
                 break;
             }
         }
@@ -458,14 +459,10 @@ class Regex
             return false;
         }
 
-        /*
-         * I have to escape all slashes (directory separators): "/" -> "\/"
-         */
+        // I have to escape all slashes (directory separators): "/" -> "\/"
         $prepared = preg_quote($path, '/');
 
-        /*
-         * Slash at the ending is optional
-         */
+        // Slash at the ending is optional
         if (self::endsWith($path, '/')) {
             $prepared .= '?';
         }
@@ -775,7 +772,7 @@ class Regex
      *                               (default behaviour). Otherwise - not.
      * @throws IncorrectColorHexLengthException
      * @throws InvalidColorHexValueException
-     * @return string|bool
+     * @return bool|string
      */
     public static function getValidColorHexValue($color, $throwException = true)
     {
@@ -986,7 +983,7 @@ class Regex
      * Returns slug for given value
      *
      * @param string $value Value that should be transformed to slug
-     * @return string|bool
+     * @return bool|string
      */
     public static function createSlug($value)
     {

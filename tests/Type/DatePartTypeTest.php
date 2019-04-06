@@ -16,6 +16,9 @@ use Meritoo\Common\Type\DatePartType;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\Type\DatePartType
  */
 class DatePartTypeTest extends BaseTypeTestCase
 {

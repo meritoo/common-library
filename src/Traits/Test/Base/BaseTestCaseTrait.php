@@ -163,7 +163,7 @@ trait BaseTestCaseTrait
      * Verifies visibility and arguments of method
      *
      * @param string                  $classNamespace         Namespace of class that contains method to verify
-     * @param string|ReflectionMethod $method                 Name of method or just the method to verify
+     * @param ReflectionMethod|string $method                 Name of method or just the method to verify
      * @param string                  $visibilityType         Expected visibility of verified method. One of
      *                                                        OopVisibilityType class constants.
      * @param int                     $argumentsCount         (optional) Expected count/amount of arguments of the
@@ -183,19 +183,15 @@ trait BaseTestCaseTrait
         $argumentsCount = 0,
         $requiredArgumentsCount = 0
     ) {
-        /*
-         * Type of visibility is correct?
-         */
+        // Type of visibility is not correct?
         if (!(new OopVisibilityType())->isCorrectType($visibilityType)) {
             throw new UnknownOopVisibilityTypeException($visibilityType);
         }
 
         $reflection = new ReflectionClass($classNamespace);
 
-        /*
-         * Name of method provided only?
-         * Let's find instance of the method (based on reflection)
-         */
+        // Name of method provided only?
+        // Let's find instance of the method (based on reflection)
         if (!$method instanceof ReflectionMethod) {
             $method = $reflection->getMethod($method);
         }
@@ -203,14 +199,15 @@ trait BaseTestCaseTrait
         switch ($visibilityType) {
             case OopVisibilityType::IS_PUBLIC:
                 static::assertTrue($method->isPublic());
-                break;
 
+                break;
             case OopVisibilityType::IS_PROTECTED:
                 static::assertTrue($method->isProtected());
-                break;
 
+                break;
             case OopVisibilityType::IS_PRIVATE:
                 static::assertTrue($method->isPrivate());
+
                 break;
         }
 
@@ -234,9 +231,6 @@ trait BaseTestCaseTrait
         $argumentsCount = 0,
         $requiredArgumentsCount = 0
     ) {
-        /*
-         * Let's grab the constructor
-         */
         $reflection = new ReflectionClass($classNamespace);
         $method = $reflection->getConstructor();
 
@@ -256,9 +250,6 @@ trait BaseTestCaseTrait
      */
     protected static function assertHasNoConstructor($classNamespace)
     {
-        /*
-         * Let's grab the constructor
-         */
         $reflection = new ReflectionClass($classNamespace);
         $constructor = $reflection->getConstructor();
 

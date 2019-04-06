@@ -19,6 +19,9 @@ use Meritoo\Common\ValueObject\Company;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers \Meritoo\Common\ValueObject\Company
  */
 class CompanyTest extends BaseTestCase
 {
@@ -31,6 +34,25 @@ class CompanyTest extends BaseTestCase
      * @var Company
      */
     private $companyWithoutBankAccount;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->company = new Company(
+            'Test 1',
+            new Address('New York', '00123', '4th Avenue', '10', '200'),
+            new BankAccount('Bank 1', '12345')
+        );
+
+        $this->companyWithoutBankAccount = new Company(
+            'Test 2',
+            new Address('San Francisco', '00456', 'Green Street', '22')
+        );
+    }
 
     public function testConstructor()
     {
@@ -75,24 +97,5 @@ class CompanyTest extends BaseTestCase
     {
         static::assertSame('Test 1, 4th Avenue 10/200, 00123, New York, Bank 1, 12345', (string)$this->company);
         static::assertSame('Test 2, Green Street 22, 00456, San Francisco', (string)$this->companyWithoutBankAccount);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->company = new Company(
-            'Test 1',
-            new Address('New York', '00123', '4th Avenue', '10', '200'),
-            new BankAccount('Bank 1', '12345')
-        );
-
-        $this->companyWithoutBankAccount = new Company(
-            'Test 2',
-            new Address('San Francisco', '00456', 'Green Street', '22')
-        );
     }
 }
