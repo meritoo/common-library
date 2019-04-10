@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Meritoo\Common\ValueObject;
 
 use Meritoo\Common\Exception\ValueObject\Template\InvalidContentException;
-use Meritoo\Common\Exception\ValueObject\Template\NotEnoughValuesException;
+use Meritoo\Common\Exception\ValueObject\Template\MissingPlaceholdersInValuesException;
 
 /**
  * Template with placeholders that may be filled by real data
@@ -54,18 +54,18 @@ class Template
      * Returns content of the template filled with given values (by replacing placeholders with their proper values)
      *
      * @param array $values Pairs of key-value where: key - name of placeholder, value - value of the placeholder
-     * @throws NotEnoughValuesException
+     * @throws MissingPlaceholdersInValuesException
      * @return string
      */
     public function fill(array $values): string
     {
         $placeholders = static::getPlaceholders($this->content);
-        $valuesCount = count($values);
-        $placeholdersCount = count($placeholders[0]);
+        $providedPlaceholders = array_keys($values);
+        $missingPlaceholders = array_diff($placeholders[1], $providedPlaceholders);
 
-        // Oops, not enough values (iow. more placeholders than values)
-        if ($placeholdersCount > $valuesCount) {
-            throw NotEnoughValuesException::create($this->content, $valuesCount, $placeholdersCount);
+        // Oops, there are placeholders without values (iow. provided values are different than placeholders)
+        if (!empty($missingPlaceholders)) {
+            throw MissingPlaceholdersInValuesException::create($this->content, $missingPlaceholders);
         }
 
         $result = $this->content;

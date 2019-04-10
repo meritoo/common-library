@@ -10,7 +10,7 @@ namespace Meritoo\Test\Common\ValueObject;
 
 use Generator;
 use Meritoo\Common\Exception\ValueObject\Template\InvalidContentException;
-use Meritoo\Common\Exception\ValueObject\Template\NotEnoughValuesException;
+use Meritoo\Common\Exception\ValueObject\Template\MissingPlaceholdersInValuesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Reflection;
@@ -69,11 +69,11 @@ class TemplateTest extends BaseTestCase
      *                                   placeholder
      * @param string   $exceptionMessage Expected message of exception
      *
-     * @dataProvider provideTemplateToFillUsingNotEnoughValues
+     * @dataProvider provideTemplateToFillUsingIncorrectValues
      */
-    public function testFillUsingNotEnoughValues(Template $template, array $values, string $exceptionMessage): void
+    public function testFillUsingIncorrectValues(Template $template, array $values, string $exceptionMessage): void
     {
-        $this->expectException(NotEnoughValuesException::class);
+        $this->expectException(MissingPlaceholdersInValuesException::class);
         $this->expectExceptionMessage($exceptionMessage);
 
         $template->fill($values);
@@ -118,19 +118,30 @@ class TemplateTest extends BaseTestCase
         ];
     }
 
-    public function provideTemplateToFillUsingNotEnoughValues(): ?Generator
+    public function provideTemplateToFillUsingIncorrectValues(): ?Generator
     {
-        $template = 'Not enough values (%d) to fill all placeholders (%d) in template \'%s\'. Did you provide all'
+        $template = 'Cannot fill template \'%s\', because of missing values for placeholder(s): %s. Did you provide all'
             . ' required values?';
+
+        yield[
+            new Template('%test%'),
+            [
+                'something' => 123,
+            ],
+            sprintf(
+                $template,
+                '%test%',
+                'test'
+            ),
+        ];
 
         yield[
             new Template('%test%'),
             [],
             sprintf(
                 $template,
-                0,
-                1,
-                '%test%'
+                '%test%',
+                'test'
             ),
         ];
 
@@ -141,24 +152,39 @@ class TemplateTest extends BaseTestCase
             ],
             sprintf(
                 $template,
-                1,
-                2,
-                '%test1% - %test2%'
+                '%test1% - %test2%',
+                'test2'
+            ),
+        ];
+
+        yield[
+            new Template('%test1% - %test2%'),
+            [
+                'test1' => 123,
+                'test3' => 456,
+            ],
+            sprintf(
+                $template,
+                '%test1% - %test2%',
+                'test2'
+            ),
+        ];
+
+        yield[
+            new Template('%test1% / %test2% / %test3%'),
+            [
+                'test1' => 123,
+            ],
+            sprintf(
+                $template,
+                '%test1% / %test2% / %test3%',
+                'test2, test3'
             ),
         ];
     }
 
     public function provideTemplateToFill(): ?Generator
     {
-        yield[
-            'Template with 1 placeholder, but incorrect values',
-            new Template('%test%'),
-            [
-                'something' => 123,
-            ],
-            '%test%',
-        ];
-
         yield[
             'Template with 1 placeholder',
             new Template('%test%'),

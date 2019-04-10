@@ -455,6 +455,19 @@ class CollectionTest extends BaseTestCase
                 3       => 'I am 4th',
             ]),
         ];
+
+        yield[
+            'This is test 6',
+            'test2',
+            4,
+            'test2',
+            new Collection([
+                'test1' => 'I am 1st',
+                'test2' => 'I am 2nd',
+                2       => 'I am 3rd',
+                3       => 'I am 4th',
+            ]),
+        ];
     }
 
     public function provideElementGetByIndex()
