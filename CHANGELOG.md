@@ -7,6 +7,7 @@ Common and useful classes, methods, exceptions etc.
 1. Travis CI > run many tasks using Phing > update configuration
 2. Template with placeholders > verification of placeholders without values > make stronger and point out which are 
 missing
+3. Reflection > getPropertyValue() method > look for the property in parent classes
 
 # 1.0.2
 

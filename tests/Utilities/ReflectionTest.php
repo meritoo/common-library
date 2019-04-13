@@ -309,6 +309,12 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($username, Reflection::getPropertyValue($f, 'username'));
     }
 
+    public function testGetPropertyValueFromParentClass(): void
+    {
+        $c = new C();
+        self::assertEquals(1, Reflection::getPropertyValue($c, 'count', true));
+    }
+
     public function testGetPropertyValuesFromEmptySource()
     {
         self::assertEquals([], Reflection::getPropertyValues([], 'something'));

@@ -217,54 +217,76 @@ class Reflection
             } catch (\ReflectionException $exception) {
                 /*
                  * 2nd try:
-                 * Look for the get / has / is methods
+                 * Look for the property in parent classes
                  */
-                $class = new \ReflectionObject($object);
-                $valueFound = false;
+                if (null === $reflectionProperty) {
+                    $propertyFound = false;
+                    $reflectionProperties = self::getProperties($object, null, true);
 
-                if ($force || $class->hasProperty($property)) {
-                    $property = Inflector::classify($property);
-
-                    $getterPrefixes = [
-                        'get',
-                        'has',
-                        'is',
-                    ];
-
-                    foreach ($getterPrefixes as $prefix) {
-                        $getterName = sprintf('%s%s', $prefix, $property);
-
-                        if ($class->hasMethod($getterName)) {
-                            $method = new \ReflectionMethod($object, $getterName);
-
-                            /*
-                             * Getter is not accessible publicly?
-                             * I have to skip it, to avoid an error like this:
-                             *
-                             * Call to protected method My\ExtraClass::getExtraProperty() from context 'My\ExtraClass'
-                             */
-                            if ($method->isProtected() || $method->isPrivate()) {
-                                continue;
-                            }
-
-                            $value = $object->{$getterName}();
-                            $valueFound = true;
-
+                    foreach ($reflectionProperties as $reflectionProperty) {
+                        if ($reflectionProperty->getName() === $property) {
+                            $propertyFound = true;
                             break;
                         }
                     }
-                }
 
-                if (!$valueFound && null !== $reflectionProperty) {
+                    if ($propertyFound && null !== $reflectionProperty) {
+                        $reflectionProperty->setAccessible(true);
+                        $value = $reflectionProperty->getValue($object);
+                        $reflectionProperty->setAccessible(false);
+                    }
+                } else {
                     /*
-                     * Oops, value of the property is still unknown
-                     *
                      * 3rd try:
-                     * Let's modify accessibility of the property and try again to get value
+                     * Look for the get / has / is methods
                      */
-                    $reflectionProperty->setAccessible(true);
-                    $value = $reflectionProperty->getValue($object);
-                    $reflectionProperty->setAccessible(false);
+                    $class = new \ReflectionObject($object);
+                    $valueFound = false;
+
+                    if ($force || $class->hasProperty($property)) {
+                        $property = Inflector::classify($property);
+
+                        $getterPrefixes = [
+                            'get',
+                            'has',
+                            'is',
+                        ];
+
+                        foreach ($getterPrefixes as $prefix) {
+                            $getterName = sprintf('%s%s', $prefix, $property);
+
+                            if ($class->hasMethod($getterName)) {
+                                $method = new \ReflectionMethod($object, $getterName);
+
+                                /*
+                                 * Getter is not accessible publicly?
+                                 * I have to skip it, to avoid an error like this:
+                                 *
+                                 * Call to protected method My\ExtraClass::getExtraProperty() from context 'My\ExtraClass'
+                                 */
+                                if ($method->isProtected() || $method->isPrivate()) {
+                                    continue;
+                                }
+
+                                $value = $object->{$getterName}();
+                                $valueFound = true;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!$valueFound) {
+                        /*
+                         * Oops, value of the property is still unknown
+                         *
+                         * 4th try:
+                         * Let's modify accessibility of the property and try again to get value
+                         */
+                        $reflectionProperty->setAccessible(true);
+                        $value = $reflectionProperty->getValue($object);
+                        $reflectionProperty->setAccessible(false);
+                    }
                 }
             }
         }
