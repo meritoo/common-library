@@ -8,8 +8,8 @@
 
 namespace Meritoo\Common\Utilities;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Util\Inflector;
+use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Common\Persistence\Proxy;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
@@ -368,7 +368,7 @@ class Reflection
             return $name;
         }
 
-        return ClassUtils::getRealClass($name);
+        return static::getRealClass($name);
     }
 
     /**
@@ -514,14 +514,14 @@ class Reflection
         foreach ($allClasses as $oneClass) {
             if (self::isChildOfClass($oneClass, $className)) {
                 /*
-                 * Attention. I have to use ClassUtils::getRealClass() method to avoid problem with the proxy / cache
+                 * Attention. I have to use static::getRealClass() method to avoid problem with the proxy / cache
                  * classes. Example:
                  * - My\ExtraBundle\Entity\MyEntity
                  * - Proxies\__CG__\My\ExtraBundle\Entity\MyEntity
                  *
                  * It's actually the same class, so I have to skip it.
                  */
-                $realClass = ClassUtils::getRealClass($oneClass);
+                $realClass = static::getRealClass($oneClass);
 
                 if (in_array($realClass, $childClasses, true)) {
                     continue;
@@ -703,5 +703,20 @@ class Reflection
         foreach ($propertiesValues as $property => $value) {
             static::setPropertyValue($object, $property, $value);
         }
+    }
+
+    /**
+     * Returns the real class name of a class name that could be a proxy
+     *
+     * @param string $class Class to verify
+     * @return string
+     */
+    private static function getRealClass($class): string
+    {
+        if (false === $pos = strrpos($class, '\\' . Proxy::MARKER . '\\')) {
+            return $class;
+        }
+
+        return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
     }
 }
