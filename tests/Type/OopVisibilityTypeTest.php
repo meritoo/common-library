@@ -26,26 +26,6 @@ class OopVisibilityTypeTest extends BaseTypeTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getAllExpectedTypes(): array
-    {
-        return [
-            'IS_PRIVATE'   => 3,
-            'IS_PROTECTED' => 2,
-            'IS_PUBLIC'    => 1,
-        ];
-    }
-
-    /**
-     *{@inheritdoc}
-     */
-    protected function getTestedTypeInstance(): BaseType
-    {
-        return new OopVisibilityType();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function provideTypeToVerify(): ?\Generator
     {
         yield[
@@ -82,5 +62,25 @@ class OopVisibilityTypeTest extends BaseTypeTestCase
             3,
             true,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAllExpectedTypes(): array
+    {
+        return [
+            'IS_PRIVATE'   => 3,
+            'IS_PROTECTED' => 2,
+            'IS_PUBLIC'    => 1,
+        ];
+    }
+
+    /**
+     *{@inheritdoc}
+     */
+    protected function getTestedTypeInstance(): BaseType
+    {
+        return new OopVisibilityType();
     }
 }
