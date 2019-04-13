@@ -322,8 +322,8 @@ class Reflection
         $values = [];
         $objects = Arrays::makeArray($objects);
 
-        foreach ($objects as $entity) {
-            $value = self::getPropertyValue($entity, $property, $force);
+        foreach ($objects as $object) {
+            $value = self::getPropertyValue($object, $property, $force);
 
             if (null !== $value) {
                 $values[] = $value;

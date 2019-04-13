@@ -35,7 +35,7 @@ use ReflectionProperty;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\Reflection
+ * @covers    \Meritoo\Common\Utilities\Reflection
  */
 class ReflectionTest extends BaseTestCase
 {
@@ -274,7 +274,7 @@ class ReflectionTest extends BaseTestCase
     public function testGetPropertyValueFromChain()
     {
         $f = new F(1000, 'New York', 'USA', 'john.scott');
-        self::assertEquals('John', Reflection::getPropertyValue($f, 'gInstance.firstName'));
+        self::assertEquals('John', Reflection::getPropertyValue($f, 'g.firstName'));
     }
 
     public function testGetPropertyValueWithPublicGetter()
@@ -381,8 +381,8 @@ class ReflectionTest extends BaseTestCase
     {
         $f = new F(1000, 'New York', 'USA', 'john.scott');
 
-        self::assertEquals(['John'], Reflection::getPropertyValues($f, 'gInstance.firstName'));
-        self::assertEquals(['John'], Reflection::getPropertyValues($f, 'gInstance.firstName', true));
+        self::assertEquals(['John'], Reflection::getPropertyValues($f, 'g.firstName'));
+        self::assertEquals(['John'], Reflection::getPropertyValues($f, 'g.firstName', true));
     }
 
     public function testGetPropertyValuesFromChainAndMultipleObjects()
@@ -399,13 +399,13 @@ class ReflectionTest extends BaseTestCase
             new F(3000, 'Tokyo', 'Japan', 'john.scott', 'Peter', 'Brown'),
         ];
 
-        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'gInstance.firstName'));
-        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'gInstance.firstName', true));
+        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'g.firstName'));
+        self::assertEquals($expected, Reflection::getPropertyValues($objects, 'g.firstName', true));
 
         $collection = new Collection($objects);
 
-        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'gInstance.firstName'));
-        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'gInstance.firstName', true));
+        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'g.firstName'));
+        self::assertEquals($expected, Reflection::getPropertyValues($collection, 'g.firstName', true));
     }
 
     public function testGetMaxNumberConstantUsingClassWithoutConstants()
@@ -730,7 +730,7 @@ class ReflectionTest extends BaseTestCase
                 'UnKnown'
             ),
             [
-                'gInstance' => new G(),
+                'g' => new G(),
             ],
         ];
 

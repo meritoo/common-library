@@ -21,7 +21,7 @@ class F
     private $accountBalance;
     private $city;
     private $country;
-    private $gInstance;
+    private $g;
 
     public function __construct($accountBalance, $city, $country, $username, $firstName = 'John', $lastName = 'Scott')
     {
@@ -29,7 +29,7 @@ class F
         $this->city = $city;
         $this->country = $country;
         $this->username = $username;
-        $this->gInstance = new G($firstName, $lastName);
+        $this->g = new G($firstName, $lastName);
 
         // Called to avoid "Unused private method getAccountBalance" warning only
         $this->getAccountBalance();
