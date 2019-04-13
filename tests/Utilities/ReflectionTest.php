@@ -26,6 +26,7 @@ use Meritoo\Test\Common\Utilities\Reflection\F;
 use Meritoo\Test\Common\Utilities\Reflection\G;
 use Meritoo\Test\Common\Utilities\Reflection\H;
 use Meritoo\Test\Common\Utilities\Reflection\I;
+use Meritoo\Test\Common\Utilities\Reflection\J;
 use ReflectionProperty;
 
 /**
@@ -380,9 +381,13 @@ class ReflectionTest extends BaseTestCase
     public function testGetPropertyValuesFromChainAndSingleObject()
     {
         $f = new F(1000, 'New York', 'USA', 'john.scott');
+        $j = new J();
 
         self::assertEquals(['John'], Reflection::getPropertyValues($f, 'g.firstName'));
         self::assertEquals(['John'], Reflection::getPropertyValues($f, 'g.firstName', true));
+
+        self::assertEquals(['John'], Reflection::getPropertyValues($j, 'f.g.firstName'));
+        self::assertEquals(['John'], Reflection::getPropertyValues($j, 'f.g.firstName', true));
     }
 
     public function testGetPropertyValuesFromChainAndMultipleObjects()
