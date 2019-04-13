@@ -156,139 +156,43 @@ class Reflection
     }
 
     /**
-     * Returns value of given property.
-     * Looks for proper getter for the property.
+     * Returns value of given property
      *
-     * @param mixed  $object   Object that should contains given property
+     * @param mixed  $source   Object that should contains given property
      * @param string $property Name of the property that contains a value. It may be also multiple properties
      *                         dot-separated, e.g. "invoice.user.email".
      * @param bool   $force    (optional) If is set to true, try to retrieve value even if the object doesn't have
      *                         property. Otherwise - not.
      * @return mixed
      */
-    public static function getPropertyValue($object, $property, $force = false)
+    public static function getPropertyValue($source, $property, $force = false)
     {
-        $value = null;
-
-        /*
-         * Property is a dot-separated string?
-         * Let's find all values of the chain, of the dot-separated properties
-         */
         if (Regex::contains($property, '.')) {
-            $exploded = explode('.', $property);
+            return self::getPropertyValueByPropertiesChain($source, $property, $force);
+        }
 
-            $property = $exploded[0];
-            $object = self::getPropertyValue($object, $property, $force);
+        [
+            $value,
+            $valueFound,
+        ] = self::getPropertyValueByReflectionProperty($source, $property);
 
-            /*
-             * Value of processed property from the chain is not null?
-             * Let's dig more and get proper value
-             *
-             * Required to avoid bug:
-             * \ReflectionObject::__construct() expects parameter 1 to be object, null given
-             * (...)
-             * 4. at \ReflectionObject->__construct (null)
-             * 5. at Reflection ::getPropertyValue (null, 'name', true)
-             * 6. at ListService->getItemValue (object(Deal), 'project.name', '0')
-             *
-             * while using "project.name" as property - $project has $name property ($project exists in the Deal class)
-             * and the $project equals null
-             *
-             * Meritoo <github@meritoo.pl>
-             * 2016-11-07
-             */
-            if (null !== $object) {
-                unset($exploded[0]);
+        if (!$valueFound) {
+            [
+                $value,
+                $valueFound,
+            ] = self::getPropertyValueByParentClasses($source, $property);
+        }
 
-                $property = implode('.', $exploded);
-                $value = self::getPropertyValue($object, $property, $force);
-            }
-        } else {
-            $className = self::getClassName($object);
-            $reflectionProperty = null;
+        if (!$valueFound && ($force || self::hasProperty($source, $property))) {
+            [
+                $value,
+                $valueFound,
+            ] = self::getPropertyValueByGetter($source, $property);
+        }
 
-            /*
-             * 1st try:
-             * Use \ReflectionObject class
-             */
-            try {
-                $reflectionProperty = new \ReflectionProperty($className, $property);
-                $value = $reflectionProperty->getValue($object);
-            } catch (\ReflectionException $exception) {
-                /*
-                 * 2nd try:
-                 * Look for the property in parent classes
-                 */
-                if (null === $reflectionProperty) {
-                    $propertyFound = false;
-                    $reflectionProperties = self::getProperties($object, null, true);
-
-                    foreach ($reflectionProperties as $reflectionProperty) {
-                        if ($reflectionProperty->getName() === $property) {
-                            $propertyFound = true;
-                            break;
-                        }
-                    }
-
-                    if ($propertyFound && null !== $reflectionProperty) {
-                        $reflectionProperty->setAccessible(true);
-                        $value = $reflectionProperty->getValue($object);
-                        $reflectionProperty->setAccessible(false);
-                    }
-                } else {
-                    /*
-                     * 3rd try:
-                     * Look for the get / has / is methods
-                     */
-                    $class = new \ReflectionObject($object);
-                    $valueFound = false;
-
-                    if ($force || $class->hasProperty($property)) {
-                        $property = Inflector::classify($property);
-
-                        $getterPrefixes = [
-                            'get',
-                            'has',
-                            'is',
-                        ];
-
-                        foreach ($getterPrefixes as $prefix) {
-                            $getterName = sprintf('%s%s', $prefix, $property);
-
-                            if ($class->hasMethod($getterName)) {
-                                $method = new \ReflectionMethod($object, $getterName);
-
-                                /*
-                                 * Getter is not accessible publicly?
-                                 * I have to skip it, to avoid an error like this:
-                                 *
-                                 * Call to protected method My\ExtraClass::getExtraProperty() from context 'My\ExtraClass'
-                                 */
-                                if ($method->isProtected() || $method->isPrivate()) {
-                                    continue;
-                                }
-
-                                $value = $object->{$getterName}();
-                                $valueFound = true;
-
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!$valueFound) {
-                        /*
-                         * Oops, value of the property is still unknown
-                         *
-                         * 4th try:
-                         * Let's modify accessibility of the property and try again to get value
-                         */
-                        $reflectionProperty->setAccessible(true);
-                        $value = $reflectionProperty->getValue($object);
-                        $reflectionProperty->setAccessible(false);
-                    }
-                }
-            }
+        if (!$valueFound) {
+            $byReflectionProperty = self::getPropertyValueByReflectionProperty($source, $property);
+            $value = $byReflectionProperty[0];
         }
 
         return $value;
@@ -460,9 +364,9 @@ class Reflection
      *                                            constants. By default all properties are returned.
      * @param bool                $includeParents (optional) If is set to true, properties of parent classes are
      *                                            included (recursively). Otherwise - not.
-     * @return array|\ReflectionProperty
+     * @return \ReflectionProperty[]
      */
-    public static function getProperties($source, $filter = null, $includeParents = false)
+    public static function getProperties($source, $filter = null, $includeParents = false): array
     {
         $className = self::getClassName($source);
         $reflection = new \ReflectionClass($className);
@@ -693,15 +597,15 @@ class Reflection
             throw NotExistingPropertyException::create($object, $property);
         }
 
-        $notAccessible = $reflectionProperty->isPrivate() || $reflectionProperty->isProtected();
+        $isPublic = $reflectionProperty->isPublic();
 
-        if ($notAccessible) {
+        if (!$isPublic) {
             $reflectionProperty->setAccessible(true);
         }
 
         $reflectionProperty->setValue($object, $value);
 
-        if ($notAccessible) {
+        if (!$isPublic) {
             $reflectionProperty->setAccessible(false);
         }
     }
@@ -740,5 +644,184 @@ class Reflection
         }
 
         return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
+    }
+
+    /**
+     * Returns value of given property using the property represented by reflection.
+     * If value cannot be fetched, makes the property accessible temporarily.
+     *
+     * @param mixed                    $object             Object that should contains given property
+     * @param string                   $property           Name of the property that contains a value
+     * @param null|\ReflectionProperty $reflectionProperty (optional) Property represented by reflection
+     * @return mixed
+     */
+    private static function getPropertyValueByReflectionProperty(
+        $object,
+        string $property,
+        ?\ReflectionProperty $reflectionProperty = null
+    ) {
+        $value = null;
+        $valueFound = false;
+        $className = self::getClassName($object);
+
+        try {
+            if (null === $reflectionProperty) {
+                $reflectionProperty = new \ReflectionProperty($className, $property);
+            }
+
+            $value = $reflectionProperty->getValue($object);
+            $valueFound = true;
+        } catch (\ReflectionException $exception) {
+        }
+
+        if (null !== $reflectionProperty) {
+            $reflectionProperty->setAccessible(true);
+
+            $value = $reflectionProperty->getValue($object);
+            $valueFound = true;
+
+            $reflectionProperty->setAccessible(false);
+        }
+
+        return [
+            $value,
+            $valueFound,
+        ];
+    }
+
+    /**
+     * Returns value of given property using getter of the property
+     *
+     * An array with 2 elements is returned:
+     * - value of given property
+     * - information if the value was found (because null may be returned)
+     *
+     * @param mixed  $source   Object that should contains given property
+     * @param string $property Name of the property that contains a value
+     * @return array
+     */
+    private static function getPropertyValueByGetter($source, string $property): array
+    {
+        $value = null;
+        $valueFound = false;
+
+        $reflectionObject = new \ReflectionObject($source);
+        $property = Inflector::classify($property);
+
+        $gettersPrefixes = [
+            'get',
+            'has',
+            'is',
+        ];
+
+        foreach ($gettersPrefixes as $prefix) {
+            $getter = sprintf('%s%s', $prefix, $property);
+
+            if ($reflectionObject->hasMethod($getter)) {
+                $method = new \ReflectionMethod($source, $getter);
+
+                /*
+                 * Getter is not accessible publicly?
+                 * I have to skip it, to avoid an error like this:
+                 *
+                 * Call to protected method My\ExtraClass::getExtraProperty() from context 'My\ExtraClass'
+                 */
+                if ($method->isProtected() || $method->isPrivate()) {
+                    continue;
+                }
+
+                $value = $source->{$getter}();
+                $valueFound = true;
+
+                break;
+            }
+        }
+
+        return [
+            $value,
+            $valueFound,
+        ];
+    }
+
+    /**
+     * Returns value of given property using parent classes
+     *
+     * @param mixed  $source   Object that should contains given property
+     * @param string $property Name of the property that contains a value
+     * @return array
+     */
+    private static function getPropertyValueByParentClasses($source, string $property): array
+    {
+        $properties = self::getProperties($source, null, true);
+
+        if (empty($properties)) {
+            return [
+                null,
+                false,
+            ];
+        }
+
+        foreach ($properties as $reflectionProperty) {
+            if ($reflectionProperty->getName() === $property) {
+                $byReflectionProperty = self::getPropertyValueByReflectionProperty(
+                    $source,
+                    $property,
+                    $reflectionProperty
+                );
+
+                return [
+                    $byReflectionProperty[0],
+                    true,
+                ];
+            }
+        }
+
+        return [
+            null,
+            false,
+        ];
+    }
+
+    /**
+     * Returns value of given property represented as chain of properties
+     *
+     * @param mixed  $source   Object that should contains given property
+     * @param string $property Dot-separated properties, e.g. "invoice.user.email"
+     * @param bool   $force    (optional) If is set to true, try to retrieve value even if the object doesn't have
+     *                         property. Otherwise - not.
+     * @return mixed
+     */
+    private static function getPropertyValueByPropertiesChain($source, $property, $force)
+    {
+        $exploded = explode('.', $property);
+
+        $property = $exploded[0];
+        $source = self::getPropertyValue($source, $property, $force);
+
+        /*
+         * Value of processed property from the chain is not null?
+         * Let's dig more and get proper value
+         *
+         * Required to avoid bug:
+         * \ReflectionObject::__construct() expects parameter 1 to be object, null given
+         * (...)
+         * 4. at \ReflectionObject->__construct (null)
+         * 5. at Reflection ::getPropertyValue (null, 'name', true)
+         * 6. at ListService->getItemValue (object(Deal), 'project.name', '0')
+         *
+         * while using "project.name" as property - $project has $name property ($project exists in the Deal class)
+         * and the $project equals null
+         *
+         * Meritoo <github@meritoo.pl>
+         * 2016-11-07
+         */
+        if (null !== $source) {
+            unset($exploded[0]);
+            $property = implode('.', $exploded);
+
+            return self::getPropertyValue($source, $property, $force);
+        }
+
+        return null;
     }
 }
