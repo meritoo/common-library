@@ -32,28 +32,6 @@ class MiscellaneousTest extends BaseTestCase
     private $stringDotSeparated;
     private $stringWithoutSpaces;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->stringSmall = 'Lorem ipsum dolor sit amet.';
-        $this->stringCommaSeparated = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
-        $this->stringDotSeparated = 'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.';
-        $this->stringWithoutSpaces = 'LoremIpsumDolorSitAmetConsecteturAdipiscingElit';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        unset($this->stringSmall, $this->stringCommaSeparated, $this->stringDotSeparated, $this->stringWithoutSpaces);
-    }
-
     public function testConstructor()
     {
         static::assertHasNoConstructor(Miscellaneous::class);
@@ -1463,5 +1441,27 @@ class MiscellaneousTest extends BaseTestCase
             ],
             'Lorem \'commodo\' dolor sit \'egestas\'',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->stringSmall = 'Lorem ipsum dolor sit amet.';
+        $this->stringCommaSeparated = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+        $this->stringDotSeparated = 'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.';
+        $this->stringWithoutSpaces = 'LoremIpsumDolorSitAmetConsecteturAdipiscingElit';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->stringSmall, $this->stringCommaSeparated, $this->stringDotSeparated, $this->stringWithoutSpaces);
     }
 }

@@ -30,16 +30,6 @@ class ComposerTest extends BaseTestCase
      */
     private $composerJsonPath;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->composerJsonPath = $this->getFilePathForTesting(Composer::FILE_NAME_MAIN);
-    }
-
     public function testConstructor()
     {
         static::assertHasNoConstructor(Composer::class);
@@ -92,5 +82,15 @@ class ComposerTest extends BaseTestCase
             'version',
             '1.0.2',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->composerJsonPath = $this->getFilePathForTesting(Composer::FILE_NAME_MAIN);
     }
 }

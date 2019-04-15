@@ -46,24 +46,6 @@ class CollectionTest extends BaseTestCase
      */
     private $simpleElements;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->simpleElements = [
-            'lorem',
-            'ipsum',
-            123 => 'dolor',
-            345 => 'sit',
-        ];
-
-        $this->emptyCollection = new Collection();
-        $this->simpleCollection = new Collection($this->simpleElements);
-    }
-
     public function testEmptyCollection()
     {
         static::assertSame(0, $this->emptyCollection->count());
@@ -535,5 +517,23 @@ class CollectionTest extends BaseTestCase
             'y',
             new \DateTime('2001-01-01'),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->simpleElements = [
+            'lorem',
+            'ipsum',
+            123 => 'dolor',
+            345 => 'sit',
+        ];
+
+        $this->emptyCollection = new Collection();
+        $this->simpleCollection = new Collection($this->simpleElements);
     }
 }

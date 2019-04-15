@@ -38,15 +38,6 @@ class AddressTest extends BaseTestCase
      */
     private $addressWithoutStreet;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->address = new Address('New York', '00123', '4th Avenue', '10', '200');
-        $this->addressWithoutFlat = new Address('San Francisco', '00456', 'Green Street', '22');
-        $this->addressWithoutStreet = new Address('Saint Louis', '00111', '', '1', '300');
-    }
-
     public function testConstructor()
     {
         static::assertConstructorVisibilityAndArguments(
@@ -104,5 +95,14 @@ class AddressTest extends BaseTestCase
         static::assertSame('4th Avenue 10/200, 00123, New York', (string)$this->address);
         static::assertSame('Green Street 22, 00456, San Francisco', (string)$this->addressWithoutFlat);
         static::assertSame('00111, Saint Louis', (string)$this->addressWithoutStreet);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->address = new Address('New York', '00123', '4th Avenue', '10', '200');
+        $this->addressWithoutFlat = new Address('San Francisco', '00456', 'Green Street', '22');
+        $this->addressWithoutStreet = new Address('Saint Louis', '00111', '', '1', '300');
     }
 }

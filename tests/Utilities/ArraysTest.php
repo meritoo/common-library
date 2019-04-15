@@ -30,132 +30,6 @@ class ArraysTest extends BaseTestCase
     private $complexArray;
     private $superComplexArray;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->simpleArray = [
-            'Lorem',
-            'ipsum',
-            'dolor',
-            'sit',
-            'amet',
-        ];
-
-        $this->simpleArrayWithKeys = [
-            'Lorem' => 'ipsum',
-            'dolor' => 'sit',
-            'amet'  => 'consectetur',
-        ];
-
-        $this->twoDimensionsArray = [
-            [
-                'lorem',
-                'ipsum',
-                'dolor',
-                'sit',
-                'amet',
-            ],
-            [
-                'consectetur',
-                'adipiscing',
-                'elit',
-            ],
-            [
-                'donec',
-                'sagittis',
-                'fringilla',
-                'eleifend',
-            ],
-        ];
-
-        $this->complexArray = [
-            'lorem'       => [
-                'ipsum' => [
-                    'dolor' => 'sit',
-                    'diam'  => [
-                        'non' => 'egestas',
-                    ],
-                ],
-            ],
-            'consectetur' => 'adipiscing',
-            'mollis'      => 1234,
-            2             => [],
-            'sit'         => [
-                'nullam'  => 'donec',
-                'aliquet' => [
-                    'vitae' => [
-                        'ligula' => 'quis',
-                    ],
-                ],
-                'elit',
-            ],
-            'amet'        => [
-                'iaculis',
-                'primis',
-            ],
-        ];
-
-        $this->superComplexArray = [
-            'ipsum'  => [
-                'quis' => [
-                    'vestibulum' => [
-                        'porta-1' => [
-                            'turpis',
-                            'urna',
-                        ],
-                        'porta-2' => [
-                            'tortor' => [
-                                'in' => [
-                                    'dui',
-                                    'dolor' => [
-                                        'aliquam',
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'porta-3' => [
-                            1,
-                            2,
-                            3,
-                        ],
-                    ],
-                ],
-            ],
-            'primis' => [
-                [
-                    'in',
-                    'faucibus',
-                    'orci',
-                ],
-                [
-                    'luctus',
-                    'et',
-                    'ultrices',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset(
-            $this->simpleArray,
-            $this->simpleArrayWithKeys,
-            $this->twoDimensionsArray,
-            $this->complexArray,
-            $this->superComplexArray
-        );
-    }
-
     public function testConstructor()
     {
         static::assertHasNoConstructor(Arrays::class);
@@ -2678,5 +2552,131 @@ letsTest[2] = value_2;';
                 ],
             ],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->simpleArray = [
+            'Lorem',
+            'ipsum',
+            'dolor',
+            'sit',
+            'amet',
+        ];
+
+        $this->simpleArrayWithKeys = [
+            'Lorem' => 'ipsum',
+            'dolor' => 'sit',
+            'amet'  => 'consectetur',
+        ];
+
+        $this->twoDimensionsArray = [
+            [
+                'lorem',
+                'ipsum',
+                'dolor',
+                'sit',
+                'amet',
+            ],
+            [
+                'consectetur',
+                'adipiscing',
+                'elit',
+            ],
+            [
+                'donec',
+                'sagittis',
+                'fringilla',
+                'eleifend',
+            ],
+        ];
+
+        $this->complexArray = [
+            'lorem'       => [
+                'ipsum' => [
+                    'dolor' => 'sit',
+                    'diam'  => [
+                        'non' => 'egestas',
+                    ],
+                ],
+            ],
+            'consectetur' => 'adipiscing',
+            'mollis'      => 1234,
+            2             => [],
+            'sit'         => [
+                'nullam'  => 'donec',
+                'aliquet' => [
+                    'vitae' => [
+                        'ligula' => 'quis',
+                    ],
+                ],
+                'elit',
+            ],
+            'amet'        => [
+                'iaculis',
+                'primis',
+            ],
+        ];
+
+        $this->superComplexArray = [
+            'ipsum'  => [
+                'quis' => [
+                    'vestibulum' => [
+                        'porta-1' => [
+                            'turpis',
+                            'urna',
+                        ],
+                        'porta-2' => [
+                            'tortor' => [
+                                'in' => [
+                                    'dui',
+                                    'dolor' => [
+                                        'aliquam',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'porta-3' => [
+                            1,
+                            2,
+                            3,
+                        ],
+                    ],
+                ],
+            ],
+            'primis' => [
+                [
+                    'in',
+                    'faucibus',
+                    'orci',
+                ],
+                [
+                    'luctus',
+                    'et',
+                    'ultrices',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset(
+            $this->simpleArray,
+            $this->simpleArrayWithKeys,
+            $this->twoDimensionsArray,
+            $this->complexArray,
+            $this->superComplexArray
+        );
     }
 }

@@ -28,27 +28,6 @@ class RegexTest extends BaseTestCase
     private $simpleText;
     private $camelCaseText;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->simpleText = 'lorem ipsum dolor sit';
-        $simpleUppercase = ucwords($this->simpleText);
-        $this->camelCaseText = str_replace(' ', '', lcfirst($simpleUppercase)); // 'loremIpsumDolorSit'
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        unset($this->simpleText, $this->camelCaseText);
-    }
-
     public function testConstructor()
     {
         static::assertHasNoConstructor(Regex::class);
@@ -2002,5 +1981,26 @@ class RegexTest extends BaseTestCase
             ' : ',
             true,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->simpleText = 'lorem ipsum dolor sit';
+        $simpleUppercase = ucwords($this->simpleText);
+        $this->camelCaseText = str_replace(' ', '', lcfirst($simpleUppercase)); // 'loremIpsumDolorSit'
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->simpleText, $this->camelCaseText);
     }
 }

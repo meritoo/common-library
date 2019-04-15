@@ -26,6 +26,28 @@ class XmlTest extends BaseTestCase
     private $simpleXml;
     private $advancedXml;
 
+    public function testConstructor()
+    {
+        static::assertHasNoConstructor(Xml::class);
+    }
+
+    public function testMergeNodes()
+    {
+        // An empty XMLs
+        $element1 = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><cars />');
+        $element2 = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><employees />');
+
+        $merged = Xml::mergeNodes($element1, $element2);
+        self::assertEquals('', (string)$merged);
+
+        // XMLs with data
+        $element1 = new SimpleXMLElement($this->simpleXml);
+        $element2 = new SimpleXMLElement($this->advancedXml);
+
+        $merged = Xml::mergeNodes($element1, $element2);
+        self::assertEquals('John', (string)$merged->author[0]->first_name);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -68,27 +90,5 @@ class XmlTest extends BaseTestCase
         parent::tearDown();
 
         unset($this->simpleXml, $this->advancedXml);
-    }
-
-    public function testConstructor()
-    {
-        static::assertHasNoConstructor(Xml::class);
-    }
-
-    public function testMergeNodes()
-    {
-        // An empty XMLs
-        $element1 = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><cars />');
-        $element2 = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><employees />');
-
-        $merged = Xml::mergeNodes($element1, $element2);
-        self::assertEquals('', (string)$merged);
-
-        // XMLs with data
-        $element1 = new SimpleXMLElement($this->simpleXml);
-        $element2 = new SimpleXMLElement($this->advancedXml);
-
-        $merged = Xml::mergeNodes($element1, $element2);
-        self::assertEquals('John', (string)$merged->author[0]->first_name);
     }
 }

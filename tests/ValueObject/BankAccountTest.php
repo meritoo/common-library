@@ -33,17 +33,6 @@ class BankAccountTest extends BaseTestCase
      */
     private $bankAccount;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->emptyBankAccount = new BankAccount('', '');
-        $this->bankAccount = new BankAccount('Bank of America', '1234567890');
-    }
-
     public function testConstructor()
     {
         static::assertConstructorVisibilityAndArguments(
@@ -70,5 +59,16 @@ class BankAccountTest extends BaseTestCase
     {
         static::assertSame('', (string)$this->emptyBankAccount);
         static::assertSame('Bank of America, 1234567890', (string)$this->bankAccount);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->emptyBankAccount = new BankAccount('', '');
+        $this->bankAccount = new BankAccount('Bank of America', '1234567890');
     }
 }
