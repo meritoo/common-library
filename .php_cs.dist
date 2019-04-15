@@ -20,6 +20,23 @@ return PhpCsFixer\Config::create()
         'concat_space'                        => [
             'spacing' => 'one',
         ],
+        'ordered_class_elements'              => [
+            'order' => [
+                'use_trait',
+                'constant_public',
+                'constant_protected',
+                'constant_private',
+                'property_public',
+                'property_protected',
+                'property_private',
+                'construct',
+                'destruct',
+                'magic',
+                'method_public',
+                'method_protected',
+                'method_private',
+            ],
+        ],
         'phpdoc_add_missing_param_annotation' => true,
         'phpdoc_align'                        => false,
         'phpdoc_order'                        => true,

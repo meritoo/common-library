@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.0.4
+
+1. PHP Coding Standards Fixer > update configuration
+
 # 1.0.3
 
 1. Travis CI > run many tasks using Phing > update configuration
