@@ -45,6 +45,7 @@
             depends="check:cs,
                     check:cpd,
                     check:phpstan,
+                    check:psalm,
                     check:coveralls"
     />
 
@@ -75,6 +76,11 @@
     <!-- Run static analysis -->
     <target name="check:phpstan" depends="build:prepare">
         <exec command="${check.phpstan.command}" passthru="true"/>
+    </target>
+
+    <!-- Run static analysis -->
+    <target name="check:psalm" depends="build:prepare">
+        <exec command="${check.psalm.command}" passthru="true"/>
     </target>
 
     <!-- Run analysis of code coverage -->
