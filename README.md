@@ -2,7 +2,12 @@
 
 Common and useful classes, methods, exceptions etc.
 
-![PHP from Packagist](https://img.shields.io/packagist/php-v/meritoo/common-library.svg) [![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/meritoo/common-library) [![Packagist](https://img.shields.io/packagist/v/meritoo/common-library.svg?style=flat-square)](https://packagist.org/packages/meritoo/common-library) [![license](https://img.shields.io/github/license/meritoo/common-library.svg?style=flat-square)](https://github.com/meritoo/common-library) [![GitHub commits](https://img.shields.io/github/commits-since/meritoo/common-library/0.0.1.svg?style=flat-square)](https://github.com/meritoo/common-library) [![Coverage Status](https://coveralls.io/repos/github/meritoo/common-library/badge.svg?branch=master)](https://coveralls.io/github/meritoo/common-library?branch=master)
+![PHP from Packagist](https://img.shields.io/packagist/php-v/meritoo/common-library.svg?style=flat-square)
+[![Build Status](https://travis-ci.com/meritoo/common-library.svg?branch=master&style=flat-square)](https://travis-ci.com/meritoo/common-library)
+[![Packagist](https://img.shields.io/packagist/v/meritoo/common-library.svg?style=flat-square)](https://packagist.org/packages/meritoo/common-library)
+[![license](https://img.shields.io/github/license/meritoo/common-library.svg?style=flat-square)](https://github.com/meritoo/common-library)
+[![GitHub commits](https://img.shields.io/github/commits-since/meritoo/common-library/0.0.1.svg?style=flat-square)](https://github.com/meritoo/common-library)
+[![Coverage Status](https://coveralls.io/repos/github/meritoo/common-library/badge.svg?branch=master&style=flat-square)](https://coveralls.io/github/meritoo/common-library)
 
 # Installation
 
