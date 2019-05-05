@@ -33,14 +33,14 @@ trait BaseTypeTestCaseTrait
     /**
      * Verifies whether given type is correct or not
      *
-     * @param null|string $type     Type to verify
-     * @param bool        $expected Information if given type is correct or not
+     * @param bool $isCorrect Information if processed type is correct
+     * @param bool $expected  Expected information if processed type is correct
      *
      * @dataProvider provideTypeToVerify
      */
-    public function testIfGivenTypeIsCorrect(?string $type, bool $expected): void
+    public function testIfGivenTypeIsCorrect(bool $isCorrect, bool $expected): void
     {
-        static::assertEquals($expected, $this->getTestedTypeInstance()->isCorrectType($type));
+        static::assertEquals($expected, $isCorrect);
     }
 
     /**

@@ -41,15 +41,25 @@ class BaseTypeTest extends BaseTestCase
     }
 
     /**
-     * @param BaseType $type         Type of something
-     * @param string   $toVerifyType Concrete type to verify (of given instance of type)
-     * @param bool     $isCorrect    Expected information if given type is correct
+     * @param string $toVerifyType Concrete type to verify
+     * @param bool   $isCorrect    Expected information if given type is correct
      *
-     * @dataProvider provideTypeWithConcreteType
+     * @dataProvider provideTypeToVerifyUsingTestEmptyType
      */
-    public function testIsCorrectType(BaseType $type, $toVerifyType, $isCorrect)
+    public function testIsCorrectTypeUsingTestEmptyType(?string $toVerifyType, bool $isCorrect): void
     {
-        self::assertEquals($isCorrect, $type->isCorrectType($toVerifyType));
+        self::assertEquals($isCorrect, TestEmptyType::isCorrectType($toVerifyType));
+    }
+
+    /**
+     * @param string $toVerifyType Concrete type to verify
+     * @param bool   $isCorrect    Expected information if given type is correct
+     *
+     * @dataProvider provideTypeToVerifyUsingTestType
+     */
+    public function testIsCorrectTypeUsingTestType(?string $toVerifyType, bool $isCorrect): void
+    {
+        self::assertEquals($isCorrect, TestType::isCorrectType($toVerifyType));
     }
 
     /**
@@ -78,107 +88,108 @@ class BaseTypeTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideTypeWithConcreteType()
+    public function provideTypeToVerifyUsingTestEmptyType(): ?Generator
     {
         yield[
-            new TestEmptyType(),
             null,
             false,
         ];
 
         yield[
-            new TestEmptyType(),
-            false,
-            false,
-        ];
-
-        yield[
-            new TestEmptyType(),
-            true,
+            'null',
             false,
         ];
 
         yield[
-            new TestEmptyType(),
+            'false',
+            false,
+        ];
+
+        yield[
+            'true',
+            false,
+        ];
+
+        yield[
             '',
             false,
         ];
 
         yield[
-            new TestEmptyType(),
-            0,
+            '0',
             false,
         ];
 
         yield[
-            new TestEmptyType(),
-            1,
+            '1',
             false,
         ];
 
         yield[
-            new TestEmptyType(),
             'lorem',
             false,
         ];
+    }
 
+    /**
+     * Provides type of something for testing the isCorrectType() method
+     *
+     * @return Generator
+     */
+    public function provideTypeToVerifyUsingTestType(): ?Generator
+    {
         yield[
-            new TestType(),
             null,
             false,
         ];
 
         yield[
-            new TestType(),
-            false,
-            false,
-        ];
-
-        yield[
-            new TestType(),
-            true,
+            'null',
             false,
         ];
 
         yield[
-            new TestType(),
+            'false',
+            false,
+        ];
+
+        yield[
+            'true',
+            false,
+        ];
+
+        yield[
             '',
             false,
         ];
 
         yield[
-            new TestType(),
-            0,
+            '0',
             false,
         ];
 
         yield[
-            new TestType(),
-            1,
+            '1',
             false,
         ];
 
         yield[
-            new TestType(),
             'lorem',
             false,
         ];
 
         yield[
-            new TestType(),
             'test',
             false,
         ];
 
         yield[
-            new TestType(),
-            TestType::TEST_1,
+            'test_1',
             true,
         ];
 
         yield[
-            new TestType(),
-            TestType::TEST_2,
+            'test_2',
             true,
         ];
     }

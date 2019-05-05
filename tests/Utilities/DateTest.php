@@ -649,13 +649,9 @@ class DateTest extends BaseTestCase
         self::assertTrue($randomDate >= $intervalMinDate && $randomDate <= $intervalMaxDate);
     }
 
-    /**
-     * @param mixed $period Empty value, e.g. ""
-     * @dataProvider provideEmptyScalarValue
-     */
-    public function testGetDatesForPeriodUsingEmptyPeriod($period): void
+    public function testGetDatesForPeriodUsingEmptyString(): void
     {
-        self::assertNull(Date::getDatesForPeriod($period));
+        self::assertNull(Date::getDatesForPeriod(''));
     }
 
     /**

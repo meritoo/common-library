@@ -219,27 +219,27 @@ class DatePeriodTest extends BaseTypeTestCase
     public function provideTypeToVerify(): Generator
     {
         yield[
-            '',
+            DatePeriod::isCorrectType(''),
             false,
         ];
 
         yield[
-            '-1',
+            DatePeriod::isCorrectType('-1'),
             false,
         ];
 
         yield[
-            '4',
+            DatePeriod::isCorrectType('4'),
             true,
         ];
 
         yield[
-            '3',
+            DatePeriod::isCorrectType('3'),
             true,
         ];
 
         yield[
-            '8',
+            DatePeriod::isCorrectType('8'),
             true,
         ];
     }

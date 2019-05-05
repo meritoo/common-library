@@ -94,7 +94,7 @@ class TestService
      */
     public function getTranslatedType($type)
     {
-        if ((new TestType())->isCorrectType($type)) {
+        if (TestType::isCorrectType($type)) {
             return ucfirst(str_replace('_', ' ', $type));
         }
 

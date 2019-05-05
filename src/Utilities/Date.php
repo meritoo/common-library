@@ -76,7 +76,7 @@ class Date
          * Type of period is incorrect?
          * Nothing to do
          */
-        if (!(new DatePeriod())->isCorrectType($period)) {
+        if (!DatePeriod::isCorrectType($period)) {
             return null;
         }
 

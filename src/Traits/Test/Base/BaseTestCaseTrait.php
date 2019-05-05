@@ -187,7 +187,7 @@ trait BaseTestCaseTrait
         int $requiredArgumentsCount = 0
     ): void {
         // Type of visibility is not correct?
-        if (!(new OopVisibilityType())->isCorrectType($visibilityType)) {
+        if (!OopVisibilityType::isCorrectType($visibilityType)) {
             throw UnknownOopVisibilityTypeException::createException($visibilityType);
         }
 
