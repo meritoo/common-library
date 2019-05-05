@@ -26,7 +26,7 @@ class UnknownDatePartTypeException extends UnknownTypeException
      * @param string $value           Incorrect value
      * @return UnknownDatePartTypeException
      */
-    public static function createException($unknownDatePart, $value)
+    public static function createException(string $unknownDatePart, string $value): UnknownDatePartTypeException
     {
         return parent::create($unknownDatePart, new DatePartType(), sprintf('date part (with value %s)', $value));
     }

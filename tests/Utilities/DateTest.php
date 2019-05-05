@@ -28,7 +28,7 @@ use Meritoo\Common\Utilities\Locale;
  */
 class DateTest extends BaseTestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertHasNoConstructor(Date::class);
     }
@@ -37,7 +37,7 @@ class DateTest extends BaseTestCase
      * @param mixed $value Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testGetDateTimeEmptyValue($value)
+    public function testGetDateTimeEmptyValue($value): void
     {
         self::assertFalse(Date::getDateTime($value));
     }
@@ -46,7 +46,7 @@ class DateTest extends BaseTestCase
      * @param mixed $value Incorrect source of DateTime
      * @dataProvider provideIncorrectDateTimeValue
      */
-    public function testGetDateTimeIncorrectValue($value)
+    public function testGetDateTimeIncorrectValue($value): void
     {
         self::assertFalse(Date::getDateTime($value));
     }
@@ -55,7 +55,7 @@ class DateTest extends BaseTestCase
      * @param bool $value The value which maybe is a date
      * @dataProvider provideBooleanValue
      */
-    public function testGetDateTimeBoolean($value)
+    public function testGetDateTimeBoolean($value): void
     {
         self::assertFalse(Date::getDateTime($value));
     }
@@ -64,7 +64,7 @@ class DateTest extends BaseTestCase
      * @param string $relativeFormat Relative / compound format of DateTime
      * @dataProvider provideDateTimeRelativeFormat
      */
-    public function testGetDateTimeRelativeFormats($relativeFormat)
+    public function testGetDateTimeRelativeFormats($relativeFormat): void
     {
         /*
          * Values based on relative / compound formats, but... without explicitly declaring them as compound
@@ -85,12 +85,12 @@ class DateTest extends BaseTestCase
      * @param DateTime $dateTime Instance of DateTime class
      * @dataProvider provideDateTimeInstance
      */
-    public function testGetDateTimeInstanceDateTime(DateTime $dateTime)
+    public function testGetDateTimeInstanceDateTime(DateTime $dateTime): void
     {
         self::assertInstanceOf(DateTime::class, Date::getDateTime($dateTime));
     }
 
-    public function testGetDateTimeConcreteDates()
+    public function testGetDateTimeConcreteDates(): void
     {
         // Using the standard date format provided by the tested method
         self::assertInstanceOf(DateTime::class, Date::getDateTime('2015-03-20'));
@@ -104,7 +104,7 @@ class DateTest extends BaseTestCase
      * @param mixed $value Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testIsValidDateEmptyDates($value)
+    public function testIsValidDateEmptyDates($value): void
     {
         self::assertFalse(Date::isValidDate($value));
     }
@@ -113,12 +113,12 @@ class DateTest extends BaseTestCase
      * @param mixed $value Incorrect source of DateTime
      * @dataProvider provideIncorrectDateTimeValue
      */
-    public function testIsValidDateIncorrectDates($value)
+    public function testIsValidDateIncorrectDates($value): void
     {
         self::assertFalse(Date::isValidDate($value));
     }
 
-    public function testIsValidDateValidDates()
+    public function testIsValidDateValidDates(): void
     {
         self::assertTrue(Date::isValidDate('2017-01-01'));
         self::assertTrue(Date::isValidDate('2017-01-01 10:30', true));
@@ -134,7 +134,7 @@ class DateTest extends BaseTestCase
      * @param mixed $value Empty source of date format
      * @dataProvider provideEmptyValue
      */
-    public function testIsValidDateFormatEmptyFormats($value)
+    public function testIsValidDateFormatEmptyFormats($value): void
     {
         self::assertFalse(Date::isValidDateFormat($value));
     }
@@ -143,12 +143,12 @@ class DateTest extends BaseTestCase
      * @param mixed $format Invalid format of date
      * @dataProvider provideInvalidDateFormats
      */
-    public function testIsValidDateFormatInvalidFormats($format)
+    public function testIsValidDateFormatInvalidFormats($format): void
     {
         self::assertFalse(Date::isValidDateFormat($format));
     }
 
-    public function testIsValidDateFormatValidFormats()
+    public function testIsValidDateFormatValidFormats(): void
     {
         self::assertTrue(Date::isValidDateFormat('Y'));
         self::assertTrue(Date::isValidDateFormat('yy'));
@@ -165,12 +165,12 @@ class DateTest extends BaseTestCase
      * @param mixed $value Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testGenerateRandomTimeEmptyFormat($value)
+    public function testGenerateRandomTimeEmptyFormat($value): void
     {
         self::assertNull(Date::generateRandomTime($value));
     }
 
-    public function testGenerateRandomTimeIncorrectFormat()
+    public function testGenerateRandomTimeIncorrectFormat(): void
     {
         self::assertNull(Date::generateRandomTime(','));
         self::assertNull(Date::generateRandomTime(';'));
@@ -178,12 +178,12 @@ class DateTest extends BaseTestCase
         self::assertNull(Date::generateRandomTime('?'));
     }
 
-    public function testGenerateRandomTimeDefaultFormat()
+    public function testGenerateRandomTimeDefaultFormat(): void
     {
         self::assertRegExp('/\d{2}:\d{2}:\d{2}/', Date::generateRandomTime());
     }
 
-    public function testGenerateRandomTimeCustomFormat()
+    public function testGenerateRandomTimeCustomFormat(): void
     {
         self::assertRegExp('/^0[1-9]{1}|1[0-2]{1}$/', Date::generateRandomTime('h')); // 01 through 12
         self::assertRegExp('/^[0-5]?[0-9]$/', Date::generateRandomTime('i')); // 00 through 59
@@ -193,12 +193,12 @@ class DateTest extends BaseTestCase
         self::assertRegExp('/^[1-9]|1[0-2]:\d{2}$/', Date::generateRandomTime('g:i'));
     }
 
-    public function testGetCurrentDayOfWeek()
+    public function testGetCurrentDayOfWeek(): void
     {
         self::assertRegExp('/^[0-6]{1}$/', (string)Date::getCurrentDayOfWeek());
     }
 
-    public function testGetCurrentDayOfWeekName()
+    public function testGetCurrentDayOfWeekName(): void
     {
         // Required to avoid failure:
         //
@@ -228,7 +228,7 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideIncorrectYearMonthDay
      */
-    public function testGetDayOfWeekIncorrectValues($year, $month, $day)
+    public function testGetDayOfWeekIncorrectValues($year, $month, $day): void
     {
         $this->expectException(UnknownDatePartTypeException::class);
         self::assertEmpty(Date::getDayOfWeek($year, $month, $day));
@@ -241,7 +241,7 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideYearMonthDay
      */
-    public function testGetDayOfWeek($year, $month, $day)
+    public function testGetDayOfWeek($year, $month, $day): void
     {
         self::assertRegExp('/^[0-6]{1}$/', (string)Date::getDayOfWeek($year, $month, $day));
     }
@@ -252,18 +252,18 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideEmptyDatesForDateDifference
      */
-    public function testGetDateDifferenceEmptyDates($dateStart, $dateEnd)
+    public function testGetDateDifferenceEmptyDates($dateStart, $dateEnd): void
     {
         self::assertNull(Date::getDateDifference($dateStart, $dateEnd));
     }
 
-    public function testGetDateDifferenceInvalidDates()
+    public function testGetDateDifferenceInvalidDates(): void
     {
         self::assertNull(Date::getDateDifference('2017-01-40', '2017-13-01'));
         self::assertNull(Date::getDateDifference('xyz', 'lorem'));
     }
 
-    public function testGetDateDifferenceOneDay()
+    public function testGetDateDifferenceOneDay(): void
     {
         // Difference of 1 day
         $dateStart = '2017-01-01';
@@ -311,7 +311,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(0, Date::getDateDifference(new DateTime('yesterday'), new DateTime('midnight'), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    public function testGetDateDifferenceOneDayTwoHours()
+    public function testGetDateDifferenceOneDayTwoHours(): void
     {
         // Difference of 1 day, 2 hours and 15 minutes
         $dateStart = '2017-01-01 12:00';
@@ -344,7 +344,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(15, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    public function testGetDateDifferenceOneMonthFortyOneDays()
+    public function testGetDateDifferenceOneMonthFortyOneDays(): void
     {
         // Difference of 1 month, 41 days, 4 hours and 30 minutes
         $dateStart = '2017-01-01 12:00';
@@ -377,7 +377,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(30, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    public function testGetDateDifferenceNewYear()
+    public function testGetDateDifferenceNewYear(): void
     {
         $dateStart = '2017-12-31 23:59';
         $dateEnd = '2018-01-01 00:00';
@@ -409,7 +409,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(1, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    public function testGetDateDifferenceLessThan24Hours()
+    public function testGetDateDifferenceLessThan24Hours(): void
     {
         $dateStart = '2017-01-01 16:00';
         $dateEnd = '2017-01-02 10:00';
@@ -441,7 +441,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    public function testGetDateDifferenceEqual24Hours()
+    public function testGetDateDifferenceEqual24Hours(): void
     {
         $dateStart = '2017-01-01 00:00';
         $dateEnd = '2017-01-02 00:00';
@@ -473,7 +473,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    public function testGetDateDifferenceInvertedDates()
+    public function testGetDateDifferenceInvertedDates(): void
     {
         $dateStart = '2017-01-02 10:00';
         $dateEnd = '2017-01-01 16:00';
@@ -505,7 +505,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(0, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    public function testGetDateDifferenceNoDifference()
+    public function testGetDateDifferenceNoDifference(): void
     {
         // No difference
         $dateStart = '2017-01-01 12:00';
@@ -542,7 +542,7 @@ class DateTest extends BaseTestCase
      * @param mixed $invalidCount Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testGetDatesCollectionInvalidCount($invalidCount)
+    public function testGetDatesCollectionInvalidCount($invalidCount): void
     {
         self::assertEquals([], Date::getDatesCollection(new DateTime(), $invalidCount));
         self::assertEquals([], Date::getDatesCollection(new DateTime(), -1));
@@ -552,14 +552,14 @@ class DateTest extends BaseTestCase
      * @param mixed $invalidInterval Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testGetDatesCollectionInvalidInterval($invalidInterval)
+    public function testGetDatesCollectionInvalidInterval($invalidInterval): void
     {
         self::assertEquals([], Date::getDatesCollection(new DateTime(), 2, $invalidInterval));
         self::assertEquals([], Date::getDatesCollection(new DateTime(), 2, 'lorem'));
         self::assertEquals([], Date::getDatesCollection(new DateTime(), 2, '%d'));
     }
 
-    public function testGetDatesCollection()
+    public function testGetDatesCollection(): void
     {
         // 1 date only
         $effect = [
@@ -596,7 +596,7 @@ class DateTest extends BaseTestCase
         self::assertEquals($effect, Date::getDatesCollection(new DateTime('2017-01-01'), 3, 'P%dM'));
     }
 
-    public function testGetRandomDateUsingDefaults()
+    public function testGetRandomDateUsingDefaults(): void
     {
         $startDate = new DateTime();
         $start = 1;
@@ -619,7 +619,7 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideDataOfRandomDateIncorrectEnd
      */
-    public function testGetRandomDateIncorrectEnd(DateTime $startDate, $start, $end)
+    public function testGetRandomDateIncorrectEnd(DateTime $startDate, $start, $end): void
     {
         $randomDate = Date::getRandomDate($startDate, $start, $end);
 
@@ -636,7 +636,7 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideDataOfRandomDate
      */
-    public function testGetRandomDate(DateTime $startDate, $start, $end)
+    public function testGetRandomDate(DateTime $startDate, $start, $end): void
     {
         $randomDate = Date::getRandomDate($startDate, $start, $end);
 
@@ -651,9 +651,9 @@ class DateTest extends BaseTestCase
 
     /**
      * @param mixed $period Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
-    public function testGetDatesForPeriodUsingEmptyPeriod($period)
+    public function testGetDatesForPeriodUsingEmptyPeriod($period): void
     {
         self::assertNull(Date::getDatesForPeriod($period));
     }
@@ -662,7 +662,7 @@ class DateTest extends BaseTestCase
      * @param int $period Incorrect period to verify
      * @dataProvider provideIncorrectPeriod
      */
-    public function testGetDatesForPeriodUsingIncorrectPeriod($period)
+    public function testGetDatesForPeriodUsingIncorrectPeriod($period): void
     {
         self::assertNull(Date::getDatesForPeriod($period));
     }
@@ -674,7 +674,7 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideCorrectPeriod
      */
-    public function testGetDatesForPeriod($period, DatePeriod $expected)
+    public function testGetDatesForPeriod($period, DatePeriod $expected): void
     {
         self::assertEquals($expected, Date::getDatesForPeriod($period));
     }

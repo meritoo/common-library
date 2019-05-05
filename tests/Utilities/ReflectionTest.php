@@ -49,20 +49,20 @@ class ReflectionTest extends BaseTestCase
      * @param mixed $invalidClass Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testGetClassNameInvalidClass($invalidClass)
+    public function testGetClassNameInvalidClass($invalidClass): void
     {
         self::assertNull(Reflection::getClassName($invalidClass));
         self::assertNull(Reflection::getClassName(123));
     }
 
-    public function testGetClassNameNotExistingClass()
+    public function testGetClassNameNotExistingClass(): void
     {
         // Not existing class
         self::assertEquals('', Reflection::getClassName('xyz'));
         self::assertEquals('', Reflection::getClassName('xyz', true));
     }
 
-    public function testGetClassNameExistingClass()
+    public function testGetClassNameExistingClass(): void
     {
         // Existing class
         self::assertEquals(self::class, Reflection::getClassName(self::class));
@@ -77,9 +77,9 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * A case when namespace of class contains name of class (name of class is duplicated, occurs twice)
+     * A case when namespace of class contains name of class (iow. name of class occurs twice)
      */
-    public function testGetClassWhileNamespaceContainsClassName()
+    public function testGetClassWhileNamespaceContainsClassName(): void
     {
         self::assertEquals(
             'Meritoo\Common\Collection\Collection',
@@ -92,13 +92,13 @@ class ReflectionTest extends BaseTestCase
         );
     }
 
-    public function testGetClassNamespaceNotExistingClass()
+    public function testGetClassNamespaceNotExistingClass(): void
     {
         // Not existing class
         self::assertEquals('', Reflection::getClassNamespace('xyz'));
     }
 
-    public function testGetClassNamespaceExistingClass()
+    public function testGetClassNamespaceExistingClass(): void
     {
         // Existing class
         self::assertEquals('Meritoo\Test\Common\Utilities', Reflection::getClassNamespace(self::class));

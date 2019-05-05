@@ -12,6 +12,7 @@ use Generator;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use stdClass;
 
 /**
  * Test case of an exception used while name of class or trait cannot be resolved
@@ -20,13 +21,17 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Reflection\CannotResolveClassNameException
+ * @covers    \Meritoo\Common\Exception\Reflection\CannotResolveClassNameException
  */
 class CannotResolveClassNameExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
-        static::assertConstructorVisibilityAndArguments(CannotResolveClassNameException::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(
+            CannotResolveClassNameException::class,
+            OopVisibilityType::IS_PUBLIC,
+            3
+        );
     }
 
     /**
@@ -38,7 +43,7 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
      *
      * @dataProvider provideClassName
      */
-    public function testConstructorMessage($source, $forClass, $expectedMessage)
+    public function testCreate($source, bool $forClass, string $expectedMessage): void
     {
         $exception = CannotResolveClassNameException::create($source, $forClass);
         static::assertSame($expectedMessage, $exception->getMessage());
@@ -50,7 +55,7 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideClassName()
+    public function provideClassName(): Generator
     {
         yield[
             'Not\Existing\Class',
@@ -66,8 +71,8 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
 
         yield[
             [
-                new \stdClass(),
-                new \stdClass(),
+                new stdClass(),
+                new stdClass(),
             ],
             true,
             'Name of class from given \'array\' cannot be resolved. Is there everything ok?',

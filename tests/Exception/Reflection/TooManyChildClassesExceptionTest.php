@@ -20,13 +20,17 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Reflection\TooManyChildClassesException
+ * @covers    \Meritoo\Common\Exception\Reflection\TooManyChildClassesException
  */
 class TooManyChildClassesExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructor(): void
     {
-        static::assertConstructorVisibilityAndArguments(TooManyChildClassesException::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(
+            TooManyChildClassesException::class,
+            OopVisibilityType::IS_PUBLIC,
+            3
+        );
     }
 
     /**
@@ -37,7 +41,7 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
      *
      * @dataProvider provideParentAndChildClasses
      */
-    public function testConstructorMessage($parentClass, array $childClasses, $expectedMessage)
+    public function testCreate($parentClass, array $childClasses, string $expectedMessage): void
     {
         $exception = TooManyChildClassesException::create($parentClass, $childClasses);
         static::assertSame($expectedMessage, $exception->getMessage());
@@ -49,7 +53,7 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideParentAndChildClasses()
+    public function provideParentAndChildClasses(): ?Generator
     {
         $template = "The '%s' class requires one child class at most who will extend her, but more than one child"
             . " class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";

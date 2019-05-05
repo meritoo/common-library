@@ -8,6 +8,7 @@
 
 namespace Meritoo\Test\Common\Type;
 
+use Generator;
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
 use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -26,7 +27,7 @@ class OopVisibilityTypeTest extends BaseTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function provideTypeToVerify(): ?\Generator
+    public function provideTypeToVerify(): Generator
     {
         yield[
             '',
@@ -39,27 +40,22 @@ class OopVisibilityTypeTest extends BaseTypeTestCase
         ];
 
         yield[
-            -1,
+            '-1',
             false,
         ];
 
         yield[
-            true,
-            false,
-        ];
-
-        yield[
-            1,
+            '1',
             true,
         ];
 
         yield[
-            2,
+            '2',
             true,
         ];
 
         yield[
-            3,
+            '3',
             true,
         ];
     }

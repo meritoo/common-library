@@ -8,7 +8,9 @@
 
 namespace Meritoo\Test\Common\Type;
 
+use Generator;
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\DatePartType;
 
 /**
@@ -25,7 +27,7 @@ class DatePartTypeTest extends BaseTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function provideTypeToVerify()
+    public function provideTypeToVerify(): Generator
     {
         yield[
             '',
@@ -38,12 +40,12 @@ class DatePartTypeTest extends BaseTypeTestCase
         ];
 
         yield[
-            0,
+            '0',
             false,
         ];
 
         yield[
-            1,
+            '1',
             false,
         ];
 
@@ -81,22 +83,22 @@ class DatePartTypeTest extends BaseTypeTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getAllExpectedTypes()
+    protected function getAllExpectedTypes(): array
     {
         return [
-            'DAY'    => DatePartType::DAY,
-            'HOUR'   => DatePartType::HOUR,
-            'MINUTE' => DatePartType::MINUTE,
-            'MONTH'  => DatePartType::MONTH,
-            'SECOND' => DatePartType::SECOND,
-            'YEAR'   => DatePartType::YEAR,
+            'DAY'    => 'day',
+            'HOUR'   => 'hour',
+            'MINUTE' => 'minute',
+            'MONTH'  => 'month',
+            'SECOND' => 'second',
+            'YEAR'   => 'year',
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getTestedTypeInstance()
+    protected function getTestedTypeInstance(): BaseType
     {
         return new DatePartType();
     }

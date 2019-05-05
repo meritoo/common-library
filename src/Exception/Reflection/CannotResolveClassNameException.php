@@ -27,7 +27,7 @@ class CannotResolveClassNameException extends Exception
      *                                      prepared. Otherwise - for trait.
      * @return CannotResolveClassNameException
      */
-    public static function create($source, $forClass = true)
+    public static function create($source, bool $forClass = true): CannotResolveClassNameException
     {
         $forWho = 'trait';
         $value = '';

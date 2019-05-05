@@ -24,87 +24,87 @@ class DatePeriod extends BaseType
     /**
      * The period constant: last month
      *
-     * @var int
+     * @var string
      */
-    public const LAST_MONTH = 4;
+    public const LAST_MONTH = '4';
 
     /**
      * The period constant: last week
      *
-     * @var int
+     * @var string
      */
-    public const LAST_WEEK = 1;
+    public const LAST_WEEK = '1';
 
     /**
      * The period constant: last year
      *
-     * @var int
+     * @var string
      */
-    public const LAST_YEAR = 7;
+    public const LAST_YEAR = '7';
 
     /**
      * The period constant: next month
      *
-     * @var int
+     * @var string
      */
-    public const NEXT_MONTH = 6;
+    public const NEXT_MONTH = '6';
 
     /**
      * The period constant: next week
      *
-     * @var int
+     * @var string
      */
-    public const NEXT_WEEK = 3;
+    public const NEXT_WEEK = '3';
 
     /**
      * The period constant: next year
      *
-     * @var int
+     * @var string
      */
-    public const NEXT_YEAR = 9;
+    public const NEXT_YEAR = '9';
 
     /**
      * The period constant: this month
      *
-     * @var int
+     * @var string
      */
-    public const THIS_MONTH = 5;
+    public const THIS_MONTH = '5';
 
     /**
      * The period constant: this week
      *
-     * @var int
+     * @var string
      */
-    public const THIS_WEEK = 2;
+    public const THIS_WEEK = '2';
 
     /**
      * The period constant: this year
      *
-     * @var int
+     * @var string
      */
-    public const THIS_YEAR = 8;
+    public const THIS_YEAR = '8';
 
     /**
      * The start date of period
      *
-     * @var DateTime
+     * @var null|DateTime
      */
     private $startDate;
 
     /**
      * The end date of period
      *
-     * @var DateTime
+     * @var null|DateTime
      */
     private $endDate;
 
     /**
      * Class constructor
      *
-     * @param DateTime $startDate (optional) The start date of period
-     * @param DateTime $endDate   (optional) The end date of period
+     * @param null|DateTime $startDate (optional) The start date of period
+     * @param null|DateTime $endDate   (optional) The end date of period
      */
-    public function __construct(DateTime $startDate = null, DateTime $endDate = null)
+    public function __construct(?DateTime $startDate = null, ?DateTime $endDate = null)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
@@ -117,7 +117,7 @@ class DatePeriod extends BaseType
      * @param bool   $startDate (optional) If is set to true, start date will be formatted. Otherwise - end date.
      * @return string
      */
-    public function getFormattedDate($format, $startDate = true)
+    public function getFormattedDate(string $format, bool $startDate = true): string
     {
         $date = $this->getEndDate();
 
@@ -138,9 +138,9 @@ class DatePeriod extends BaseType
     /**
      * Returns the end date of period
      *
-     * @return DateTime
+     * @return null|DateTime
      */
-    public function getEndDate()
+    public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }
@@ -148,10 +148,10 @@ class DatePeriod extends BaseType
     /**
      * Sets the end date of period
      *
-     * @param DateTime $endDate (optional) The end date of period
+     * @param null|DateTime $endDate (optional) The end date of period. Default: null.
      * @return $this
      */
-    public function setEndDate(DateTime $endDate = null)
+    public function setEndDate(?DateTime $endDate = null): self
     {
         $this->endDate = $endDate;
 
@@ -161,9 +161,9 @@ class DatePeriod extends BaseType
     /**
      * Returns the start date of period
      *
-     * @return DateTime
+     * @return null|DateTime
      */
-    public function getStartDate()
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
@@ -171,10 +171,10 @@ class DatePeriod extends BaseType
     /**
      * Sets the start date of period
      *
-     * @param DateTime $startDate (optional) The start date of period
+     * @param null|DateTime $startDate (optional) The start date of period. Default: null.
      * @return $this
      */
-    public function setStartDate(DateTime $startDate = null)
+    public function setStartDate(?DateTime $startDate = null): self
     {
         $this->startDate = $startDate;
 

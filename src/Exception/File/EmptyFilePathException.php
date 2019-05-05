@@ -18,8 +18,10 @@ class EmptyFilePathException extends \Exception
 {
     /**
      * Creates exception
+     *
+     * @return EmptyFilePathException
      */
-    public static function create()
+    public static function create(): EmptyFilePathException
     {
         return new static('Path of the file is empty. Did you provide path of proper file?');
     }

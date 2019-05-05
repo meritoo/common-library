@@ -19,11 +19,11 @@ class NotExistingPropertyException extends \Exception
     /**
      * Creates exception
      *
-     * @param mixed  $object   Object that should contains given property
-     * @param string $property Name of the property
+     * @param mixed       $object   Object that should contains given property
+     * @param null|string $property Name of the property
      * @return NotExistingPropertyException
      */
-    public static function create($object, $property)
+    public static function create($object, ?string $property): NotExistingPropertyException
     {
         $template = 'Property \'%s\' does not exist in instance of class \'%s\'. Did you use proper name of property?';
         $message = sprintf($template, $property, get_class($object));

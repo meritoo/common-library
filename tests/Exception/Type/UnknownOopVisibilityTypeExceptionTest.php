@@ -21,13 +21,17 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException
+ * @covers    \Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException
  */
 class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
-        static::assertConstructorVisibilityAndArguments(UnknownOopVisibilityTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(
+            UnknownOopVisibilityTypeException::class,
+            OopVisibilityType::IS_PUBLIC,
+            3
+        );
     }
 
     /**
@@ -36,7 +40,7 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
      *
      * @dataProvider provideUnknownType
      */
-    public function testConstructorMessage($unknownType, $expectedMessage)
+    public function testConstructorMessage($unknownType, $expectedMessage): void
     {
         $exception = UnknownOopVisibilityTypeException::createException($unknownType);
         static::assertSame($expectedMessage, $exception->getMessage());
@@ -47,7 +51,7 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideUnknownType()
+    public function provideUnknownType(): Generator
     {
         $allTypes = (new OopVisibilityType())->getAll();
 

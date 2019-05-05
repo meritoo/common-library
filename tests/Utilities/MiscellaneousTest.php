@@ -23,7 +23,7 @@ use stdClass;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\Miscellaneous
+ * @covers    \Meritoo\Common\Utilities\Miscellaneous
  */
 class MiscellaneousTest extends BaseTestCase
 {
@@ -707,14 +707,32 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @dataProvider provideNumberToFillMissingZeros
      */
-    public function testFillMissingZeros($number, $length, $before, $expected)
+    public function testFillMissingZeros($number, $length, $before, $expected): void
     {
         self::assertSame($expected, Miscellaneous::fillMissingZeros($number, $length, $before));
     }
 
-    public function testGetProjectRootPath()
+    public function testGetProjectRootPath(): void
     {
         self::assertNotEmpty(Miscellaneous::getProjectRootPath());
+    }
+
+    /**
+     * @param string      $description Description of test case
+     * @param string      $string      The string which should be shortened
+     * @param bool        $last        (optional) If is set to true, last element is removed (default behaviour).
+     *                                 Otherwise - first.
+     * @param null|string $expected    Expected result
+     *
+     * @dataProvider provideStringToRemoveMarginalCharacter
+     */
+    public function testRemoveMarginalCharacter(
+        string $description,
+        string $string,
+        bool $last,
+        ?string $expected
+    ): void {
+        self::assertEquals($expected, Miscellaneous::removeMarginalCharacter($string, $last), $description);
     }
 
     /**
@@ -722,7 +740,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideStringToLatinNotLowerCaseHuman()
+    public function provideStringToLatinNotLowerCaseHuman(): ?Generator
     {
         yield[
             'asuo',
@@ -1440,6 +1458,51 @@ class MiscellaneousTest extends BaseTestCase
                 'egestas',
             ],
             'Lorem \'commodo\' dolor sit \'egestas\'',
+        ];
+    }
+
+    public function provideStringToRemoveMarginalCharacter(): ?Generator
+    {
+        yield[
+            'An empty string - remove last character',
+            '',
+            true,
+            null,
+        ];
+
+        yield[
+            'An empty string - remove first character',
+            '',
+            false,
+            null,
+        ];
+
+        yield[
+            'Simple, two words - remove last character',
+            'Lorem ipsum',
+            true,
+            'Lorem ipsu',
+        ];
+
+        yield[
+            'Simple, two words - remove first character',
+            'Lorem ipsum',
+            false,
+            'orem ipsum',
+        ];
+
+        yield[
+            'Two sentences - remove last character',
+            'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
+            true,
+            'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis',
+        ];
+
+        yield[
+            'Two sentences - remove first character',
+            'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
+            false,
+            'tiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
         ];
     }
 

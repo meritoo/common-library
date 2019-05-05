@@ -19,11 +19,11 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Reflection\NotExistingPropertyException
+ * @covers    \Meritoo\Common\Exception\Reflection\NotExistingPropertyException
  */
 class NotExistingPropertyExceptionTest extends BaseTestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
             NotExistingPropertyException::class,
@@ -33,20 +33,20 @@ class NotExistingPropertyExceptionTest extends BaseTestCase
     }
 
     /**
-     * @param string $description     Description of test
-     * @param mixed  $object          Object that should contains given property
-     * @param string $property        Name of the property
-     * @param string $expectedMessage Expected exception's message
+     * @param string      $description     Description of test
+     * @param mixed       $object          Object that should contains given property
+     * @param null|string $property        Name of the property
+     * @param string      $expectedMessage Expected exception's message
      *
      * @dataProvider provideObjectPropertyAndMessage
      */
-    public function testCreate($description, $object, $property, $expectedMessage)
+    public function testCreate(string $description, $object, ?string $property, string $expectedMessage): void
     {
         $exception = NotExistingPropertyException::create($object, $property);
         static::assertSame($expectedMessage, $exception->getMessage(), $description);
     }
 
-    public function provideObjectPropertyAndMessage()
+    public function provideObjectPropertyAndMessage(): ?\Generator
     {
         $template = 'Property \'%s\' does not exist in instance of class \'%s\'. Did you use proper name of property?';
 

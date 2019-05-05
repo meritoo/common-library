@@ -20,13 +20,17 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Reflection\MissingChildClassesException
+ * @covers    \Meritoo\Common\Exception\Reflection\MissingChildClassesException
  */
 class MissingChildClassesExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
-        static::assertConstructorVisibilityAndArguments(MissingChildClassesException::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(
+            MissingChildClassesException::class,
+            OopVisibilityType::IS_PUBLIC,
+            3
+        );
     }
 
     /**
@@ -36,7 +40,7 @@ class MissingChildClassesExceptionTest extends BaseTestCase
      *
      * @dataProvider provideParentClass
      */
-    public function testConstructorMessage($parentClass, $expectedMessage)
+    public function testCreate($parentClass, string $expectedMessage): void
     {
         $exception = MissingChildClassesException::create($parentClass);
         static::assertSame($expectedMessage, $exception->getMessage());
@@ -47,7 +51,7 @@ class MissingChildClassesExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideParentClass()
+    public function provideParentClass(): ?Generator
     {
         $template = 'The \'%s\' class requires one child class at least who will extend her (maybe is an abstract'
             . ' class), but the child classes are missing. Did you forget to extend this class?';

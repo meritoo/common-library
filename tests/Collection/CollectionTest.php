@@ -13,6 +13,7 @@ use Generator;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use ReflectionClass;
 
 /**
  * Test case of the collection of elements
@@ -21,7 +22,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Collection\Collection
+ * @covers    \Meritoo\Common\Collection\Collection
  */
 class CollectionTest extends BaseTestCase
 {
@@ -327,7 +328,16 @@ class CollectionTest extends BaseTestCase
 
     public function testExistsVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(Collection::class, 'exists', OopVisibilityType::IS_PRIVATE, 1, 1);
+        $reflectionClass = new ReflectionClass(Collection::class);
+        $method = $reflectionClass->getMethod('exists');
+
+        static::assertMethodVisibilityAndArguments(
+            Collection::class,
+            $method,
+            OopVisibilityType::IS_PRIVATE,
+            1,
+            1
+        );
     }
 
     /**

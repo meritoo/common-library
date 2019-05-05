@@ -25,7 +25,7 @@ class UnknownOopVisibilityTypeException extends UnknownTypeException
      * @param string $unknownType Unknown visibility of a property, a method or (as of PHP 7.1.0) a constant
      * @return UnknownOopVisibilityTypeException
      */
-    public static function createException($unknownType)
+    public static function createException(string $unknownType): UnknownOopVisibilityTypeException
     {
         return parent::create($unknownType, new OopVisibilityType(), 'OOP-related visibility');
     }

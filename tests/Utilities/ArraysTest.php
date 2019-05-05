@@ -8,6 +8,7 @@
 
 namespace Meritoo\Test\Common\Utilities;
 
+use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\Locale;
@@ -20,7 +21,7 @@ use Meritoo\Test\Common\Utilities\Arrays\SimpleToString;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\Arrays
+ * @covers    \Meritoo\Common\Utilities\Arrays
  */
 class ArraysTest extends BaseTestCase
 {
@@ -212,7 +213,7 @@ class ArraysTest extends BaseTestCase
         self::assertEquals('amet/1/primis', Arrays::getLastElementBreadCrumb($this->complexArray));
     }
 
-    public function testGetLastRow()
+    public function testGetLastRow(): void
     {
         // Negative cases
         self::assertNull(Arrays::getLastRow([]));
@@ -234,34 +235,32 @@ class ArraysTest extends BaseTestCase
         ], Arrays::getLastRow($this->complexArray));
     }
 
-    public function testReplaceArrayKeys()
-    {
-        $effect = [
-            'nullam' => 'donec',
-            'x'      => [
-                'vitae' => [
-                    'x' => 'quis',
-                ],
-            ],
-            'elit',
-        ];
-
-        $dataArray = $this->complexArray['sit'];
-        self::assertEquals($effect, Arrays::replaceArrayKeys($dataArray, '|.*li.*|', 'x'));
-
-        self::assertEquals([
-            'x' => 'sit',
-            4   => 'amet',
-        ], Arrays::replaceArrayKeys($this->simpleArray, '|[0-3]+|', 'x'));
+    /**
+     * @param string $description   Description of test case
+     * @param array  $array         Array which keys should be replaced
+     * @param string $oldKeyPattern Regular expression of the old key
+     * @param string $newKey        Name of the new key
+     * @param array  $expected      Expected result
+     *
+     * @dataProvider provideArrayToReplaceKeys
+     */
+    public function testReplaceKeys(
+        string $description,
+        array $array,
+        string $oldKeyPattern,
+        string $newKey,
+        ?array $expected
+    ): void {
+        self::assertSame($expected, Arrays::replaceKeys($array, $oldKeyPattern, $newKey), $description);
     }
 
-    public function testMakeArray()
+    public function testMakeArray(): void
     {
         self::assertSame($this->simpleArray, Arrays::makeArray($this->simpleArray));
         self::assertSame(['test'], Arrays::makeArray('test'));
     }
 
-    public function testArray2JavaScript()
+    public function testArray2JavaScript(): void
     {
         // Negative cases
         self::assertNull(Arrays::array2JavaScript([]));
@@ -339,36 +338,25 @@ letsTest[2] = value_2;';
      *
      * @dataProvider provideArrayToQuoteStrings
      */
-    public function testQuoteStrings($description, $expected, array $array)
+    public function testQuoteStrings(string $description, ?array $expected, array $array): void
     {
         self::assertSame($expected, Arrays::quoteStrings($array), $description);
     }
 
-    public function testRemoveMarginalElement()
+    /**
+     * @param string     $description Description of test case
+     * @param array      $array       The array which should be shortened
+     * @param bool       $last        If is set to true, last element is removed (default behaviour). Otherwise - first.
+     * @param null|array $expected    Expected result
+     *
+     * @dataProvider provideArrayToRemoveMarginalElement
+     */
+    public function testRemoveMarginalElement(string $description, array $array, bool $last, ?array $expected): void
     {
-        $array = $this->simpleArray;
-        $string = 'Lorem ipsum';
-
-        // Removing first element
-        self::assertSame([
-            0 => 'Lorem',
-            1 => 'ipsum',
-            2 => 'dolor',
-            3 => 'sit',
-        ], Arrays::removeMarginalElement($array));
-        self::assertEquals('Lorem ipsu', Arrays::removeMarginalElement($string));
-
-        // Removing last element
-        self::assertSame([
-            1 => 'ipsum',
-            2 => 'dolor',
-            3 => 'sit',
-            4 => 'amet',
-        ], Arrays::removeMarginalElement($array, false));
-        self::assertEquals('orem ipsum', Arrays::removeMarginalElement($string, false));
+        self::assertSame($expected, Arrays::removeMarginalElement($array, $last), $description);
     }
 
-    public function testRemoveElements()
+    public function testRemoveElements(): void
     {
         $array1 = $this->simpleArray;
         $array2 = $this->simpleArray;
@@ -467,7 +455,7 @@ letsTest[2] = value_2;';
         self::assertEquals($replaced, Arrays::setKeysAsValues($array, false));
     }
 
-    public function testGetNonArrayElementsCount()
+    public function testGetNonArrayElementsCount(): void
     {
         // Negative cases
         self::assertNull(Arrays::getNonArrayElementsCount([]));
@@ -478,11 +466,10 @@ letsTest[2] = value_2;';
         self::assertEquals(12, Arrays::getNonArrayElementsCount($this->twoDimensionsArray));
     }
 
-    public function testString2array()
+    public function testString2array(): void
     {
         // Negative cases
         self::assertNull(Arrays::string2array(''));
-        self::assertNull(Arrays::string2array(null));
 
         // Positive cases
         $array = [
@@ -504,7 +491,7 @@ letsTest[2] = value_2;';
         self::assertEquals($array, Arrays::string2array('red : #f00 | green : #0f0 | blue : #00f'));
     }
 
-    public function testAreKeysInArray()
+    public function testAreKeysInArray(): void
     {
         // Negative cases
         self::assertFalse(Arrays::areKeysInArray([], []));
@@ -568,12 +555,12 @@ letsTest[2] = value_2;';
         self::assertTrue(Arrays::areKeysInArray($keys17, $this->complexArray, false));
     }
 
-    public function testGetLastElementsPathsUsingEmptyArray()
+    public function testGetLastElementsPathsUsingEmptyArray(): void
     {
         self::assertNull(Arrays::getLastElementsPaths([]));
     }
 
-    public function testGetLastElementsPathsUsingDefaults()
+    public function testGetLastElementsPathsUsingDefaults(): void
     {
         // Using default separator and other default arguments
         $expected = [
@@ -592,7 +579,7 @@ letsTest[2] = value_2;';
         self::assertEquals($expected, Arrays::getLastElementsPaths($this->complexArray));
     }
 
-    public function testGetLastElementsPathsUsingCustomSeparator()
+    public function testGetLastElementsPathsUsingCustomSeparator(): void
     {
         // Using custom separator
         $separator = ' -> ';
@@ -613,20 +600,24 @@ letsTest[2] = value_2;';
     }
 
     /**
-     * @param array|string $stopIfMatchedBy Patterns of keys or paths that matched will stop the process of path
-     *                                      building and including children of those keys or paths (recursive will
-     *                                      not be used for keys in lower level of given array)
-     * @param string       $separator       Separator used in resultant strings. Default: ".".
-     * @param array        $expected        Expected array
+     * @param array  $stopIfMatchedBy Patterns of keys or paths that matched will stop the process of path building and
+     *                                including children of those keys or paths (recursive will not be used for keys in
+     *                                lower level of given array)
+     * @param string $separator       Separator used in resultant strings. Default: ".".
+     * @param array  $expected        Expected array
      *
      * @dataProvider provideStopIfMatchedByForGetLastElementsPaths
      */
-    public function testGetLastElementsPathsUsingStopIfMatchedBy($stopIfMatchedBy, $separator, array $expected)
-    {
-        self::assertEquals($expected, Arrays::getLastElementsPaths($this->superComplexArray, $separator, '', $stopIfMatchedBy));
+    public function testGetLastElementsPathsUsingStopIfMatchedBy(
+        array $stopIfMatchedBy,
+        string $separator,
+        array $expected
+    ): void {
+        $paths = Arrays::getLastElementsPaths($this->superComplexArray, $separator, '', $stopIfMatchedBy);
+        self::assertEquals($expected, $paths);
     }
 
-    public function testAreAllKeysMatchedByPattern()
+    public function testAreAllKeysMatchedByPattern(): void
     {
         $pattern = '\d+';
 
@@ -1472,6 +1463,30 @@ letsTest[2] = value_2;';
     }
 
     /**
+     * @param string $description Description of test case
+     * @param mixed  $value       The value to verify
+     * @param bool   $expected    Expected information
+     *
+     * @dataProvider provideValueToIsEmptyArray
+     */
+    public function testIsEmptyArray(string $description, $value, bool $expected): void
+    {
+        self::assertSame($expected, Arrays::isEmptyArray($value), $description);
+    }
+
+    /**
+     * @param string $description Description of test case
+     * @param mixed  $value       The value to verify
+     * @param bool   $expected    Expected information
+     *
+     * @dataProvider provideValueToIsNotEmptyArray
+     */
+    public function testIsNotEmptyArray(string $description, $value, bool $expected): void
+    {
+        self::assertSame($expected, Arrays::isNotEmptyArray($value), $description);
+    }
+
+    /**
      * Provides simple array to set/replace values with keys
      *
      * @return \Generator
@@ -1573,13 +1588,13 @@ letsTest[2] = value_2;';
      * Provides patterns of keys or paths that matched will stop the process and the expected array for the
      * getLastElementsPaths() method
      *
-     * @return \Generator
+     * @return Generator
      */
-    public function provideStopIfMatchedByForGetLastElementsPaths()
+    public function provideStopIfMatchedByForGetLastElementsPaths(): ?Generator
     {
         // Special exception: do not use, stop recursive on the "diam" key
         yield[
-            'diam',
+            ['diam'],
             '.',
             [
                 'ipsum.quis.vestibulum.porta-1.0'                 => 'turpis',
@@ -1787,9 +1802,9 @@ letsTest[2] = value_2;';
     /**
      * Provide values to filter and get non-empty values
      *
-     * @return \Generator
+     * @return Generator
      */
-    public function provideValuesToFilterNonEmpty()
+    public function provideValuesToFilterNonEmpty(): ?Generator
     {
         $simpleObject = new SimpleToString('1234');
 
@@ -2550,6 +2565,307 @@ letsTest[2] = value_2;';
                         ],
                     ],
                 ],
+            ],
+        ];
+    }
+
+    public function provideValueToIsEmptyArray(): ?\Generator
+    {
+        yield[
+            'An empty string',
+            '',
+            false,
+        ];
+
+        yield[
+            'Non-empty string',
+            'test',
+            false,
+        ];
+
+        yield[
+            'Null',
+            null,
+            false,
+        ];
+
+        yield[
+            'An integer equals 0',
+            1234,
+            false,
+        ];
+
+        yield[
+            'An integer greater than 0',
+            1234,
+            false,
+        ];
+
+        yield[
+            'An empty array',
+            [],
+            true,
+        ];
+
+        yield[
+            'Non-empty array',
+            [
+                'test',
+            ],
+            false,
+        ];
+    }
+
+    public function provideValueToIsNotEmptyArray(): ?\Generator
+    {
+        yield[
+            'An empty string',
+            '',
+            false,
+        ];
+
+        yield[
+            'Non-empty string',
+            'test',
+            false,
+        ];
+
+        yield[
+            'Null',
+            null,
+            false,
+        ];
+
+        yield[
+            'An integer equals 0',
+            1234,
+            false,
+        ];
+
+        yield[
+            'An integer greater than 0',
+            1234,
+            false,
+        ];
+
+        yield[
+            'An empty array',
+            [],
+            false,
+        ];
+
+        yield[
+            'Non-empty array',
+            [
+                'test',
+            ],
+            true,
+        ];
+    }
+
+    public function provideArrayToRemoveMarginalElement(): Generator
+    {
+        yield[
+            'An empty array - remove last element',
+            [],
+            true,
+            null,
+        ];
+
+        yield[
+            'An empty array - remove first element',
+            [],
+            false,
+            null,
+        ];
+
+        yield[
+            'One-dimensional array - remove last element',
+            [
+                'Lorem',
+                'ipsum',
+                'dolor',
+                'sit',
+                'amet',
+            ],
+            true,
+            [
+                0 => 'Lorem',
+                1 => 'ipsum',
+                2 => 'dolor',
+                3 => 'sit',
+            ],
+        ];
+
+        yield[
+            'One-dimensional array - remove first element',
+            [
+                'Lorem',
+                'ipsum',
+                'dolor',
+                'sit',
+                'amet',
+            ],
+            false,
+            [
+                1 => 'ipsum',
+                2 => 'dolor',
+                3 => 'sit',
+                4 => 'amet',
+            ],
+        ];
+
+        yield[
+            'Multi-dimensional array - remove last element',
+            [
+                'lorem'       => [
+                    'ipsum' => [
+                        'dolor' => 'sit',
+                        'diam'  => [
+                            'non' => 'egestas',
+                        ],
+                    ],
+                ],
+                'consectetur' => 'adipiscing',
+                'mollis'      => 1234,
+                2             => [],
+                'sit'         => [
+                    'nullam'  => 'donec',
+                    'aliquet' => [
+                        'vitae' => [
+                            'ligula' => 'quis',
+                        ],
+                    ],
+                    'elit',
+                ],
+                'amet'        => [
+                    'iaculis',
+                    'primis',
+                ],
+            ],
+            true,
+            [
+                'lorem'       => [
+                    'ipsum' => [
+                        'dolor' => 'sit',
+                        'diam'  => [
+                            'non' => 'egestas',
+                        ],
+                    ],
+                ],
+                'consectetur' => 'adipiscing',
+                'mollis'      => 1234,
+                2             => [],
+                'sit'         => [
+                    'nullam'  => 'donec',
+                    'aliquet' => [
+                        'vitae' => [
+                            'ligula' => 'quis',
+                        ],
+                    ],
+                    'elit',
+                ],
+            ],
+        ];
+
+        yield[
+            'Multi-dimensional array - remove first element',
+            [
+                'lorem'       => [
+                    'ipsum' => [
+                        'dolor' => 'sit',
+                        'diam'  => [
+                            'non' => 'egestas',
+                        ],
+                    ],
+                ],
+                'consectetur' => 'adipiscing',
+                'mollis'      => 1234,
+                2             => [],
+                'sit'         => [
+                    'nullam'  => 'donec',
+                    'aliquet' => [
+                        'vitae' => [
+                            'ligula' => 'quis',
+                        ],
+                    ],
+                    'elit',
+                ],
+                'amet'        => [
+                    'iaculis',
+                    'primis',
+                ],
+            ],
+            false,
+            [
+                'consectetur' => 'adipiscing',
+                'mollis'      => 1234,
+                2             => [],
+                'sit'         => [
+                    'nullam'  => 'donec',
+                    'aliquet' => [
+                        'vitae' => [
+                            'ligula' => 'quis',
+                        ],
+                    ],
+                    'elit',
+                ],
+                'amet'        => [
+                    'iaculis',
+                    'primis',
+                ],
+            ],
+        ];
+    }
+
+    public function provideArrayToReplaceKeys(): Generator
+    {
+        yield[
+            'An empty array',
+            [],
+            '',
+            '',
+            null,
+        ];
+
+        yield[
+            '1st case',
+            [
+                'nullam'  => 'donec',
+                'aliquet' => [
+                    'vitae' => [
+                        'ligula' => 'quis',
+                    ],
+                ],
+                'elit',
+            ],
+            '|.*li.*|',
+            'x',
+            [
+                'nullam' => 'donec',
+                'x'      => [
+                    'vitae' => [
+                        'x' => 'quis',
+                    ],
+                ],
+                'elit',
+            ],
+        ];
+
+        yield[
+            '2nd case',
+            [
+                'Lorem',
+                'ipsum',
+                'dolor',
+                'sit',
+                'amet',
+            ],
+            '|[0-3]+|',
+            'x',
+            [
+                'x' => 'sit',
+                4   => 'amet',
             ],
         ];
     }

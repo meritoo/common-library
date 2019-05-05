@@ -22,7 +22,7 @@ abstract class BaseType
     /**
      * All types
      *
-     * @var array
+     * @var null|array
      */
     private $all;
 
@@ -31,7 +31,7 @@ abstract class BaseType
      *
      * @return array
      */
-    public function getAll()
+    public function getAll(): array
     {
         if (null === $this->all) {
             $this->all = Reflection::getConstants($this);
@@ -43,10 +43,10 @@ abstract class BaseType
     /**
      * Returns information if given type is correct
      *
-     * @param mixed $type The type to check
+     * @param null|string $type The type to check
      * @return bool
      */
-    public function isCorrectType($type)
+    public function isCorrectType(?string $type): bool
     {
         return in_array($type, $this->getAll(), true);
     }

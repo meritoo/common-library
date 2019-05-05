@@ -10,11 +10,13 @@ namespace Meritoo\Common\Traits\Test\Base;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Exception\Reflection\ClassWithoutConstructorException;
 use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Miscellaneous;
 use ReflectionClass;
 use ReflectionMethod;
+use RuntimeException;
 use stdClass;
 
 /**
@@ -37,7 +39,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideEmptyValue()
+    public function provideEmptyValue(): ?Generator
     {
         yield[''];
         yield['   '];
@@ -52,7 +54,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideEmptyScalarValue()
+    public function provideEmptyScalarValue(): ?Generator
     {
         yield[''];
         yield['   '];
@@ -66,7 +68,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideBooleanValue()
+    public function provideBooleanValue(): ?Generator
     {
         yield[false];
         yield[true];
@@ -77,7 +79,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideDateTimeInstance()
+    public function provideDateTimeInstance(): ?Generator
     {
         yield[new DateTime()];
         yield[new DateTime('yesterday')];
@@ -90,7 +92,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideDateTimeRelativeFormat()
+    public function provideDateTimeRelativeFormat(): ?Generator
     {
         yield['now'];
         yield['yesterday'];
@@ -110,7 +112,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideNotExistingFilePath()
+    public function provideNotExistingFilePath(): ?Generator
     {
         yield['lets-test.doc'];
         yield['lorem/ipsum.jpg'];
@@ -122,7 +124,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideNonScalarValue()
+    public function provideNonScalarValue(): ?Generator
     {
         yield[
             [],
@@ -145,7 +147,7 @@ trait BaseTestCaseTrait
      * @param string $directoryPath (optional) Path of directory containing the file
      * @return string
      */
-    public function getFilePathForTesting($fileName, $directoryPath = '')
+    public function getFilePathForTesting(string $fileName, string $directoryPath = ''): string
     {
         $rootPath = Miscellaneous::getProjectRootPath();
 
@@ -162,33 +164,34 @@ trait BaseTestCaseTrait
     /**
      * Verifies visibility and arguments of method
      *
-     * @param string                  $classNamespace         Namespace of class that contains method to verify
-     * @param ReflectionMethod|string $method                 Name of method or just the method to verify
-     * @param string                  $visibilityType         Expected visibility of verified method. One of
-     *                                                        OopVisibilityType class constants.
-     * @param int                     $argumentsCount         (optional) Expected count/amount of arguments of the
-     *                                                        verified method
-     * @param int                     $requiredArgumentsCount (optional) Expected count/amount of required arguments
-     *                                                        of the verified method
+     * @param string           $className              Fully-qualified name of class that contains method to verify
+     * @param ReflectionMethod $method                 Name of method or just the method to verify
+     * @param string           $visibilityType         Expected visibility of verified method. One of OopVisibilityType
+     *                                                 class constants.
+     * @param int              $argumentsCount         (optional) Expected count/amount of arguments of the verified
+     *                                                 method
+     * @param int              $requiredArgumentsCount (optional) Expected count/amount of required arguments of the
+     *                                                 verified method
      * @throws UnknownOopVisibilityTypeException
+     * @throws RuntimeException
      *
      * Attention. 2nd argument, the $method, may be:
      * - string - name of the method
      * - instance of ReflectionMethod - just the method (provided by ReflectionClass::getMethod() method)
      */
     protected static function assertMethodVisibilityAndArguments(
-        $classNamespace,
-        $method,
-        $visibilityType,
-        $argumentsCount = 0,
-        $requiredArgumentsCount = 0
-    ) {
+        string $className,
+        ReflectionMethod $method,
+        string $visibilityType,
+        int $argumentsCount = 0,
+        int $requiredArgumentsCount = 0
+    ): void {
         // Type of visibility is not correct?
         if (!(new OopVisibilityType())->isCorrectType($visibilityType)) {
-            throw new UnknownOopVisibilityTypeException($visibilityType);
+            throw UnknownOopVisibilityTypeException::createException($visibilityType);
         }
 
-        $reflection = new ReflectionClass($classNamespace);
+        $reflection = new ReflectionClass($className);
 
         // Name of method provided only?
         // Let's find instance of the method (based on reflection)
@@ -218,24 +221,29 @@ trait BaseTestCaseTrait
     /**
      * Verifies visibility and arguments of class constructor
      *
-     * @param string $classNamespace         Namespace of class that contains constructor to verify
+     * @param string $className              Fully-qualified name of class that contains constructor to verify
      * @param string $visibilityType         Expected visibility of verified method. One of OopVisibilityType class
      *                                       constants.
      * @param int    $argumentsCount         (optional) Expected count/amount of arguments of the verified method
      * @param int    $requiredArgumentsCount (optional) Expected count/amount of required arguments of the verified
      *                                       method
+     * @throws ClassWithoutConstructorException
      */
     protected static function assertConstructorVisibilityAndArguments(
-        $classNamespace,
-        $visibilityType,
-        $argumentsCount = 0,
-        $requiredArgumentsCount = 0
-    ) {
-        $reflection = new ReflectionClass($classNamespace);
+        string $className,
+        string $visibilityType,
+        int $argumentsCount = 0,
+        int $requiredArgumentsCount = 0
+    ): void {
+        $reflection = new ReflectionClass($className);
         $method = $reflection->getConstructor();
 
+        if (null === $method) {
+            throw ClassWithoutConstructorException::create($className);
+        }
+
         static::assertMethodVisibilityAndArguments(
-            $classNamespace,
+            $className,
             $method,
             $visibilityType,
             $argumentsCount,
@@ -246,11 +254,11 @@ trait BaseTestCaseTrait
     /**
      * Asserts that class with given namespace has no constructor
      *
-     * @param string $classNamespace Namespace of class that contains constructor to verify
+     * @param string $className Fully-qualified name of class that contains constructor to verify
      */
-    protected static function assertHasNoConstructor($classNamespace)
+    protected static function assertHasNoConstructor(string $className): void
     {
-        $reflection = new ReflectionClass($classNamespace);
+        $reflection = new ReflectionClass($className);
         $constructor = $reflection->getConstructor();
 
         static::assertNull($constructor);
@@ -261,7 +269,7 @@ trait BaseTestCaseTrait
      *
      * @param string $testsDataDirPath Path of directory with data used by test cases
      */
-    protected static function setTestsDataDirPath($testsDataDirPath)
+    protected static function setTestsDataDirPath(string $testsDataDirPath): void
     {
         static::$testsDataDirPath = $testsDataDirPath;
     }

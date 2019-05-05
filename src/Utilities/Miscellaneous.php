@@ -1274,7 +1274,7 @@ class Miscellaneous
      *
      * @return string
      */
-    public static function getProjectRootPath()
+    public static function getProjectRootPath(): string
     {
         $projectRootPath = '';
 
@@ -1297,5 +1297,26 @@ class Miscellaneous
         }
 
         return $projectRootPath;
+    }
+
+    /**
+     * Removes marginal character (first or last) from given string
+     *
+     * @param string $string The string which should be shortened
+     * @param bool   $last   (optional) If is set to true, last element is removed (default behaviour). Otherwise -
+     *                       first.
+     * @return null|string
+     */
+    public static function removeMarginalCharacter(string $string, bool $last = true): ?string
+    {
+        if (empty($string)) {
+            return null;
+        }
+
+        if ($last) {
+            return substr($string, 0, -1);
+        }
+
+        return substr($string, 1);
     }
 }

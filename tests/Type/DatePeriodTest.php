@@ -11,6 +11,7 @@ namespace Meritoo\Test\Common\Type;
 use DateTime;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\DatePeriod;
 use Meritoo\Common\Type\OopVisibilityType;
 
@@ -21,13 +22,17 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Type\DatePeriod
+ * @covers    \Meritoo\Common\Type\DatePeriod
  */
 class DatePeriodTest extends BaseTypeTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
-        static::assertConstructorVisibilityAndArguments(DatePeriod::class, OopVisibilityType::IS_PUBLIC, 2, 0);
+        static::assertConstructorVisibilityAndArguments(
+            DatePeriod::class,
+            OopVisibilityType::IS_PUBLIC,
+            2
+        );
     }
 
     /**
@@ -36,7 +41,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @dataProvider provideDatePeriod
      */
-    public function testConstruct(DateTime $startDate = null, DateTime $endDate = null)
+    public function testConstruct(DateTime $startDate = null, DateTime $endDate = null): void
     {
         $period = new DatePeriod($startDate, $endDate);
 
@@ -50,7 +55,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @dataProvider provideDatePeriod
      */
-    public function testGettersAndSetters(DateTime $startDate = null, DateTime $endDate = null)
+    public function testGettersAndSetters(DateTime $startDate = null, DateTime $endDate = null): void
     {
         $period = new DatePeriod();
 
@@ -67,7 +72,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @dataProvider provideDatePeriodAndIncorrectDateFormat
      */
-    public function testGetFormattedDateIncorrectDateFormat(DatePeriod $period, $format)
+    public function testGetFormattedDateIncorrectDateFormat(DatePeriod $period, $format): void
     {
         self::assertEquals('', $period->getFormattedDate($format));
     }
@@ -80,7 +85,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @dataProvider provideDatePeriodAndDateFormat
      */
-    public function testGetFormattedDate(DatePeriod $period, $format, $startDate, $expected)
+    public function testGetFormattedDate(DatePeriod $period, $format, $startDate, $expected): void
     {
         self::assertEquals($expected, $period->getFormattedDate($format, $startDate));
     }
@@ -90,7 +95,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return Generator
      */
-    public function provideDatePeriod()
+    public function provideDatePeriod(): Generator
     {
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
@@ -123,7 +128,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return Generator
      */
-    public function provideDatePeriodAndIncorrectDateFormat()
+    public function provideDatePeriodAndIncorrectDateFormat(): Generator
     {
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
@@ -131,11 +136,6 @@ class DatePeriodTest extends BaseTypeTestCase
         yield[
             new DatePeriod($startDate, $endDate),
             '',
-        ];
-
-        yield[
-            new DatePeriod($startDate, $endDate),
-            null,
         ];
 
         yield[
@@ -149,7 +149,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return Generator
      */
-    public function provideDatePeriodAndDateFormat()
+    public function provideDatePeriodAndDateFormat(): Generator
     {
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
@@ -216,7 +216,7 @@ class DatePeriodTest extends BaseTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function provideTypeToVerify()
+    public function provideTypeToVerify(): Generator
     {
         yield[
             '',
@@ -224,27 +224,22 @@ class DatePeriodTest extends BaseTypeTestCase
         ];
 
         yield[
-            -1,
+            '-1',
             false,
         ];
 
         yield[
-            true,
-            false,
-        ];
-
-        yield[
-            DatePeriod::LAST_MONTH,
+            '4',
             true,
         ];
 
         yield[
-            DatePeriod::NEXT_WEEK,
+            '3',
             true,
         ];
 
         yield[
-            DatePeriod::THIS_YEAR,
+            '8',
             true,
         ];
     }
@@ -254,25 +249,25 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return array
      */
-    protected function getAllExpectedTypes()
+    protected function getAllExpectedTypes(): array
     {
         return [
-            'LAST_MONTH' => DatePeriod::LAST_MONTH,
-            'LAST_WEEK'  => DatePeriod::LAST_WEEK,
-            'LAST_YEAR'  => DatePeriod::LAST_YEAR,
-            'NEXT_MONTH' => DatePeriod::NEXT_MONTH,
-            'NEXT_WEEK'  => DatePeriod::NEXT_WEEK,
-            'NEXT_YEAR'  => DatePeriod::NEXT_YEAR,
-            'THIS_MONTH' => DatePeriod::THIS_MONTH,
-            'THIS_WEEK'  => DatePeriod::THIS_WEEK,
-            'THIS_YEAR'  => DatePeriod::THIS_YEAR,
+            'LAST_MONTH' => 4,
+            'LAST_WEEK'  => 1,
+            'LAST_YEAR'  => 7,
+            'NEXT_MONTH' => 6,
+            'NEXT_WEEK'  => 3,
+            'NEXT_YEAR'  => 9,
+            'THIS_MONTH' => 5,
+            'THIS_WEEK'  => 2,
+            'THIS_YEAR'  => 8,
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getTestedTypeInstance()
+    protected function getTestedTypeInstance(): BaseType
     {
         return new DatePeriod();
     }

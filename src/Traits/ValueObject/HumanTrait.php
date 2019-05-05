@@ -8,6 +8,8 @@
 
 namespace Meritoo\Common\Traits\ValueObject;
 
+use DateTime;
+
 /**
  * Methods and properties related to human
  *
@@ -33,26 +35,26 @@ trait HumanTrait
     /**
      * Email address
      *
-     * @var string
+     * @var null|string
      */
     protected $email;
 
     /**
      * Birth date
      *
-     * @var \DateTime
+     * @var null|DateTime
      */
     protected $birthDate;
 
     /**
      * Class constructor
      *
-     * @param string    $firstName First name
-     * @param string    $lastName  Last name
-     * @param string    $email     (optional) Email address
-     * @param \DateTime $birthDate (optional) Birth date
+     * @param string        $firstName First name
+     * @param string        $lastName  Last name
+     * @param null|string   $email     (optional) Email address. Default: null.
+     * @param null|DateTime $birthDate (optional) Birth date. Default: null.
      */
-    public function __construct($firstName, $lastName, $email = null, \DateTime $birthDate = null)
+    public function __construct(string $firstName, string $lastName, ?string $email = null, ?DateTime $birthDate = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -68,12 +70,14 @@ trait HumanTrait
     public function __toString()
     {
         $template = '%s';
+        $email = '';
 
         if ('' !== $this->email && null !== $this->email) {
             $template .= ' <%s>';
+            $email = $this->email;
         }
 
-        return sprintf($template, $this->getFullName(), $this->email);
+        return sprintf($template, $this->getFullName(), $email);
     }
 
     /**
@@ -81,7 +85,7 @@ trait HumanTrait
      *
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -91,7 +95,7 @@ trait HumanTrait
      *
      * @return string
      */
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -101,7 +105,7 @@ trait HumanTrait
      *
      * @return null|string
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -109,9 +113,9 @@ trait HumanTrait
     /**
      * Returns birth date
      *
-     * @return null|\DateTime
+     * @return null|DateTime
      */
-    public function getBirthDate()
+    public function getBirthDate(): ?DateTime
     {
         return $this->birthDate;
     }
@@ -119,10 +123,11 @@ trait HumanTrait
     /**
      * Returns the full name
      *
-     * @param bool $firstNameFirst (optional) If is set to true, first name is the first part. Otherwise - last name.
+     * @param bool $firstNameFirst (optional) If is set to true, first name is the first part (default behaviour).
+     *                             Otherwise - name.
      * @return string
      */
-    public function getFullName($firstNameFirst = true)
+    public function getFullName(bool $firstNameFirst = true): string
     {
         $beginning = $this->lastName;
         $finish = $this->firstName;

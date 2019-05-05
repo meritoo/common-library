@@ -8,6 +8,7 @@
 
 namespace Meritoo\Test\Common\Exception\Bundle;
 
+use Generator;
 use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -23,7 +24,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class IncorrectBundleNameExceptionTest extends BaseTestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
             IncorrectBundleNameException::class,
@@ -39,13 +40,13 @@ class IncorrectBundleNameExceptionTest extends BaseTestCase
      *
      * @dataProvider provideBundleNameAndMessage
      */
-    public function testCreate($description, $bundleName, $expectedMessage)
+    public function testCreate(string $description, string $bundleName, string $expectedMessage): void
     {
         $exception = IncorrectBundleNameException::create($bundleName);
         static::assertSame($expectedMessage, $exception->getMessage(), $description);
     }
 
-    public function provideBundleNameAndMessage()
+    public function provideBundleNameAndMessage(): Generator
     {
         $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
             . ' there everything ok?';
@@ -53,12 +54,6 @@ class IncorrectBundleNameExceptionTest extends BaseTestCase
         yield[
             'An empty string as name of bundle',
             '',
-            sprintf($template, ''),
-        ];
-
-        yield[
-            'Null as name of bundle',
-            null,
             sprintf($template, ''),
         ];
 

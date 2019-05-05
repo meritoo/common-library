@@ -22,7 +22,7 @@ trait BaseTypeTestCaseTrait
     /**
      * Verifies availability of all types
      */
-    public function testAvailabilityOfAllTypes()
+    public function testAvailabilityOfAllTypes(): void
     {
         $available = $this->getTestedTypeInstance()->getAll();
         $all = $this->getAllExpectedTypes();
@@ -33,12 +33,12 @@ trait BaseTypeTestCaseTrait
     /**
      * Verifies whether given type is correct or not
      *
-     * @param string $type     Type to verify
-     * @param bool   $expected Information if given type is correct or not
+     * @param null|string $type     Type to verify
+     * @param bool        $expected Information if given type is correct or not
      *
      * @dataProvider provideTypeToVerify
      */
-    public function testIfGivenTypeIsCorrect($type, $expected)
+    public function testIfGivenTypeIsCorrect(?string $type, bool $expected): void
     {
         static::assertEquals($expected, $this->getTestedTypeInstance()->isCorrectType($type));
     }
@@ -48,19 +48,19 @@ trait BaseTypeTestCaseTrait
      *
      * @return Generator
      */
-    abstract public function provideTypeToVerify();
+    abstract public function provideTypeToVerify(): Generator;
 
     /**
      * Returns instance of the tested type
      *
      * @return BaseType
      */
-    abstract protected function getTestedTypeInstance();
+    abstract protected function getTestedTypeInstance(): BaseType;
 
     /**
      * Returns all expected types of the tested type
      *
      * @return array
      */
-    abstract protected function getAllExpectedTypes();
+    abstract protected function getAllExpectedTypes(): array;
 }
