@@ -71,7 +71,7 @@ class UnknownTestTypeException extends UnknownTypeException
      * @param string $unknownType The unknown type of something (for testing purposes)
      * @return UnknownTestTypeException
      */
-    public static function createException($unknownType)
+    public static function createException(string $unknownType): UnknownTestTypeException
     {
         return parent::create($unknownType, new TestType(), 'type of something used for testing');
     }
@@ -92,7 +92,7 @@ class TestService
      * @throws UnknownTestTypeException
      * @return string
      */
-    public function getTranslatedType($type)
+    public function getTranslatedType(string $type): string
     {
         if (TestType::isCorrectType($type)) {
             return ucfirst(str_replace('_', ' ', $type));

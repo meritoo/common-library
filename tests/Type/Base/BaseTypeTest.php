@@ -19,7 +19,7 @@ use Meritoo\Common\Type\Base\BaseType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Type\Base\BaseType
+ * @covers    \Meritoo\Common\Type\Base\BaseType
  */
 class BaseTypeTest extends BaseTestCase
 {
@@ -67,7 +67,7 @@ class BaseTypeTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideType()
+    public function provideType(): ?Generator
     {
         yield[
             new TestEmptyType(),

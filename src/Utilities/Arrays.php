@@ -34,10 +34,7 @@ class Arrays
      */
     public static function values2string(array $array, $arrayColumnKey = '', $separator = ',')
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -66,10 +63,7 @@ class Arrays
             $values[] = $appendMe;
         }
 
-        /*
-         * No values found?
-         * Nothing to do
-         */
+        // No values found? Nothing to do
         if (empty($values)) {
             return null;
         }
@@ -93,10 +87,7 @@ class Arrays
         $valuesKeysSeparator = '=',
         $valuesWrapper = ''
     ) {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -127,10 +118,7 @@ class Arrays
      */
     public static function values2csv(array $array, $separator = ',')
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -189,10 +177,7 @@ class Arrays
      */
     public static function getFirstElement(array $array, $firstLevelOnly = true)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -215,10 +200,7 @@ class Arrays
      */
     public static function getFirstKey(array $array)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -257,10 +239,7 @@ class Arrays
      */
     public static function getLastElement(array $array, $firstLevelOnly = true)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -283,10 +262,7 @@ class Arrays
      */
     public static function getLastElementBreadCrumb(array $array, $separator = '/')
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -316,10 +292,7 @@ class Arrays
      */
     public static function getLastRow(array $array)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -488,10 +461,7 @@ class Arrays
      */
     public static function quoteStrings(array $array): ?array
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -544,10 +514,7 @@ class Arrays
      */
     public static function getLastKey(array $array)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -566,10 +533,7 @@ class Arrays
      */
     public static function removeElement(array $array, $item)
     {
-        /*
-         * No elements or the element does not exist?
-         * Nothing to do
-         */
+        // No elements or the element does not exist? Nothing to do
         if (empty($array) || !in_array($item, $array, true)) {
             return false;
         }
@@ -659,10 +623,7 @@ class Arrays
      */
     public static function setKeysAsValues(array $array, $ignoreDuplicatedValues = true)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -708,10 +669,7 @@ class Arrays
      */
     public static function ksortRecursive(array &$array, $sortFlags = SORT_REGULAR)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -736,10 +694,7 @@ class Arrays
      */
     public static function getNonArrayElementsCount(array $array): ?int
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -958,10 +913,7 @@ class Arrays
      */
     public static function areAllKeysMatchedByPattern(array $array, string $pattern, bool $firstLevelOnly = false): bool
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return false;
         }
@@ -1046,10 +998,7 @@ class Arrays
      */
     public static function getValueByKeysPath(array $array, array $keys)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -1100,10 +1049,7 @@ class Arrays
      */
     public static function issetRecursive(array $array, array $keys)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return false;
         }
@@ -1138,10 +1084,7 @@ class Arrays
      */
     public static function getAllValuesOfKey(array $array, $key)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -1182,10 +1125,7 @@ class Arrays
      */
     public static function setPositions(array $array, $keyName = self::POSITION_KEY_NAME, $startPosition = null)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -1214,10 +1154,7 @@ class Arrays
      */
     public static function trimRecursive(array $array)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return [];
         }
@@ -1286,10 +1223,7 @@ class Arrays
      */
     public static function sortByCustomKeysOrder(array $array, array $keysOrder)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -1335,10 +1269,7 @@ class Arrays
      */
     public static function implodeSmart(array $array, $separator)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -1370,10 +1301,7 @@ class Arrays
      */
     public static function areAllValuesEmpty(array $array, $strictNull = false)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return false;
         }
@@ -1493,8 +1421,7 @@ class Arrays
      */
     public static function getIndexOf(array $array, $element)
     {
-        // No elements?
-        // Nothing to do
+        // No elements? Nothing to do
         if (empty($array)) {
             return false;
         }
@@ -1519,10 +1446,7 @@ class Arrays
      */
     public static function incrementIndexes(array $array, ?int $startIndex = null, int $incrementStep = 1): ?array
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -1602,10 +1526,7 @@ class Arrays
      */
     public static function isMultiDimensional(array $array): ?bool
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
@@ -1621,10 +1542,7 @@ class Arrays
      */
     public static function getDimensionsCount(array $array): int
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return 0;
         }
@@ -1656,10 +1574,7 @@ class Arrays
      */
     public static function getNonEmptyValues(array $values): ?array
     {
-        /*
-         * No values?
-         * Nothing to do
-         */
+        // No values? Nothing to do
         if (empty($values)) {
             return null;
         }
@@ -1681,20 +1596,14 @@ class Arrays
      */
     public static function getNonEmptyValuesAsString(array $values, string $separator = ', '): ?string
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($values)) {
             return null;
         }
 
         $nonEmpty = self::getNonEmptyValues($values);
 
-        /*
-         * No values?
-         * Nothing to do
-         */
+        // No values? Nothing to do
         if (empty($nonEmpty)) {
             return '';
         }
@@ -1734,10 +1643,7 @@ class Arrays
      */
     private static function getNeighbour(array $array, $element, bool $next = true)
     {
-        /*
-         * No elements?
-         * Nothing to do
-         */
+        // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }

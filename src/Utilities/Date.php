@@ -66,11 +66,11 @@ class Date
     /**
      * Returns date's period (that contains start and end date) for given period
      *
-     * @param int $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
+     * @param string $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
      * @throws Exception
      * @return null|DatePeriod
      */
-    public static function getDatesForPeriod($period)
+    public static function getDatesForPeriod(string $period): ?DatePeriod
     {
         /*
          * Type of period is incorrect?
