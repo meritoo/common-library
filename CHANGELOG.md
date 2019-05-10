@@ -6,6 +6,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. PHP Coding Standards Fixer > update configuration
 2. Phing > tests > add task for Psalm (https://psalm.dev)
+3. Collection > trait > split into smaller traits (to make it more flexible)
 
 # 1.0.3
 
