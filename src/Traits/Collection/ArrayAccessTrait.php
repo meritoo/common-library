@@ -19,7 +19,7 @@ trait ArrayAccessTrait
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->exists($offset);
     }
@@ -39,7 +39,7 @@ trait ArrayAccessTrait
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->elements[$offset] = $value;
     }
@@ -47,7 +47,7 @@ trait ArrayAccessTrait
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if ($this->exists($offset)) {
             unset($this->elements[$offset]);
@@ -60,7 +60,7 @@ trait ArrayAccessTrait
      * @param int|string $index The index/key of element
      * @return bool
      */
-    private function exists($index)
+    private function exists($index): bool
     {
         return isset($this->elements[$index]) || array_key_exists($index, $this->elements);
     }

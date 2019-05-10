@@ -33,7 +33,7 @@ trait MainTrait
      * @param mixed $index   (optional) Index / key of the element
      * @return $this
      */
-    public function add($element, $index = null)
+    public function add($element, $index = null): self
     {
         if (null === $index || '' === $index) {
             $this->elements[] = $element;
@@ -52,7 +52,7 @@ trait MainTrait
      *                                     this collection. Otherwise - not.
      * @return $this
      */
-    public function addMultiple($elements, $useIndexes = false)
+    public function addMultiple($elements, bool $useIndexes = false): self
     {
         if (!empty($elements)) {
             foreach ($elements as $index => $element) {
@@ -75,7 +75,7 @@ trait MainTrait
      * @param mixed $element The element to prepend
      * @return $this
      */
-    public function prepend($element)
+    public function prepend($element): self
     {
         array_unshift($this->elements, $element);
 
@@ -88,7 +88,7 @@ trait MainTrait
      * @param mixed $element The element to remove
      * @return $this
      */
-    public function remove($element)
+    public function remove($element): self
     {
         if ($this->count() > 0) {
             foreach ($this->elements as $index => $existing) {
@@ -108,7 +108,7 @@ trait MainTrait
      *
      * @return bool
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->elements);
     }
@@ -119,7 +119,7 @@ trait MainTrait
      * @param mixed $element The element to verify
      * @return bool
      */
-    public function isFirst($element)
+    public function isFirst($element): bool
     {
         return reset($this->elements) === $element;
     }
@@ -130,7 +130,7 @@ trait MainTrait
      * @param mixed $element The element to verify
      * @return bool
      */
-    public function isLast($element)
+    public function isLast($element): bool
     {
         return end($this->elements) === $element;
     }
@@ -141,7 +141,7 @@ trait MainTrait
      * @param mixed $element The element to verify
      * @return bool
      */
-    public function has($element)
+    public function has($element): bool
     {
         $index = Arrays::getIndexOf($this->elements, $element);
 
@@ -210,7 +210,7 @@ trait MainTrait
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->elements;
     }
