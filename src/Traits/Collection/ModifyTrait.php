@@ -20,33 +20,29 @@ trait ModifyTrait
      * Prepends given element (adds given element at the beginning of collection)
      *
      * @param mixed $element The element to prepend
-     * @return $this
      */
-    public function prepend($element): self
+    public function prepend($element): void
     {
         array_unshift($this->elements, $element);
-
-        return $this;
     }
 
     /**
      * Removes given element
      *
      * @param mixed $element The element to remove
-     * @return $this
      */
-    public function remove($element): self
+    public function remove($element): void
     {
-        if ($this->count() > 0) {
-            foreach ($this->elements as $index => $existing) {
-                if ($element === $existing) {
-                    unset($this->elements[$index]);
-
-                    break;
-                }
-            }
+        if (0 === $this->count()) {
+            return;
         }
 
-        return $this;
+        foreach ($this->elements as $index => $existing) {
+            if ($element === $existing) {
+                unset($this->elements[$index]);
+
+                break;
+            }
+        }
     }
 }

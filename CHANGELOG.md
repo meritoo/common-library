@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.0.5
+
+1. Collection > trait > return "void" where "self" causes type hinting problem and is not required
+
 # 1.0.4
 
 1. PHP Coding Standards Fixer > update configuration
