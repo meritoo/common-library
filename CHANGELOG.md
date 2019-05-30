@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.0.6
+
+1. Use `.env` instead of `.env.dist`
+
 # 1.0.5
 
 1. Collection > trait > return "void" where "self" causes type hinting problem and is not required
