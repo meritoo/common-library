@@ -5,29 +5,27 @@ services:
     # Required to run project
     #
     php:
-        image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php
+        image: meritoo/php7
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-php
         entrypoint: php
         command: -S 0.0.0.0:9999
-        build:
-            context: ./docker/config
-            args:
-                - TIMEZONE=${TIMEZONE}
+        environment:
+            TIMEZONE: ${TIMEZONE}
         volumes:
-            - .:/project:cached
+            - .:/var/www/application:cached
     composer:
-        image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php
+        image: meritoo/php7
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-composer
         entrypoint: php -d memory_limit=-1 /usr/local/bin/composer
         volumes:
-            - .:/project:cached
+            - .:/var/www/application:cached
     #
     # Required to run PHPUnit's tests
     #
     phpunit:
-        image: ${DOCKER_CONTAINER_OWNER}/${DOCKER_CONTAINER_PROJECT}-php
+        image: meritoo/php7
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-phpunit
         entrypoint: ./vendor/bin/phpunit
         command: --version
         volumes:
-            - .:/project:cached
+            - .:/var/www/application:cached

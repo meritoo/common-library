@@ -4,9 +4,7 @@
     <!-- Directories to check -->
     <property name="directoriesToCheck" value="
         ${dir.data.tests},
-        ${dir.data.temporary},
-        ${dir.docker.data},
-        ${dir.docker.logs}"
+        ${dir.data.temporary}"
     />
 
     <!-- Directories to empty -->

@@ -53,12 +53,6 @@ dir.reports.coverage = ${dir.reports}/phpunit-coverage
 dir.data.tests = ${dir.data}/tests
 dir.data.temporary = ${dir.data}/tmp
 
-# Docker directories
-#
-dir.docker = ${project.basedir}/docker
-dir.docker.data = ${dir.docker}/data/db
-dir.docker.logs = ${dir.docker}/logs/nginx
-
 # --------------------------------------------------------------------------------
 # Static Analysis
 # --------------------------------------------------------------------------------
