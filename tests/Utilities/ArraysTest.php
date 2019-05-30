@@ -2569,7 +2569,7 @@ letsTest[2] = value_2;';
         ];
     }
 
-    public function provideValueToIsEmptyArray(): ?\Generator
+    public function provideValueToIsEmptyArray(): ?Generator
     {
         yield[
             'An empty string',
@@ -2616,7 +2616,7 @@ letsTest[2] = value_2;';
         ];
     }
 
-    public function provideValueToIsNotEmptyArray(): ?\Generator
+    public function provideValueToIsNotEmptyArray(): ?Generator
     {
         yield[
             'An empty string',
