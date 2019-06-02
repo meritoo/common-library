@@ -47,6 +47,7 @@ dir.tests = ${project.basedir}/tests
 dir.build = ${project.basedir}/build
 dir.reports = ${dir.build}/reports
 dir.reports.coverage = ${dir.reports}/phpunit-coverage
+dir.reports.code_sniffer = ${dir.reports}/code_sniffer
 
 # Data directories
 #
@@ -71,6 +72,10 @@ check.php_coveralls.command = ./vendor/bin/php-coveralls --ansi -v
 # Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
 #
 tests.cs_fixer.command = ./vendor/bin/php-cs-fixer fix --verbose
+
+# Path of the PHP_CodeSniffer (https://github.com/squizlabs/PHP_CodeSniffer)
+#
+tests.code_sniffer.command = ./vendor/bin/phpcs --report-full=${dir.reports.code_sniffer}/full.txt --report-summary=${dir.reports.code_sniffer}/summary.txt --report-checkstyle=${dir.reports.code_sniffer}/checkstyle.xml
 
 # Test database path
 #

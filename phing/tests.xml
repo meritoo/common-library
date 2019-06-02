@@ -55,14 +55,9 @@
                     test:infection"
     />
 
-    <!-- Symfony2 code sniffer -->
+    <!-- PHP_CodeSniffer -->
     <target name="check:cs" depends="build:prepare">
-        <phpcodesniffer standard="PSR2" showWarnings="true">
-            <fileset refid="sourcecode"/>
-            <formatter type="checkstyle" outfile="${dir.reports}/checkstyle.xml"/>
-            <formatter type="csv" outfile="${dir.reports}/checkstyle.csv"/>
-            <formatter type="summary" outfile="${dir.reports}/checkstyle-summary.txt"/>
-        </phpcodesniffer>
+        <exec command="${tests.code_sniffer.command}" passthru="true"/>
     </target>
 
     <!-- copy/paste detector -->
@@ -112,6 +107,7 @@
     <target name="build:prepare" depends="build:clean">
         <mkdir dir="${dir.reports}"/>
         <mkdir dir="${dir.reports.coverage}"/>
+        <mkdir dir="${dir.reports.code_sniffer}"/>
     </target>
 
     <!-- Checkout and finalization -->

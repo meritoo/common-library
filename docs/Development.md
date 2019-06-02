@@ -105,13 +105,6 @@ docker-compose exec php phing -f phing/tests.xml test:phpunit
 docker-compose run --rm phpunit --verbose --no-coverage
 ```
 
-# Versions of packages
-
-### squizlabs/php_codesniffer
-
-I have to use [squizlabs/php_codesniffer](https://packagist.org/packages/squizlabs/php_codesniffer) `^2.9` instead of
-`^3.3`, because [Phing doesn't support 3.x PHP_CodeSniffer](https://github.com/phingofficial/phing/issues/716).
-
 # Mutation Tests
 
 Served by [Infection — Mutation Testing Framework](https://infection.github.io).
