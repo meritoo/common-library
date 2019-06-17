@@ -332,7 +332,6 @@ class CollectionTest extends BaseTestCase
         $method = $reflectionClass->getMethod('exists');
 
         static::assertMethodVisibilityAndArguments(
-            Collection::class,
             $method,
             OopVisibilityType::IS_PRIVATE,
             1,

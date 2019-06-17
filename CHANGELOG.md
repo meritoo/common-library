@@ -7,6 +7,7 @@ Common and useful classes, methods, exceptions etc.
 1. Use `.env` instead of `.env.dist`
 2. Docker > use images (instead of Dockerfiles)
 3. composer > squizlabs/php_codesniffer package > use ^3.4 (instead of ^2.9)
+4. Do not require name of class by BaseTestCaseTrait::assertMethodVisibilityAndArguments() method
 
 # 1.0.5
 

@@ -164,7 +164,6 @@ trait BaseTestCaseTrait
     /**
      * Verifies visibility and arguments of method
      *
-     * @param string           $className              Fully-qualified name of class that contains method to verify
      * @param ReflectionMethod $method                 Name of method or just the method to verify
      * @param string           $visibilityType         Expected visibility of verified method. One of OopVisibilityType
      *                                                 class constants.
@@ -180,7 +179,6 @@ trait BaseTestCaseTrait
      * - instance of ReflectionMethod - just the method (provided by ReflectionClass::getMethod() method)
      */
     protected static function assertMethodVisibilityAndArguments(
-        string $className,
         ReflectionMethod $method,
         string $visibilityType,
         int $argumentsCount = 0,
@@ -189,14 +187,6 @@ trait BaseTestCaseTrait
         // Type of visibility is not correct?
         if (!OopVisibilityType::isCorrectType($visibilityType)) {
             throw UnknownOopVisibilityTypeException::createException($visibilityType);
-        }
-
-        $reflection = new ReflectionClass($className);
-
-        // Name of method provided only?
-        // Let's find instance of the method (based on reflection)
-        if (!$method instanceof ReflectionMethod) {
-            $method = $reflection->getMethod($method);
         }
 
         switch ($visibilityType) {
@@ -243,7 +233,6 @@ trait BaseTestCaseTrait
         }
 
         static::assertMethodVisibilityAndArguments(
-            $className,
             $method,
             $visibilityType,
             $argumentsCount,
