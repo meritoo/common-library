@@ -85,16 +85,10 @@ class BundleTest extends BaseTestCase
         self::assertEquals($expected, Bundle::getBundleViewPath($viewPath, $bundleName, $extension));
     }
 
-    /**
-     * @param mixed $emptyValue Empty value, e.g. ""
-     *
-     * @throws IncorrectBundleNameException
-     * @dataProvider provideEmptyValue
-     */
-    public function testGetShortBundleNameUsingEmptyValue($emptyValue)
+    public function testGetShortBundleNameUsingEmptyValue(): void
     {
         $this->expectException(IncorrectBundleNameException::class);
-        Bundle::getShortBundleName($emptyValue);
+        Bundle::getShortBundleName('');
     }
 
     /**

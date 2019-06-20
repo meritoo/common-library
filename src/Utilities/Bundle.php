@@ -61,14 +61,10 @@ class Bundle
      * @throws IncorrectBundleNameException
      * @return null|string
      */
-    public static function getShortBundleName($fullBundleName)
+    public static function getShortBundleName(string $fullBundleName): ?string
     {
         // Oops, given name of bundle is invalid
         if (!Regex::isValidBundleName($fullBundleName)) {
-            if (!is_string($fullBundleName)) {
-                $fullBundleName = gettype($fullBundleName);
-            }
-
             throw new IncorrectBundleNameException($fullBundleName);
         }
 
