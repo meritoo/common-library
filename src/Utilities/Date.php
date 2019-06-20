@@ -125,7 +125,10 @@ class Date
 
                 if (null !== $nextMonth) {
                     $dateEnd = $nextMonth->getStartDate();
-                    $dateEnd->sub(new DateInterval('P1D'));
+
+                    if (null !== $dateEnd) {
+                        $dateEnd->sub(new DateInterval('P1D'));
+                    }
                 }
 
                 break;
