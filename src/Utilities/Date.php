@@ -235,20 +235,20 @@ class Date
      *
      * @return int
      */
-    public static function getCurrentDayOfWeek()
+    public static function getCurrentDayOfWeek(): int
     {
         $now = new DateTime();
 
-        $year = $now->format('Y');
-        $month = $now->format('m');
-        $day = $now->format('d');
+        $year = (int)$now->format('Y');
+        $month = (int)$now->format('m');
+        $day = (int)$now->format('d');
 
         return self::getDayOfWeek($year, $month, $day);
     }
 
     /**
      * Returns day of week (number 0 to 6, 0 - sunday, 6 - saturday).
-     * Based on the Zeller's algorithm (http://pl.wikipedia.org/wiki/Kalendarz_wieczny).
+     * Based on the Zeller's algorithm (https://en.wikipedia.org/wiki/Perpetual_calendar).
      *
      * @param int $year  The year value
      * @param int $month The month value
@@ -257,12 +257,8 @@ class Date
      * @throws UnknownDatePartTypeException
      * @return int
      */
-    public static function getDayOfWeek($year, $month, $day)
+    public static function getDayOfWeek(int $year, int $month, int $day): int
     {
-        $year = (int)$year;
-        $month = (int)$month;
-        $day = (int)$day;
-
         // Oops, given year is incorrect
         if ($year <= 0) {
             throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
@@ -299,13 +295,13 @@ class Date
      *
      * @return string
      */
-    public static function getCurrentDayOfWeekName()
+    public static function getCurrentDayOfWeekName(): string
     {
         $now = new DateTime();
 
-        $year = $now->format('Y');
-        $month = $now->format('m');
-        $day = $now->format('d');
+        $year = (int)$now->format('Y');
+        $month = (int)$now->format('m');
+        $day = (int)$now->format('d');
 
         return self::getDayOfWeekName($year, $month, $day);
     }

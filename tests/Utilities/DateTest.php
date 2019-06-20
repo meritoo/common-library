@@ -228,7 +228,7 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideIncorrectYearMonthDay
      */
-    public function testGetDayOfWeekIncorrectValues($year, $month, $day): void
+    public function testGetDayOfWeekIncorrectValues(int $year, int $month, int $day): void
     {
         $this->expectException(UnknownDatePartTypeException::class);
         self::assertEmpty(Date::getDayOfWeek($year, $month, $day));
@@ -241,7 +241,7 @@ class DateTest extends BaseTestCase
      *
      * @dataProvider provideYearMonthDay
      */
-    public function testGetDayOfWeek($year, $month, $day): void
+    public function testGetDayOfWeek(int $year, int $month, int $day): void
     {
         self::assertRegExp('/^[0-6]{1}$/', (string)Date::getDayOfWeek($year, $month, $day));
     }
@@ -766,20 +766,8 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideIncorrectYearMonthDay()
+    public function provideIncorrectYearMonthDay(): Generator
     {
-        yield[
-            null,
-            null,
-            null,
-        ];
-
-        yield[
-            '',
-            '',
-            '',
-        ];
-
         yield[
             0,
             0,
