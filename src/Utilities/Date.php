@@ -160,7 +160,7 @@ class Date
                     $dateEnd->modify($modifyString);
                 }
 
-                $year = $dateStart->format('Y');
+                $year = (int)$dateStart->format('Y');
                 $dateStart->setDate($year, 1, 1);
                 $dateEnd->setDate($year, 12, 31);
 
