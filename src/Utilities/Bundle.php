@@ -21,18 +21,18 @@ class Bundle
     /**
      * Returns path of given bundle to view / template with given extension
      *
-     * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template"
+     * @param string $viewPath   Path of the view / template, e.g. "MyDirectory/my-template". Extension is not required.
      * @param string $bundleName Full name of the bundle, e.g. "MyExtraBundle"
      * @param string $extension  (optional) Extension of the view / template (default: "html.twig")
      * @throws IncorrectBundleNameException
      * @return null|string
      */
-    public static function getBundleViewPath($viewPath, $bundleName, $extension = 'html.twig')
-    {
-        /*
-         * Unknown path, extension of the view / template or name of the bundle?
-         * Nothing to do
-         */
+    public static function getBundleViewPath(
+        string $viewPath,
+        string $bundleName,
+        string $extension = 'html.twig'
+    ): ?string {
+        // Nothing to do, because at least one unknown argument provided
         if (empty($viewPath) || empty($bundleName) || empty($extension)) {
             return null;
         }
@@ -48,10 +48,10 @@ class Bundle
         }
 
         // Prepare short name of bundle and path of view / template with "/" (instead of ":")
-        $shortBundleName = static::getShortBundleName($bundleName);
-        $viewPath = str_replace(':', '/', $viewPath);
+        $shortName = static::getShortBundleName($bundleName);
+        $path = str_replace(':', '/', $viewPath);
 
-        return sprintf('@%s/%s', $shortBundleName, $viewPath);
+        return sprintf('@%s/%s', $shortName, $path);
     }
 
     /**
