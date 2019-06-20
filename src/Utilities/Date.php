@@ -120,7 +120,10 @@ class Date
 
                 if (null !== $lastMonth) {
                     $dateStart = $lastMonth->getEndDate();
-                    $dateStart->add(new DateInterval('P1D'));
+
+                    if (null !== $dateStart) {
+                        $dateStart->add(new DateInterval('P1D'));
+                    }
                 }
 
                 if (null !== $nextMonth) {
