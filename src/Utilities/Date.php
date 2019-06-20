@@ -259,20 +259,9 @@ class Date
      */
     public static function getDayOfWeek(int $year, int $month, int $day): int
     {
-        // Oops, given year is incorrect
-        if ($year <= 0) {
-            throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
-        }
-
-        // Oops, given month is incorrect
-        if ($month < 1 || $month > 12) {
-            throw UnknownDatePartTypeException::createException(DatePartType::MONTH, $month);
-        }
-
-        // Oops, given day is incorrect
-        if ($day < 1 || $day > 31) {
-            throw UnknownDatePartTypeException::createException(DatePartType::DAY, $day);
-        }
+        static::validateYear($year);
+        static::validateMonth($month);
+        static::validateDay($day);
 
         if ($month < 3) {
             $count = 0;
@@ -704,5 +693,53 @@ class Date
         }
 
         return $fromFormat instanceof DateTime;
+    }
+
+    /**
+     * Verifies/validates given year
+     *
+     * @param int $year Year to verify/validate
+     * @throws UnknownDatePartTypeException
+     */
+    private static function validateYear(int $year): void
+    {
+        // Oops, given year is incorrect
+        if ($year >= 0) {
+            return;
+        }
+
+        throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
+    }
+
+    /**
+     * Verifies/validates given month
+     *
+     * @param int $month Month to verify/validate
+     * @throws UnknownDatePartTypeException
+     */
+    private static function validateMonth(int $month): void
+    {
+        // Oops, given month is incorrect
+        if ($month >= 1 && $month <= 12) {
+            return;
+        }
+
+        throw UnknownDatePartTypeException::createException(DatePartType::MONTH, $month);
+    }
+
+    /**
+     * Verifies/validates given day
+     *
+     * @param int $day Day to verify/validate
+     * @throws UnknownDatePartTypeException
+     */
+    private static function validateDay(int $day): void
+    {
+        // Oops, given day is incorrect
+        if ($day >= 1 && $day <= 31) {
+            return;
+        }
+
+        throw UnknownDatePartTypeException::createException(DatePartType::DAY, $day);
     }
 }
