@@ -30,14 +30,9 @@ class Composer
      * @param string $nodeName         Name of node who value should be returned
      * @return null|string
      */
-    public static function getValue($composerJsonPath, $nodeName)
+    public static function getValue(string $composerJsonPath, string $nodeName): ?string
     {
-        $composerJsonString = is_string($composerJsonPath);
-        $composerJsonReadable = false;
-
-        if ($composerJsonString) {
-            $composerJsonReadable = is_readable($composerJsonPath);
-        }
+        $composerJsonReadable = is_readable($composerJsonPath);
 
         /*
          * Provided path or name of node are invalid?
@@ -46,12 +41,12 @@ class Composer
          *
          * Nothing to do
          */
-        if (!$composerJsonString || !is_string($nodeName) || !$composerJsonReadable || empty($nodeName)) {
+        if (!$composerJsonReadable || empty($nodeName)) {
             return null;
         }
 
         $content = file_get_contents($composerJsonPath);
-        $data = json_decode($content);
+        $data = json_decode($content, false);
 
         /*
          * Unknown data from the composer.json file or there is no node with given name?

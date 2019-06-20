@@ -35,23 +35,15 @@ class ComposerTest extends BaseTestCase
         static::assertHasNoConstructor(Composer::class);
     }
 
-    /**
-     * @param string $composerJsonPath Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testGetValueNotExistingComposerJson($composerJsonPath)
+    public function testGetValueNotExistingComposerJson(): void
     {
-        self::assertNull(Composer::getValue($composerJsonPath, ''));
+        self::assertNull(Composer::getValue('', ''));
         self::assertNull(Composer::getValue('not/existing/composer.json', ''));
     }
 
-    /**
-     * @param string $nodeName Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testGetValueNotExistingNode($nodeName)
+    public function testGetValueNotExistingNode(): void
     {
-        self::assertNull(Composer::getValue($this->composerJsonPath, $nodeName));
+        self::assertNull(Composer::getValue($this->composerJsonPath, ''));
         self::assertNull(Composer::getValue($this->composerJsonPath, 'not_existing_node'));
     }
 
@@ -61,7 +53,7 @@ class ComposerTest extends BaseTestCase
      *
      * @dataProvider getExistingNode
      */
-    public function testGetValueExistingNode($nodeName, $nodeValue)
+    public function testGetValueExistingNode(string $nodeName, string $nodeValue): void
     {
         self::assertEquals($nodeValue, Composer::getValue($this->composerJsonPath, $nodeName));
     }
@@ -71,7 +63,7 @@ class ComposerTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function getExistingNode()
+    public function getExistingNode(): Generator
     {
         yield[
             'name',
