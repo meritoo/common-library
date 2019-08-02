@@ -1,9 +1,13 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in([
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
+    ->in(__DIR__)
+    ->exclude([
+        'build',
+        'vendor',
+    ])
+    ->notPath([
+        'tests/Resources/var/',
     ])
 ;
 
@@ -12,6 +16,7 @@ return PhpCsFixer\Config::create()
         '@Symfony'                            => true,
         '@PhpCsFixer'                         => true,
         '@PHP71Migration'                     => true,
+        'array_syntax'                        => ['syntax' => 'short'],
         'binary_operator_spaces'              => [
             'align_double_arrow' => true,
         ],
