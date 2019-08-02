@@ -10,7 +10,7 @@ services:
         entrypoint: php
         command: -S 0.0.0.0:9999
         environment:
-            TIMEZONE: ${TIMEZONE}
+            PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE}
         volumes:
             - .:/var/www/application:cached
     composer:

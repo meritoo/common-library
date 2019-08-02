@@ -9,6 +9,7 @@ Common and useful classes, methods, exceptions etc.
 3. composer > squizlabs/php_codesniffer package > use ^3.4 (instead of ^2.9)
 4. Do not require name of class by BaseTestCaseTrait::assertMethodVisibilityAndArguments() method
 5. PHP CS Fixer > configuration > make more readable & remove unnecessary code
+6. Update .gitignore, docker-compose.yml, phpunit.xml.dist
 
 # 1.0.5
 

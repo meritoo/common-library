@@ -1,61 +1,79 @@
 # ------------------------------------------------------------------------------
-### Vendors
+### Linux template
 # ------------------------------------------------------------------------------
-/vendor/
+*~
 
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
 
-# ------------------------------------------------------------------------------
-### Composer
-# ------------------------------------------------------------------------------
-/composer.lock
-/composer.phar
+# KDE directory preferences
+.directory
 
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
 
-# ------------------------------------------------------------------------------
-### Phing
-# ------------------------------------------------------------------------------
-/phing/properties
-
-
-# ------------------------------------------------------------------------------
-### PHPUnit
-# ------------------------------------------------------------------------------
-/phpunit.xml
-/.phpunit.result.cache
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
 
 
 # ------------------------------------------------------------------------------
-### Infection
+### macOS template
 # ------------------------------------------------------------------------------
-/infection.json
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 
 # ------------------------------------------------------------------------------
-### PHP Coding Standards Fixer
+### Windows template
 # ------------------------------------------------------------------------------
-/.php_cs
-/.php_cs.cache
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
 
+# Dump file
+*.stackdump
 
-# ------------------------------------------------------------------------------
-### PHP_CodeSniffer
-# ------------------------------------------------------------------------------
-/.phpcs-cache
-/phpcs.xml
+# Folder config file
+[Dd]esktop.ini
 
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
 
-# -----------------------------------------------------------------------------
-### Build files
-# -----------------------------------------------------------------------------
-/build/
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
 
-
-# ------------------------------------------------------------------------------
-### Generated databases
-# ------------------------------------------------------------------------------
-/data/tmp
-*.sql
-*.sqlite
+# Windows shortcuts
+*.lnk
 
 
 # ------------------------------------------------------------------------------
@@ -130,79 +148,57 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
+
 # ------------------------------------------------------------------------------
-### macOS template
+### Build files
 # ------------------------------------------------------------------------------
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must end with two \r
-Icon
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+/build/
 
 
 # ------------------------------------------------------------------------------
-### Linux template
+### Phing
 # ------------------------------------------------------------------------------
-*~
-
-# temporary files which can be created if a process still has a handle open of a deleted file
-.fuse_hidden*
-
-# KDE directory preferences
-.directory
-
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
-
-# .nfs files are created when an open file is removed but is still being accessed
-.nfs*
+/phing/properties
 
 
 # ------------------------------------------------------------------------------
-### Windows template
+### Infection
 # ------------------------------------------------------------------------------
-# Windows thumbnail cache files
-Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
+/infection.json
 
-# Dump file
-*.stackdump
 
-# Folder config file
-[Dd]esktop.ini
+# ------------------------------------------------------------------------------
+### Temporary data & databases
+# ------------------------------------------------------------------------------
+/data/tmp
+*.sqlite
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
 
-# Windows Installer files
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
+# ------------------------------------------------------------------------------
+### Composer & vendors
+# ------------------------------------------------------------------------------
+/composer.lock
+/composer.phar
+/vendor/
 
-# Windows shortcuts
-*.lnk
+
+# ------------------------------------------------------------------------------
+### PHPUnit
+# ------------------------------------------------------------------------------
+/phpunit.xml
+/.phpunit.result.cache
+/tests/Resources/var
+
+
+# ------------------------------------------------------------------------------
+### PHP Coding Standards Fixer
+# ------------------------------------------------------------------------------
+/.php_cs
+/.php_cs.cache
+
+
+# ------------------------------------------------------------------------------
+### PHP_CodeSniffer
+# ------------------------------------------------------------------------------
+/.phpcs-cache
+/phpcs.xml
