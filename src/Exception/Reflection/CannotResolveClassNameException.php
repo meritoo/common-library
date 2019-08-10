@@ -21,13 +21,12 @@ class CannotResolveClassNameException extends Exception
     /**
      * Creates exception
      *
-     * @param array|object|string $source   Source of the class's / trait's name. It can be an array of objects,
-     *                                      namespaces, object or namespace.
-     * @param bool                $forClass (optional) If is set to true, message of this exception for class is
-     *                                      prepared. Otherwise - for trait.
+     * @param string $source   Source of name of the class or trait
+     * @param bool   $forClass (optional) If is set to true, message of this exception for class is prepared. Otherwise
+     *                         - for trait.
      * @return CannotResolveClassNameException
      */
-    public static function create($source, bool $forClass = true): CannotResolveClassNameException
+    public static function create(string $source, bool $forClass = true): CannotResolveClassNameException
     {
         $forWho = 'trait';
         $value = '';
@@ -37,7 +36,7 @@ class CannotResolveClassNameException extends Exception
         }
 
         if (is_scalar($source)) {
-            $value = sprintf(' %s', (string)$source);
+            $value = sprintf(' %s', $source);
         }
 
         $template = 'Name of %s from given \'%s\'%s cannot be resolved. Is there everything ok?';

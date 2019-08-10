@@ -125,7 +125,7 @@ class ReflectionTest extends BaseTestCase
      * @param mixed $invalidClass Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testGetChildClassesInvalidClass($invalidClass)
+    public function testGetChildClassesInvalidClass($invalidClass): void
     {
         $this->expectException(CannotResolveClassNameException::class);
 
@@ -206,7 +206,7 @@ class ReflectionTest extends BaseTestCase
      *
      * @dataProvider provideInvalidClassAndTrait
      */
-    public function testUsesTraitInvalidClass($class, $trait)
+    public function testUsesTraitInvalidClass($class, $trait): void
     {
         $this->expectException(CannotResolveClassNameException::class);
         self::assertNull(Reflection::usesTrait($class, $trait));
@@ -577,7 +577,7 @@ class ReflectionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideInvalidClassAndTrait()
+    public function provideInvalidClassAndTrait(): ?Generator
     {
         yield[
             '',
@@ -592,11 +592,6 @@ class ReflectionTest extends BaseTestCase
         yield[
             0,
             0,
-        ];
-
-        yield[
-            [],
-            [],
         ];
     }
 

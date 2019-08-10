@@ -437,7 +437,7 @@ class Reflection
 
         // Oops, cannot resolve class
         if (null === $className) {
-            throw CannotResolveClassNameException::create($class);
+            throw CannotResolveClassNameException::create('');
         }
 
         $childClasses = [];
@@ -541,12 +541,12 @@ class Reflection
 
         // Oops, cannot resolve class
         if (null === $className || '' === $className) {
-            throw CannotResolveClassNameException::create($class);
+            throw CannotResolveClassNameException::create('');
         }
 
         // Oops, cannot resolve trait
         if (null === $traitName || '' === $traitName) {
-            throw new CannotResolveClassNameException($class, false);
+            throw CannotResolveClassNameException::create('', false);
         }
 
         $reflection = new ReflectionClass($className);

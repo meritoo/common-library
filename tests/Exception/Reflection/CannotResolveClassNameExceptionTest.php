@@ -34,16 +34,23 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
         );
     }
 
+    public function testCreateUsingDefaults(): void
+    {
+        $exception = CannotResolveClassNameException::create(stdClass::class);
+        $expectedMessage = 'Name of class from given \'string\' stdClass cannot be resolved. Is there everything ok?';
+
+        static::assertSame($expectedMessage, $exception->getMessage());
+    }
+
     /**
-     * @param array|object|string $source          Source of the class's / trait's name. It can be an array of objects,
-     *                                             namespaces, object or namespace.
-     * @param bool                $forClass        If is set to true, message of this exception for class is prepared.
-     *                                             Otherwise - for trait.
-     * @param string              $expectedMessage Expected exception's message
+     * @param string $source          Source of name of the class or trait
+     * @param bool   $forClass        (optional) If is set to true, message of this exception for class is prepared.
+     *                                Otherwise - for trait.
+     * @param string $expectedMessage Expected exception's message
      *
      * @dataProvider provideClassName
      */
-    public function testCreate($source, bool $forClass, string $expectedMessage): void
+    public function testCreate(string $source, bool $forClass, string $expectedMessage): void
     {
         $exception = CannotResolveClassNameException::create($source, $forClass);
         static::assertSame($expectedMessage, $exception->getMessage());
@@ -70,12 +77,9 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
         ];
 
         yield[
-            [
-                new stdClass(),
-                new stdClass(),
-            ],
+            stdClass::class,
             true,
-            'Name of class from given \'array\' cannot be resolved. Is there everything ok?',
+            'Name of class from given \'string\' stdClass cannot be resolved. Is there everything ok?',
         ];
     }
 }
