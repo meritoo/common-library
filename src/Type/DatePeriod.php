@@ -114,7 +114,8 @@ class DatePeriod extends BaseType
      * Returns formatted one of the period's date: start date or end date
      *
      * @param string $format    Format used to format the date
-     * @param bool   $startDate (optional) If is set to true, start date will be formatted. Otherwise - end date.
+     * @param bool   $startDate (optional) If is set to true, start date will be formatted (default behaviour).
+     *                          Otherwise - end date.
      * @return string
      */
     public function getFormattedDate(string $format, bool $startDate = true): string

@@ -78,6 +78,18 @@ class DatePeriodTest extends BaseTypeTestCase
     }
 
     /**
+     * @param DatePeriod $period    The date period to verify
+     * @param string     $format    Format used to format the date
+     * @param bool       $startDate If is set to true, start date is formatted. Otherwise - end date.
+     *
+     * @dataProvider provideDatePeriodAndUnknownDate
+     */
+    public function testGetFormattedDateUsingUnknownDate(DatePeriod $period, $format, $startDate): void
+    {
+        self::assertEquals('', $period->getFormattedDate($format, $startDate));
+    }
+
+    /**
      * @param DatePeriod $period   The date period to verify
      * @param string     $format   Format used to format the date
      * @param string     $expected Expected, formatted date
@@ -153,6 +165,35 @@ class DatePeriodTest extends BaseTypeTestCase
         yield[
             new DatePeriod($startDate, $endDate),
             false,
+        ];
+    }
+
+    public function provideDatePeriodAndUnknownDate(): ?Generator
+    {
+        $date = new DateTime('2001-01-01');
+
+        yield[
+            new DatePeriod(),
+            'Y-m-d',
+            false,
+        ];
+
+        yield[
+            new DatePeriod(),
+            'Y-m-d',
+            true,
+        ];
+
+        yield[
+            new DatePeriod($date),
+            'Y-m-d',
+            false,
+        ];
+
+        yield[
+            new DatePeriod(null, $date),
+            'Y-m-d',
+            true,
         ];
     }
 
