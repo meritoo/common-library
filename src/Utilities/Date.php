@@ -191,7 +191,7 @@ class Date
      *                       method.
      * @return null|string
      */
-    public static function generateRandomTime($format = 'H:i:s')
+    public static function generateRandomTime($format = 'H:i:s'): ?string
     {
         $dateTime = new DateTime();
 
@@ -303,7 +303,7 @@ class Date
      * @param int $day   The day value
      * @return string
      */
-    public static function getDayOfWeekName($year, $month, $day)
+    public static function getDayOfWeekName($year, $month, $day): string
     {
         $hour = 0;
         $minute = 0;
@@ -381,22 +381,26 @@ class Date
             self::DATE_DIFFERENCE_UNIT_MINUTES,
         ];
 
-        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_YEARS === $differenceUnit) {
+        $differenceYear = self::DATE_DIFFERENCE_UNIT_YEARS === $differenceUnit;
+        $differenceMonth = self::DATE_DIFFERENCE_UNIT_MONTHS === $differenceUnit;
+        $differenceMinutes = self::DATE_DIFFERENCE_UNIT_MINUTES === $differenceUnit;
+
+        if (null === $differenceUnit || $differenceYear) {
             $diff = $end->diff($start);
 
             // Difference between dates in years should be returned only?
-            if (self::DATE_DIFFERENCE_UNIT_YEARS === $differenceUnit) {
+            if ($differenceYear) {
                 return $diff->y;
             }
 
             $difference[self::DATE_DIFFERENCE_UNIT_YEARS] = $diff->y;
         }
 
-        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MONTHS === $differenceUnit) {
+        if (null === $differenceUnit || $differenceMonth) {
             $diff = $end->diff($start);
 
             // Difference between dates in months should be returned only?
-            if (self::DATE_DIFFERENCE_UNIT_MONTHS === $differenceUnit) {
+            if ($differenceMonth) {
                 return $diff->m;
             }
 
@@ -437,11 +441,11 @@ class Date
             $hoursInSeconds = $hours * $hourSeconds;
         }
 
-        if (null === $differenceUnit || self::DATE_DIFFERENCE_UNIT_MINUTES === $differenceUnit) {
+        if (null === $differenceUnit || $differenceMinutes) {
             $minutes = (int)floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
 
             // Difference between dates in minutes should be returned only?
-            if (self::DATE_DIFFERENCE_UNIT_MINUTES === $differenceUnit) {
+            if ($differenceMinutes) {
                 return $minutes;
             }
 
@@ -463,7 +467,7 @@ class Date
      * @throws Exception
      * @return array
      */
-    public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD')
+    public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD'): array
     {
         $dates = [];
 
@@ -513,8 +517,12 @@ class Date
      * @throws Exception
      * @return DateTime
      */
-    public static function getRandomDate(DateTime $startDate = null, $start = 1, $end = 100, $intervalTemplate = 'P%sD')
-    {
+    public static function getRandomDate(
+        DateTime $startDate = null,
+        $start = 1,
+        $end = 100,
+        $intervalTemplate = 'P%sD'
+    ): DateTime {
         if (null === $startDate) {
             $startDate = new DateTime();
         }
@@ -531,7 +539,7 @@ class Date
         }
 
         $randomDate = clone $startDate;
-        $randomInterval = new DateInterval(sprintf($intervalTemplate, mt_rand($start, $end)));
+        $randomInterval = new DateInterval(sprintf($intervalTemplate, random_int($start, $end)));
 
         return $randomDate->add($randomInterval);
     }
@@ -623,12 +631,10 @@ class Date
                  * Verify instance of the DateTime created by constructor and by createFromFormat() method.
                  * After formatting, these dates should be the same.
                  */
-                else {
-                    if ($dateFromFormat->format($dateFormat) === $value) {
-                        return $date;
-                    }
+                elseif ($dateFromFormat->format($dateFormat) === $value) {
+                    return $date;
                 }
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 if (!$allowCompoundFormats) {
                     return false;
                 }
@@ -643,7 +649,7 @@ class Date
             if ($dateString !== (string)$value) {
                 return new DateTime($dateString);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
         }
 
         return false;
@@ -658,7 +664,7 @@ class Date
      *                                    month", "yyyy"). Otherwise - not and every incorrect value is refused.
      * @return bool
      */
-    public static function isValidDate($value, $allowCompoundFormats = false)
+    public static function isValidDate($value, $allowCompoundFormats = false): bool
     {
         return self::getDateTime($value, $allowCompoundFormats) instanceof DateTime;
     }
@@ -669,7 +675,7 @@ class Date
      * @param string $format The validated format of date
      * @return bool
      */
-    public static function isValidDateFormat($format)
+    public static function isValidDateFormat($format): bool
     {
         if (empty($format) || !is_string($format)) {
             return false;
