@@ -23,7 +23,7 @@ use Meritoo\Common\Type\Base\BaseType;
  */
 class BaseTypeTest extends BaseTestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertHasNoConstructor(BaseType::class);
     }
@@ -34,7 +34,7 @@ class BaseTypeTest extends BaseTestCase
      *
      * @dataProvider provideType
      */
-    public function testGetAll(BaseType $type, array $expectedTypes)
+    public function testGetAll(BaseType $type, array $expectedTypes): void
     {
         $all = $type->getAll();
         self::assertEquals($expectedTypes, $all);

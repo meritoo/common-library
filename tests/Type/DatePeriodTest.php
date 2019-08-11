@@ -72,7 +72,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @dataProvider provideDatePeriodAndIncorrectDateFormat
      */
-    public function testGetFormattedDateIncorrectDateFormat(DatePeriod $period, $format): void
+    public function testGetFormattedDateUsingIncorrectDateFormat(DatePeriod $period, $format): void
     {
         self::assertEquals('', $period->getFormattedDate($format));
     }

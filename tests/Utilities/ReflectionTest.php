@@ -28,6 +28,7 @@ use Meritoo\Test\Common\Utilities\Reflection\H;
 use Meritoo\Test\Common\Utilities\Reflection\I;
 use Meritoo\Test\Common\Utilities\Reflection\J;
 use ReflectionProperty;
+use stdClass;
 
 /**
  * Test case of the useful reflection methods
@@ -40,7 +41,7 @@ use ReflectionProperty;
  */
 class ReflectionTest extends BaseTestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertHasNoConstructor(Reflection::class);
     }
@@ -82,7 +83,7 @@ class ReflectionTest extends BaseTestCase
     public function testGetClassWhileNamespaceContainsClassName(): void
     {
         self::assertEquals(
-            'Meritoo\Common\Collection\Collection',
+            Collection::class,
             Reflection::getClassName(Collection::class)
         );
 
@@ -113,7 +114,7 @@ class ReflectionTest extends BaseTestCase
     /**
      * A case when namespace of class contains name of class (name of class is duplicated, occurs twice)
      */
-    public function testGetClassNamespaceWhileNamespaceContainsClassName()
+    public function testGetClassNamespaceWhileNamespaceContainsClassName(): void
     {
         self::assertEquals(
             'Meritoo\Common\Collection',
@@ -133,13 +134,13 @@ class ReflectionTest extends BaseTestCase
         self::assertNull(Reflection::getChildClasses(123));
     }
 
-    public function testGetChildClassesNotExistingClass()
+    public function testGetChildClassesNotExistingClass(): void
     {
         $this->expectException(CannotResolveClassNameException::class);
         self::assertEquals('', Reflection::getChildClasses('xyz'));
     }
 
-    public function testGetChildClassesExistingClass()
+    public function testGetChildClassesExistingClass(): void
     {
         /*
          * Attention. I have to create instances of these classes to load them and be available while using
@@ -164,13 +165,13 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($effect, Reflection::getChildClasses(A::class));
     }
 
-    public function testGetOneChildClassWithMissingChildClasses()
+    public function testGetOneChildClassWithMissingChildClasses(): void
     {
         $this->expectException(MissingChildClassesException::class);
         self::assertEquals('LoremIpsum', Reflection::getOneChildClass(C::class));
     }
 
-    public function testGetOneChildClassWithTooManyChildClasses()
+    public function testGetOneChildClassWithTooManyChildClasses(): void
     {
         // Required to get all classes by get_declared_classes() function and avoid failure:
         //
@@ -182,7 +183,7 @@ class ReflectionTest extends BaseTestCase
         Reflection::getOneChildClass(A::class);
     }
 
-    public function testGetOneChildClass()
+    public function testGetOneChildClass(): void
     {
         // Required to get all classes by get_declared_classes() function and avoid throw of
         // Meritoo\Common\Exception\Reflection\MissingChildClassesException exception
@@ -191,7 +192,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals(C::class, Reflection::getOneChildClass(B::class));
     }
 
-    public function testGetMethods()
+    public function testGetMethods(): void
     {
         self::assertCount(1, Reflection::getMethods(B::class, true));
         self::assertCount(3, Reflection::getMethods(B::class));
@@ -216,13 +217,13 @@ class ReflectionTest extends BaseTestCase
      * @param mixed $trait Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
-    public function testUsesTraitInvalidTrait($trait)
+    public function testUsesTraitInvalidTrait($trait): void
     {
         $this->expectException(CannotResolveClassNameException::class);
         self::assertNull(Reflection::usesTrait(DateTime::class, $trait));
     }
 
-    public function testUsesTraitExistingClass()
+    public function testUsesTraitExistingClass(): void
     {
         self::assertTrue(Reflection::usesTrait(A::class, E::class));
         self::assertFalse(Reflection::usesTrait(B::class, E::class));
@@ -230,7 +231,7 @@ class ReflectionTest extends BaseTestCase
         self::assertFalse(Reflection::usesTrait(D::class, E::class));
     }
 
-    public function testUsesTraitExistingClassAndVerifyParents()
+    public function testUsesTraitExistingClassAndVerifyParents(): void
     {
         self::assertTrue(Reflection::usesTrait(A::class, E::class, true));
         self::assertTrue(Reflection::usesTrait(B::class, E::class, true));
@@ -238,12 +239,12 @@ class ReflectionTest extends BaseTestCase
         self::assertFalse(Reflection::usesTrait(D::class, E::class, true));
     }
 
-    public function testGetProperties()
+    public function testGetProperties(): void
     {
         self::assertCount(1, Reflection::getProperties(B::class));
     }
 
-    public function testGetPropertiesUsingFilter()
+    public function testGetPropertiesUsingFilter(): void
     {
         self::assertCount(
             1,
@@ -261,24 +262,24 @@ class ReflectionTest extends BaseTestCase
         );
     }
 
-    public function testGetPropertiesWithParents()
+    public function testGetPropertiesWithParents(): void
     {
         self::assertCount(2, Reflection::getProperties(B::class, null, true));
     }
 
-    public function testGetPropertyValueOfNotExistingProperty()
+    public function testGetPropertyValueOfNotExistingProperty(): void
     {
         self::assertNull(Reflection::getPropertyValue(new D(), 'something'));
         self::assertNull(Reflection::getPropertyValue(new D(), 'something', true));
     }
 
-    public function testGetPropertyValueFromChain()
+    public function testGetPropertyValueFromChain(): void
     {
         $f = new F(1000, 'New York', 'USA', 'john.scott');
         self::assertEquals('John', Reflection::getPropertyValue($f, 'g.firstName'));
     }
 
-    public function testGetPropertyValueWithPublicGetter()
+    public function testGetPropertyValueWithPublicGetter(): void
     {
         $country = 'USA';
         $f = new F(1000, 'New York', $country, 'john.scott');
@@ -286,7 +287,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($country, Reflection::getPropertyValue($f, 'country'));
     }
 
-    public function testGetPropertyValueWithProtectedGetter()
+    public function testGetPropertyValueWithProtectedGetter(): void
     {
         $city = 'New York';
         $f = new F(1000, $city, 'USA', 'john.scott');
@@ -294,7 +295,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($city, Reflection::getPropertyValue($f, 'city'));
     }
 
-    public function testGetPropertyValueWithPrivateGetter()
+    public function testGetPropertyValueWithPrivateGetter(): void
     {
         $accountBalance = 1000;
         $f = new F($accountBalance, 'New York', 'USA', 'john.scott');
@@ -302,7 +303,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($accountBalance, Reflection::getPropertyValue($f, 'accountBalance'));
     }
 
-    public function testGetPropertyValueWithoutGetter()
+    public function testGetPropertyValueWithoutGetter(): void
     {
         $username = 'john.scott';
         $f = new F(1000, 'New York', 'USA', $username);
@@ -316,19 +317,19 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals(1, Reflection::getPropertyValue($c, 'count', true));
     }
 
-    public function testGetPropertyValuesFromEmptySource()
+    public function testGetPropertyValuesFromEmptySource(): void
     {
         self::assertEquals([], Reflection::getPropertyValues([], 'something'));
         self::assertEquals([], Reflection::getPropertyValues(new Collection(), 'something'));
     }
 
-    public function testGetPropertyValuesOfNotExistingPropertyFromSingleObject()
+    public function testGetPropertyValuesOfNotExistingPropertyFromSingleObject(): void
     {
         self::assertEquals([], Reflection::getPropertyValues(new D(), 'something'));
         self::assertEquals([], Reflection::getPropertyValues(new D(), 'something', true));
     }
 
-    public function testGetPropertyValuesOfNotExistingPropertyFromMultipleObjects()
+    public function testGetPropertyValuesOfNotExistingPropertyFromMultipleObjects(): void
     {
         $objects = [
             new A(),
@@ -349,13 +350,13 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals([], Reflection::getPropertyValues($collection, 'something', true));
     }
 
-    public function testGetPropertyValuesOfExistingPropertyFromSingleObject()
+    public function testGetPropertyValuesOfExistingPropertyFromSingleObject(): void
     {
         self::assertEquals(['John'], Reflection::getPropertyValues(new G(), 'firstName'));
         self::assertEquals(['John'], Reflection::getPropertyValues(new G(), 'firstName', true));
     }
 
-    public function testGetPropertyValuesOfExistingPropertyFromMultipleObjects()
+    public function testGetPropertyValuesOfExistingPropertyFromMultipleObjects(): void
     {
         $expected = [
             'New York',
@@ -378,7 +379,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'city', true));
     }
 
-    public function testGetPropertyValuesFromChainAndSingleObject()
+    public function testGetPropertyValuesFromChainAndSingleObject(): void
     {
         $f = new F(1000, 'New York', 'USA', 'john.scott');
         $j = new J();
@@ -390,7 +391,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals(['John'], Reflection::getPropertyValues($j, 'f.g.firstName', true));
     }
 
-    public function testGetPropertyValuesFromChainAndMultipleObjects()
+    public function testGetPropertyValuesFromChainAndMultipleObjects(): void
     {
         $expected = [
             'John',
@@ -413,47 +414,47 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'g.firstName', true));
     }
 
-    public function testGetMaxNumberConstantUsingClassWithoutConstants()
+    public function testGetMaxNumberConstantUsingClassWithoutConstants(): void
     {
         static::assertNull(Reflection::getMaxNumberConstant(A::class));
     }
 
-    public function testGetMaxNumberConstant()
+    public function testGetMaxNumberConstant(): void
     {
         static::assertSame(5, Reflection::getMaxNumberConstant(H::class));
     }
 
-    public function testHasMethodUsingClassWithoutMethod()
+    public function testHasMethodUsingClassWithoutMethod(): void
     {
         static::assertFalse(Reflection::hasMethod(A::class, 'getUser'));
     }
 
-    public function testHasMethod()
+    public function testHasMethod(): void
     {
         static::assertTrue(Reflection::hasMethod(A::class, 'getCount'));
     }
 
-    public function testHasPropertyUsingClassWithoutProperty()
+    public function testHasPropertyUsingClassWithoutProperty(): void
     {
         static::assertFalse(Reflection::hasProperty(A::class, 'users'));
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         static::assertTrue(Reflection::hasProperty(A::class, 'count'));
     }
 
-    public function testHasConstantUsingClassWithoutConstant()
+    public function testHasConstantUsingClassWithoutConstant(): void
     {
         static::assertFalse(Reflection::hasConstant(H::class, 'users'));
     }
 
-    public function testHasConstant()
+    public function testHasConstant(): void
     {
         static::assertTrue(Reflection::hasConstant(H::class, 'LOREM'));
     }
 
-    public function testGetConstantValueUsingClassWithoutConstant()
+    public function testGetConstantValueUsingClassWithoutConstant(): void
     {
         static::assertNull(Reflection::getConstantValue(H::class, 'users'));
     }
@@ -469,37 +470,37 @@ class ReflectionTest extends BaseTestCase
         static::assertSame($expected, Reflection::getConstants($class));
     }
 
-    public function testGetConstantValue()
+    public function testGetConstantValue(): void
     {
         static::assertSame(H::LOREM, Reflection::getConstantValue(H::class, 'LOREM'));
     }
 
-    public function testIsInterfaceImplementedUsingClassWithoutInterface()
+    public function testIsInterfaceImplementedUsingClassWithoutInterface(): void
     {
         static::assertFalse(Reflection::isInterfaceImplemented(A::class, I::class));
     }
 
-    public function testIsInterfaceImplemented()
+    public function testIsInterfaceImplemented(): void
     {
         static::assertTrue(Reflection::isInterfaceImplemented(B::class, I::class));
     }
 
-    public function testIsChildOfClassUsingClassWithoutChildClass()
+    public function testIsChildOfClassUsingClassWithoutChildClass(): void
     {
         static::assertFalse(Reflection::isChildOfClass(A::class, B::class));
     }
 
-    public function testIsChildOfClass()
+    public function testIsChildOfClass(): void
     {
         static::assertTrue(Reflection::isChildOfClass(B::class, A::class));
     }
 
-    public function testGetPropertyUsingClassWithoutProperty()
+    public function testGetPropertyUsingClassWithoutProperty(): void
     {
         static::assertNull(Reflection::getProperty(A::class, 'lorem'));
     }
 
-    public function testGetPropertyUsingClassWithPrivateProperty()
+    public function testGetPropertyUsingClassWithPrivateProperty(): void
     {
         $property = Reflection::getProperty(A::class, 'count', ReflectionProperty::IS_PRIVATE);
 
@@ -508,7 +509,7 @@ class ReflectionTest extends BaseTestCase
         static::assertSame('count', $property->getName());
     }
 
-    public function testGetPropertyUsingClassWithProtectedProperty()
+    public function testGetPropertyUsingClassWithProtectedProperty(): void
     {
         $property = Reflection::getProperty(B::class, 'name', ReflectionProperty::IS_PROTECTED);
 
@@ -523,7 +524,7 @@ class ReflectionTest extends BaseTestCase
      *
      * @dataProvider provideObjectAndNotExistingProperty
      */
-    public function testSetPropertyValueUsingNotExistingProperty($object, $property)
+    public function testSetPropertyValueUsingNotExistingProperty($object, $property): void
     {
         $this->expectException(NotExistingPropertyException::class);
         Reflection::setPropertyValue($object, $property, 'test test test');
@@ -536,7 +537,7 @@ class ReflectionTest extends BaseTestCase
      *
      * @dataProvider provideObjectPropertyAndValue
      */
-    public function testSetPropertyValue($object, $property, $value)
+    public function testSetPropertyValue($object, $property, $value): void
     {
         $oldValue = Reflection::getPropertyValue($object, $property);
         Reflection::setPropertyValue($object, $property, $value);
@@ -546,7 +547,7 @@ class ReflectionTest extends BaseTestCase
         static::assertSame($newValue, $value);
     }
 
-    public function testSetPropertiesValuesWithoutProperties()
+    public function testSetPropertiesValuesWithoutProperties(): void
     {
         $object = new G();
         Reflection::setPropertiesValues($object, []);
@@ -561,7 +562,7 @@ class ReflectionTest extends BaseTestCase
      *
      * @dataProvider provideObjectAndNotExistingProperties
      */
-    public function testSetPropertiesValuesUsingNotExistingProperties($object, array $propertiesValues)
+    public function testSetPropertiesValuesUsingNotExistingProperties($object, array $propertiesValues): void
     {
         $this->expectException(NotExistingPropertyException::class);
         Reflection::setPropertiesValues($object, $propertiesValues);
@@ -573,7 +574,7 @@ class ReflectionTest extends BaseTestCase
      *
      * @dataProvider provideObjectAndPropertiesValues
      */
-    public function testSetPropertiesValues($object, array $propertiesValues)
+    public function testSetPropertiesValues($object, array $propertiesValues): void
     {
         Reflection::setPropertiesValues($object, $propertiesValues);
 
@@ -583,11 +584,6 @@ class ReflectionTest extends BaseTestCase
         }
     }
 
-    /**
-     * Provides invalid class and trait
-     *
-     * @return Generator
-     */
     public function provideInvalidClassAndTrait(): ?Generator
     {
         yield[
@@ -606,15 +602,10 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides object and name of not existing property
-     *
-     * @return Generator
-     */
-    public function provideObjectAndNotExistingProperty()
+    public function provideObjectAndNotExistingProperty(): ?Generator
     {
         yield[
-            new \stdClass(),
+            new stdClass(),
             'test',
         ];
 
@@ -629,12 +620,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides object, name of property and value of the property
-     *
-     * @return Generator
-     */
-    public function provideObjectPropertyAndValue()
+    public function provideObjectPropertyAndValue(): ?Generator
     {
         yield[
             new A(),
@@ -661,15 +647,10 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides object and not existing properties
-     *
-     * @return Generator
-     */
-    public function provideObjectAndNotExistingProperties()
+    public function provideObjectAndNotExistingProperties(): ?Generator
     {
         yield[
-            new \stdClass(),
+            new stdClass(),
             [
                 'test' => 1,
             ],
@@ -690,12 +671,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides object and its new values of properties
-     *
-     * @return Generator
-     */
-    public function provideObjectAndPropertiesValues()
+    public function provideObjectAndPropertiesValues(): ?Generator
     {
         yield[
             new A(),
@@ -764,12 +740,12 @@ class ReflectionTest extends BaseTestCase
     public function provideClassToGetConstants(): ?Generator
     {
         yield[
-            new \stdClass(),
+            new stdClass(),
             [],
         ];
 
         yield[
-            \stdClass::class,
+            stdClass::class,
             [],
         ];
 
