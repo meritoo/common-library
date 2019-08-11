@@ -458,6 +458,17 @@ class ReflectionTest extends BaseTestCase
         static::assertNull(Reflection::getConstantValue(H::class, 'users'));
     }
 
+    /**
+     * @param object|string $class    The object or name of object's class
+     * @param array         $expected Expected constants
+     *
+     * @dataProvider provideClassToGetConstants
+     */
+    public function testGetConstants($class, array $expected): void
+    {
+        static::assertSame($expected, Reflection::getConstants($class));
+    }
+
     public function testGetConstantValue()
     {
         static::assertSame(H::LOREM, Reflection::getConstantValue(H::class, 'LOREM'));
@@ -746,6 +757,29 @@ class ReflectionTest extends BaseTestCase
             [
                 'country'        => 'Canada',
                 'accountBalance' => 456,
+            ],
+        ];
+    }
+
+    public function provideClassToGetConstants(): ?Generator
+    {
+        yield[
+            new \stdClass(),
+            [],
+        ];
+
+        yield[
+            \stdClass::class,
+            [],
+        ];
+
+        yield[
+            H::class,
+            [
+                'DOLOR'     => 'sit',
+                'LOREM'     => 'ipsum',
+                'MAX_USERS' => 5,
+                'MIN_USERS' => 2,
             ],
         ];
     }
