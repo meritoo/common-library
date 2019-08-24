@@ -147,7 +147,7 @@ trait BaseTestCaseTrait
      * @param string $directoryPath (optional) Path of directory containing the file
      * @return string
      */
-    public function getFilePathForTesting(string $fileName, string $directoryPath = ''): string
+    protected function getFilePathForTesting(string $fileName, string $directoryPath = ''): string
     {
         $rootPath = Miscellaneous::getProjectRootPath();
 
