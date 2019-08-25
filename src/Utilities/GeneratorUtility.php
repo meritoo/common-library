@@ -6,6 +6,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Common\Utilities;
 
 use Generator;
@@ -24,7 +26,7 @@ class GeneratorUtility
      * @param Generator $generator The generator who elements should be returned
      * @return array
      */
-    public static function getGeneratorElements(Generator $generator)
+    public static function getGeneratorElements(Generator $generator): array
     {
         $elements = [];
 

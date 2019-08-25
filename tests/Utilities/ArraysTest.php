@@ -657,7 +657,7 @@ letsTest[2] = value_2;';
         self::assertTrue(Arrays::areAllKeysMatchedByPattern($array, $pattern));
     }
 
-    public function testAreAllKeysIntegers()
+    public function testAreAllKeysIntegers(): void
     {
         self::assertFalse(Arrays::areAllKeysIntegers([]));
         self::assertEquals(1, Arrays::areAllKeysIntegers($this->simpleArray));

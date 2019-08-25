@@ -6,6 +6,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Common\Utilities;
 
 use Gedmo\Sluggable\Util\Urlizer;
@@ -119,23 +121,19 @@ class Miscellaneous
     /**
      * Converts checkbox value to boolean
      *
-     * @param string $checkboxValue Checkbox value
-     * @return bool
+     * @param null|string $checkboxValue Checkbox value
+     * @return null|bool
      */
-    public static function checkboxValue2Boolean($checkboxValue)
+    public static function checkboxValue2Boolean(?string $checkboxValue): ?bool
     {
         $mapping = [
             'on'  => true,
             'off' => false,
         ];
 
-        $clearValue = strtolower(trim($checkboxValue));
+        $clearValue = strtolower(trim((string)$checkboxValue));
 
-        if (isset($mapping[$clearValue])) {
-            return $mapping[$clearValue];
-        }
-
-        return false;
+        return $mapping[$clearValue] ?? null;
     }
 
     /**
@@ -220,10 +218,10 @@ class Miscellaneous
      *                                 generated / unique name.
      * @return string
      */
-    public static function getUniqueFileName($originalFileName, $objectId = 0)
+    public static function getUniqueFileName(string $originalFileName, int $objectId = 0): string
     {
-        $withoutExtension = self::getFileNameWithoutExtension($originalFileName);
-        $extension = self::getFileExtension($originalFileName, true);
+        $withoutExtension = static::getFileNameWithoutExtension($originalFileName);
+        $extension = static::getFileExtension($originalFileName, true);
 
         /*
          * Let's clear name of file
@@ -237,7 +235,7 @@ class Miscellaneous
         $template = '%s-%s.%s'; // [file's name]-[unique key].[file's extension]
 
         // Add some uniqueness
-        $unique = self::getUniqueString(mt_rand());
+        $unique = static::getUniqueString((string)mt_rand());
 
         // Finally build and return the unique name
         if ($objectId > 0) {
@@ -361,7 +359,7 @@ class Miscellaneous
      * @param bool   $hashed (optional) If is set to true, the unique string is hashed additionally. Otherwise - not.
      * @return string
      */
-    public static function getUniqueString($prefix = '', $hashed = false)
+    public static function getUniqueString(string $prefix = '', bool $hashed = false): string
     {
         $unique = uniqid($prefix, true);
 
@@ -597,13 +595,13 @@ class Miscellaneous
      * @return string
      */
     public static function breakLongText(
-        $text,
-        $perLine = 100,
-        $separator = '<br>',
-        $encoding = 'utf-8',
-        $proportionalAberration = 20
-    ) {
-        $effect = $text;
+        string $text,
+        int $perLine = 100,
+        string $separator = '<br>',
+        string $encoding = 'utf-8',
+        int $proportionalAberration = 20
+    ): string {
+        $result = $text;
         $textLength = mb_strlen($text);
 
         if (!empty($text) && $textLength > $perLine) {
@@ -615,10 +613,10 @@ class Miscellaneous
             //$text = htmlspecialchars_decode($text);
             $text = html_entity_decode($text, ENT_QUOTES);
 
-            $effect = '';
+            $result = '';
             $currentPosition = 0;
 
-            $charsAberration = ceil($perLine * ($proportionalAberration / 100));
+            $charsAberration = (int)ceil($perLine * ($proportionalAberration / 100));
             $charsPerLineDefault = $perLine;
 
             while ($currentPosition <= $textLength) {
@@ -658,21 +656,21 @@ class Miscellaneous
                  * Reason and comment the same as above for html_entity_decode() function.
                  */
 
-                $effect .= htmlspecialchars($charsOneLine);
-                //$effect .= $charsOneLine;
+                $result .= htmlspecialchars($charsOneLine);
+                //$result .= $charsOneLine;
 
                 $currentPosition += $perLine;
                 $oneLineContainsSpace = Regex::contains($charsOneLine, ' ');
 
                 if (($insertSeparator || !$oneLineContainsSpace) && $currentPosition <= $textLength) {
-                    $effect .= $separator;
+                    $result .= $separator;
                 }
 
                 $perLine = $charsPerLineDefault;
             }
         }
 
-        return $effect;
+        return $result;
     }
 
     /**
@@ -933,7 +931,7 @@ class Miscellaneous
      * @param string $string The string to trim
      * @return string
      */
-    public static function trimSmart($string)
+    public static function trimSmart(string $string): string
     {
         $trimmed = trim($string);
 
@@ -959,7 +957,7 @@ class Miscellaneous
      *                            passed as following arguments.
      * @return string
      */
-    public static function concatenatePaths($paths)
+    public static function concatenatePaths($paths): string
     {
         // If paths are not provided as array, get the paths from methods' arguments
         if (!is_array($paths)) {
@@ -977,7 +975,9 @@ class Miscellaneous
         $separator = DIRECTORY_SEPARATOR;
 
         foreach ($paths as $path) {
-            $path = trim($path);
+            if (is_string($path)) {
+                $path = trim($path);
+            }
 
             // Empty paths are useless
             if (empty($path)) {
@@ -1141,7 +1141,7 @@ class Miscellaneous
      * @param bool  $before (optional) If false, 0 characters will be inserted after given number
      * @return string
      */
-    public static function fillMissingZeros($number, $length, $before = true)
+    public static function fillMissingZeros($number, $length, $before = true): string
     {
         /*
          * It's not a number? Empty string is not a number too.
@@ -1151,7 +1151,7 @@ class Miscellaneous
             return '';
         }
 
-        $text = trim($number);
+        $text = trim((string)$number);
         $textLength = mb_strlen($text);
 
         if ($length <= $textLength) {
@@ -1236,7 +1236,7 @@ class Miscellaneous
      * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
      * @return string
      */
-    public static function getInvertedColor($color)
+    public static function getInvertedColor(string $color): string
     {
         // Prepare the color for later usage
         $color = trim($color);

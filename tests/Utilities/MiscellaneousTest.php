@@ -53,11 +53,15 @@ class MiscellaneousTest extends BaseTestCase
         self::assertGreaterThanOrEqual(0, count(Miscellaneous::getDirectoryContent($filePath, true)));
     }
 
-    public function testCheckboxValue2Boolean()
+    /**
+     * @param null|string $checkboxValue
+     * @param null|bool   $expected
+     *
+     * @dataProvider provideCheckboxValue2Boolean
+     */
+    public function testCheckboxValue2Boolean(?string $checkboxValue, ?bool $expected): void
     {
-        self::assertTrue(Miscellaneous::checkboxValue2Boolean('on'));
-        self::assertFalse(Miscellaneous::checkboxValue2Boolean('  off'));
-        self::assertFalse(Miscellaneous::checkboxValue2Boolean(null));
+        static::assertSame($expected, Miscellaneous::checkboxValue2Boolean($checkboxValue));
     }
 
     public function testCheckboxValue2Integer()
@@ -109,7 +113,7 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum/../dolor/sit.amet.JPG'));
     }
 
-    public function testGetUniqueFileName()
+    public function testGetUniqueFileName(): void
     {
         $originalFileName = 'Lorem.ipsum-dolor.sit.JPG';
         $pattern = '|^lorem\-ipsum\-dolor\-sit\-[a-z0-9.-]+\.jpg$|';
@@ -334,11 +338,21 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals('Lorem ipsum dolor sit amet, consectetur', Miscellaneous::substringToWord($this->stringCommaSeparated, 40, ''));
     }
 
-    public function testBreakLongText()
-    {
-        self::assertEquals('Lorem ipsum dolor sit<br>amet, consectetur<br>adipiscing<br>elit', Miscellaneous::breakLongText($this->stringCommaSeparated, 20));
-        self::assertEquals('Lorem ipsum dolor sit---amet, consectetur---adipiscing---elit', Miscellaneous::breakLongText($this->stringCommaSeparated, 20, '---'));
-        self::assertEquals('LoremIpsum<br>DolorSitAm<br>etConsecte<br>turAdipisc<br>ingElit', Miscellaneous::breakLongText($this->stringWithoutSpaces, 10));
+    /**
+     * @param string $expected
+     * @param string $text
+     * @param int    $perLine
+     * @param string $separator
+     *
+     * @dataProvider provideLongTextToBreak
+     */
+    public function testBreakLongText(
+        string $expected,
+        string $text,
+        int $perLine = 100,
+        string $separator = '<br>'
+    ): void {
+        static::assertSame($expected, Miscellaneous::breakLongText($text, $perLine, $separator));
     }
 
     public function testRemoveDirectoryUsingNotExistingDirectory()
@@ -485,19 +499,22 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(null, Miscellaneous::getLastElementOfString($this->stringCommaSeparated, '.'));
     }
 
-    public function testTrimSmart()
+    /**
+     * @param string $string
+     * @param string $expected
+     *
+     * @dataProvider provideStringToTrimSmart
+     */
+    public function testTrimSmart(string $string, string $expected): void
     {
-        self::assertNull(Miscellaneous::trimSmart(null));
-        self::assertEquals(' ', Miscellaneous::trimSmart(' '));
-        self::assertEquals('lorem ipsum', Miscellaneous::trimSmart(' lorem ipsum'));
-        self::assertEquals('lorem ipsum', Miscellaneous::trimSmart(' lorem ipsum     '));
+        static::assertSame($expected, Miscellaneous::trimSmart($string));
     }
 
     /**
      * @param mixed $emptyPaths Empty paths co concatenate
      * @dataProvider provideEmptyValue
      */
-    public function testConcatenatePathsWithEmptyPaths($emptyPaths)
+    public function testConcatenatePathsWithEmptyPaths($emptyPaths): void
     {
         self::assertEquals('', Miscellaneous::concatenatePaths($emptyPaths));
     }
@@ -632,62 +649,35 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(255, Miscellaneous::getValidColorComponent(255, false));
     }
 
-    public function testGetInvertedColorWithIncorrectLength()
+    /**
+     * @param string $color
+     * @dataProvider provideColorWithIncorrectLengthToGetInverted
+     */
+    public function testGetInvertedColorWithIncorrectLength(string $color): void
     {
         $this->expectException(IncorrectColorHexLengthException::class);
-
-        Miscellaneous::getInvertedColor(null);
-        Miscellaneous::getInvertedColor('');
-        Miscellaneous::getInvertedColor(1);
-        Miscellaneous::getInvertedColor(12);
-        Miscellaneous::getInvertedColor(1234567);
-        Miscellaneous::getInvertedColor('1');
-        Miscellaneous::getInvertedColor('12');
-        Miscellaneous::getInvertedColor('1234567');
+        Miscellaneous::getInvertedColor($color);
     }
 
-    public function testGetInvertedColorWithInvalidValue()
+    /**
+     * @param string $color
+     * @dataProvider provideColorWithInvalidValueToGetInverted
+     */
+    public function testGetInvertedColorWithInvalidValue(string $color): void
     {
         $this->expectException(InvalidColorHexValueException::class);
-
-        Miscellaneous::getInvertedColor('0011zz');
-        Miscellaneous::getInvertedColor('001#zz');
-        Miscellaneous::getInvertedColor('001!zz');
-        Miscellaneous::getInvertedColor('001-zz');
-        Miscellaneous::getInvertedColor('00ppqq');
+        Miscellaneous::getInvertedColor($color);
     }
 
-    public function testGetInvertedColor()
+    /**
+     * @param string $color
+     * @param string $expected
+     *
+     * @dataProvider provideColorToGetInverted
+     */
+    public function testGetInvertedColor(string $color, string $expected): void
     {
-        // Simple cases
-        self::assertEquals('000000', Miscellaneous::getInvertedColor('fff'));
-        self::assertEquals('ffffff', Miscellaneous::getInvertedColor('000'));
-        self::assertEquals('000000', Miscellaneous::getInvertedColor('ffffff'));
-        self::assertEquals('ffffff', Miscellaneous::getInvertedColor('000000'));
-        self::assertEquals('#000000', Miscellaneous::getInvertedColor('#ffffff'));
-        self::assertEquals('#ffffff', Miscellaneous::getInvertedColor('#000000'));
-
-        // Advanced cases - part 1
-        self::assertEquals('ffffee', Miscellaneous::getInvertedColor('001'));
-        self::assertEquals('ffeeff', Miscellaneous::getInvertedColor('010'));
-        self::assertEquals('eeffff', Miscellaneous::getInvertedColor('100'));
-        self::assertEquals('333333', Miscellaneous::getInvertedColor('ccc'));
-        self::assertEquals('333333', Miscellaneous::getInvertedColor('CCC'));
-
-        // Advanced cases - part 2
-        self::assertEquals('3e3e3e', Miscellaneous::getInvertedColor('c1c1c1'));
-        self::assertEquals('3e3e3e', Miscellaneous::getInvertedColor('C1C1C1'));
-        self::assertEquals('#dd5a01', Miscellaneous::getInvertedColor('#22a5fe'));
-        self::assertEquals('#22dbb3', Miscellaneous::getInvertedColor('#dd244c'));
-        self::assertEquals('#464646', Miscellaneous::getInvertedColor('#b9b9b9'));
-        self::assertEquals('#080808', Miscellaneous::getInvertedColor('#f7f7f7'));
-
-        // Advanced cases - verification
-        self::assertEquals('000011', Miscellaneous::getInvertedColor('ffffee'));
-        self::assertEquals('cccccc', Miscellaneous::getInvertedColor('333333'));
-        self::assertEquals('#22a5fe', Miscellaneous::getInvertedColor('#dd5a01'));
-        self::assertEquals('#22a5fe', Miscellaneous::getInvertedColor('#DD5A01'));
-        self::assertEquals('#f7f7f7', Miscellaneous::getInvertedColor('#080808'));
+        static::assertEquals($expected, Miscellaneous::getInvertedColor($color));
     }
 
     /**
@@ -1081,12 +1071,7 @@ class MiscellaneousTest extends BaseTestCase
         yield[[]];
     }
 
-    /**
-     * Provides number used to fill missing zeros
-     *
-     * @return Generator
-     */
-    public function provideNumberToFillMissingZeros()
+    public function provideNumberToFillMissingZeros(): ?Generator
     {
         yield[
             0,
@@ -1503,6 +1488,267 @@ class MiscellaneousTest extends BaseTestCase
             'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
             false,
             'tiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
+        ];
+    }
+
+    public function provideCheckboxValue2Boolean(): ?Generator
+    {
+        yield[
+            '',
+            null,
+        ];
+
+        yield[
+            'xyz',
+            null,
+        ];
+
+        yield[
+            null,
+            null,
+        ];
+
+        yield[
+            ' on  ',
+            true,
+        ];
+
+        yield[
+            ' ON  ',
+            true,
+        ];
+
+        yield[
+            'ON',
+            true,
+        ];
+
+        yield[
+            'on',
+            true,
+        ];
+
+        yield[
+            ' off  ',
+            false,
+        ];
+
+        yield[
+            ' OFF  ',
+            false,
+        ];
+
+        yield[
+            'OFF',
+            false,
+        ];
+
+        yield[
+            'off',
+            false,
+        ];
+    }
+
+    public function provideStringToTrimSmart(): ?Generator
+    {
+        yield[
+            ' ',
+            ' ',
+        ];
+
+        yield[
+            ' lorem ipsum',
+            'lorem ipsum',
+        ];
+
+        yield[
+            ' lorem ipsum     ',
+            'lorem ipsum',
+        ];
+    }
+
+    public function provideLongTextToBreak(): ?Generator
+    {
+        yield[
+            'Lorem ipsum dolor sit<br>amet, consectetur<br>adipiscing<br>elit',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            20,
+        ];
+
+        yield[
+            'Lorem ipsum dolor sit---amet, consectetur---adipiscing---elit',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            20,
+            '---',
+        ];
+
+        yield[
+            'LoremIpsum<br>DolorSitAm<br>etConsecte<br>turAdipisc<br>ingElit',
+            'LoremIpsumDolorSitAmetConsecteturAdipiscingElit',
+            10,
+        ];
+    }
+
+    public function provideColorWithIncorrectLengthToGetInverted(): ?Generator
+    {
+        yield[
+            '',
+        ];
+
+        yield[
+            '0',
+        ];
+
+        yield[
+            '1',
+        ];
+
+        yield[
+            '12',
+        ];
+
+        yield[
+            '1234567',
+        ];
+
+        yield[
+            '001#zz',
+        ];
+    }
+
+    public function provideColorWithInvalidValueToGetInverted(): ?Generator
+    {
+        yield[
+            '0011zz',
+        ];
+
+        yield[
+            '001!zz',
+        ];
+
+        yield[
+            '001-zz',
+        ];
+
+        yield[
+            '00ppqq',
+        ];
+    }
+
+    public function provideColorToGetInverted(): ?Generator
+    {
+        // Simple cases
+        yield[
+            'fff',
+            '000000',
+        ];
+
+        yield[
+            '000',
+            'ffffff',
+        ];
+
+        yield[
+            'ffffff',
+            '000000',
+        ];
+
+        yield[
+            '000000',
+            'ffffff',
+        ];
+
+        yield[
+            '#ffffff',
+            '#000000',
+        ];
+
+        yield[
+            '#000000',
+            '#ffffff',
+        ];
+
+        // Advanced cases - part 1
+        yield[
+            '001',
+            'ffffee',
+        ];
+
+        yield[
+            '010',
+            'ffeeff',
+        ];
+
+        yield[
+            '100',
+            'eeffff',
+        ];
+
+        yield[
+            'ccc',
+            '333333',
+        ];
+
+        yield[
+            'CCC',
+            '333333',
+        ];
+
+        // Advanced cases - part 2
+        yield[
+            'c1c1c1',
+            '3e3e3e',
+        ];
+
+        yield[
+            'C1C1C1',
+            '3e3e3e',
+        ];
+
+        yield[
+            '#22a5fe',
+            '#dd5a01',
+        ];
+
+        yield[
+            '#dd244c',
+            '#22dbb3',
+        ];
+
+        yield[
+            '#b9b9b9',
+            '#464646',
+        ];
+
+        yield[
+            '#f7f7f7',
+            '#080808',
+        ];
+
+        // Advanced cases - verification
+        yield[
+            'ffffee',
+            '000011',
+        ];
+
+        yield[
+            '333333',
+            'cccccc',
+        ];
+
+        yield[
+            '#dd5a01',
+            '#22a5fe',
+        ];
+
+        yield[
+            '#DD5A01',
+            '#22a5fe',
+        ];
+
+        yield[
+            '#080808',
+            '#f7f7f7',
         ];
     }
 
