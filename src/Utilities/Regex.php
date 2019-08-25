@@ -776,10 +776,7 @@ class Regex
      */
     public static function getValidColorHexValue($color, $throwException = true)
     {
-        /*
-         * Not a scalar value?
-         * Nothing to do
-         */
+        // Not a scalar value?
         if (!is_scalar($color)) {
             return false;
         }
@@ -787,10 +784,7 @@ class Regex
         $color = Miscellaneous::replace($color, '/#/', '');
         $length = strlen($color);
 
-        /*
-         * Color is not 3 or 6 characters long?
-         * Nothing to do
-         */
+        // Color hasn't 3 or 6 characters length?
         if (3 !== $length && 6 !== $length) {
             if ($throwException) {
                 throw new IncorrectColorHexLengthException($color);
@@ -799,10 +793,7 @@ class Regex
             return false;
         }
 
-        /*
-         * Color is 3 characters long?
-         * Let's make it 6 characters long
-         */
+        // Make the color 6 characters length, if has 3
         if (3 === $length) {
             $color = Miscellaneous::replace($color, '/(.)(.)(.)/', '$1$1$2$2$3$3');
         }
@@ -810,19 +801,16 @@ class Regex
         $pattern = self::$patterns['color'];
         $match = (bool)preg_match($pattern, $color);
 
-        /*
-         * It's valid color
-         * Nothing to do more
-         */
-        if ($match) {
-            return strtolower($color);
+        // It's not a valid color
+        if (!$match) {
+            if ($throwException) {
+                throw new InvalidColorHexValueException($color);
+            }
+
+            return false;
         }
 
-        if ($throwException) {
-            throw new InvalidColorHexValueException($color);
-        }
-
-        return false;
+        return strtolower($color);
     }
 
     /**
