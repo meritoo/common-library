@@ -17,20 +17,22 @@ File: `src/Utilities/Regex.php`
 
 - `string $value` - Value that should be transformed to slug
 
-##### Example 1
+##### Examples
 
-- value: non-scalar or `null`
-- result: `false`
+1)
 
-##### Example 2
+  - value: non-scalar or `null`
+  - result: `false`
 
-- value: `""` (an empty string)
-- result: `""` (an empty string)
+2)
 
-##### Example 3
+  - value: `""` (an empty string)
+  - result: `""` (an empty string)
 
-- value: `"Lorem ipsum. Dolor sit 12.34 amet."`
-- result: `"lorem-ipsum-dolor-sit-1234-amet"`
+3)
+
+  - value: `"Lorem ipsum. Dolor sit 12.34 amet."`
+  - result: `"lorem-ipsum-dolor-sit-1234-amet"`
 
 # More
 
