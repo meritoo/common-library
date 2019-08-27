@@ -650,6 +650,28 @@ class RegexTest extends BaseTestCase
     }
 
     /**
+     * @param string $string
+     * @param string $expected
+     *
+     * @dataProvider provideStringToClearBeginningSlash
+     */
+    public function testClearBeginningSlash(string $string, string $expected): void
+    {
+        static::assertSame($expected, Regex::clearBeginningSlash($string));
+    }
+
+    /**
+     * @param string $string
+     * @param string $expected
+     *
+     * @dataProvider provideStringToClearEndingSlash
+     */
+    public function testClearEndingSlash(string $string, string $expected): void
+    {
+        static::assertSame($expected, Regex::clearEndingSlash($string));
+    }
+
+    /**
      * Provides name of bundle and information if it's valid name
      *
      * @return Generator
@@ -1980,6 +2002,212 @@ class RegexTest extends BaseTestCase
             '    200   :   100    ',
             ' : ',
             true,
+        ];
+    }
+
+    public function provideStringToClearBeginningSlash(): ?Generator
+    {
+        yield[
+            '',
+            '',
+        ];
+
+        yield[
+            '/',
+            '',
+        ];
+
+        yield[
+            '\\',
+            '\\',
+        ];
+
+        yield[
+            '//',
+            '/',
+        ];
+
+        yield[
+            'lorem ipsum',
+            'lorem ipsum',
+        ];
+
+        yield[
+            '1234',
+            '1234',
+        ];
+
+        yield[
+            'lorem/ipsum',
+            'lorem/ipsum',
+        ];
+
+        yield[
+            'lorem / ipsum',
+            'lorem / ipsum',
+        ];
+
+        yield[
+            'lorem\ipsum',
+            'lorem\ipsum',
+        ];
+
+        yield[
+            'lorem \ ipsum',
+            'lorem \ ipsum',
+        ];
+
+        yield[
+            '\lorem ipsum',
+            '\lorem ipsum',
+        ];
+
+        yield[
+            '\ lorem ipsum',
+            '\ lorem ipsum',
+        ];
+
+        yield[
+            'lorem ipsum/',
+            'lorem ipsum/',
+        ];
+
+        yield[
+            'lorem ipsum /',
+            'lorem ipsum /',
+        ];
+
+        yield[
+            '/lorem ipsum',
+            'lorem ipsum',
+        ];
+
+        yield[
+            '/ lorem ipsum',
+            ' lorem ipsum',
+        ];
+
+        yield[
+            '/123 456',
+            '123 456',
+        ];
+
+        yield[
+            '/ 123 456',
+            ' 123 456',
+        ];
+
+        yield[
+            '/lorem 123 ipsum 456',
+            'lorem 123 ipsum 456',
+        ];
+
+        yield[
+            '/ lorem 123 ipsum 456',
+            ' lorem 123 ipsum 456',
+        ];
+    }
+
+    public function provideStringToClearEndingSlash(): ?Generator
+    {
+        yield[
+            '',
+            '',
+        ];
+
+        yield[
+            '/',
+            '',
+        ];
+
+        yield[
+            '\\',
+            '\\',
+        ];
+
+        yield[
+            '//',
+            '/',
+        ];
+
+        yield[
+            'lorem ipsum',
+            'lorem ipsum',
+        ];
+
+        yield[
+            '1234',
+            '1234',
+        ];
+
+        yield[
+            'lorem/ipsum',
+            'lorem/ipsum',
+        ];
+
+        yield[
+            'lorem / ipsum',
+            'lorem / ipsum',
+        ];
+
+        yield[
+            'lorem\ipsum',
+            'lorem\ipsum',
+        ];
+
+        yield[
+            'lorem \ ipsum',
+            'lorem \ ipsum',
+        ];
+
+        yield[
+            '\lorem ipsum',
+            '\lorem ipsum',
+        ];
+
+        yield[
+            '\ lorem ipsum',
+            '\ lorem ipsum',
+        ];
+
+        yield[
+            '/lorem ipsum',
+            '/lorem ipsum',
+        ];
+
+        yield[
+            '/ lorem ipsum',
+            '/ lorem ipsum',
+        ];
+
+        yield[
+            'lorem ipsum/',
+            'lorem ipsum',
+        ];
+
+        yield[
+            'lorem ipsum /',
+            'lorem ipsum ',
+        ];
+
+        yield[
+            '123 456/',
+            '123 456',
+        ];
+
+        yield[
+            '123 456 /',
+            '123 456 ',
+        ];
+
+        yield[
+            'lorem 123 ipsum 456/',
+            'lorem 123 ipsum 456',
+        ];
+
+        yield[
+            'lorem 123 ipsum 456 /',
+            'lorem 123 ipsum 456 ',
         ];
     }
 

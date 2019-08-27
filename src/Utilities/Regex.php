@@ -40,6 +40,8 @@ class Regex
         'color'            => '/^[a-f0-9]{6}$/i',
         'bundleName'       => '/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/',
         'binaryValue'      => '/[^\x20-\x7E\t\r\n]/',
+        'beginningSlash'   => '|^\/|',
+        'endingSlash'      => '|\/$|',
 
         /*
          * Matches:
@@ -998,5 +1000,19 @@ class Regex
         $result = $transliterator->transliterate($cleanValue);
 
         return preg_replace('/[-\s]+/', '-', $result);
+    }
+
+    public static function clearBeginningSlash(string $string): string
+    {
+        $pattern = static::$patterns['beginningSlash'];
+
+        return preg_replace($pattern, '', $string);
+    }
+
+    public static function clearEndingSlash(string $string): string
+    {
+        $pattern = static::$patterns['endingSlash'];
+
+        return preg_replace($pattern, '', $string);
     }
 }

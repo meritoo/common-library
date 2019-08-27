@@ -34,6 +34,56 @@ File: `src/Utilities/Regex.php`
   - value: `"Lorem ipsum. Dolor sit 12.34 amet."`
   - result: `"lorem-ipsum-dolor-sit-1234-amet"`
 
+### clearBeginningSlash(string): string
+
+> Clears, removes slash from the beginning of given string
+
+##### Arguments
+
+- `string $string` - String that may contains slash as the 1st character
+
+##### Examples
+
+1)
+
+  - string: `"lorem ipsum"`
+  - result: `"lorem ipsum"`
+
+2)
+
+  - string: `"/lorem ipsum"`
+  - result: `"lorem ipsum"`
+
+3)
+
+  - string: `"/ lorem 123 ipsum"`
+  - result: `" lorem 123 ipsum"`
+
+### clearEndingSlash(string): string
+
+> Clears, removes slash from the end of given string
+
+##### Arguments
+
+- `string $string` - String that may contains slash as the last character
+
+##### Examples
+
+1)
+
+  - string: `"lorem ipsum"`
+  - result: `"lorem ipsum"`
+
+2)
+
+  - string: `"lorem ipsum/"`
+  - result: `"lorem ipsum"`
+
+3)
+
+  - string: `"lorem 123 ipsum /"`
+  - result: `"lorem 123 ipsum "`
+
 # More
 
 1. [Base test case (with common methods and data providers)](../Base-test-case.md)
