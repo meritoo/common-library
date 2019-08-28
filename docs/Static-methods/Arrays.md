@@ -17,20 +17,22 @@ File: `src/Utilities/Arrays.php`
 
 - `array $values` - The values to filter
 
-##### Example 1
+##### Examples
 
-- values: `[]` (no values)
-- result: `[]` (an empty array)
+1)
 
-##### Example 2
+  - values: `[]` (no values)
+  - result: `[]` (an empty array)
 
-- values: `[null, ""]` (all empty values)
-- result: `[]` (an empty array)
+2)
 
-##### Example 3
+  - values: `[null, ""]` (all empty values)
+  - result: `[]` (an empty array)
 
-- values: `["test 1", "", 123, null, 0]`
-- result: `["test 1", 123, 0]`
+3)
+
+  - values: `["test 1", "", 123, null, 0]`
+  - result: `["test 1", 123, 0]`
 
 ### getNonEmptyValuesAsString(array $values, $separator = ', ')
 
@@ -41,29 +43,31 @@ File: `src/Utilities/Arrays.php`
 - `array $values` - The values to filter
 - `[string $separator]` - (optional) Separator used to implode the values. Default: ", ".
 
-##### Example 1
+##### Examples
 
-- values: `[]` (no values)
-- separator: default or any other string
-- result: `""` (an empty string)
+1)
 
-##### Example 2
+  - values: `[]` (no values)
+  - separator: default or any other string
+  - result: `""` (an empty string)
 
-- values: `[null, ""]` (all empty values)
-- separator: default or any other string
-- result: `""` (an empty string)
+2)
 
-##### Example 3
+  - values: `[null, ""]` (all empty values)
+  - separator: default or any other string
+  - result: `""` (an empty string)
 
-- values: `["test 1", "", 123, null, 0]`
-- separator: `", "` (default)
-- result: `"test 1, 123, 0"`
+3)
 
-##### Example 4
+  - values: `["test 1", "", 123, null, 0]`
+  - separator: `", "` (default)
+  - result: `"test 1, 123, 0"`
 
-- values: `["test 1", "", 123, null, 0]`
-- separator: `" | "`
-- result: `"test 1 | 123 | 0"`
+4)
+
+  - values: `["test 1", "", 123, null, 0]`
+  - separator: `" | "`
+  - result: `"test 1 | 123 | 0"`
 
 # More
 
