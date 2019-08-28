@@ -101,6 +101,7 @@ File: `src/Utilities/Arrays.php`
 5. [Static methods](../Static-methods.md)
    1. [**Arrays**](Arrays.md)
    2. [Regex](Regex.md)
+   3. [Uri](Uri.md)
 6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

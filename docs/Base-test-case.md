@@ -51,6 +51,7 @@ class MimeTypesTest extends BaseTestCase
 5. [Static methods](Static-methods.md)
    1. [Arrays](Static-methods/Arrays.md)
    2. [Regex](Static-methods/Regex.md)
+   3. [Uri](Static-methods/Uri.md)
 6. [Value Objects](Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../README.md)

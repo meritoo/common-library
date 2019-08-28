@@ -19,7 +19,7 @@ use Meritoo\Common\Utilities\Uri;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\Uri
+ * @covers    \Meritoo\Common\Utilities\Uri
  */
 class UriTest extends BaseTestCase
 {
@@ -256,6 +256,18 @@ class UriTest extends BaseTestCase
     }
 
     /**
+     * @param string $expected
+     * @param string $rootUrl
+     * @param string ...$urlParts
+     *
+     * @dataProvider provideRootUrlAndUrlParts
+     */
+    public function testBuildUrl(string $expected, string $rootUrl, string ...$urlParts): void
+    {
+        static::assertSame($expected, Uri::buildUrl($rootUrl, ...$urlParts));
+    }
+
+    /**
      * Provides url to replenish protocol
      *
      * @return Generator
@@ -370,6 +382,58 @@ class UriTest extends BaseTestCase
             'john',
             'pass123',
             'http://john:pass123@lorem.com/contact',
+        ];
+    }
+
+    public function provideRootUrlAndUrlParts(): ?Generator
+    {
+        yield[
+            '',
+            '',
+        ];
+
+        yield[
+            '',
+            '',
+            '',
+        ];
+
+        yield[
+            'http://my.example',
+            'http://my.example',
+            '',
+        ];
+
+        yield[
+            'http://my.example',
+            'http://my.example',
+            '',
+            '',
+        ];
+
+        yield[
+            'http://my.example//test/12/test/',
+            'http://my.example',
+            '',
+            'test',
+            '12/test',
+            '',
+        ];
+
+        yield[
+            'http://my.example//test/12/test',
+            'http://my.example',
+            '',
+            'test/',
+            '12/test/',
+        ];
+
+        yield[
+            'http://my.example/test/12/test/',
+            'http://my.example',
+            '/test/',
+            '/12/test',
+            '',
         ];
     }
 }

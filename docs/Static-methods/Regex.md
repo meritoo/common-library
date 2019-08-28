@@ -93,6 +93,7 @@ File: `src/Utilities/Regex.php`
 5. [Static methods](../Static-methods.md)
    1. [Arrays](../Static-methods/Arrays.md)
    2. [**Regex**](Regex.md)
+   3. [Uri](Uri.md)
 6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

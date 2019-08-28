@@ -9,7 +9,7 @@
 namespace Meritoo\Common\Utilities;
 
 /**
- * Useful uri methods (only static functions)
+ * Useful methods related to uri
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
@@ -350,5 +350,25 @@ class Uri
         }
 
         return sprintf('%s://%s', $protocol, $url);
+    }
+
+    public static function buildUrl(string $rootUrl, string ...$urlParts): string
+    {
+        $rootUrl = Regex::clearEndingSlash($rootUrl);
+
+        if (empty($urlParts) || Arrays::containsEmptyStringsOnly($urlParts)) {
+            return $rootUrl;
+        }
+
+        array_walk($urlParts, static function (&$part) {
+            $part = Regex::clearBeginningSlash($part);
+            $part = Regex::clearEndingSlash($part);
+        });
+
+        return sprintf(
+            '%s/%s',
+            $rootUrl,
+            implode('/', $urlParts)
+        );
     }
 }
