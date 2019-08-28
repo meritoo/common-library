@@ -1633,6 +1633,15 @@ class Arrays
         return is_array($value) && !empty($value);
     }
 
+    public static function containsEmptyStringsOnly(array $array): bool
+    {
+        if (empty($array)) {
+            return false;
+        }
+
+        return '' === trim(implode('', $array));
+    }
+
     /**
      * Returns neighbour (next or previous element) for given element
      *

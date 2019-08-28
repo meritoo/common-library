@@ -9,6 +9,29 @@ Common and useful classes, methods, exceptions etc.
 Class: `Meritoo\Common\Utilities\Arrays`
 File: `src/Utilities/Arrays.php`
 
+### containsEmptyStringsOnly(array): bool
+
+> Returns information if given array contains an empty strings only
+
+##### Arguments
+
+- `array $array` - The array to verify
+
+##### Examples
+
+1)
+
+  - array: `[]` (an empty array)
+  - result: `false`
+
+2)
+  - array: `["", -1]`
+  - result: `false`
+
+3)
+  - array: `["", null, ""]`
+  - result: `true`
+
 ### getNonEmptyValues(array $values)
 
 > Returns non-empty values, e.g. without "" (empty string), null or []

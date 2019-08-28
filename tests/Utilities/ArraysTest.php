@@ -1487,6 +1487,17 @@ letsTest[2] = value_2;';
     }
 
     /**
+     * @param array $array
+     * @param bool  $expected
+     *
+     * @dataProvider provideArrayToVerifyIfContainsEmptyStringsOnly
+     */
+    public function testContainsEmptyStringsOnly(array $array, bool $expected): void
+    {
+        static::assertSame($expected, Arrays::containsEmptyStringsOnly($array));
+    }
+
+    /**
      * Provides simple array to set/replace values with keys
      *
      * @return \Generator
@@ -2867,6 +2878,48 @@ letsTest[2] = value_2;';
                 'x' => 'sit',
                 4   => 'amet',
             ],
+        ];
+    }
+
+    public function provideArrayToVerifyIfContainsEmptyStringsOnly(): ?Generator
+    {
+        yield[
+            [],
+            false,
+        ];
+
+        yield[
+            [
+                '',
+                1,
+            ],
+            false,
+        ];
+
+        yield[
+            [
+                '',
+                null,
+                1,
+            ],
+            false,
+        ];
+
+        yield[
+            [
+                '',
+                null,
+            ],
+            true,
+        ];
+
+        yield[
+            [
+                '',
+                null,
+                '',
+            ],
+            true,
         ];
     }
 
