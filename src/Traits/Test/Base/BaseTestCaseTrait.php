@@ -162,28 +162,16 @@ trait BaseTestCaseTrait
     }
 
     /**
-     * Verifies visibility and arguments of method
+     * Verifies visibility of method
      *
      * @param ReflectionMethod $method                 Name of method or just the method to verify
      * @param string           $visibilityType         Expected visibility of verified method. One of OopVisibilityType
      *                                                 class constants.
-     * @param int              $argumentsCount         (optional) Expected count/amount of arguments of the verified
-     *                                                 method
-     * @param int              $requiredArgumentsCount (optional) Expected count/amount of required arguments of the
-     *                                                 verified method
      * @throws UnknownOopVisibilityTypeException
      * @throws RuntimeException
-     *
-     * Attention. 2nd argument, the $method, may be:
-     * - string - name of the method
-     * - instance of ReflectionMethod - just the method (provided by ReflectionClass::getMethod() method)
      */
-    protected static function assertMethodVisibilityAndArguments(
-        ReflectionMethod $method,
-        string $visibilityType,
-        int $argumentsCount = 0,
-        int $requiredArgumentsCount = 0
-    ): void {
+    protected static function assertMethodVisibility(ReflectionMethod $method, string $visibilityType): void
+    {
         // Type of visibility is not correct?
         if (!OopVisibilityType::isCorrectType($visibilityType)) {
             throw UnknownOopVisibilityTypeException::createException($visibilityType);
@@ -203,9 +191,24 @@ trait BaseTestCaseTrait
 
                 break;
         }
+    }
 
-        static::assertEquals($argumentsCount, $method->getNumberOfParameters());
-        static::assertEquals($requiredArgumentsCount, $method->getNumberOfRequiredParameters());
+    /**
+     * Verifies count of method's arguments
+     *
+     * @param ReflectionMethod $method         Name of method or just the method to verify
+     * @param int              $argumentsCount (optional) Expected count/amount of arguments of the verified method
+     * @param int              $requiredCount  (optional) Expected count/amount of required arguments of the verified
+     *                                         method
+     * @throws RuntimeException
+     */
+    protected static function assertMethodArgumentsCount(
+        ReflectionMethod $method,
+        int $argumentsCount = 0,
+        int $requiredCount = 0
+    ): void {
+        static::assertSame($argumentsCount, $method->getNumberOfParameters());
+        static::assertSame($requiredCount, $method->getNumberOfRequiredParameters());
     }
 
     /**
@@ -232,12 +235,8 @@ trait BaseTestCaseTrait
             throw ClassWithoutConstructorException::create($className);
         }
 
-        static::assertMethodVisibilityAndArguments(
-            $method,
-            $visibilityType,
-            $argumentsCount,
-            $requiredArgumentsCount
-        );
+        static::assertMethodVisibility($method, $visibilityType);
+        static::assertMethodArgumentsCount($method, $argumentsCount, $requiredArgumentsCount);
     }
 
     /**

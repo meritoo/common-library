@@ -4,7 +4,15 @@ Common and useful classes, methods, exceptions etc.
 
 # Base test case (with common methods and data providers)
 
-Located here: `Meritoo\Common\Test\Base\BaseTestCase`. Just extend the `BaseTestCase` class and use it like in `Meritoo\Common\Test\Utilities\DateTest` class:
+Located here: `Meritoo\Common\Test\Base\BaseTestCase`.
+
+##### Usage
+
+1. Just extend the `BaseTestCase` class or implement `Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait` trait.
+2. Use one of available data providers, e.g. `@dataProvider provideEmptyValue`, or asserts,
+e.g. `static::assertMethodVisibility($method, $visibilityType);`
+
+##### Examples
 
 ```php
 class DateTest extends BaseTestCase
@@ -21,8 +29,6 @@ class DateTest extends BaseTestCase
 	(...)
 }
 ```
-
-or in `Meritoo\Common\Test\Utilities\MimeTypesTest` class:
 
 ```php
 class MimeTypesTest extends BaseTestCase
