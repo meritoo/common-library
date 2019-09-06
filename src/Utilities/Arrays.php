@@ -1612,7 +1612,7 @@ class Arrays
     }
 
     /**
-     * Returns information if given value is an empty array
+     * Returns information if given value is an array and is empty
      *
      * @param mixed $value The value to verify
      * @return bool

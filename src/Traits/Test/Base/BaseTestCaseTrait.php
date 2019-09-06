@@ -126,17 +126,9 @@ trait BaseTestCaseTrait
      */
     public function provideNonScalarValue(): ?Generator
     {
-        yield[
-            [],
-        ];
-
-        yield[
-            null,
-        ];
-
-        yield[
-            new stdClass(),
-        ];
+        yield[[]];
+        yield[null];
+        yield[new stdClass()];
     }
 
     /**
