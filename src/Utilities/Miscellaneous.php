@@ -1322,6 +1322,10 @@ class Miscellaneous
 
     public static function calculateGreatestCommonDivisor(int $first, int $second): int
     {
-        return (0 === $second) ? $first : static::calculateGreatestCommonDivisor($second, $first % $second);
+        if (0 === $second) {
+            return $first;
+        }
+
+        return static::calculateGreatestCommonDivisor($second, $first % $second);
     }
 }
