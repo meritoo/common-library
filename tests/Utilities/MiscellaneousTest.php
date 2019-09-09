@@ -736,6 +736,18 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
+     * @param int $first
+     * @param int $second
+     * @param int $expected
+     *
+     * @dataProvider provideGreatestCommonDivisor
+     */
+    public function testCalculateGreatestCommonDivisor(int $first, int $second, int $expected): void
+    {
+        static::assertSame($expected, Miscellaneous::calculateGreatestCommonDivisor($first, $second));
+    }
+
+    /**
      * Provides string to convert characters to latin characters and not lower cased and not human-readable
      *
      * @return Generator
@@ -1503,6 +1515,51 @@ class MiscellaneousTest extends BaseTestCase
             'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
             false,
             'tiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
+        ];
+    }
+
+    public function provideGreatestCommonDivisor(): ?Generator
+    {
+        yield[
+            0,
+            0,
+            0,
+        ];
+
+        yield[
+            1,
+            1,
+            1,
+        ];
+
+        yield[
+            5,
+            3,
+            1,
+        ];
+
+        yield[
+            6,
+            3,
+            3,
+        ];
+
+        yield[
+            12,
+            9,
+            3,
+        ];
+
+        yield[
+            20,
+            12,
+            4,
+        ];
+
+        yield[
+            120,
+            80,
+            40,
         ];
     }
 

@@ -1319,4 +1319,9 @@ class Miscellaneous
 
         return substr($string, 1);
     }
+
+    public static function calculateGreatestCommonDivisor(int $first, int $second): int
+    {
+        return (0 === $second) ? $first : static::calculateGreatestCommonDivisor($second, $first % $second);
+    }
 }
