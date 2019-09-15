@@ -116,7 +116,7 @@ class Arrays
      * @param string $separator (optional) Separator used between values. Default: ",".
      * @return null|string
      */
-    public static function values2csv(array $array, $separator = ',')
+    public static function values2csv(array $array, string $separator = ','): ?string
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -157,9 +157,9 @@ class Arrays
      *                              first element is returned (first of the First array).
      * @return bool
      */
-    public static function isFirstElement(array $array, $element, $firstLevelOnly = true)
+    public static function isFirstElement(array $array, $element, bool $firstLevelOnly = true): bool
     {
-        $firstElement = self::getFirstElement($array, $firstLevelOnly);
+        $firstElement = static::getFirstElement($array, $firstLevelOnly);
 
         return $element === $firstElement;
     }
@@ -175,21 +175,21 @@ class Arrays
      *                              first element is returned (first of the first array).
      * @return mixed
      */
-    public static function getFirstElement(array $array, $firstLevelOnly = true)
+    public static function getFirstElement(array $array, bool $firstLevelOnly = true)
     {
         // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
 
-        $firstKey = self::getFirstKey($array);
-        $first = $array[$firstKey];
+        $firstKey = static::getFirstKey($array);
+        $result = $array[$firstKey];
 
-        if (!$firstLevelOnly && is_array($first)) {
-            $first = self::getFirstElement($first, $firstLevelOnly);
+        if (!$firstLevelOnly && is_array($result)) {
+            $result = static::getFirstElement($result, $firstLevelOnly);
         }
 
-        return $first;
+        return $result;
     }
 
     /**
@@ -219,9 +219,9 @@ class Arrays
      *                              last element is returned (last of the latest array).
      * @return bool
      */
-    public static function isLastElement(array $array, $element, $firstLevelOnly = true)
+    public static function isLastElement(array $array, $element, bool $firstLevelOnly = true): bool
     {
-        $lastElement = self::getLastElement($array, $firstLevelOnly);
+        $lastElement = static::getLastElement($array, $firstLevelOnly);
 
         return $element === $lastElement;
     }
@@ -237,7 +237,7 @@ class Arrays
      *                              last element is returned (last of the latest array).
      * @return mixed
      */
-    public static function getLastElement(array $array, $firstLevelOnly = true)
+    public static function getLastElement(array $array, bool $firstLevelOnly = true)
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -247,7 +247,7 @@ class Arrays
         $last = end($array);
 
         if (!$firstLevelOnly && is_array($last)) {
-            $last = self::getLastElement($last, $firstLevelOnly);
+            $last = static::getLastElement($last, $firstLevelOnly);
         }
 
         return $last;
@@ -290,30 +290,30 @@ class Arrays
      * @param array $array The array to get the last row of
      * @return mixed
      */
-    public static function getLastRow(array $array)
+    public static function getLastRow(array $array): ?array
     {
         // No elements? Nothing to do
         if (empty($array)) {
             return null;
         }
 
-        $effect = [];
+        $result = [];
         $last = end($array);
 
         if (is_array($last)) {
             // We've got an array, so looking for the last row of array will be done recursively
-            $effect = self::getLastRow($last);
+            $result = static::getLastRow($last);
 
             /*
              * The last row is not an array or it's an empty array?
              * Let's use the previous candidate
              */
-            if (!is_array($effect) || self::isEmptyArray($effect)) {
-                $effect = $last;
+            if (!is_array($result) || static::isEmptyArray($result)) {
+                $result = $last;
             }
         }
 
-        return $effect;
+        return $result;
     }
 
     /**

@@ -128,7 +128,7 @@ class ArraysTest extends BaseTestCase
      *
      * @dataProvider provideArrayValues2csv
      */
-    public function testValues2csv($description, $expected, array $array, $separator = ',')
+    public function testValues2csv(string $description, ?string $expected, array $array, string $separator = ','): void
     {
         // Required to avoid failure:
         //
@@ -137,16 +137,7 @@ class ArraysTest extends BaseTestCase
         // 1,2,3,45 - actual
         Locale::setLocale(LC_ALL, 'en', 'US');
 
-        self::assertSame($expected, Arrays::values2csv($array, $separator), $description);
-        self::assertSame('', Arrays::values2csv($this->simpleArray), 'Simple array');
-
-        self::assertSame(
-            "lorem,ipsum,dolor,sit,amet\n"
-            . "consectetur,adipiscing,elit\n"
-            . 'donec,sagittis,fringilla,eleifend',
-            Arrays::values2csv($this->twoDimensionsArray),
-            'Two dimensions array'
-        );
+        static::assertSame($expected, Arrays::values2csv($array, $separator), $description);
     }
 
     public function testGetFirstKey()
@@ -166,43 +157,100 @@ class ArraysTest extends BaseTestCase
         self::assertEquals('amet', Arrays::getLastKey($this->complexArray));
     }
 
-    public function testGetFirstElement()
-    {
-        // Negative cases
-        self::assertNull(Arrays::getFirstElement([]));
+    /**
+     * @param string    $description
+     * @param           $expected
+     * @param array     $array
+     * @param null|bool $firstLevelOnly
+     *
+     * @dataProvider provideFirstElement
+     */
+    public function testGetFirstElement(
+        string $description,
+        $expected,
+        array $array,
+        ?bool $firstLevelOnly = null
+    ): void {
+        if (null === $firstLevelOnly) {
+            static::assertSame($expected, Arrays::getFirstElement($array), $description);
 
-        // Positive cases
-        self::assertEquals('Lorem', Arrays::getFirstElement($this->simpleArray));
-        self::assertEquals('Lorem', Arrays::getFirstElement($this->simpleArray));
-        self::assertEquals('lorem', Arrays::getFirstElement($this->twoDimensionsArray, false));
-        self::assertEquals('sit', Arrays::getFirstElement($this->complexArray, false));
+            return;
+        }
+
+        static::assertSame($expected, Arrays::getFirstElement($array, $firstLevelOnly), $description);
     }
 
-    public function testIsFirstElement()
-    {
-        self::assertTrue(Arrays::isFirstElement($this->simpleArray, 'Lorem'));
-        self::assertFalse(Arrays::isFirstElement($this->simpleArray, 'dolor'));
-        self::assertFalse(Arrays::isFirstElement($this->simpleArray, ' '));
-        self::assertFalse(Arrays::isFirstElement($this->simpleArray, null));
+    /**
+     * @param string $description
+     * @param bool   $expected
+     * @param array  $array
+     * @param        $element
+     * @param bool   $firstLevelOnly
+     *
+     * @dataProvider provideIsFirstElement
+     */
+    public function testIsFirstElement(
+        string $description,
+        bool $expected,
+        array $array,
+        $element,
+        ?bool $firstLevelOnly = null
+    ): void {
+        if (null === $firstLevelOnly) {
+            static::assertSame($expected, Arrays::isFirstElement($array, $element), $description);
+
+            return;
+        }
+
+        static::assertSame($expected, Arrays::isFirstElement($array, $element, $firstLevelOnly), $description);
     }
 
-    public function testGetLastElement()
-    {
-        // Negative cases
-        self::assertNull(Arrays::getLastElement([]));
+    /**
+     * @param string    $description
+     * @param           $expected
+     * @param array     $array
+     * @param null|bool $firstLevelOnly
+     *
+     * @dataProvider provideLastElement
+     */
+    public function testGetLastElement(
+        string $description,
+        $expected,
+        array $array,
+        ?bool $firstLevelOnly = null
+    ): void {
+        if (null === $firstLevelOnly) {
+            static::assertSame($expected, Arrays::getLastElement($array), $description);
 
-        // Positive cases
-        self::assertEquals('amet', Arrays::getLastElement($this->simpleArray));
-        self::assertEquals('eleifend', Arrays::getLastElement($this->twoDimensionsArray, false));
-        self::assertEquals('primis', Arrays::getLastElement($this->complexArray, false));
+            return;
+        }
+
+        static::assertSame($expected, Arrays::getLastElement($array, $firstLevelOnly), $description);
     }
 
-    public function testIsLastElement()
-    {
-        self::assertTrue(Arrays::isLastElement($this->simpleArray, 'amet'));
-        self::assertFalse(Arrays::isLastElement($this->simpleArray, 'ipsum'));
-        self::assertFalse(Arrays::isLastElement($this->simpleArray, ''));
-        self::assertFalse(Arrays::isLastElement($this->simpleArray, null));
+    /**
+     * @param string    $description
+     * @param bool      $expected
+     * @param array     $array
+     * @param           $element
+     * @param null|bool $firstLevelOnly
+     *
+     * @dataProvider provideIsLastElement
+     */
+    public function testIsLastElement(
+        string $description,
+        bool $expected,
+        array $array,
+        $element,
+        ?bool $firstLevelOnly = null
+    ): void {
+        if (null === $firstLevelOnly) {
+            static::assertSame($expected, Arrays::isLastElement($array, $element), $description);
+
+            return;
+        }
+
+        static::assertSame($expected, Arrays::isLastElement($array, $element, $firstLevelOnly), $description);
     }
 
     public function testGetLastElementBreadCrumb()
@@ -213,26 +261,16 @@ class ArraysTest extends BaseTestCase
         self::assertEquals('amet/1/primis', Arrays::getLastElementBreadCrumb($this->complexArray));
     }
 
-    public function testGetLastRow(): void
+    /**
+     * @param string     $description
+     * @param null|array $expected
+     * @param array      $array
+     *
+     * @dataProvider provideLastRow
+     */
+    public function testGetLastRow(string $description, ?array $expected, array $array): void
     {
-        // Negative cases
-        self::assertNull(Arrays::getLastRow([]));
-
-        // Positive cases
-        self::assertEquals([], Arrays::getLastRow($this->simpleArray));
-        self::assertEquals([], Arrays::getLastRow($this->simpleArrayWithKeys));
-
-        self::assertEquals([
-            'donec',
-            'sagittis',
-            'fringilla',
-            'eleifend',
-        ], Arrays::getLastRow($this->twoDimensionsArray));
-
-        self::assertEquals([
-            'iaculis',
-            'primis',
-        ], Arrays::getLastRow($this->complexArray));
+        static::assertSame($expected, Arrays::getLastRow($array), $description);
     }
 
     /**
@@ -898,7 +936,7 @@ letsTest[2] = value_2;';
 
         self::assertEquals($effect, Arrays::setPositions($this->twoDimensionsArray));
 
-        // Positive case - multi-level array
+        // Positive case - multidimensional array
         $array = [
             'lorem',
             'ipsum' => [
@@ -1102,7 +1140,7 @@ letsTest[2] = value_2;';
         // Empty array
         self::assertNull(Arrays::implodeSmart([], $separator));
 
-        // Simple, one-dimension array
+        // Simple, One-dimensional array
         self::assertEquals(implode($separator, $this->simpleArray), Arrays::implodeSmart($this->simpleArray, $separator));
 
         // An array with elements that contain separator
@@ -2140,7 +2178,7 @@ letsTest[2] = value_2;';
         ];
     }
 
-    public function provideArrayValues2csv()
+    public function provideArrayValues2csv(): ?Generator
     {
         yield[
             'An empty array',
@@ -2320,6 +2358,22 @@ letsTest[2] = value_2;';
                 ],
             ],
             ' // ',
+        ];
+
+        yield[
+            'With HTML code',
+            "<div>abc</div>,def,<div>ghi</div>\nc,d",
+            [
+                [
+                    '&lt;div&gt;abc&lt;/div&gt;',
+                    'def',
+                    '&lt;div&gt;ghi&lt;/div&gt;',
+                ],
+                [
+                    'c',
+                    'd',
+                ],
+            ],
         ];
     }
 
@@ -2920,6 +2974,724 @@ letsTest[2] = value_2;';
                 '',
             ],
             true,
+        ];
+    }
+
+    public function provideIsFirstElement(): ?Generator
+    {
+        yield[
+            'An empty array (first level only)',
+            false,
+            [],
+            '',
+        ];
+
+        yield[
+            'An empty array',
+            false,
+            [],
+            '',
+            false,
+        ];
+
+        yield[
+            'Non-existing integer in array with integers (first level only)',
+            false,
+            [
+                1,
+                2,
+                3,
+            ],
+            4,
+        ];
+
+        yield[
+            'Existing integer in array with integers (first level only)',
+            true,
+            [
+                1,
+                2,
+                3,
+            ],
+            1,
+        ];
+
+        yield[
+            'Existing integer in array with integers',
+            true,
+            [
+                1,
+                2,
+                3,
+            ],
+            1,
+            false,
+        ];
+
+        yield[
+            'Non-existing integer in multidimensional array with integers (first level only)',
+            false,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            9,
+        ];
+
+        yield[
+            'Non-existing integer in multidimensional array with integers',
+            false,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            9,
+            false,
+        ];
+
+        yield[
+            'Existing integer in multidimensional array with integers, but first level only checked',
+            false,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            1,
+        ];
+
+        yield[
+            'Existing integer in multidimensional array with integers',
+            true,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            1,
+            false,
+        ];
+
+        yield[
+            'Non-existing element in multidimensional array (first level only)',
+            false,
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+            9,
+        ];
+
+        yield[
+            'Existing element in multidimensional array, but first level only checked',
+            false,
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+            'abc',
+        ];
+
+        yield[
+            'Existing element in multidimensional array',
+            true,
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+            'abc',
+            false,
+        ];
+    }
+
+    public function provideFirstElement(): ?Generator
+    {
+        yield[
+            'An empty array (first level only)',
+            null,
+            [],
+        ];
+
+        yield[
+            'An empty array',
+            null,
+            [],
+            false,
+        ];
+
+        yield[
+            'Multidimensional array (first level only)',
+            [
+                [
+                    'abc',
+                    2,
+                    'def',
+                ],
+                4,
+            ],
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+        ];
+
+        yield[
+            'Multidimensional array',
+            'abc',
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+            false,
+        ];
+    }
+
+    public function provideIsLastElement(): ?Generator
+    {
+        yield[
+            'An empty array (first level only)',
+            false,
+            [],
+            '',
+        ];
+
+        yield[
+            'An empty array',
+            false,
+            [],
+            '',
+            false,
+        ];
+
+        yield[
+            'Non-existing integer in array with integers (first level only)',
+            false,
+            [
+                1,
+                2,
+                3,
+            ],
+            4,
+        ];
+
+        yield[
+            'Existing integer in array with integers (first level only)',
+            true,
+            [
+                1,
+                2,
+                3,
+            ],
+            3,
+        ];
+
+        yield[
+            'Existing integer in array with integers',
+            true,
+            [
+                1,
+                2,
+                3,
+            ],
+            3,
+            false,
+        ];
+
+        yield[
+            'Non-existing integer in multidimensional array with integers (first level only)',
+            false,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            11,
+        ];
+
+        yield[
+            'Non-existing integer in multidimensional array with integers',
+            false,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            11,
+            false,
+        ];
+
+        yield[
+            'Existing integer in multidimensional array with integers, but first level only checked',
+            false,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            10,
+        ];
+
+        yield[
+            'Existing integer in multidimensional array with integers',
+            true,
+            [
+                [
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    4,
+                ],
+                5,
+                [
+                    6,
+                    7,
+                    [
+                        8,
+                        9,
+                        10,
+                    ],
+                ],
+            ],
+            10,
+            false,
+        ];
+
+        yield[
+            'Non-existing element in multidimensional array (first level only)',
+            false,
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+            9,
+        ];
+
+        yield[
+            'Existing element in multidimensional array, but first level only checked',
+            false,
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        10,
+                        '...',
+                        'jkl',
+                    ],
+                ],
+            ],
+            'jkl',
+        ];
+
+        yield[
+            'Existing element in multidimensional array',
+            true,
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        10,
+                        '...',
+                        'jkl',
+                    ],
+                ],
+            ],
+            'jkl',
+            false,
+        ];
+    }
+
+    public function provideLastElement(): ?Generator
+    {
+        yield[
+            'An empty array (first level only)',
+            null,
+            [],
+        ];
+
+        yield[
+            'An empty array',
+            null,
+            [],
+            false,
+        ];
+
+        yield[
+            'One-dimensional array (first level only)',
+            3,
+            [
+                1,
+                2,
+                3,
+            ],
+        ];
+
+        yield[
+            'One-dimensional array (first level only)',
+            3,
+            [
+                1,
+                2,
+                3,
+            ],
+            false,
+        ];
+
+        yield[
+            'Multidimensional array (first level only)',
+            [
+                'ghi',
+                7,
+                [
+                    'jkl',
+                    '...',
+                    10,
+                ],
+            ],
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+        ];
+
+        yield[
+            'Multidimensional array',
+            10,
+            [
+                [
+                    [
+                        'abc',
+                        2,
+                        'def',
+                    ],
+                    4,
+                ],
+                '---',
+                [
+                    'ghi',
+                    7,
+                    [
+                        'jkl',
+                        '...',
+                        10,
+                    ],
+                ],
+            ],
+            false,
+        ];
+    }
+
+    public function provideLastRow(): ?Generator
+    {
+        yield[
+            'An empty array',
+            null,
+            [],
+        ];
+
+        yield[
+            'One-dimensional array',
+            [],
+            [
+                'a',
+                'b',
+                1,
+                2,
+            ],
+        ];
+
+        yield[
+            'Multidimensional array with scalar as last element',
+            [],
+            [
+                'a',
+                [
+                    'b',
+                    'c',
+                ],
+                [
+                    'e',
+                    'f',
+                ],
+                1,
+                2,
+            ],
+        ];
+
+        yield[
+            'Multidimensional array with an empty array as last element',
+            [],
+            [
+                'a',
+                [
+                    'b',
+                    'c',
+                ],
+                1,
+                2,
+                [],
+            ],
+        ];
+
+        yield[
+            'Multidimensional array',
+            [
+                'e',
+                'f',
+            ],
+            [
+                'a',
+                [
+                    'b',
+                    'c',
+                ],
+                1,
+                2,
+                [
+                    'e',
+                    'f',
+                ],
+            ],
         ];
     }
 
