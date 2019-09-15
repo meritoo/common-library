@@ -14,6 +14,8 @@ namespace Meritoo\Test\Common\Utilities\Reflection;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
  */
 trait E
 {

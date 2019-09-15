@@ -14,6 +14,9 @@ namespace Meritoo\Test\Common\Utilities\Repository;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @coversNothing
  */
 class Sortable
 {
