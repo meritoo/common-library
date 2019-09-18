@@ -10,7 +10,7 @@ namespace Meritoo\Common\Utilities;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Persistence\Proxy;
-use Meritoo\Common\Collection\Collection;
+use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
@@ -207,11 +207,11 @@ class Reflection
      * Returns values of given property for given objects.
      * Looks for proper getter for the property.
      *
-     * @param array|Collection|object $objects  The objects that should contain given property. It may be also one
-     *                                          object.
-     * @param string                  $property Name of the property that contains a value
-     * @param bool                    $force    (optional) If is set to true, try to retrieve value even if the
-     *                                          object does not have property. Otherwise - not.
+     * @param array|BaseCollection|object $objects  The objects that should contain given property. It may be also one
+     *                                              object.
+     * @param string                      $property Name of the property that contains a value
+     * @param bool                        $force    (optional) If is set to true, try to retrieve value even if the
+     *                                              object does not have property. Otherwise - not.
      * @return array
      */
     public static function getPropertyValues($objects, string $property, bool $force = false): array
@@ -224,7 +224,7 @@ class Reflection
             return [];
         }
 
-        if ($objects instanceof Collection) {
+        if ($objects instanceof BaseCollection) {
             $objects = $objects->toArray();
         }
 

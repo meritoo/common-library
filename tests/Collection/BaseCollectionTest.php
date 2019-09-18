@@ -10,9 +10,12 @@ namespace Meritoo\Test\Common\Collection;
 
 use ArrayIterator;
 use Generator;
-use Meritoo\Common\Collection\Collection;
+use Meritoo\Common\Collection\BaseCollection;
+use Meritoo\Common\Collection\DateTimeCollection;
+use Meritoo\Common\Collection\StringCollection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Test\Common\Collection\Collection\ArrayCollection;
 use ReflectionClass;
 
 /**
@@ -22,21 +25,21 @@ use ReflectionClass;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers    \Meritoo\Common\Collection\Collection
+ * @covers    \Meritoo\Common\Collection\BaseCollection
  */
-class CollectionTest extends BaseTestCase
+class BaseCollectionTest extends BaseTestCase
 {
     /**
      * An empty collection
      *
-     * @var Collection
+     * @var StringCollection
      */
     private $emptyCollection;
 
     /**
      * Simple collection
      *
-     * @var Collection
+     * @var StringCollection
      */
     private $simpleCollection;
 
@@ -135,14 +138,14 @@ class CollectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed      $element       The element to add
-     * @param int        $expectedCount Expected count of elements in collection
-     * @param int        $expectedIndex Expected index of added element in collection
-     * @param Collection $collection    The collection
+     * @param mixed          $element       The element to add
+     * @param int            $expectedCount Expected count of elements in collection
+     * @param int            $expectedIndex Expected index of added element in collection
+     * @param BaseCollection $collection    The collection
      *
      * @dataProvider provideElementToAdd
      */
-    public function testAddWithoutIndex($element, $expectedCount, $expectedIndex, Collection $collection)
+    public function testAddWithoutIndex($element, $expectedCount, $expectedIndex, BaseCollection $collection)
     {
         $collection->add($element);
 
@@ -152,15 +155,15 @@ class CollectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed      $element       The element to add
-     * @param mixed      $index         Index of element to add
-     * @param int        $expectedCount Expected count of elements in collection
-     * @param int        $expectedIndex Expected index of added element in collection
-     * @param Collection $collection    The collection
+     * @param mixed          $element       The element to add
+     * @param mixed          $index         Index of element to add
+     * @param int            $expectedCount Expected count of elements in collection
+     * @param int            $expectedIndex Expected index of added element in collection
+     * @param BaseCollection $collection    The collection
      *
      * @dataProvider provideElementToAddWithIndex
      */
-    public function testAddWithIndex($element, $index, $expectedCount, $expectedIndex, Collection $collection)
+    public function testAddWithIndex($element, $index, $expectedCount, $expectedIndex, BaseCollection $collection)
     {
         $collection->add($element, $index);
 
@@ -328,7 +331,7 @@ class CollectionTest extends BaseTestCase
 
     public function testExistsVisibilityAndArguments()
     {
-        $reflectionClass = new ReflectionClass(Collection::class);
+        $reflectionClass = new ReflectionClass(BaseCollection::class);
         $method = $reflectionClass->getMethod('exists');
 
         static::assertMethodVisibility($method, OopVisibilityType::IS_PRIVATE);
@@ -336,16 +339,29 @@ class CollectionTest extends BaseTestCase
     }
 
     /**
-     * @param string     $description Description of test
-     * @param Collection $collection  Collection to search for element with given index
-     * @param mixed      $index       Index / key of the element
-     * @param mixed      $expected    Expected element with given index
+     * @param string         $description Description of test
+     * @param BaseCollection $collection  Collection to search for element with given index
+     * @param mixed          $index       Index / key of the element
+     * @param mixed          $expected    Expected element with given index
      *
      * @dataProvider provideElementGetByIndex
      */
-    public function testGetByIndex($description, Collection $collection, $index, $expected)
+    public function testGetByIndex($description, BaseCollection $collection, $index, $expected)
     {
         static::assertEquals($expected, $collection->getByIndex($index), $description);
+    }
+
+    /**
+     * @param string $description
+     * @param array  $elements
+     * @param array  $expected
+     *
+     * @dataProvider provideElementsToValidateType
+     */
+    public function testGetElementsWithValidType(string $description, array $elements, array $expected): void
+    {
+        $collection = new ArrayCollection($elements);
+        static::assertSame($expected, $collection->toArray(), $description);
     }
 
     /**
@@ -359,14 +375,14 @@ class CollectionTest extends BaseTestCase
             'This is test 1',
             1,
             0,
-            new Collection(),
+            new StringCollection(),
         ];
 
         yield[
             'This is test 2',
             2,
             1,
-            new Collection([
+            new StringCollection([
                 'I am 1st',
             ]),
         ];
@@ -375,7 +391,7 @@ class CollectionTest extends BaseTestCase
             'This is test 3',
             3,
             2,
-            new Collection([
+            new StringCollection([
                 'I am 1st',
                 'I am 2nd',
             ]),
@@ -394,7 +410,7 @@ class CollectionTest extends BaseTestCase
             'test1',
             1,
             'test1',
-            new Collection(),
+            new StringCollection(),
         ];
 
         yield[
@@ -402,7 +418,7 @@ class CollectionTest extends BaseTestCase
             'test2',
             2,
             'test2',
-            new Collection([
+            new StringCollection([
                 'test1' => 'I am 1st',
             ]),
         ];
@@ -412,7 +428,7 @@ class CollectionTest extends BaseTestCase
             null,
             3,
             0,
-            new Collection([
+            new StringCollection([
                 'test1' => 'I am 1st',
                 'test2' => 'I am 2nd',
             ]),
@@ -423,7 +439,7 @@ class CollectionTest extends BaseTestCase
             '',
             4,
             1,
-            new Collection([
+            new StringCollection([
                 'test1' => 'I am 1st',
                 'test2' => 'I am 2nd',
                 'I am 3rd',
@@ -435,7 +451,7 @@ class CollectionTest extends BaseTestCase
             'test5',
             5,
             'test5',
-            new Collection([
+            new StringCollection([
                 'test1' => 'I am 1st',
                 'test2' => 'I am 2nd',
                 2       => 'I am 3rd',
@@ -448,7 +464,7 @@ class CollectionTest extends BaseTestCase
             'test2',
             4,
             'test2',
-            new Collection([
+            new StringCollection([
                 'test1' => 'I am 1st',
                 'test2' => 'I am 2nd',
                 2       => 'I am 3rd',
@@ -461,21 +477,21 @@ class CollectionTest extends BaseTestCase
     {
         yield[
             'An empty collection and empty index',
-            new Collection(),
+            new StringCollection(),
             '',
             null,
         ];
 
         yield[
             'An empty collection and non-empty index',
-            new Collection(),
+            new StringCollection(),
             'test',
             null,
         ];
 
         yield[
             'Non-empty collection and not existing index',
-            new Collection([
+            new StringCollection([
                 'lorem' => 'ipsum',
                 'dolor' => 'sit',
             ]),
@@ -485,7 +501,7 @@ class CollectionTest extends BaseTestCase
 
         yield[
             'Collection with existing index',
-            new Collection([
+            new StringCollection([
                 'lorem' => 'ipsum',
                 'dolor' => 'sit',
             ]),
@@ -495,7 +511,7 @@ class CollectionTest extends BaseTestCase
 
         yield[
             'Collection with existing index (collection of arrays)',
-            new Collection([
+            new ArrayCollection([
                 [
                     'lorem',
                     'ipsum',
@@ -514,13 +530,63 @@ class CollectionTest extends BaseTestCase
 
         yield[
             'Collection with existing index (collection of objects)',
-            new Collection([
+            new DateTimeCollection([
                 'x' => new \DateTime(),
                 'y' => new \DateTime('2001-01-01'),
                 'z' => new \DateTime('yesterday'),
             ]),
             'y',
             new \DateTime('2001-01-01'),
+        ];
+    }
+
+    public function provideElementsToValidateType(): ?Generator
+    {
+        yield[
+            'An empty array',
+            [],
+            [],
+        ];
+
+        yield[
+            'Valid elements only',
+            [
+                [],
+                [
+                    '123',
+                    456,
+                ],
+            ],
+            [
+                [],
+                [
+                    '123',
+                    456,
+                ],
+            ],
+        ];
+
+        yield[
+            'Mixed elements',
+            [
+                1,
+                'test',
+                '',
+                [],
+                234,
+                'test',
+                [
+                    '123',
+                    456,
+                ],
+            ],
+            [
+                3 => [],
+                6 => [
+                    '123',
+                    456,
+                ],
+            ],
         ];
     }
 
@@ -538,7 +604,7 @@ class CollectionTest extends BaseTestCase
             345 => 'sit',
         ];
 
-        $this->emptyCollection = new Collection();
-        $this->simpleCollection = new Collection($this->simpleElements);
+        $this->emptyCollection = new StringCollection();
+        $this->simpleCollection = new StringCollection($this->simpleElements);
     }
 }

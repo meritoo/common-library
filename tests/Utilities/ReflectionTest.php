@@ -10,7 +10,8 @@ namespace Meritoo\Test\Common\Utilities;
 
 use DateTime;
 use Generator;
-use Meritoo\Common\Collection\Collection;
+use Meritoo\Common\Collection\BaseCollection;
+use Meritoo\Common\Collection\Templates;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
@@ -27,6 +28,7 @@ use Meritoo\Test\Common\Utilities\Reflection\G;
 use Meritoo\Test\Common\Utilities\Reflection\H;
 use Meritoo\Test\Common\Utilities\Reflection\I;
 use Meritoo\Test\Common\Utilities\Reflection\J;
+use Meritoo\Test\Common\Utilities\Reflection\ObjectsCollection;
 use ReflectionProperty;
 use stdClass;
 
@@ -83,13 +85,13 @@ class ReflectionTest extends BaseTestCase
     public function testGetClassWhileNamespaceContainsClassName(): void
     {
         self::assertEquals(
-            Collection::class,
-            Reflection::getClassName(Collection::class)
+            BaseCollection::class,
+            Reflection::getClassName(BaseCollection::class)
         );
 
         self::assertEquals(
-            'Collection',
-            Reflection::getClassName(Collection::class, true)
+            'BaseCollection',
+            Reflection::getClassName(BaseCollection::class, true)
         );
     }
 
@@ -118,7 +120,7 @@ class ReflectionTest extends BaseTestCase
     {
         self::assertEquals(
             'Meritoo\Common\Collection',
-            Reflection::getClassNamespace(Collection::class)
+            Reflection::getClassNamespace(BaseCollection::class)
         );
     }
 
@@ -320,7 +322,7 @@ class ReflectionTest extends BaseTestCase
     public function testGetPropertyValuesFromEmptySource(): void
     {
         self::assertEquals([], Reflection::getPropertyValues([], 'something'));
-        self::assertEquals([], Reflection::getPropertyValues(new Collection(), 'something'));
+        self::assertEquals([], Reflection::getPropertyValues(new Templates(), 'something'));
     }
 
     public function testGetPropertyValuesOfNotExistingPropertyFromSingleObject(): void
@@ -344,7 +346,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals([], Reflection::getPropertyValues($objects, 'something'));
         self::assertEquals([], Reflection::getPropertyValues($objects, 'something', true));
 
-        $collection = new Collection($objects);
+        $collection = new ObjectsCollection($objects);
 
         self::assertEquals([], Reflection::getPropertyValues($collection, 'something'));
         self::assertEquals([], Reflection::getPropertyValues($collection, 'something', true));
@@ -373,7 +375,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($expected, Reflection::getPropertyValues($objects, 'city'));
         self::assertEquals($expected, Reflection::getPropertyValues($objects, 'city', true));
 
-        $collection = new Collection($objects);
+        $collection = new ObjectsCollection($objects);
 
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'city'));
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'city', true));
@@ -408,7 +410,7 @@ class ReflectionTest extends BaseTestCase
         self::assertEquals($expected, Reflection::getPropertyValues($objects, 'g.firstName'));
         self::assertEquals($expected, Reflection::getPropertyValues($objects, 'g.firstName', true));
 
-        $collection = new Collection($objects);
+        $collection = new ObjectsCollection($objects);
 
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'g.firstName'));
         self::assertEquals($expected, Reflection::getPropertyValues($collection, 'g.firstName', true));

@@ -19,7 +19,7 @@ use Meritoo\Common\ValueObject\Template;
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class Templates extends Collection
+class Templates extends BaseCollection
 {
     /**
      * Finds and returns template with given index
@@ -60,5 +60,13 @@ class Templates extends Collection
         }
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function isValidType($element): bool
+    {
+        return $element instanceof Template;
     }
 }

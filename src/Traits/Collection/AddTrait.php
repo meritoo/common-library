@@ -8,7 +8,7 @@
 
 namespace Meritoo\Common\Traits\Collection;
 
-use Meritoo\Common\Collection\Collection;
+use Meritoo\Common\Collection\BaseCollection;
 
 /**
  * Trait for the Collection with add*() methods
@@ -26,6 +26,10 @@ trait AddTrait
      */
     public function add($element, $index = null): void
     {
+        if (!$this->isValidType($element)) {
+            return;
+        }
+
         if (null === $index || '' === $index) {
             $this->elements[] = $element;
 
@@ -38,9 +42,9 @@ trait AddTrait
     /**
      * Adds given elements (at the end of collection)
      *
-     * @param array|Collection $elements   The elements to add
-     * @param bool|false       $useIndexes (optional) If is set to true, indexes of given elements will be used in
-     *                                     this collection. Otherwise - not.
+     * @param array|BaseCollection $elements   The elements to add
+     * @param bool                 $useIndexes (optional) If is set to true, indexes of given elements will be used in
+     *                                         this collection. Otherwise - not.
      */
     public function addMultiple($elements, bool $useIndexes = false): void
     {

@@ -2,6 +2,12 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.0
+
+1. Rename Meritoo\Common\Collection\Collection class to Meritoo\Common\Collection\BaseCollection.
+Add BaseCollection::isValidType() method to validate type of element before add it to collection.
+Add BaseCollection ::prepareElements() method to allow preparation of elements in custom way.
+
 # 1.0.6
 
 1. Use `.env` instead of `.env.dist`
