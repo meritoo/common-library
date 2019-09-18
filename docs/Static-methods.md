@@ -16,7 +16,7 @@ var_dump($firstElement); // string(5) "lorem"
 # More
 
 1. [Base test case (with common methods and data providers)](Base-test-case.md)
-2. [Collection of elements](Collection/Collection.md)
+2. [Collection of elements](Collection/BaseCollection.md)
 3. [Templates](Collection/Templates.md)
 4. [Exceptions](Exceptions.md)
 5. [**Static methods**](Static-methods.md)

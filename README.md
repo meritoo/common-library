@@ -22,7 +22,7 @@ composer require meritoo/common-library
 # Usage
 
 1. [Base test case (with common methods and data providers)](docs/Base-test-case.md)
-2. [Collection of elements](docs/Collection/Collection.md)
+2. [Collection of elements](docs/Collection/BaseCollection.md)
 3. [Exceptions](docs/Static-methods.md)
 4. [Static methods](docs/Static-methods.md)
    1. [Arrays](docs/Static-methods/Arrays.md)
