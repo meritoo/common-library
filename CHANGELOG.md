@@ -2,6 +2,11 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.1
+
+1. [BaseCollection] Treat the `null` index as "no index" only while adding new element, iow. do not treat empty
+string as "no index" behaviour.
+
 # 1.1.0
 
 1. Rename Meritoo\Common\Collection\Collection class to Meritoo\Common\Collection\BaseCollection.

@@ -438,7 +438,7 @@ class BaseCollectionTest extends BaseTestCase
             'This is test 4',
             '',
             4,
-            1,
+            '',
             new StringCollection([
                 'test1' => 'I am 1st',
                 'test2' => 'I am 2nd',

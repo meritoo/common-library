@@ -30,7 +30,7 @@ trait AddTrait
             return;
         }
 
-        if (null === $index || '' === $index) {
+        if (null === $index) {
             $this->elements[] = $element;
 
             return;
