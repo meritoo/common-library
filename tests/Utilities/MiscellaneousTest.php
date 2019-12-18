@@ -94,22 +94,16 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals($withoutExtension, Miscellaneous::getFileNameWithoutExtension($fileName));
     }
 
-    public function testGetFileNameFromPath(): void
+    /**
+     * @param string $description Description of test
+     * @param string $path        A path that contains file name
+     * @param string $expected    Expected file name
+     *
+     * @dataProvider provideFilePath
+     */
+    public function testGetFileNameFromPath(string $description, string $path, string $expected): void
     {
-        // Path with file
-        self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/sit.amet.JPG'));
-
-        // Path with complicated name of file
-        self::assertEquals('this-1_2 3 & my! 4+file.jpg', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/this-1_2 3 & my! 4+file.jpg'));
-
-        // Path without file
-        self::assertEquals('', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/sit-amet'));
-
-        // Path with a dot "." in name of directory
-        self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum.dolor/sit.amet.JPG'));
-
-        // Relative path
-        self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum/../dolor/sit.amet.JPG'));
+        static::assertEquals($expected, Miscellaneous::getFileNameFromPath($path), $description);
     }
 
     public function testGetUniqueFileName()
@@ -480,12 +474,21 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals('1.75 MB', Miscellaneous::getHumanReadableSize(1024 * 1024 * 1.75));
     }
 
-    public function testGetLastElementOfString()
-    {
-        self::assertEquals('elit', Miscellaneous::getLastElementOfString($this->stringCommaSeparated, ' '));
-        self::assertEquals('consectetur adipiscing elit', Miscellaneous::getLastElementOfString($this->stringCommaSeparated, ','));
-        self::assertEquals(null, Miscellaneous::getLastElementOfString($this->stringCommaSeparated, ';'));
-        self::assertEquals(null, Miscellaneous::getLastElementOfString($this->stringCommaSeparated, '.'));
+    /**
+     * @param string      $description
+     * @param string      $string
+     * @param string      $separator
+     * @param string|null $expected
+     *
+     * @dataProvider provideLastElementOfString
+     */
+    public function testGetLastElementOfString(
+        string $description,
+        string $string,
+        string $separator,
+        ?string $expected
+    ): void {
+        self::assertEquals($expected, Miscellaneous::getLastElementOfString($string, $separator), $description);
     }
 
     public function testTrimSmart()
@@ -554,15 +557,21 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(sprintf('%s.%s', $fileName, 'txt'), Miscellaneous::includeFileExtension($fileName, 'txt'));
     }
 
-    public function testGetStringElements()
-    {
-        $elements = [
-            'Lorem ipsum dolor sit amet',
-            ' consectetur adipiscing elit',
-        ];
-
-        self::assertEquals($elements, Miscellaneous::getStringElements($this->stringCommaSeparated, ','));
-        self::assertEquals([], Miscellaneous::getStringElements($this->stringCommaSeparated, ';'));
+    /**
+     * @param string $description
+     * @param string $string
+     * @param string $separator
+     * @param array  $expected
+     *
+     * @dataProvider provideStringElements
+     */
+    public function testGetStringElements(
+        string $description,
+        string $string,
+        string $separator,
+        array $expected
+    ): void {
+        self::assertEquals($expected, Miscellaneous::getStringElements($string, $separator), $description);
     }
 
     public function testGetStringWithoutLastElement()
@@ -1563,6 +1572,145 @@ class MiscellaneousTest extends BaseTestCase
             120,
             80,
             40,
+        ];
+    }
+
+    public function provideFilePath(): ?Generator
+    {
+        yield[
+            'Path with file',
+            'lorem/ipsum-dolor/sit.amet.JPG',
+            'sit.amet.JPG',
+        ];
+
+        yield[
+            'Path with complicated name of file',
+            'lorem/ipsum-dolor/this-1_2 3 & my! 4+file.jpg',
+            'this-1_2 3 & my! 4+file.jpg',
+        ];
+
+        yield[
+            'Path without file',
+            'lorem/ipsum-dolor/sit-amet',
+            '',
+        ];
+
+        yield[
+            'Path with a dot "." in name of directory',
+            'lorem/ipsum.dolor/sit.amet.JPG',
+            'sit.amet.JPG',
+        ];
+
+        yield[
+            'Relative path',
+            'lorem/ipsum/../dolor/sit.amet.JPG',
+            'sit.amet.JPG',
+        ];
+    }
+
+    public function provideStringElements(): ?Generator
+    {
+        yield[
+            'An empty string',
+            '',
+            '',
+            [],
+        ];
+
+        yield[
+            'One-character string',
+            'a',
+            ',',
+            [],
+        ];
+
+        yield[
+            'String without given separator',
+            'abc',
+            ',',
+            [],
+        ];
+
+        yield[
+            'Simple, short string',
+            'a, b, c',
+            ',',
+            [
+                'a',
+                ' b',
+                ' c',
+            ],
+        ];
+
+        yield[
+            'A sentence',
+            'Lorem ipsum - dolor sit - amet, consectetur adipiscing - elit.',
+            '-',
+            [
+                'Lorem ipsum ',
+                ' dolor sit ',
+                ' amet, consectetur adipiscing ',
+                ' elit.',
+            ],
+        ];
+
+        yield[
+            'A class namespace',
+            'This\\Is\\My\\Class\\For\\Testing',
+            '\\',
+            [
+                'This',
+                'Is',
+                'My',
+                'Class',
+                'For',
+                'Testing',
+            ],
+        ];
+    }
+
+    public function provideLastElementOfString(): ?Generator
+    {
+        yield[
+            'An empty string',
+            '',
+            '',
+            null,
+        ];
+
+        yield[
+            'One-character string',
+            'a',
+            ',',
+            null,
+        ];
+
+        yield[
+            'String without given separator',
+            'abc',
+            ',',
+            null,
+        ];
+
+        yield[
+            'Simple, short string',
+            'a, b, c',
+            ',',
+            ' c',
+        ];
+
+        yield[
+            'A sentence',
+            'Lorem ipsum - dolor sit - amet, consectetur adipiscing - elit.',
+            '-',
+            ' elit.',
+        ];
+
+        yield[
+            'A class namespace',
+            'This\\Is\\My\\Class\\For\\Testing',
+            '\\',
+            'Testing',
         ];
     }
 

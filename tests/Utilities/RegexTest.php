@@ -244,16 +244,16 @@ class RegexTest extends BaseTestCase
         self::assertTrue(Regex::contains($this->simpleText, 'l'));
     }
 
-    public function testIsFileName(): void
+    /**
+     * @param string $description Description of test
+     * @param string $fileName
+     * @param bool   $expected    Expected result
+     *
+     * @dataProvider provideFileName
+     */
+    public function testIsFileName(string $description, string $fileName, bool $expected): void
     {
-        $filePath = __FILE__;
-        $directoryPath = dirname($filePath);
-
-        self::assertTrue(Regex::isFileName($filePath));
-        self::assertTrue(Regex::isFileName('this-1_2 3 & my! 4+file.jpg'));
-
-        self::assertFalse(Regex::isFileName($directoryPath));
-        self::assertTrue(Regex::isFileName('directory1/directory2/this-1_2 3 & my! 4+file.jpg'));
+        static::assertSame($expected, Regex::isFileName($fileName), $description);
     }
 
     public function testIsQuoted()
@@ -2211,6 +2211,39 @@ class RegexTest extends BaseTestCase
         yield[
             'lorem 123 ipsum 456 /',
             'lorem 123 ipsum 456 ',
+        ];
+    }
+
+    public function provideFileName(): ?Generator
+    {
+        yield[
+            'An empty string',
+            '',
+            false,
+        ];
+
+        yield[
+            'Path of this file, of file with test case',
+            __DIR__,
+            false,
+        ];
+
+        yield[
+            'Name of this file, of file with test case',
+            __FILE__,
+            true,
+        ];
+
+        yield[
+            'Complicated name of file',
+            'this-1_2 3 & my! 4+file.jpg',
+            true,
+        ];
+
+        yield[
+            'Complicated name of file',
+            'directory1/directory2/this-1_2 3 & my! 4+file.jpg',
+            true,
         ];
     }
 

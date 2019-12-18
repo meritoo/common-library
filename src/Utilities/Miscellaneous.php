@@ -889,8 +889,12 @@ class Miscellaneous
      * @param string $separator The separator which divides elements of string
      * @return array
      */
-    public static function getStringElements($string, $separator)
+    public static function getStringElements(string $string, string $separator): array
     {
+        if (empty($string) || empty($separator)) {
+            return [];
+        }
+
         $matches = [];
         $pattern = sprintf('|[^\%s]+|', $separator);
         $matchCount = preg_match_all($pattern, $string, $matches);
@@ -909,21 +913,15 @@ class Miscellaneous
      * @param string $separator The separator which divides elements of string
      * @return null|string
      */
-    public static function getLastElementOfString($string, $separator)
+    public static function getLastElementOfString($string, $separator): ?string
     {
         $elements = self::getStringElements($string, $separator);
 
-        /*
-         * No elements?
-         * Nothing to do
-         */
         if (empty($elements)) {
             return null;
         }
 
-        $element = Arrays::getLastElement($elements);
-
-        return trim($element);
+        return Arrays::getLastElement($elements);
     }
 
     /**
