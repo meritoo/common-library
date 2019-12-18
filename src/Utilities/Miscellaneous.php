@@ -200,13 +200,13 @@ class Miscellaneous
      * @param string $path A path that contains file name
      * @return string
      */
-    public static function getFileNameFromPath($path)
+    public static function getFileNameFromPath(string $path): string
     {
         $matches = [];
-        $pattern = sprintf('|([^\%s.]+\.[A-Za-z0-9.]+)$|', DIRECTORY_SEPARATOR);
+        $pattern = Regex::getFileNamePattern();
 
         if ((bool)preg_match($pattern, $path, $matches)) {
-            return $matches[1];
+            return $matches[0];
         }
 
         return '';
@@ -229,7 +229,7 @@ class Miscellaneous
          * Let's clear name of file
          *
          * Attention.
-         * The name without extension may be cleared / urlized only to avoid incorrect name by replacing "." with "-".
+         * The name without extension should be cleared to avoid incorrect name by replacing "." with "-".
          */
         $withoutExtension = Urlizer::urlize($withoutExtension);
 

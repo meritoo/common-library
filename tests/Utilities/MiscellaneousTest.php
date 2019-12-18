@@ -94,10 +94,13 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals($withoutExtension, Miscellaneous::getFileNameWithoutExtension($fileName));
     }
 
-    public function testGetFileNameFromPath()
+    public function testGetFileNameFromPath(): void
     {
         // Path with file
         self::assertEquals('sit.amet.JPG', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/sit.amet.JPG'));
+
+        // Path with complicated name of file
+        self::assertEquals('this-1_2 3 & my! 4+file.jpg', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/this-1_2 3 & my! 4+file.jpg'));
 
         // Path without file
         self::assertEquals('', Miscellaneous::getFileNameFromPath('lorem/ipsum-dolor/sit-amet'));

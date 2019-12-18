@@ -244,13 +244,16 @@ class RegexTest extends BaseTestCase
         self::assertTrue(Regex::contains($this->simpleText, 'l'));
     }
 
-    public function testIsFileName()
+    public function testIsFileName(): void
     {
         $filePath = __FILE__;
         $directoryPath = dirname($filePath);
 
         self::assertTrue(Regex::isFileName($filePath));
+        self::assertTrue(Regex::isFileName('this-1_2 3 & my! 4+file.jpg'));
+
         self::assertFalse(Regex::isFileName($directoryPath));
+        self::assertTrue(Regex::isFileName('directory1/directory2/this-1_2 3 & my! 4+file.jpg'));
     }
 
     public function testIsQuoted()

@@ -33,7 +33,7 @@ class Regex
         'letterOrDigit'    => '/[a-zA-Z0-9]+/',
         'htmlEntity'       => '/&[a-z0-9]+;/',
         'htmlAttribute'    => '/([\w-]+)="([\w -]+)"/',
-        'fileName'         => '/.+\.\w+$/',
+        'fileName'         => '/[\w.\- +=!@$&()?]+\.\w+$/', // e.g. "this-1_2 3 & my! 4+file.jpg"
         'isQuoted'         => '/^[\'"]{1}.+[\'"]{1}$/',
         'windowsBasedPath' => '/^[A-Z]{1}:\\\.*$/',
         'money'            => '/^[-+]?\d+([\.,]{1}\d*)?$/',
@@ -625,7 +625,7 @@ class Regex
      *
      * @return string
      */
-    public static function getFileNamePattern()
+    public static function getFileNamePattern(): string
     {
         return self::$patterns['fileName'];
     }
@@ -637,7 +637,7 @@ class Regex
      * @param string $fileName Name of file to check. It may be path of file also.
      * @return bool
      */
-    public static function isFileName($fileName)
+    public static function isFileName(string $fileName): bool
     {
         $pattern = self::getFileNamePattern();
 
