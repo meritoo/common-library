@@ -8,12 +8,12 @@
 
 declare(strict_types=1);
 
-namespace Meritoo\Test\Common\Collection\Collection;
+namespace Meritoo\Test\Common\Collection\BaseCollection;
 
 use Meritoo\Common\Collection\BaseCollection;
 
 /**
- * Collection of arrays
+ * Collection of first names
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
@@ -21,10 +21,22 @@ use Meritoo\Common\Collection\BaseCollection;
  * @internal
  * @coversNothing
  */
-class ArrayCollection extends BaseCollection
+class FirstNamesCollection extends BaseCollection
 {
     protected function isValidType($element): bool
     {
-        return is_array($element);
+        return $element instanceof User;
+    }
+
+    protected function prepareElements(array $elements): array
+    {
+        $result = [];
+
+        /** @var User $element */
+        foreach ($elements as $element) {
+            $result[] = $element->getFirstName();
+        }
+
+        return $result;
     }
 }

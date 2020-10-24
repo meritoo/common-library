@@ -47,12 +47,20 @@ abstract class BaseCollection implements Countable, ArrayAccess, IteratorAggrega
     }
 
     /**
+     * Returns information if given element has valid type
+     *
+     * @param mixed $element Element of collection
+     * @return bool
+     */
+    abstract protected function isValidType($element): bool;
+
+    /**
      * Returns elements of collection with valid types
      *
      * @param array $elements The elements of collection to verify
      * @return array
      */
-    protected function getElementsWithValidType(array $elements): array
+    private function getElementsWithValidType(array $elements): array
     {
         if (empty($elements)) {
             return [];
@@ -70,12 +78,4 @@ abstract class BaseCollection implements Countable, ArrayAccess, IteratorAggrega
 
         return $result;
     }
-
-    /**
-     * Returns information if given element has valid type
-     *
-     * @param mixed $element Element of collection
-     * @return bool
-     */
-    abstract protected function isValidType($element): bool;
 }

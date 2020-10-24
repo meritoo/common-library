@@ -15,7 +15,8 @@ use Meritoo\Common\Collection\DateTimeCollection;
 use Meritoo\Common\Collection\StringCollection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
-use Meritoo\Test\Common\Collection\Collection\ArrayCollection;
+use Meritoo\Test\Common\Collection\BaseCollection\FirstNamesCollection;
+use Meritoo\Test\Common\Collection\BaseCollection\User;
 use ReflectionClass;
 
 /**
@@ -360,7 +361,7 @@ class BaseCollectionTest extends BaseTestCase
      */
     public function testGetElementsWithValidType(string $description, array $elements, array $expected): void
     {
-        $collection = new ArrayCollection($elements);
+        $collection = new FirstNamesCollection($elements);
         static::assertSame($expected, $collection->toArray(), $description);
     }
 
@@ -511,21 +512,12 @@ class BaseCollectionTest extends BaseTestCase
 
         yield[
             'Collection with existing index (collection of arrays)',
-            new ArrayCollection([
-                [
-                    'lorem',
-                    'ipsum',
-                ],
-                [
-                    'dolor',
-                    'sit',
-                ],
+            new FirstNamesCollection([
+                new User('John', 'Scott'),
+                new User('Jane', 'Brown'),
             ]),
             0,
-            [
-                'lorem',
-                'ipsum',
-            ],
+            'John',
         ];
 
         yield[
@@ -537,6 +529,16 @@ class BaseCollectionTest extends BaseTestCase
             ]),
             'y',
             new \DateTime('2001-01-01'),
+        ];
+
+        yield[
+            'Collection with first names',
+            new FirstNamesCollection([
+                new User('John', 'Scott'),
+                new User('Jane', 'Brown'),
+            ]),
+            1,
+            'Jane',
         ];
     }
 
@@ -551,18 +553,12 @@ class BaseCollectionTest extends BaseTestCase
         yield[
             'Valid elements only',
             [
-                [],
-                [
-                    '123',
-                    456,
-                ],
+                new User('John', 'Scott'),
+                new User('Jane', 'Brown'),
             ],
             [
-                [],
-                [
-                    '123',
-                    456,
-                ],
+                'John',
+                'Jane',
             ],
         ];
 
@@ -572,20 +568,15 @@ class BaseCollectionTest extends BaseTestCase
                 1,
                 'test',
                 '',
+                new User('John', 'Scott'),
                 [],
                 234,
                 'test',
-                [
-                    '123',
-                    456,
-                ],
+                new User('Jane', 'Brown'),
             ],
             [
-                3 => [],
-                6 => [
-                    '123',
-                    456,
-                ],
+                'John',
+                'Jane',
             ],
         ];
     }
