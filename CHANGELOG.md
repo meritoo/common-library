@@ -7,6 +7,9 @@ Common and useful classes, methods, exceptions etc.
 1. [BaseCollection] Treat the `null` index as "no index" only while adding new element, iow. do not treat empty
 string as "no index" behaviour.
 2. [Miscellaneous] [Regex] Use simpler & stronger pattern to match name of file
+3. Do not install `hirak/prestissimo` package while running Travis CI (incompatible with your PHP version, PHP
+   extensions and Composer version)
+4. Use PHP `7.4` while running build in Travis CI
 
 # 1.1.0
 
