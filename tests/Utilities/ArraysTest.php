@@ -37,16 +37,19 @@ class ArraysTest extends BaseTestCase
     }
 
     /**
-     * @param string $description    Description of test
-     * @param string $expected       Expected array converted to string
-     * @param array  $array          Data to be converted
-     * @param string $arrayColumnKey (optional) Column name. Default: "".
-     * @param string $separator      (optional) Separator used between values. Default: ",".
+     * @param string|null $expected       Expected array converted to string
+     * @param array       $array          Data to be converted
+     * @param int|string  $arrayColumnKey (optional) Column name. Default: "".
+     * @param string      $separator      (optional) Separator used between values. Default: ",".
      *
      * @dataProvider provideArrayValues2string
      */
-    public function testValues2string($description, $expected, array $array, $arrayColumnKey = '', $separator = ',')
-    {
+    public function testValues2string(
+        ?string $expected,
+        array $array,
+        $arrayColumnKey = '',
+        string $separator = ','
+    ): void {
         // Required to avoid failure:
         //
         // Failed asserting that two strings are identical
@@ -54,7 +57,7 @@ class ArraysTest extends BaseTestCase
         // 1,2,3,test 1,test 2,test 3,,test 4,,bbb,3,45 - actual
         Locale::setLocale(LC_ALL, 'en', 'US');
 
-        self::assertSame($expected, Arrays::values2string($array, $arrayColumnKey, $separator), $description);
+        self::assertSame($expected, Arrays::values2string($array, $arrayColumnKey, $separator));
     }
 
     /**
@@ -2377,16 +2380,14 @@ letsTest[2] = value_2;';
         ];
     }
 
-    public function provideArrayValues2string()
+    public function provideArrayValues2string(): Generator
     {
-        yield[
-            'An empty array',
+        yield 'An empty array' => [
             null,
             [],
         ];
 
-        yield[
-            'Simple array',
+        yield 'Simple array' => [
             'Test 1,Test 2,Test 3',
             [
                 1 => 'Test 1',
@@ -2395,8 +2396,7 @@ letsTest[2] = value_2;';
             ],
         ];
 
-        yield[
-            'Simple array (with custom separator)',
+        yield 'Simple array (with custom separator)' => [
             'Test 1.Test 2.Test 3',
             [
                 1 => 'Test 1',
@@ -2407,8 +2407,7 @@ letsTest[2] = value_2;';
             '.',
         ];
 
-        yield[
-            'Simple array (concrete column)',
+        yield 'Simple array (concrete column)' => [
             'Test 2',
             [
                 1 => 'Test 1',
@@ -2418,8 +2417,7 @@ letsTest[2] = value_2;';
             2,
         ];
 
-        yield[
-            'Simple array (concrete column with custom separator)',
+        yield 'Simple array (concrete column with custom separator)' => [
             'Test 2',
             [
                 1 => 'Test 1',
@@ -2430,8 +2428,7 @@ letsTest[2] = value_2;';
             '.',
         ];
 
-        yield[
-            'Complex array',
+        yield 'Complex array' => [
             '1,2,3,test 1,test 2,test 3,,test 4,,bbb,3.45',
             [
                 [
@@ -2458,8 +2455,7 @@ letsTest[2] = value_2;';
             ],
         ];
 
-        yield[
-            '1st complex array (concrete column)',
+        yield '1st complex array (concrete column)' => [
             '2,test 2,',
             [
                 [
@@ -2487,8 +2483,7 @@ letsTest[2] = value_2;';
             1,
         ];
 
-        yield[
-            '2nd complex array (concrete column)',
+        yield '2nd complex array (concrete column)' => [
             'bb,1234,0xb',
             [
                 [
@@ -2518,8 +2513,7 @@ letsTest[2] = value_2;';
             'b',
         ];
 
-        yield[
-            '3rd complex array (concrete column with custom separator)',
+        yield '3rd complex array (concrete column with custom separator)' => [
             'bb - 1234 - 3xb - bbb',
             [
                 [
