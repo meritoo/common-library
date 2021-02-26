@@ -222,7 +222,7 @@ class ReflectionTest extends BaseTestCase
     public function testUsesTraitInvalidTrait($trait): void
     {
         $this->expectException(CannotResolveClassNameException::class);
-        self::assertNull(Reflection::usesTrait(DateTime::class, $trait));
+        Reflection::usesTrait(DateTime::class, $trait);
     }
 
     public function testUsesTraitExistingClass(): void

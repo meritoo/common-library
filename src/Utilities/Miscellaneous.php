@@ -563,21 +563,22 @@ class Miscellaneous
      * @param string $suffix    (optional) The suffix to add at the end of string
      * @return string
      */
-    public static function substringToWord($text, $maxLength, $suffix = '...')
+    public static function substringToWord(string $text, int $maxLength, string $suffix = '...'): string
     {
         $effect = $text;
+        $encoding = 'utf-8';
 
-        $textLength = mb_strlen($text, 'utf-8');
-        $suffixLength = mb_strlen($suffix, 'utf-8');
+        $textLength = mb_strlen($text, $encoding);
+        $suffixLength = mb_strlen($suffix, $encoding);
 
         $maxLength -= $suffixLength;
 
         if ($textLength > $maxLength) {
-            $effect = mb_substr($text, 0, $maxLength, 'utf-8');
-            $lastSpacePosition = mb_strrpos($effect, ' ', 0, 'utf-8');
+            $effect = mb_substr($text, 0, $maxLength, $encoding);
+            $lastSpacePosition = mb_strrpos($effect, ' ', 0, $encoding);
 
             if (false !== $lastSpacePosition) {
-                $effect = mb_substr($effect, 0, $lastSpacePosition, 'utf-8');
+                $effect = mb_substr($effect, 0, $lastSpacePosition, $encoding);
             }
 
             $effect .= $suffix;

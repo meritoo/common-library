@@ -502,7 +502,7 @@ class Reflection
      *
      * @param array|object|string $class    An array of objects, namespaces, object or namespace
      * @param string              $property Name of the property
-     * @param int                 $filter   (optional) Filter of properties. Uses \ReflectionProperty class constants.
+     * @param int|null            $filter   (optional) Filter of properties. Uses \ReflectionProperty class constants.
      *                                      By default all properties are allowed / processed.
      * @return null|ReflectionProperty
      */
@@ -512,7 +512,6 @@ class Reflection
         $properties = self::getProperties($className, $filter);
 
         if (!empty($properties)) {
-            /** @var ReflectionProperty $reflectionProperty */
             foreach ($properties as $reflectionProperty) {
                 if ($reflectionProperty->getName() === $property) {
                     return $reflectionProperty;
