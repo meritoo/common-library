@@ -8,8 +8,8 @@
 
 namespace Meritoo\Common\Utilities;
 
-use Doctrine\Common\Inflector\Inflector;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Inflector\InflectorFactory;
+use Doctrine\Persistence\Proxy;
 use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
@@ -418,8 +418,8 @@ class Reflection
      *
      * @param array|object|string $class Class who child classes should be returned. An array of objects, strings,
      *                                   object or string.
-     * @throws CannotResolveClassNameException
      * @return null|array
+     * @throws CannotResolveClassNameException
      */
     public static function getChildClasses($class): ?array
     {
@@ -471,9 +471,8 @@ class Reflection
      *
      * @param array|object|string $parentClass Class who child class should be returned. An array of objects,
      *                                         namespaces, object or namespace.
-     * @throws MissingChildClassesException
-     * @throws TooManyChildClassesException
      * @return mixed
+     * @throws TooManyChildClassesException|MissingChildClassesException|CannotResolveClassNameException
      */
     public static function getOneChildClass($parentClass)
     {
@@ -531,8 +530,8 @@ class Reflection
      * @param array|string        $trait         An array of strings or string
      * @param bool                $verifyParents If is set to true, parent classes are verified if they use given
      *                                           trait. Otherwise - not.
-     * @throws CannotResolveClassNameException
      * @return null|bool
+     * @throws CannotResolveClassNameException|ReflectionException
      */
     public static function usesTrait($class, $trait, bool $verifyParents = false): ?bool
     {
@@ -711,7 +710,8 @@ class Reflection
         $valueFound = false;
 
         $reflectionObject = new ReflectionObject($source);
-        $property = Inflector::classify($property);
+        $inflector = InflectorFactory::create()->build();
+        $property = $inflector->classify($property);
 
         $gettersPrefixes = [
             'get',

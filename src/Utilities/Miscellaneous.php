@@ -574,7 +574,7 @@ class Miscellaneous
 
         if ($textLength > $maxLength) {
             $effect = mb_substr($text, 0, $maxLength, 'utf-8');
-            $lastSpacePosition = mb_strrpos($effect, ' ', 'utf-8');
+            $lastSpacePosition = mb_strrpos($effect, ' ', 0, 'utf-8');
 
             if (false !== $lastSpacePosition) {
                 $effect = mb_substr($effect, 0, $lastSpacePosition, 'utf-8');
