@@ -29,3 +29,5 @@ services:
         command: --version
         volumes:
             - .:/var/www/application:cached
+        environment:
+            XDEBUG_MODE: coverage

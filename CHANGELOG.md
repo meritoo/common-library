@@ -2,6 +2,11 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.2
+
+1. Change mode of `Xdebug` to `coverage` in Docker's configuration to make it possible to generate code coverage by
+   `PHPUnit`
+
 # 1.1.1
 
 1. [BaseCollection] Treat the `null` index as "no index" only while adding new element, iow. do not treat empty
