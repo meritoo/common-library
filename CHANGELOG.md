@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.3
+
+1. Move `Renderable` class: `Meritoo\Common` -> `Meritoo\Common\Contract`
+
 # 1.1.2
 
 1. Change mode of `Xdebug` to `coverage` in Docker's configuration to make it possible to generate code coverage by

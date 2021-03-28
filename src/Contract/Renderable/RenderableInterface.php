@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Meritoo\Common\Renderable;
+namespace Meritoo\Common\Contract\Renderable;
 
 use Meritoo\Common\Collection\Templates;
 
