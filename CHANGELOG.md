@@ -6,6 +6,7 @@ Common and useful classes, methods, exceptions etc.
 
 1. Change mode of `Xdebug` to `coverage` in Docker's configuration to make it possible to generate code coverage by
    `PHPUnit`
+2. Mark PHPUnit test as risky when it does not have a `@covers` annotation
 
 # 1.1.1
 
