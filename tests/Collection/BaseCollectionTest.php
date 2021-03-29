@@ -9,6 +9,7 @@
 namespace Meritoo\Test\Common\Collection;
 
 use ArrayIterator;
+use DateTime;
 use Generator;
 use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Collection\DateTimeCollection;
@@ -377,14 +378,14 @@ class BaseCollectionTest extends BaseTestCase
      */
     public function provideElementToAdd()
     {
-        yield[
+        yield [
             'This is test 1',
             1,
             0,
             new StringCollection(),
         ];
 
-        yield[
+        yield [
             'This is test 2',
             2,
             1,
@@ -393,7 +394,7 @@ class BaseCollectionTest extends BaseTestCase
             ]),
         ];
 
-        yield[
+        yield [
             'This is test 3',
             3,
             2,
@@ -411,7 +412,7 @@ class BaseCollectionTest extends BaseTestCase
      */
     public function provideElementToAddWithIndex()
     {
-        yield[
+        yield [
             'This is test 1',
             'test1',
             1,
@@ -419,7 +420,7 @@ class BaseCollectionTest extends BaseTestCase
             new StringCollection(),
         ];
 
-        yield[
+        yield [
             'This is test 2',
             'test2',
             2,
@@ -429,7 +430,7 @@ class BaseCollectionTest extends BaseTestCase
             ]),
         ];
 
-        yield[
+        yield [
             'This is test 3',
             null,
             3,
@@ -440,7 +441,7 @@ class BaseCollectionTest extends BaseTestCase
             ]),
         ];
 
-        yield[
+        yield [
             'This is test 4',
             '',
             4,
@@ -452,7 +453,7 @@ class BaseCollectionTest extends BaseTestCase
             ]),
         ];
 
-        yield[
+        yield [
             'This is test 5',
             'test5',
             5,
@@ -465,7 +466,7 @@ class BaseCollectionTest extends BaseTestCase
             ]),
         ];
 
-        yield[
+        yield [
             'This is test 6',
             'test2',
             4,
@@ -481,21 +482,21 @@ class BaseCollectionTest extends BaseTestCase
 
     public function provideElementGetByIndex()
     {
-        yield[
+        yield [
             'An empty collection and empty index',
             new StringCollection(),
             '',
             null,
         ];
 
-        yield[
+        yield [
             'An empty collection and non-empty index',
             new StringCollection(),
             'test',
             null,
         ];
 
-        yield[
+        yield [
             'Non-empty collection and not existing index',
             new StringCollection([
                 'lorem' => 'ipsum',
@@ -505,7 +506,7 @@ class BaseCollectionTest extends BaseTestCase
             null,
         ];
 
-        yield[
+        yield [
             'Collection with existing index',
             new StringCollection([
                 'lorem' => 'ipsum',
@@ -515,7 +516,7 @@ class BaseCollectionTest extends BaseTestCase
             'ipsum',
         ];
 
-        yield[
+        yield [
             'Collection with existing index (collection of arrays)',
             new FirstNamesCollection([
                 new User('John', 'Scott'),
@@ -525,18 +526,18 @@ class BaseCollectionTest extends BaseTestCase
             'John',
         ];
 
-        yield[
+        yield [
             'Collection with existing index (collection of objects)',
             new DateTimeCollection([
-                'x' => new \DateTime(),
-                'y' => new \DateTime('2001-01-01'),
-                'z' => new \DateTime('yesterday'),
+                'x' => new DateTime(),
+                'y' => new DateTime('2001-01-01'),
+                'z' => new DateTime('yesterday'),
             ]),
             'y',
-            new \DateTime('2001-01-01'),
+            new DateTime('2001-01-01'),
         ];
 
-        yield[
+        yield [
             'Collection with first names',
             new FirstNamesCollection([
                 new User('John', 'Scott'),
@@ -549,13 +550,13 @@ class BaseCollectionTest extends BaseTestCase
 
     public function provideElementsToValidateType(): ?Generator
     {
-        yield[
+        yield [
             'An empty array',
             [],
             [],
         ];
 
-        yield[
+        yield [
             'Valid elements only',
             [
                 new User('John', 'Scott'),
@@ -567,7 +568,7 @@ class BaseCollectionTest extends BaseTestCase
             ],
         ];
 
-        yield[
+        yield [
             'Mixed elements',
             [
                 1,
