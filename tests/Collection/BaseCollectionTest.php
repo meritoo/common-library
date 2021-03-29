@@ -13,6 +13,7 @@ use Generator;
 use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Collection\DateTimeCollection;
 use Meritoo\Common\Collection\StringCollection;
+use Meritoo\Common\Contract\Collection\CollectionInterface;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Test\Common\Collection\BaseCollection\FirstNamesCollection;
@@ -139,15 +140,19 @@ class BaseCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed          $element       The element to add
-     * @param int            $expectedCount Expected count of elements in collection
-     * @param int            $expectedIndex Expected index of added element in collection
-     * @param BaseCollection $collection    The collection
+     * @param mixed               $element       The element to add
+     * @param int                 $expectedCount Expected count of elements in collection
+     * @param int                 $expectedIndex Expected index of added element in collection
+     * @param CollectionInterface $collection    The collection
      *
      * @dataProvider provideElementToAdd
      */
-    public function testAddWithoutIndex($element, $expectedCount, $expectedIndex, BaseCollection $collection)
-    {
+    public function testAddWithoutIndex(
+        $element,
+        int $expectedCount,
+        int $expectedIndex,
+        CollectionInterface $collection
+    ) {
         $collection->add($element);
 
         static::assertTrue($collection->has($element));
@@ -156,15 +161,15 @@ class BaseCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed          $element       The element to add
-     * @param mixed          $index         Index of element to add
-     * @param int            $expectedCount Expected count of elements in collection
-     * @param int            $expectedIndex Expected index of added element in collection
-     * @param BaseCollection $collection    The collection
+     * @param mixed               $element       The element to add
+     * @param mixed               $index         Index of element to add
+     * @param int                 $expectedCount Expected count of elements in collection
+     * @param int                 $expectedIndex Expected index of added element in collection
+     * @param CollectionInterface $collection    The collection
      *
      * @dataProvider provideElementToAddWithIndex
      */
-    public function testAddWithIndex($element, $index, $expectedCount, $expectedIndex, BaseCollection $collection)
+    public function testAddWithIndex($element, $index, $expectedCount, $expectedIndex, CollectionInterface $collection)
     {
         $collection->add($element, $index);
 
@@ -340,14 +345,14 @@ class BaseCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param string         $description Description of test
-     * @param BaseCollection $collection  Collection to search for element with given index
-     * @param mixed          $index       Index / key of the element
-     * @param mixed          $expected    Expected element with given index
+     * @param string              $description Description of test
+     * @param CollectionInterface $collection  Collection to search for element with given index
+     * @param mixed               $index       Index / key of the element
+     * @param mixed               $expected    Expected element with given index
      *
      * @dataProvider provideElementGetByIndex
      */
-    public function testGetByIndex($description, BaseCollection $collection, $index, $expected)
+    public function testGetByIndex($description, CollectionInterface $collection, $index, $expected)
     {
         static::assertEquals($expected, $collection->getByIndex($index), $description);
     }

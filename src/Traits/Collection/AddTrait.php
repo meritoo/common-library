@@ -8,7 +8,7 @@
 
 namespace Meritoo\Common\Traits\Collection;
 
-use Meritoo\Common\Collection\BaseCollection;
+use Meritoo\Common\Contract\Collection\CollectionInterface;
 
 /**
  * Trait for the Collection with add*() methods
@@ -42,9 +42,9 @@ trait AddTrait
     /**
      * Adds given elements (at the end of collection)
      *
-     * @param array|BaseCollection $elements   The elements to add
-     * @param bool                 $useIndexes (optional) If is set to true, indexes of given elements will be used in
-     *                                         this collection. Otherwise - not.
+     * @param array|CollectionInterface $elements   The elements to add
+     * @param bool                      $useIndexes (optional) If is set to true, indexes of given elements will be
+     *                                              used in this collection. Otherwise - not.
      */
     public function addMultiple($elements, bool $useIndexes = false): void
     {

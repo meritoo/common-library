@@ -6,11 +6,11 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Common\Collection;
 
-use ArrayAccess;
-use Countable;
-use IteratorAggregate;
+use Meritoo\Common\Contract\Collection\CollectionInterface;
 use Meritoo\Common\Traits\CollectionTrait;
 
 /**
@@ -19,7 +19,7 @@ use Meritoo\Common\Traits\CollectionTrait;
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-abstract class BaseCollection implements Countable, ArrayAccess, IteratorAggregate
+abstract class BaseCollection implements CollectionInterface
 {
     use CollectionTrait;
 

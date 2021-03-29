@@ -13,7 +13,7 @@ namespace Meritoo\Common\Contract\Renderable;
 use Meritoo\Common\Collection\Templates;
 
 /**
- * Something that may be rendered
+ * Interface/Contract of something that may be rendered
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>

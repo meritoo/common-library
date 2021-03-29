@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 1.1.3
 
 1. Move `Renderable` class: `Meritoo\Common` -> `Meritoo\Common\Contract`
+2. Create and implement `CollectionInterface` as contract of all collections (e.g. based on the `BaseCollection` class)
 
 # 1.1.2
 
