@@ -143,6 +143,24 @@ class BaseCollectionTest extends BaseTestCase
     /**
      * @param mixed               $element       The element to add
      * @param int                 $expectedCount Expected count of elements in collection
+     * @param CollectionInterface $collection    The collection
+     *
+     * @dataProvider provideElementToAddWithInvalidType
+     */
+    public function testAddWithInvalidType(
+        $element,
+        int $expectedCount,
+        CollectionInterface $collection
+    ): void {
+        $collection->add($element);
+
+        static::assertFalse($collection->has($element));
+        static::assertSame($expectedCount, $collection->count());
+    }
+
+    /**
+     * @param mixed               $element       The element to add
+     * @param int                 $expectedCount Expected count of elements in collection
      * @param int                 $expectedIndex Expected index of added element in collection
      * @param CollectionInterface $collection    The collection
      *
@@ -369,6 +387,24 @@ class BaseCollectionTest extends BaseTestCase
     {
         $collection = new FirstNamesCollection($elements);
         static::assertSame($expected, $collection->toArray(), $description);
+    }
+
+    public function provideElementToAddWithInvalidType(): ?Generator
+    {
+        yield [
+            ['test'],
+            0,
+            new StringCollection(),
+        ];
+
+        yield [
+            123,
+            2,
+            new StringCollection([
+                'I am 1st',
+                'I am 2nd',
+            ]),
+        ];
     }
 
     /**
