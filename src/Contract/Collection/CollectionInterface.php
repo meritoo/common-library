@@ -49,4 +49,8 @@ interface CollectionInterface extends Countable, ArrayAccess, IteratorAggregate
     public function isLast($element): bool;
 
     public function has($element): bool;
+
+    public function clear(): void;
+
+    public function limit(int $max, int $offset = 0): self;
 }

@@ -389,6 +389,51 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame($expected, $collection->toArray(), $description);
     }
 
+    public function testClearIfIsEmpty(): void
+    {
+        self::assertCount(0, $this->emptyCollection);
+        $this->emptyCollection->clear();
+        self::assertCount(0, $this->emptyCollection);
+    }
+
+    public function testClear(): void
+    {
+        self::assertCount(4, $this->simpleCollection);
+        $this->simpleCollection->clear();
+        self::assertCount(0, $this->simpleCollection);
+    }
+
+    public function testLimitIfIsEmpty(): void
+    {
+        $result = $this->emptyCollection->limit(10);
+        self::assertEquals(new StringCollection(), $result);
+    }
+
+    /**
+     * @param array $expected
+     * @param int   $max
+     *
+     * @dataProvider provideResultOfLimitWithDefaultOffset
+     */
+    public function testLimitWithDefaultOffset(array $expected, int $max): void
+    {
+        $result = $this->simpleCollection->limit($max);
+        self::assertSame($expected, $result->toArray());
+    }
+
+    /**
+     * @param array $expected
+     * @param int   $max
+     * @param int   $offset
+     *
+     * @dataProvider provideResultOfLimit
+     */
+    public function testLimit(array $expected, int $max, int $offset): void
+    {
+        $result = $this->simpleCollection->limit($max, $offset);
+        self::assertSame($expected, $result->toArray());
+    }
+
     public function provideElementToAddWithInvalidType(): ?Generator
     {
         yield [
@@ -620,6 +665,94 @@ class BaseCollectionTest extends BaseTestCase
                 'John',
                 'Jane',
             ],
+        ];
+    }
+
+    public function provideResultOfLimitWithDefaultOffset(): ?Generator
+    {
+        yield 'Negative value of maximum' => [
+            [],
+            -1,
+        ];
+
+        yield 'Maximum set to 0' => [
+            [],
+            0,
+        ];
+
+        yield 'Maximum set to 1' => [
+            [
+                'lorem',
+            ],
+            1,
+        ];
+
+        yield 'Maximum greater than size of collection' => [
+            [
+                'lorem',
+                'ipsum',
+                123 => 'dolor',
+                345 => 'sit',
+            ],
+            10,
+        ];
+    }
+
+    public function provideResultOfLimit(): ?Generator
+    {
+        yield 'Negative value of maximum & negative offset' => [
+            [],
+            -1,
+            -2,
+        ];
+
+        yield 'Negative value of maximum & positive offset' => [
+            [],
+            -1,
+            2,
+        ];
+
+        yield 'Maximum set to 0 & negative offset' => [
+            [],
+            0,
+            -2,
+        ];
+
+        yield 'Maximum set to 0 & positive offset' => [
+            [],
+            0,
+            2,
+        ];
+
+        yield 'Maximum set to 1 & offset smaller than size of collection' => [
+            [
+                'lorem',
+                'ipsum',
+            ],
+            1,
+            2,
+        ];
+
+        yield 'Maximum set to 1 & offset equal size of collection' => [
+            [
+                'lorem',
+                'ipsum',
+                123 => 'dolor',
+                345 => 'sit',
+            ],
+            1,
+            4,
+        ];
+
+        yield 'Maximum set to 1 & offset greater than size of collection' => [
+            [
+                'lorem',
+                'ipsum',
+                123 => 'dolor',
+                345 => 'sit',
+            ],
+            1,
+            10,
         ];
     }
 

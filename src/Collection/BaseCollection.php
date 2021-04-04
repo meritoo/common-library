@@ -223,6 +223,41 @@ abstract class BaseCollection implements CollectionInterface
         return null !== $index && false !== $index;
     }
 
+    public function clear(): void
+    {
+        $this->elements = [];
+    }
+
+    public function limit(int $max, int $offset = 0): CollectionInterface
+    {
+        $result = clone $this;
+
+        $negativeMax = $max <= 0;
+        $exceededMax = $max >= $this->count();
+
+        if ($negativeMax || $exceededMax) {
+            if ($negativeMax) {
+                $result->clear();
+            }
+
+            return $result;
+        }
+
+        $iteration = -1;
+
+        foreach ($result as $index => $element) {
+            $iteration++;
+
+            if ($iteration < $offset || ($iteration >= $offset && $iteration < $max)) {
+                continue;
+            }
+
+            unset($result[$index]);
+        }
+
+        return $result;
+    }
+
     public function count(): int
     {
         return count($this->elements);
