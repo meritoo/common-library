@@ -19,4 +19,8 @@ use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 class SimpleTestCase
 {
     use BaseTestCaseTrait;
+
+    private function thePrivateMethod(): void
+    {
+    }
 }
