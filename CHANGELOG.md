@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.4
+
+1. [BaseCollection] Fix incorrectly working limit() method
+
 # 1.1.3
 
 1. Move `Renderable` class: `Meritoo\Common` -> `Meritoo\Common\Contract`

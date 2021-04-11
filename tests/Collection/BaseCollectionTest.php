@@ -724,33 +724,24 @@ class BaseCollectionTest extends BaseTestCase
             2,
         ];
 
-        yield 'Maximum set to 1 & offset smaller than size of collection' => [
+        yield 'Maximum set to 1 & offset set to 2' => [
             [
-                'lorem',
-                'ipsum',
+                123 => 'dolor',
             ],
             1,
             2,
         ];
 
-        yield 'Maximum set to 1 & offset equal size of collection' => [
+        yield 'Maximum set to 1 & offset set to 3' => [
             [
-                'lorem',
-                'ipsum',
-                123 => 'dolor',
                 345 => 'sit',
             ],
             1,
-            4,
+            3,
         ];
 
-        yield 'Maximum set to 1 & offset greater than size of collection' => [
-            [
-                'lorem',
-                'ipsum',
-                123 => 'dolor',
-                345 => 'sit',
-            ],
+        yield 'Maximum set to 1 & offset set to 10' => [
+            [],
             1,
             10,
         ];

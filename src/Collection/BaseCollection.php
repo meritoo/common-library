@@ -248,7 +248,7 @@ abstract class BaseCollection implements CollectionInterface
         foreach ($result as $index => $element) {
             $iteration++;
 
-            if ($iteration < $offset || ($iteration >= $offset && $iteration < $max)) {
+            if ($iteration >= $offset && $iteration < $offset + $max) {
                 continue;
             }
 
