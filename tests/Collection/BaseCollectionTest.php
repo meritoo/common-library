@@ -71,8 +71,8 @@ class BaseCollectionTest extends BaseTestCase
 
     public function testNotEmptyCollection()
     {
-        static::assertSame(4, $this->simpleCollection->count());
-        static::assertCount(4, $this->simpleCollection);
+        static::assertSame(7, $this->simpleCollection->count());
+        static::assertCount(7, $this->simpleCollection);
         static::assertNotEmpty($this->simpleCollection);
 
         static::assertFalse($this->simpleCollection->isEmpty());
@@ -80,14 +80,14 @@ class BaseCollectionTest extends BaseTestCase
         static::assertNotEmpty($this->simpleCollection->toArray());
 
         static::assertSame('lorem', $this->simpleCollection->getFirst());
-        static::assertSame('sit', $this->simpleCollection->getLast());
+        static::assertSame('adipiscing elit', $this->simpleCollection->getLast());
         static::assertSame('dolor', $this->simpleCollection[123]);
     }
 
     public function testCount()
     {
         static::assertSame(0, $this->emptyCollection->count());
-        static::assertSame(4, $this->simpleCollection->count());
+        static::assertSame(7, $this->simpleCollection->count());
     }
 
     public function testOffsetExists()
@@ -126,13 +126,13 @@ class BaseCollectionTest extends BaseTestCase
 
         static::assertFalse($this->simpleCollection->has('lorem'));
         static::assertSame('ipsum', $this->simpleCollection[1]);
-        static::assertSame(3, $this->simpleCollection->count());
+        static::assertSame(6, $this->simpleCollection->count());
 
         unset($this->simpleCollection[123]);
 
         static::assertFalse($this->simpleCollection->has('dolor'));
         static::assertSame('ipsum', $this->simpleCollection[1]);
-        static::assertSame(2, $this->simpleCollection->count());
+        static::assertSame(5, $this->simpleCollection->count());
     }
 
     public function testGetIterator()
@@ -256,7 +256,7 @@ class BaseCollectionTest extends BaseTestCase
         $this->simpleCollection->prepend('lorem-ipsum');
 
         static::assertFalse($this->simpleCollection->isEmpty());
-        static::assertSame(5, $this->simpleCollection->count());
+        static::assertSame(8, $this->simpleCollection->count());
         static::assertSame('lorem-ipsum', $this->simpleCollection[0]);
     }
 
@@ -270,19 +270,19 @@ class BaseCollectionTest extends BaseTestCase
         $this->simpleCollection->remove('abc');
 
         static::assertFalse($this->simpleCollection->isEmpty());
-        static::assertSame(4, $this->simpleCollection->count());
+        static::assertSame(7, $this->simpleCollection->count());
     }
 
     public function testRemove()
     {
         static::assertFalse($this->simpleCollection->isEmpty());
-        static::assertSame(4, $this->simpleCollection->count());
+        static::assertSame(7, $this->simpleCollection->count());
         static::assertSame('ipsum', $this->simpleCollection[1]);
 
         $this->simpleCollection->remove('ipsum');
 
         static::assertFalse($this->simpleCollection->isEmpty());
-        static::assertSame(3, $this->simpleCollection->count());
+        static::assertSame(6, $this->simpleCollection->count());
         static::assertNull($this->simpleCollection[1]);
     }
 
@@ -305,7 +305,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertFalse($this->emptyCollection->isLast('abc'));
         static::assertFalse($this->simpleCollection->isLast('abc'));
         static::assertFalse($this->simpleCollection->isLast('dolor'));
-        static::assertTrue($this->simpleCollection->isLast('sit'));
+        static::assertTrue($this->simpleCollection->isLast('adipiscing elit'));
     }
 
     public function testHas()
@@ -330,7 +330,7 @@ class BaseCollectionTest extends BaseTestCase
     {
         static::assertNull($this->emptyCollection->getNext('abc'));
         static::assertNull($this->simpleCollection->getNext('abc'));
-        static::assertNull($this->simpleCollection->getNext('sit'));
+        static::assertNull($this->simpleCollection->getNext('adipiscing elit'));
 
         static::assertSame('dolor', $this->simpleCollection->getNext('ipsum'));
         static::assertSame('sit', $this->simpleCollection->getNext('dolor'));
@@ -345,7 +345,7 @@ class BaseCollectionTest extends BaseTestCase
     public function testGetLast()
     {
         static::assertNull($this->emptyCollection->getLast());
-        static::assertSame('sit', $this->simpleCollection->getLast());
+        static::assertSame('adipiscing elit', $this->simpleCollection->getLast());
     }
 
     public function testToArray()
@@ -398,7 +398,7 @@ class BaseCollectionTest extends BaseTestCase
 
     public function testClear(): void
     {
-        self::assertCount(4, $this->simpleCollection);
+        self::assertCount(7, $this->simpleCollection);
         $this->simpleCollection->clear();
         self::assertCount(0, $this->simpleCollection);
     }
@@ -687,12 +687,24 @@ class BaseCollectionTest extends BaseTestCase
             1,
         ];
 
+        yield 'Maximum set to 3' => [
+            [
+                'lorem',
+                'ipsum',
+                123 => 'dolor',
+            ],
+            3,
+        ];
+
         yield 'Maximum greater than size of collection' => [
             [
                 'lorem',
                 'ipsum',
                 123 => 'dolor',
                 345 => 'sit',
+                'a' => 'amet',
+                'c' => 'consectetur',
+                346 => 'adipiscing elit',
             ],
             10,
         ];
@@ -732,15 +744,24 @@ class BaseCollectionTest extends BaseTestCase
             2,
         ];
 
-        yield 'Maximum set to 1 & offset set to 3' => [
+        yield 'Maximum set to 2 & offset set to 2' => [
             [
+                123 => 'dolor',
                 345 => 'sit',
             ],
-            1,
-            3,
+            2,
+            2,
         ];
 
-        yield 'Maximum set to 1 & offset set to 10' => [
+        yield 'Maximum set to 3 & offset set to latest element' => [
+            [
+                346 => 'adipiscing elit',
+            ],
+            3,
+            6,
+        ];
+
+        yield 'Maximum set to 1 & offset greater than size of collection' => [
             [],
             1,
             10,
@@ -759,6 +780,9 @@ class BaseCollectionTest extends BaseTestCase
             'ipsum',
             123 => 'dolor',
             345 => 'sit',
+            'a' => 'amet',
+            'c' => 'consectetur',
+            'adipiscing elit',
         ];
 
         $this->emptyCollection = new StringCollection();
