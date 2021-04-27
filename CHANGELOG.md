@@ -2,6 +2,11 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.5
+
+1. [BaseCollection] Prepare elements while adding them by `addMultiple()` method in the same way as passing them in 
+   constructor.
+
 # 1.1.4
 
 1. [BaseCollection] Fix incorrectly working limit() method

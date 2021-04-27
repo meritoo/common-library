@@ -84,7 +84,9 @@ abstract class BaseCollection implements CollectionInterface
             return;
         }
 
-        foreach ($elements as $index => $element) {
+        $prepared = $this->prepareElements($elements);
+
+        foreach ($prepared as $index => $element) {
             if ($useIndexes) {
                 $this->add($element, $index);
 
