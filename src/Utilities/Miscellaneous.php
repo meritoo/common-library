@@ -729,7 +729,7 @@ class Miscellaneous
      */
     public static function isDecimal($value)
     {
-        return is_scalar($value) && is_numeric($value)&&floor($value) !== (float)$value;
+        return is_scalar($value) && is_numeric($value) && floor($value) !== (float) $value;
     }
 
     /**
