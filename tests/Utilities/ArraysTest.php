@@ -1535,6 +1535,116 @@ letsTest[2] = value_2;';
         static::assertSame($expected, Arrays::containsEmptyStringsOnly($array));
     }
 
+    public function testGetElementsFromLevelIfArrayIsEmpty(): void
+    {
+        self::assertNull(Arrays::getElementsFromLevel([], -1));
+        self::assertNull(Arrays::getElementsFromLevel([], 0));
+        self::assertNull(Arrays::getElementsFromLevel([], 1));
+    }
+
+    public function testGetElementsFromLevelIfThereIsNoGivenLevel(): void
+    {
+        self::assertSame([], Arrays::getElementsFromLevel([1, 2, 3], 9999));
+    }
+
+    public function testGetElementsFromLevelIfGivenLevelIsNotPositiveValue(): void
+    {
+        self::assertNull(Arrays::getElementsFromLevel([1, 2, 3], -1));
+        self::assertNull(Arrays::getElementsFromLevel([1, 2, 3], 0));
+    }
+
+    public function testGetElementsFromLevelIfArrayHasOneLevelOnly(): void
+    {
+        $array = [
+            // Level 1:
+            'ab',
+            'cd',
+            'ef',
+        ];
+
+        self::assertSame($array, Arrays::getElementsFromLevel($array, 1));
+    }
+
+    public function testGetElementsFromLevel(): void
+    {
+        $array = [
+            // Level 1:
+            'ab',
+            [
+                // Level 2:
+                'cd',
+                'ef',
+            ],
+
+            // Level 1:
+            [
+                // Level 2:
+                'gh',
+                [
+                    // Level 3:
+                    'ij',
+                    'kl',
+                ],
+            ],
+
+            // Level 1:
+            [
+                // Level 2:
+                [
+                    // Level 3:
+                    'mn',
+                    'op',
+                ],
+            ],
+        ];
+
+        $expectedLevel1 = [
+            'ab',
+            [
+                'cd',
+                'ef',
+            ],
+            [
+                'gh',
+                [
+                    'ij',
+                    'kl',
+                ],
+            ],
+            [
+                [
+                    'mn',
+                    'op',
+                ],
+            ],
+        ];
+
+        $expectedLevel2 = [
+            'cd',
+            'ef',
+            'gh',
+            [
+                'ij',
+                'kl',
+            ],
+            [
+                'mn',
+                'op',
+            ],
+        ];
+
+        $expectedLevel3 = [
+            'ij',
+            'kl',
+            'mn',
+            'op',
+        ];
+
+        self::assertSame($expectedLevel1, Arrays::getElementsFromLevel($array, 1));
+        self::assertSame($expectedLevel2, Arrays::getElementsFromLevel($array, 2));
+        self::assertSame($expectedLevel3, Arrays::getElementsFromLevel($array, 3));
+    }
+
     /**
      * Provides simple array to set/replace values with keys
      *

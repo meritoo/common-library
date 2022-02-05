@@ -1642,6 +1642,43 @@ class Arrays
         return '' === trim(implode('', $array));
     }
 
+    public static function getElementsFromLevel(array $array, int $level): ?array
+    {
+        if (empty($array) || $level <= 0) {
+            return null;
+        }
+
+        $result = [];
+
+        foreach ($array as $value) {
+            // This is the expected level (the deepest). Comparing with 1, because level will be decreased by 1, and
+            // finally we will get the latest/deepest level that equals 1.
+            if ($level === 1) {
+                $result[] = $value;
+                continue;
+            }
+
+            // There is no deeper level
+            if (!is_array($value)) {
+                continue;
+            }
+
+            // Let's dive one level down
+            $elements = self::getElementsFromLevel($value, $level - 1);
+
+            if ($elements === null) {
+                continue;
+            }
+
+            // I have to load each element separately to avoid issue with incorrectly nested values
+            foreach ($elements as $element) {
+                $result[] = $element;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Returns neighbour (next or previous element) for given element
      *
