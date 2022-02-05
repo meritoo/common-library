@@ -75,7 +75,7 @@ class Template
 
             if (isset($values[$placeholderName])) {
                 $value = $values[$placeholderName];
-                $result = str_replace($placeholder, $value, $result);
+                $result = str_replace($placeholder, (string)$value, $result);
             }
         }
 
