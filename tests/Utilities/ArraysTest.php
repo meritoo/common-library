@@ -1645,6 +1645,73 @@ letsTest[2] = value_2;';
         self::assertSame($expectedLevel3, Arrays::getElementsFromLevel($array, 3));
     }
 
+    public function testGetElementsFromLevelIfGivenKeyDoesNotExist(): void
+    {
+        $array = [
+            'test1' => [1, 2, 3],
+            'test2' => [4, 5, 6],
+            'test3' => [
+                'xy',
+                'test4' => [7, 8, 9],
+                'test5' => [
+                    'test6' => [10, 11, 12],
+                ],
+            ],
+        ];
+
+        self::assertSame([], Arrays::getElementsFromLevel($array, 2, 'X'));
+    }
+
+    public function testGetElementsFromLevelWithGivenKey(): void
+    {
+        $array = [
+            // Level 1:
+            [
+                'a',
+                'b',
+
+                // Level 2:
+                'c' => [
+                    1,
+                    2,
+                    'c' => [
+                        4,
+                        5,
+                    ],
+                ],
+            ],
+
+            // Level 1:
+            [
+                'd',
+                'e',
+
+                // Level 2:
+                'c' => [
+                    6,
+                    7,
+                ],
+            ],
+        ];
+
+        $expected = [
+            [
+                1,
+                2,
+                'c' => [
+                    4,
+                    5,
+                ],
+            ],
+            [
+                6,
+                7,
+            ],
+        ];
+
+        self::assertSame($expected, Arrays::getElementsFromLevel($array, 2, 'c'));
+    }
+
     /**
      * Provides simple array to set/replace values with keys
      *

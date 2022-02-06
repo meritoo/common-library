@@ -2,13 +2,17 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.7
+
+1. [Arrays] Allow to define a key of next level elements in a function that returns elements from given level
+
 # 1.1.6
 
 1. [Arrays] Function that returns elements from given level
 
 # 1.1.5
 
-1. [BaseCollection] Prepare elements while adding them by `addMultiple()` method in the same way as passing them in 
+1. [BaseCollection] Prepare elements while adding them by `addMultiple()` method in the same way as passing them in
    constructor.
 
 # 1.1.4

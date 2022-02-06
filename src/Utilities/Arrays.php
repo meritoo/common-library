@@ -1642,7 +1642,7 @@ class Arrays
         return '' === trim(implode('', $array));
     }
 
-    public static function getElementsFromLevel(array $array, int $level): ?array
+    public static function getElementsFromLevel(array $array, int $level, ?string $childrenKey = null): ?array
     {
         if (empty($array) || $level <= 0) {
             return null;
@@ -1650,11 +1650,16 @@ class Arrays
 
         $result = [];
 
-        foreach ($array as $value) {
-            // This is the expected level (the deepest). Comparing with 1, because level will be decreased by 1, and
-            // finally we will get the latest/deepest level that equals 1.
+        foreach ($array as $key => $value) {
+            // This is the expected level (the deepest). Comparing with 1, because level will be decreased by 1 (later),
+            // and finally we will get the latest/deepest level that equals 1.
             if ($level === 1) {
-                $result[] = $value;
+                // No key of children (next level) provided or this is the same key as processed?
+                // We've got the expected value
+                if ($childrenKey === null || $key === $childrenKey) {
+                    $result[] = $value;
+                }
+
                 continue;
             }
 
@@ -1663,8 +1668,8 @@ class Arrays
                 continue;
             }
 
-            // Let's dive one level down
-            $elements = self::getElementsFromLevel($value, $level - 1);
+            // Let's dive one level down/deeper
+            $elements = self::getElementsFromLevel($value, $level - 1, $childrenKey);
 
             if ($elements === null) {
                 continue;
