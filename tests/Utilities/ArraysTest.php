@@ -1674,6 +1674,8 @@ letsTest[2] = value_2;';
                 'c' => [
                     1,
                     2,
+
+                    // Level 3:
                     'c' => [
                         4,
                         5,
@@ -1690,11 +1692,17 @@ letsTest[2] = value_2;';
                 'c' => [
                     6,
                     7,
+
+                    // Level 3:
+                    'c' => [
+                        8,
+                        9,
+                    ],
                 ],
             ],
         ];
 
-        $expected = [
+        $expected2 = [
             [
                 1,
                 2,
@@ -1706,10 +1714,28 @@ letsTest[2] = value_2;';
             [
                 6,
                 7,
+                'c' => [
+                    8,
+                    9,
+                ],
             ],
         ];
 
-        self::assertSame($expected, Arrays::getElementsFromLevel($array, 2, 'c'));
+        $expected3 = [
+            [
+                4,
+                5,
+            ],
+            [
+                8,
+                9,
+            ],
+        ];
+
+        self::assertSame([], Arrays::getElementsFromLevel($array, 1, 'c'));
+        self::assertSame($expected2, Arrays::getElementsFromLevel($array, 2, 'c'));
+        self::assertSame($expected3, Arrays::getElementsFromLevel($array, 3, 'c'));
+        self::assertSame([], Arrays::getElementsFromLevel($array, 4, 'c'));
     }
 
     /**
