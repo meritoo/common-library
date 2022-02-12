@@ -20,13 +20,31 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Method\DisabledMethodException
+ * @covers    \Meritoo\Common\Exception\Method\DisabledMethodException
  */
 class DisabledMethodExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    /**
+     * Provides name of the disabled method, name of the alternative method and expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideMethodsNames()
     {
-        static::assertConstructorVisibilityAndArguments(DisabledMethodException::class, OopVisibilityType::IS_PUBLIC, 3);
+        $templateShort = 'Method %s() cannot be called, because is disabled.';
+        $templateLong = $templateShort.' Use %s() instead.';
+
+        yield [
+            'FooBar::loremIpsum',
+            '',
+            sprintf($templateShort, 'FooBar::loremIpsum'),
+        ];
+
+        yield [
+            'FooBar::loremIpsum',
+            'AnotherClass::alternativeMethod',
+            sprintf($templateLong, 'FooBar::loremIpsum', 'AnotherClass::alternativeMethod'),
+        ];
     }
 
     /**
@@ -43,26 +61,8 @@ class DisabledMethodExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides name of the disabled method, name of the alternative method and expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideMethodsNames()
+    public function testConstructorVisibilityAndArguments()
     {
-        $templateShort = 'Method %s() cannot be called, because is disabled.';
-        $templateLong = $templateShort . ' Use %s() instead.';
-
-        yield[
-            'FooBar::loremIpsum',
-            '',
-            sprintf($templateShort, 'FooBar::loremIpsum'),
-        ];
-
-        yield[
-            'FooBar::loremIpsum',
-            'AnotherClass::alternativeMethod',
-            sprintf($templateLong, 'FooBar::loremIpsum', 'AnotherClass::alternativeMethod'),
-        ];
+        static::assertConstructorVisibilityAndArguments(DisabledMethodException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 }

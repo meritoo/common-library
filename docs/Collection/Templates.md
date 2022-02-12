@@ -18,25 +18,26 @@ New instance can be created using:
 
 1. Constructor:
 
-	```php
-    new Templates([
-    	'first' => new Template('First name: %first_name%'),
-        'last'  => new Template('Last name: %last_name%'),
-    ]);
-    ```
+   ```php
+   new Templates([
+       'first' => new Template('First name: %first_name%'),
+       'last'  => new Template('Last name: %last_name%'),
+   ]);
+   ```
 
 2. Static method `fromArray(array $templates)` - creates and returns the collection from given array
 
-	```php
-	Templates::fromArray([
-    	'first' => 'First name: %first_name%',
-        'last'  => 'Last name: %last_name%',
-    ]);
-	```
+   ```php
+   Templates::fromArray([
+       'first' => 'First name: %first_name%',
+       'last'  => 'Last name: %last_name%',
+   ]);
+   ```
 
 ##### Methods
 
-Has all methods of parent class `Meritoo\Common\Collection\Collection` + `findTemplate(string $index)` method that finds and returns template with given index.
+Has all methods of parent class `Meritoo\Common\Collection\Collection` + `findTemplate(string $index)` method that finds
+and returns template with given index.
 
 Example of usage:
 
@@ -49,7 +50,8 @@ $templates = new Templates([
 $template = $templates->findTemplate('first'); // new Template('First name: %first_name%')
 ```
 
-Throws an `Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException` exception if template with given index was not found.
+Throws an `Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException` exception if template with given
+index was not found.
 
 # More
 
@@ -58,8 +60,8 @@ Throws an `Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundExcepti
 3. [**Templates**](Templates.md)
 4. [Exceptions](../Exceptions.md)
 5. [Static methods](../Static-methods.md)
-   1. [Arrays](../Static-methods/Arrays.md)
-   2. [Regex](../Static-methods/Regex.md)
+    1. [Arrays](../Static-methods/Arrays.md)
+    2. [Regex](../Static-methods/Regex.md)
 6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

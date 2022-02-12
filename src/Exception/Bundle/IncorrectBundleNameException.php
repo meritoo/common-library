@@ -27,7 +27,7 @@ class IncorrectBundleNameException extends Exception
     public static function create($bundleName)
     {
         $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
-            . ' there everything ok?';
+            .' there everything ok?';
 
         $message = sprintf($template, $bundleName);
 

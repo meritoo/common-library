@@ -12,6 +12,7 @@ use Generator;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use stdClass;
 
 /**
  * Test case of an exception used while given class has no child classes
@@ -24,6 +25,30 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class MissingChildClassesExceptionTest extends BaseTestCase
 {
+    /**
+     * Provides name of class that hasn't child classes, but it should, and expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideParentClass(): ?Generator
+    {
+        $template = 'The \'%s\' class requires one child class at least who will extend her (maybe is an abstract'
+            .' class), but the child classes are missing. Did you forget to extend this class?';
+
+        yield [
+            MissingChildClassesException::class,
+            sprintf($template, MissingChildClassesException::class),
+        ];
+
+        yield [
+            [
+                new stdClass(),
+                new stdClass(),
+            ],
+            sprintf($template, stdClass::class),
+        ];
+    }
+
     public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -44,29 +69,5 @@ class MissingChildClassesExceptionTest extends BaseTestCase
     {
         $exception = MissingChildClassesException::create($parentClass);
         static::assertSame($expectedMessage, $exception->getMessage());
-    }
-
-    /**
-     * Provides name of class that hasn't child classes, but it should, and expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideParentClass(): ?Generator
-    {
-        $template = 'The \'%s\' class requires one child class at least who will extend her (maybe is an abstract'
-            . ' class), but the child classes are missing. Did you forget to extend this class?';
-
-        yield[
-            MissingChildClassesException::class,
-            sprintf($template, MissingChildClassesException::class),
-        ];
-
-        yield[
-            [
-                new \stdClass(),
-                new \stdClass(),
-            ],
-            sprintf($template, \stdClass::class),
-        ];
     }
 }

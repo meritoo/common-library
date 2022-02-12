@@ -37,43 +37,14 @@ trait BaseTestCaseTrait
     private static $testsDataDirPath = 'data/tests';
 
     /**
-     * Provides an empty value
-     *
-     * @return Generator
-     */
-    public function provideEmptyValue(): ?Generator
-    {
-        yield[''];
-        yield['   '];
-        yield[null];
-        yield[0];
-        yield[false];
-        yield[[]];
-    }
-
-    /**
-     * Provides an empty scalar value
-     *
-     * @return Generator
-     */
-    public function provideEmptyScalarValue(): ?Generator
-    {
-        yield[''];
-        yield['   '];
-        yield[null];
-        yield[0];
-        yield[false];
-    }
-
-    /**
      * Provides boolean value
      *
      * @return Generator
      */
     public function provideBooleanValue(): ?Generator
     {
-        yield[false];
-        yield[true];
+        yield [false];
+        yield [true];
     }
 
     /**
@@ -83,10 +54,10 @@ trait BaseTestCaseTrait
      */
     public function provideDateTimeInstance(): ?Generator
     {
-        yield[new DateTime()];
-        yield[new DateTime('yesterday')];
-        yield[new DateTime('now')];
-        yield[new DateTime('tomorrow')];
+        yield [new DateTime()];
+        yield [new DateTime('yesterday')];
+        yield [new DateTime('now')];
+        yield [new DateTime('tomorrow')];
     }
 
     /**
@@ -96,29 +67,46 @@ trait BaseTestCaseTrait
      */
     public function provideDateTimeRelativeFormat(): ?Generator
     {
-        yield['now'];
-        yield['yesterday'];
-        yield['tomorrow'];
-        yield['back of 10'];
-        yield['front of 10'];
-        yield['last day of February'];
-        yield['first day of next month'];
-        yield['last day of previous month'];
-        yield['last day of next month'];
-        yield['Y-m-d'];
-        yield['Y-m-d 10:00'];
+        yield ['now'];
+        yield ['yesterday'];
+        yield ['tomorrow'];
+        yield ['back of 10'];
+        yield ['front of 10'];
+        yield ['last day of February'];
+        yield ['first day of next month'];
+        yield ['last day of previous month'];
+        yield ['last day of next month'];
+        yield ['Y-m-d'];
+        yield ['Y-m-d 10:00'];
     }
 
     /**
-     * Provides path of not existing file, e.g. "lorem/ipsum.jpg"
+     * Provides an empty scalar value
      *
      * @return Generator
      */
-    public function provideNotExistingFilePath(): ?Generator
+    public function provideEmptyScalarValue(): ?Generator
     {
-        yield['lets-test.doc'];
-        yield['lorem/ipsum.jpg'];
-        yield['surprise/me/one/more/time.txt'];
+        yield [''];
+        yield ['   '];
+        yield [null];
+        yield [0];
+        yield [false];
+    }
+
+    /**
+     * Provides an empty value
+     *
+     * @return Generator
+     */
+    public function provideEmptyValue(): ?Generator
+    {
+        yield [''];
+        yield ['   '];
+        yield [null];
+        yield [0];
+        yield [false];
+        yield [[]];
     }
 
     /**
@@ -128,81 +116,21 @@ trait BaseTestCaseTrait
      */
     public function provideNonScalarValue(): ?Generator
     {
-        yield[[]];
-        yield[null];
-        yield[new stdClass()];
+        yield [[]];
+        yield [null];
+        yield [new stdClass()];
     }
 
     /**
-     * Returns path of file used by tests.
-     * It should be placed in /data/tests directory of this project.
+     * Provides path of not existing file, e.g. "lorem/ipsum.jpg"
      *
-     * @param string $fileName      Name of file
-     * @param string $directoryPath (optional) Path of directory containing the file
-     * @return string
+     * @return Generator
      */
-    protected function getFilePathForTesting(string $fileName, string $directoryPath = ''): string
+    public function provideNotExistingFilePath(): ?Generator
     {
-        $rootPath = Miscellaneous::getProjectRootPath();
-
-        $paths = [
-            $rootPath,
-            self::$testsDataDirPath,
-            $directoryPath,
-            $fileName,
-        ];
-
-        return Miscellaneous::concatenatePaths($paths);
-    }
-
-    /**
-     * Verifies visibility of method
-     *
-     * @param ReflectionMethod $method                 Name of method or just the method to verify
-     * @param string           $visibilityType         Expected visibility of verified method. One of OopVisibilityType
-     *                                                 class constants.
-     * @throws UnknownOopVisibilityTypeException
-     * @throws RuntimeException
-     */
-    protected static function assertMethodVisibility(ReflectionMethod $method, string $visibilityType): void
-    {
-        // Type of visibility is not correct?
-        if (!OopVisibilityType::isCorrectType($visibilityType)) {
-            throw UnknownOopVisibilityTypeException::createException($visibilityType);
-        }
-
-        switch ($visibilityType) {
-            case OopVisibilityType::IS_PUBLIC:
-                static::assertTrue($method->isPublic());
-
-                break;
-            case OopVisibilityType::IS_PROTECTED:
-                static::assertTrue($method->isProtected());
-
-                break;
-            case OopVisibilityType::IS_PRIVATE:
-                static::assertTrue($method->isPrivate());
-
-                break;
-        }
-    }
-
-    /**
-     * Verifies count of method's arguments
-     *
-     * @param ReflectionMethod $method         Name of method or just the method to verify
-     * @param int              $argumentsCount (optional) Expected count/amount of arguments of the verified method
-     * @param int              $requiredCount  (optional) Expected count/amount of required arguments of the verified
-     *                                         method
-     * @throws RuntimeException
-     */
-    protected static function assertMethodArgumentsCount(
-        ReflectionMethod $method,
-        int $argumentsCount = 0,
-        int $requiredCount = 0
-    ): void {
-        static::assertSame($argumentsCount, $method->getNumberOfParameters());
-        static::assertSame($requiredCount, $method->getNumberOfRequiredParameters());
+        yield ['lets-test.doc'];
+        yield ['lorem/ipsum.jpg'];
+        yield ['surprise/me/one/more/time.txt'];
     }
 
     /**
@@ -244,6 +172,78 @@ trait BaseTestCaseTrait
         $constructor = $reflection->getConstructor();
 
         static::assertNull($constructor);
+    }
+
+    /**
+     * Verifies count of method's arguments
+     *
+     * @param ReflectionMethod $method         Name of method or just the method to verify
+     * @param int              $argumentsCount (optional) Expected count/amount of arguments of the verified method
+     * @param int              $requiredCount  (optional) Expected count/amount of required arguments of the verified
+     *                                         method
+     * @throws RuntimeException
+     */
+    protected static function assertMethodArgumentsCount(
+        ReflectionMethod $method,
+        int $argumentsCount = 0,
+        int $requiredCount = 0
+    ): void {
+        static::assertSame($argumentsCount, $method->getNumberOfParameters());
+        static::assertSame($requiredCount, $method->getNumberOfRequiredParameters());
+    }
+
+    /**
+     * Verifies visibility of method
+     *
+     * @param ReflectionMethod $method                 Name of method or just the method to verify
+     * @param string           $visibilityType         Expected visibility of verified method. One of OopVisibilityType
+     *                                                 class constants.
+     * @throws UnknownOopVisibilityTypeException
+     * @throws RuntimeException
+     */
+    protected static function assertMethodVisibility(ReflectionMethod $method, string $visibilityType): void
+    {
+        // Type of visibility is not correct?
+        if (!OopVisibilityType::isCorrectType($visibilityType)) {
+            throw UnknownOopVisibilityTypeException::createException($visibilityType);
+        }
+
+        switch ($visibilityType) {
+            case OopVisibilityType::IS_PUBLIC:
+                static::assertTrue($method->isPublic());
+
+                break;
+            case OopVisibilityType::IS_PROTECTED:
+                static::assertTrue($method->isProtected());
+
+                break;
+            case OopVisibilityType::IS_PRIVATE:
+                static::assertTrue($method->isPrivate());
+
+                break;
+        }
+    }
+
+    /**
+     * Returns path of file used by tests.
+     * It should be placed in /data/tests directory of this project.
+     *
+     * @param string $fileName      Name of file
+     * @param string $directoryPath (optional) Path of directory containing the file
+     * @return string
+     */
+    protected function getFilePathForTesting(string $fileName, string $directoryPath = ''): string
+    {
+        $rootPath = Miscellaneous::getProjectRootPath();
+
+        $paths = [
+            $rootPath,
+            self::$testsDataDirPath,
+            $directoryPath,
+            $fileName,
+        ];
+
+        return Miscellaneous::concatenatePaths($paths);
     }
 
     /**

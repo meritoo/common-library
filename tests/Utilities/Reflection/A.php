@@ -24,13 +24,13 @@ class A
 
     private $count = 1;
 
-    protected function lorem()
-    {
-        return 'ipsum';
-    }
-
     protected function getCount()
     {
         return $this->count;
+    }
+
+    protected function lorem()
+    {
+        return 'ipsum';
     }
 }

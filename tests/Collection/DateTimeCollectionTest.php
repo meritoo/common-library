@@ -27,6 +27,44 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class DateTimeCollectionTest extends BaseTestCase
 {
+    public function provideDifferentTypesOfElements(): ?Generator
+    {
+        yield [
+            'An empty array',
+            [],
+            [],
+        ];
+
+        yield [
+            'Valid elements only',
+            [
+                new DateTime('2001-01-01'),
+                new DateTime('2001-01-02'),
+            ],
+            [
+                new DateTime('2001-01-01'),
+                new DateTime('2001-01-02'),
+            ],
+        ];
+
+        yield [
+            'Mixed elements',
+            [
+                1,
+                'test',
+                new DateTime('2001-01-01'),
+                '',
+                [],
+                234,
+                new DateTime('2001-01-02'),
+            ],
+            [
+                2 => new DateTime('2001-01-01'),
+                6 => new DateTime('2001-01-02'),
+            ],
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -50,43 +88,5 @@ class DateTimeCollectionTest extends BaseTestCase
     ): void {
         $collection = new DateTimeCollection($elements);
         static::assertEquals($expectedElements, $collection->toArray(), $description);
-    }
-
-    public function provideDifferentTypesOfElements(): ?Generator
-    {
-        yield[
-            'An empty array',
-            [],
-            [],
-        ];
-
-        yield[
-            'Valid elements only',
-            [
-                new DateTime('2001-01-01'),
-                new DateTime('2001-01-02'),
-            ],
-            [
-                new DateTime('2001-01-01'),
-                new DateTime('2001-01-02'),
-            ],
-        ];
-
-        yield[
-            'Mixed elements',
-            [
-                1,
-                'test',
-                new DateTime('2001-01-01'),
-                '',
-                [],
-                234,
-                new DateTime('2001-01-02'),
-            ],
-            [
-                2 => new DateTime('2001-01-01'),
-                6 => new DateTime('2001-01-02'),
-            ],
-        ];
     }
 }

@@ -8,13 +8,15 @@
 
 namespace Meritoo\Common\Exception\Regex;
 
+use Exception;
+
 /**
  * An exception used while length of given hexadecimal value of color is incorrect
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class IncorrectColorHexLengthException extends \Exception
+class IncorrectColorHexLengthException extends Exception
 {
     /**
      * Creates exception
@@ -25,7 +27,7 @@ class IncorrectColorHexLengthException extends \Exception
     public static function create($color)
     {
         $template = 'Length of hexadecimal value of color \'%s\' is incorrect. It\'s %d, but it should be 3 or 6.'
-            . ' Is there everything ok?';
+            .' Is there everything ok?';
 
         $message = sprintf($template, $color, strlen($color));
 

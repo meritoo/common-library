@@ -64,127 +64,6 @@ class Date
     public const DATE_DIFFERENCE_UNIT_YEARS = 'years';
 
     /**
-     * Returns date's period (that contains start and end date) for given period
-     *
-     * @param string $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
-     * @throws Exception
-     * @return null|DatePeriod
-     */
-    public static function getDatesForPeriod(string $period): ?DatePeriod
-    {
-        /*
-         * Type of period is incorrect?
-         * Nothing to do
-         */
-        if (!DatePeriod::isCorrectType($period)) {
-            return null;
-        }
-
-        $dateStart = null;
-        $dateEnd = null;
-
-        switch ($period) {
-            case DatePeriod::LAST_WEEK:
-                $thisWeekStart = new DateTime('this week');
-
-                $dateStart = clone $thisWeekStart;
-                $dateEnd = clone $thisWeekStart;
-
-                $dateStart->sub(new DateInterval('P7D'));
-                $dateEnd->sub(new DateInterval('P1D'));
-
-                break;
-            case DatePeriod::THIS_WEEK:
-                $dateStart = new DateTime('this week');
-
-                $dateEnd = clone $dateStart;
-                $dateEnd->add(new DateInterval('P6D'));
-
-                break;
-            case DatePeriod::NEXT_WEEK:
-                $dateStart = new DateTime('this week');
-                $dateStart->add(new DateInterval('P7D'));
-
-                $dateEnd = clone $dateStart;
-                $dateEnd->add(new DateInterval('P6D'));
-
-                break;
-            case DatePeriod::LAST_MONTH:
-                $dateStart = new DateTime('first day of last month');
-                $dateEnd = new DateTime('last day of last month');
-
-                break;
-            case DatePeriod::THIS_MONTH:
-                $lastMonth = self::getDatesForPeriod(DatePeriod::LAST_MONTH);
-                $nextMonth = self::getDatesForPeriod(DatePeriod::NEXT_MONTH);
-
-                if (null !== $lastMonth) {
-                    $dateStart = $lastMonth->getEndDate();
-
-                    if (null !== $dateStart) {
-                        $dateStart->add(new DateInterval('P1D'));
-                    }
-                }
-
-                if (null !== $nextMonth) {
-                    $dateEnd = $nextMonth->getStartDate();
-
-                    if (null !== $dateEnd) {
-                        $dateEnd->sub(new DateInterval('P1D'));
-                    }
-                }
-
-                break;
-            case DatePeriod::NEXT_MONTH:
-                $dateStart = new DateTime('first day of next month');
-                $dateEnd = new DateTime('last day of next month');
-
-                break;
-            case DatePeriod::LAST_YEAR:
-            case DatePeriod::THIS_YEAR:
-            case DatePeriod::NEXT_YEAR:
-                $dateStart = new DateTime();
-                $dateEnd = new DateTime();
-
-                $yearPeriod = [
-                    DatePeriod::LAST_YEAR,
-                    DatePeriod::NEXT_YEAR,
-                ];
-
-                if (in_array($period, $yearPeriod, true)) {
-                    $yearDifference = 1;
-
-                    if (DatePeriod::LAST_YEAR === $period) {
-                        $yearDifference *= -1;
-                    }
-
-                    $modifyString = sprintf('%s year', $yearDifference);
-                    $dateStart->modify($modifyString);
-                    $dateEnd->modify($modifyString);
-                }
-
-                $year = (int)$dateStart->format('Y');
-                $dateStart->setDate($year, 1, 1);
-                $dateEnd->setDate($year, 12, 31);
-
-                break;
-        }
-
-        /*
-         * Start or end date is unknown?
-         * Nothing to do
-         */
-        if (null === $dateStart || null === $dateEnd) {
-            return null;
-        }
-
-        $dateStart->setTime(0, 0);
-        $dateEnd->setTime(23, 59, 59);
-
-        return new DatePeriod($dateStart, $dateEnd);
-    }
-
-    /**
      * Generates and returns random time (the hour, minute and second values)
      *
      * @param string $format (optional) Format of returned value. A string acceptable by the DateTime::format()
@@ -227,7 +106,7 @@ class Date
         return $dateTime
             ->setTime($hour, $minute, $second)
             ->format($format)
-            ;
+        ;
     }
 
     /**
@@ -239,44 +118,11 @@ class Date
     {
         $now = new DateTime();
 
-        $year = (int)$now->format('Y');
-        $month = (int)$now->format('m');
-        $day = (int)$now->format('d');
+        $year = (int) $now->format('Y');
+        $month = (int) $now->format('m');
+        $day = (int) $now->format('d');
 
         return self::getDayOfWeek($year, $month, $day);
-    }
-
-    /**
-     * Returns day of week (number 0 to 6, 0 - sunday, 6 - saturday).
-     * Based on the Zeller's algorithm (https://en.wikipedia.org/wiki/Perpetual_calendar).
-     *
-     * @param int $year  The year value
-     * @param int $month The month value
-     * @param int $day   The day value
-     *
-     * @throws UnknownDatePartTypeException
-     * @return int
-     */
-    public static function getDayOfWeek(int $year, int $month, int $day): int
-    {
-        static::validateYear($year);
-        static::validateMonth($month);
-        static::validateDay($day);
-
-        if ($month < 3) {
-            $count = 0;
-            $yearValue = $year - 1;
-        } else {
-            $count = 2;
-            $yearValue = $year;
-        }
-
-        $firstPart = floor(23 * $month / 9);
-        $secondPart = floor($yearValue / 4);
-        $thirdPart = floor($yearValue / 100);
-        $fourthPart = floor($yearValue / 400);
-
-        return ($firstPart + $day + 4 + $year + $secondPart - $thirdPart + $fourthPart - $count) % 7;
     }
 
     /**
@@ -288,37 +134,11 @@ class Date
     {
         $now = new DateTime();
 
-        $year = (int)$now->format('Y');
-        $month = (int)$now->format('m');
-        $day = (int)$now->format('d');
+        $year = (int) $now->format('Y');
+        $month = (int) $now->format('m');
+        $day = (int) $now->format('d');
 
         return self::getDayOfWeekName($year, $month, $day);
-    }
-
-    /**
-     * Returns name of weekday based on locale
-     *
-     * @param int $year  The year value
-     * @param int $month The month value
-     * @param int $day   The day value
-     * @return string
-     */
-    public static function getDayOfWeekName($year, $month, $day): string
-    {
-        $hour = 0;
-        $minute = 0;
-        $second = 0;
-
-        $time = mktime($hour, $minute, $second, $month, $day, $year);
-        $name = strftime('%A', $time);
-
-        $encoding = mb_detect_encoding($name);
-
-        if (false === $encoding) {
-            $name = mb_convert_encoding($name, 'UTF-8', 'ISO-8859-2');
-        }
-
-        return $name;
     }
 
     /**
@@ -408,7 +228,7 @@ class Date
         }
 
         if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits, true)) {
-            $days = (int)floor($dateDiff / $daySeconds);
+            $days = (int) floor($dateDiff / $daySeconds);
 
             // Difference between dates in days should be returned only?
             if (self::DATE_DIFFERENCE_UNIT_DAYS === $differenceUnit) {
@@ -425,7 +245,7 @@ class Date
         }
 
         if (null === $differenceUnit || in_array($differenceUnit, $relatedUnits, true)) {
-            $hours = (int)floor(($dateDiff - $daysInSeconds) / $hourSeconds);
+            $hours = (int) floor(($dateDiff - $daysInSeconds) / $hourSeconds);
 
             // Difference between dates in hours should be returned only?
             if (self::DATE_DIFFERENCE_UNIT_HOURS === $differenceUnit) {
@@ -442,7 +262,7 @@ class Date
         }
 
         if (null === $differenceUnit || $differenceMinutes) {
-            $minutes = (int)floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
+            $minutes = (int) floor(($dateDiff - $daysInSeconds - $hoursInSeconds) / 60);
 
             // Difference between dates in minutes should be returned only?
             if ($differenceMinutes) {
@@ -453,95 +273,6 @@ class Date
         }
 
         return $difference;
-    }
-
-    /**
-     * Returns collection / set of dates for given start date and count of dates.
-     * Start from given date, add next, iterated value to given date interval and returns requested count of dates.
-     *
-     * @param DateTime $startDate        The start date. Start of the collection / set.
-     * @param int      $datesCount       Count of dates in resulting collection / set
-     * @param string   $intervalTemplate (optional) Template used to build date interval. It should contain "%d" as the
-     *                                   placeholder which is replaced with a number that represents each iteration.
-     *                                   Default: interval for days.
-     * @throws Exception
-     * @return array
-     */
-    public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD'): array
-    {
-        $dates = [];
-
-        /*
-         * The template used to build date interval have to be string.
-         * Otherwise cannot run preg_match() function and an error occurs.
-         */
-        if (is_string($intervalTemplate)) {
-            /*
-             * Let's verify the interval template. It should contains the "%d" placeholder and something before and
-             * after it.
-             *
-             * Examples:
-             * - P%dD
-             * - P%dM
-             * - P1Y%dMT1H
-             */
-            $intervalPattern = '/^(\w*)\%d(\w*)$/';
-            $matches = [];
-            $matchCount = preg_match($intervalPattern, $intervalTemplate, $matches);
-
-            if ($matchCount > 0 && (!empty($matches[1]) || !empty($matches[2]))) {
-                $datesCount = (int)$datesCount;
-
-                for ($index = 1; $index <= $datesCount; ++$index) {
-                    $date = clone $startDate;
-                    $dates[$index] = $date->add(new DateInterval(sprintf($intervalTemplate, $index)));
-                }
-            }
-        }
-
-        return $dates;
-    }
-
-    /**
-     * Returns random date based on given start date
-     *
-     * @param DateTime $startDate        (optional) Beginning of the random date. If not provided, current date will
-     *                                   be used (default behaviour).
-     * @param int      $start            (optional) Start of random partition. If not provided, 1 will be used
-     *                                   (default behaviour).
-     * @param int      $end              (optional) End of random partition. If not provided, 100 will be used
-     *                                   (default behaviour).
-     * @param string   $intervalTemplate (optional) Template used to build date interval. The placeholder is replaced
-     *                                   with next, iterated value. If not provided, "P%sD" will be used (default
-     *                                   behaviour).
-     * @throws Exception
-     * @return DateTime
-     */
-    public static function getRandomDate(
-        DateTime $startDate = null,
-        $start = 1,
-        $end = 100,
-        $intervalTemplate = 'P%sD'
-    ): DateTime {
-        if (null === $startDate) {
-            $startDate = new DateTime();
-        }
-
-        $start = (int)$start;
-        $end = (int)$end;
-
-        /*
-         * Incorrect end of random partition?
-         * Use start as the end of random partition
-         */
-        if ($end < $start) {
-            $end = $start;
-        }
-
-        $randomDate = clone $startDate;
-        $randomInterval = new DateInterval(sprintf($intervalTemplate, random_int($start, $end)));
-
-        return $randomDate->add($randomInterval);
     }
 
     /**
@@ -646,13 +377,282 @@ class Date
              */
             $dateString = (new DateTime())->format($value);
 
-            if ($dateString !== (string)$value) {
+            if ($dateString !== (string) $value) {
                 return new DateTime($dateString);
             }
         } catch (Exception $exception) {
         }
 
         return false;
+    }
+
+    /**
+     * Returns collection / set of dates for given start date and count of dates.
+     * Start from given date, add next, iterated value to given date interval and returns requested count of dates.
+     *
+     * @param DateTime $startDate        The start date. Start of the collection / set.
+     * @param int      $datesCount       Count of dates in resulting collection / set
+     * @param string   $intervalTemplate (optional) Template used to build date interval. It should contain "%d" as the
+     *                                   placeholder which is replaced with a number that represents each iteration.
+     *                                   Default: interval for days.
+     * @return array
+     * @throws Exception
+     */
+    public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD'): array
+    {
+        $dates = [];
+
+        /*
+         * The template used to build date interval have to be string.
+         * Otherwise cannot run preg_match() function and an error occurs.
+         */
+        if (is_string($intervalTemplate)) {
+            /*
+             * Let's verify the interval template. It should contains the "%d" placeholder and something before and
+             * after it.
+             *
+             * Examples:
+             * - P%dD
+             * - P%dM
+             * - P1Y%dMT1H
+             */
+            $intervalPattern = '/^(\w*)\%d(\w*)$/';
+            $matches = [];
+            $matchCount = preg_match($intervalPattern, $intervalTemplate, $matches);
+
+            if ($matchCount > 0 && (!empty($matches[1]) || !empty($matches[2]))) {
+                $datesCount = (int) $datesCount;
+
+                for ($index = 1; $index <= $datesCount; ++$index) {
+                    $date = clone $startDate;
+                    $dates[$index] = $date->add(new DateInterval(sprintf($intervalTemplate, $index)));
+                }
+            }
+        }
+
+        return $dates;
+    }
+
+    /**
+     * Returns date's period (that contains start and end date) for given period
+     *
+     * @param string $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
+     * @return null|DatePeriod
+     * @throws Exception
+     */
+    public static function getDatesForPeriod(string $period): ?DatePeriod
+    {
+        /*
+         * Type of period is incorrect?
+         * Nothing to do
+         */
+        if (!DatePeriod::isCorrectType($period)) {
+            return null;
+        }
+
+        $dateStart = null;
+        $dateEnd = null;
+
+        switch ($period) {
+            case DatePeriod::LAST_WEEK:
+                $thisWeekStart = new DateTime('this week');
+
+                $dateStart = clone $thisWeekStart;
+                $dateEnd = clone $thisWeekStart;
+
+                $dateStart->sub(new DateInterval('P7D'));
+                $dateEnd->sub(new DateInterval('P1D'));
+
+                break;
+            case DatePeriod::THIS_WEEK:
+                $dateStart = new DateTime('this week');
+
+                $dateEnd = clone $dateStart;
+                $dateEnd->add(new DateInterval('P6D'));
+
+                break;
+            case DatePeriod::NEXT_WEEK:
+                $dateStart = new DateTime('this week');
+                $dateStart->add(new DateInterval('P7D'));
+
+                $dateEnd = clone $dateStart;
+                $dateEnd->add(new DateInterval('P6D'));
+
+                break;
+            case DatePeriod::LAST_MONTH:
+                $dateStart = new DateTime('first day of last month');
+                $dateEnd = new DateTime('last day of last month');
+
+                break;
+            case DatePeriod::THIS_MONTH:
+                $lastMonth = self::getDatesForPeriod(DatePeriod::LAST_MONTH);
+                $nextMonth = self::getDatesForPeriod(DatePeriod::NEXT_MONTH);
+
+                if (null !== $lastMonth) {
+                    $dateStart = $lastMonth->getEndDate();
+
+                    if (null !== $dateStart) {
+                        $dateStart->add(new DateInterval('P1D'));
+                    }
+                }
+
+                if (null !== $nextMonth) {
+                    $dateEnd = $nextMonth->getStartDate();
+
+                    if (null !== $dateEnd) {
+                        $dateEnd->sub(new DateInterval('P1D'));
+                    }
+                }
+
+                break;
+            case DatePeriod::NEXT_MONTH:
+                $dateStart = new DateTime('first day of next month');
+                $dateEnd = new DateTime('last day of next month');
+
+                break;
+            case DatePeriod::LAST_YEAR:
+            case DatePeriod::THIS_YEAR:
+            case DatePeriod::NEXT_YEAR:
+                $dateStart = new DateTime();
+                $dateEnd = new DateTime();
+
+                $yearPeriod = [
+                    DatePeriod::LAST_YEAR,
+                    DatePeriod::NEXT_YEAR,
+                ];
+
+                if (in_array($period, $yearPeriod, true)) {
+                    $yearDifference = 1;
+
+                    if (DatePeriod::LAST_YEAR === $period) {
+                        $yearDifference *= -1;
+                    }
+
+                    $modifyString = sprintf('%s year', $yearDifference);
+                    $dateStart->modify($modifyString);
+                    $dateEnd->modify($modifyString);
+                }
+
+                $year = (int) $dateStart->format('Y');
+                $dateStart->setDate($year, 1, 1);
+                $dateEnd->setDate($year, 12, 31);
+
+                break;
+        }
+
+        /*
+         * Start or end date is unknown?
+         * Nothing to do
+         */
+        if (null === $dateStart || null === $dateEnd) {
+            return null;
+        }
+
+        $dateStart->setTime(0, 0);
+        $dateEnd->setTime(23, 59, 59);
+
+        return new DatePeriod($dateStart, $dateEnd);
+    }
+
+    /**
+     * Returns day of week (number 0 to 6, 0 - sunday, 6 - saturday).
+     * Based on the Zeller's algorithm (https://en.wikipedia.org/wiki/Perpetual_calendar).
+     *
+     * @param int $year  The year value
+     * @param int $month The month value
+     * @param int $day   The day value
+     *
+     * @return int
+     * @throws UnknownDatePartTypeException
+     */
+    public static function getDayOfWeek(int $year, int $month, int $day): int
+    {
+        static::validateYear($year);
+        static::validateMonth($month);
+        static::validateDay($day);
+
+        if ($month < 3) {
+            $count = 0;
+            $yearValue = $year - 1;
+        } else {
+            $count = 2;
+            $yearValue = $year;
+        }
+
+        $firstPart = floor(23 * $month / 9);
+        $secondPart = floor($yearValue / 4);
+        $thirdPart = floor($yearValue / 100);
+        $fourthPart = floor($yearValue / 400);
+
+        return ($firstPart + $day + 4 + $year + $secondPart - $thirdPart + $fourthPart - $count) % 7;
+    }
+
+    /**
+     * Returns name of weekday based on locale
+     *
+     * @param int $year  The year value
+     * @param int $month The month value
+     * @param int $day   The day value
+     * @return string
+     */
+    public static function getDayOfWeekName($year, $month, $day): string
+    {
+        $hour = 0;
+        $minute = 0;
+        $second = 0;
+
+        $time = mktime($hour, $minute, $second, $month, $day, $year);
+        $name = strftime('%A', $time);
+
+        $encoding = mb_detect_encoding($name);
+
+        if (false === $encoding) {
+            $name = mb_convert_encoding($name, 'UTF-8', 'ISO-8859-2');
+        }
+
+        return $name;
+    }
+
+    /**
+     * Returns random date based on given start date
+     *
+     * @param DateTime $startDate        (optional) Beginning of the random date. If not provided, current date will
+     *                                   be used (default behaviour).
+     * @param int      $start            (optional) Start of random partition. If not provided, 1 will be used
+     *                                   (default behaviour).
+     * @param int      $end              (optional) End of random partition. If not provided, 100 will be used
+     *                                   (default behaviour).
+     * @param string   $intervalTemplate (optional) Template used to build date interval. The placeholder is replaced
+     *                                   with next, iterated value. If not provided, "P%sD" will be used (default
+     *                                   behaviour).
+     * @return DateTime
+     * @throws Exception
+     */
+    public static function getRandomDate(
+        DateTime $startDate = null,
+        $start = 1,
+        $end = 100,
+        $intervalTemplate = 'P%sD'
+    ): DateTime {
+        if (null === $startDate) {
+            $startDate = new DateTime();
+        }
+
+        $start = (int) $start;
+        $end = (int) $end;
+
+        /*
+         * Incorrect end of random partition?
+         * Use start as the end of random partition
+         */
+        if ($end < $start) {
+            $end = $start;
+        }
+
+        $randomDate = clone $startDate;
+        $randomInterval = new DateInterval(sprintf($intervalTemplate, random_int($start, $end)));
+
+        return $randomDate->add($randomInterval);
     }
 
     /**
@@ -702,19 +702,19 @@ class Date
     }
 
     /**
-     * Verifies/validates given year
+     * Verifies/validates given day
      *
-     * @param int $year Year to verify/validate
+     * @param int $day Day to verify/validate
      * @throws UnknownDatePartTypeException
      */
-    private static function validateYear(int $year): void
+    private static function validateDay(int $day): void
     {
-        // Oops, given year is incorrect
-        if ($year >= 0) {
+        // Oops, given day is incorrect
+        if ($day >= 1 && $day <= 31) {
             return;
         }
 
-        throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
+        throw UnknownDatePartTypeException::createException(DatePartType::DAY, $day);
     }
 
     /**
@@ -734,18 +734,18 @@ class Date
     }
 
     /**
-     * Verifies/validates given day
+     * Verifies/validates given year
      *
-     * @param int $day Day to verify/validate
+     * @param int $year Year to verify/validate
      * @throws UnknownDatePartTypeException
      */
-    private static function validateDay(int $day): void
+    private static function validateYear(int $year): void
     {
-        // Oops, given day is incorrect
-        if ($day >= 1 && $day <= 31) {
+        // Oops, given year is incorrect
+        if ($year >= 0) {
             return;
         }
 
-        throw UnknownDatePartTypeException::createException(DatePartType::DAY, $day);
+        throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
     }
 }

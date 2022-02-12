@@ -20,10 +20,34 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Bundle\IncorrectBundleNameException
+ * @covers    \Meritoo\Common\Exception\Bundle\IncorrectBundleNameException
  */
 class IncorrectBundleNameExceptionTest extends BaseTestCase
 {
+    public function provideBundleNameAndMessage(): Generator
+    {
+        $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
+            .' there everything ok?';
+
+        yield [
+            'An empty string as name of bundle',
+            '',
+            sprintf($template, ''),
+        ];
+
+        yield [
+            'String with spaces as name of bundle',
+            'This is test',
+            sprintf($template, 'This is test'),
+        ];
+
+        yield [
+            'String without spaces as name of bundle',
+            'ThisIsTest',
+            sprintf($template, 'ThisIsTest'),
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -44,29 +68,5 @@ class IncorrectBundleNameExceptionTest extends BaseTestCase
     {
         $exception = IncorrectBundleNameException::create($bundleName);
         static::assertSame($expectedMessage, $exception->getMessage(), $description);
-    }
-
-    public function provideBundleNameAndMessage(): Generator
-    {
-        $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
-            . ' there everything ok?';
-
-        yield[
-            'An empty string as name of bundle',
-            '',
-            sprintf($template, ''),
-        ];
-
-        yield[
-            'String with spaces as name of bundle',
-            'This is test',
-            sprintf($template, 'This is test'),
-        ];
-
-        yield[
-            'String without spaces as name of bundle',
-            'ThisIsTest',
-            sprintf($template, 'ThisIsTest'),
-        ];
     }
 }

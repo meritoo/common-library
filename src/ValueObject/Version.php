@@ -65,36 +65,41 @@ class Version
     }
 
     /**
-     * Returns the "major" part.
-     * Incremented when you make incompatible API changes.
+     * Returns new instance based on given version as array.
+     * Given version should contain 3 integers, 1 per each part ("major", "minor" and "patch").
      *
-     * @return int
+     * Examples:
+     * [1, 0, 2];
+     * [10, 4, 0];
+     *
+     * @param array $version The version
+     * @return null|Version
      */
-    public function getMajorPart()
+    public static function fromArray(array $version)
     {
-        return $this->majorPart;
-    }
+        /*
+         * No version provided?
+         * Nothing to do
+         */
+        if (empty($version)) {
+            return null;
+        }
 
-    /**
-     * Returns the "minor" part.
-     * Incremented when you add functionality in a backwards-compatible manner.
-     *
-     * @return int
-     */
-    public function getMinorPart()
-    {
-        return $this->minorPart;
-    }
+        $count = count($version);
 
-    /**
-     * Returns the "patch" part.
-     * Incremented when you make backwards-compatible bug fixes.
-     *
-     * @return int
-     */
-    public function getPatchPart()
-    {
-        return $this->patchPart;
+        /*
+         * Incorrect version?
+         * Nothing to do
+         */
+        if (3 !== $count) {
+            return null;
+        }
+
+        $majorPart = (int) $version[0];
+        $minorPart = (int) $version[1];
+        $patchPart = (int) $version[2];
+
+        return new static($majorPart, $minorPart, $patchPart);
     }
 
     /**
@@ -132,48 +137,43 @@ class Version
             return null;
         }
 
-        $majorPart = (int)$matches[1];
-        $minorPart = (int)$matches[2];
-        $patchPart = (int)$matches[3];
+        $majorPart = (int) $matches[1];
+        $minorPart = (int) $matches[2];
+        $patchPart = (int) $matches[3];
 
         return new static($majorPart, $minorPart, $patchPart);
     }
 
     /**
-     * Returns new instance based on given version as array.
-     * Given version should contain 3 integers, 1 per each part ("major", "minor" and "patch").
+     * Returns the "major" part.
+     * Incremented when you make incompatible API changes.
      *
-     * Examples:
-     * [1, 0, 2];
-     * [10, 4, 0];
-     *
-     * @param array $version The version
-     * @return null|Version
+     * @return int
      */
-    public static function fromArray(array $version)
+    public function getMajorPart()
     {
-        /*
-         * No version provided?
-         * Nothing to do
-         */
-        if (empty($version)) {
-            return null;
-        }
+        return $this->majorPart;
+    }
 
-        $count = count($version);
+    /**
+     * Returns the "minor" part.
+     * Incremented when you add functionality in a backwards-compatible manner.
+     *
+     * @return int
+     */
+    public function getMinorPart()
+    {
+        return $this->minorPart;
+    }
 
-        /*
-         * Incorrect version?
-         * Nothing to do
-         */
-        if (3 !== $count) {
-            return null;
-        }
-
-        $majorPart = (int)$version[0];
-        $minorPart = (int)$version[1];
-        $patchPart = (int)$version[2];
-
-        return new static($majorPart, $minorPart, $patchPart);
+    /**
+     * Returns the "patch" part.
+     * Incremented when you make backwards-compatible bug fixes.
+     *
+     * @return int
+     */
+    public function getPatchPart()
+    {
+        return $this->patchPart;
     }
 }

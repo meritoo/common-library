@@ -19,7 +19,7 @@ use SimpleXMLElement;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\Xml
+ * @covers    \Meritoo\Common\Utilities\Xml
  */
 class XmlTest extends BaseTestCase
 {
@@ -38,14 +38,14 @@ class XmlTest extends BaseTestCase
         $element2 = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><employees />');
 
         $merged = Xml::mergeNodes($element1, $element2);
-        self::assertEquals('', (string)$merged);
+        self::assertEquals('', (string) $merged);
 
         // XMLs with data
         $element1 = new SimpleXMLElement($this->simpleXml);
         $element2 = new SimpleXMLElement($this->advancedXml);
 
         $merged = Xml::mergeNodes($element1, $element2);
-        self::assertEquals('John', (string)$merged->author[0]->first_name);
+        self::assertEquals('John', (string) $merged->author[0]->first_name);
     }
 
     /**

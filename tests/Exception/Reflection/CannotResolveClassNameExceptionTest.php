@@ -25,6 +25,33 @@ use stdClass;
  */
 class CannotResolveClassNameExceptionTest extends BaseTestCase
 {
+    /**
+     * Provides source of the class's / trait's name, information if message of this exception should be prepared for
+     * class and the expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideClassName(): Generator
+    {
+        yield [
+            'Not\Existing\Class',
+            true,
+            'Name of class from given \'string\' Not\Existing\Class cannot be resolved. Is there everything ok?',
+        ];
+
+        yield [
+            'Not\Existing\Trait',
+            false,
+            'Name of trait from given \'string\' Not\Existing\Trait cannot be resolved. Is there everything ok?',
+        ];
+
+        yield [
+            stdClass::class,
+            true,
+            'Name of class from given \'string\' stdClass cannot be resolved. Is there everything ok?',
+        ];
+    }
+
     public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -32,14 +59,6 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
             OopVisibilityType::IS_PUBLIC,
             3
         );
-    }
-
-    public function testCreateUsingDefaults(): void
-    {
-        $exception = CannotResolveClassNameException::create(stdClass::class);
-        $expectedMessage = 'Name of class from given \'string\' stdClass cannot be resolved. Is there everything ok?';
-
-        static::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**
@@ -56,30 +75,11 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides source of the class's / trait's name, information if message of this exception should be prepared for
-     * class and the expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideClassName(): Generator
+    public function testCreateUsingDefaults(): void
     {
-        yield[
-            'Not\Existing\Class',
-            true,
-            'Name of class from given \'string\' Not\Existing\Class cannot be resolved. Is there everything ok?',
-        ];
+        $exception = CannotResolveClassNameException::create(stdClass::class);
+        $expectedMessage = 'Name of class from given \'string\' stdClass cannot be resolved. Is there everything ok?';
 
-        yield[
-            'Not\Existing\Trait',
-            false,
-            'Name of trait from given \'string\' Not\Existing\Trait cannot be resolved. Is there everything ok?',
-        ];
-
-        yield[
-            stdClass::class,
-            true,
-            'Name of class from given \'string\' stdClass cannot be resolved. Is there everything ok?',
-        ];
+        static::assertSame($expectedMessage, $exception->getMessage());
     }
 }

@@ -54,8 +54,8 @@ class Template
      * Returns content of the template filled with given values (by replacing placeholders with their proper values)
      *
      * @param array $values Pairs of key-value where: key - name of placeholder, value - value of the placeholder
-     * @throws MissingPlaceholdersInValuesException
      * @return string
+     * @throws MissingPlaceholdersInValuesException
      */
     public function fill(array $values): string
     {
@@ -76,41 +76,6 @@ class Template
             if (isset($values[$placeholderName])) {
                 $value = $values[$placeholderName];
                 $result = str_replace($placeholder, (string) $value, $result);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns information if given template is valid
-     *
-     * @param string $content Raw string with placeholders to validate (content of the template)
-     * @return bool
-     */
-    private static function isValid(string $content): bool
-    {
-        if ('' === $content) {
-            return false;
-        }
-
-        return (bool)preg_match_all(static::getPlaceholderPattern(), $content);
-    }
-
-    /**
-     * Returns placeholders of given template
-     *
-     * @param string $content Content of template
-     * @return array
-     */
-    private static function getPlaceholders(string $content): array
-    {
-        $result = [];
-        $matchCount = preg_match_all(static::getPlaceholderPattern(), $content, $result);
-
-        if (false !== $matchCount && 0 < $matchCount) {
-            foreach ($result as $index => $placeholders) {
-                $result[$index] = array_unique($placeholders);
             }
         }
 
@@ -147,5 +112,40 @@ class Template
             static::PLACEHOLDER_TAG,
             static::PLACEHOLDER_TAG
         );
+    }
+
+    /**
+     * Returns placeholders of given template
+     *
+     * @param string $content Content of template
+     * @return array
+     */
+    private static function getPlaceholders(string $content): array
+    {
+        $result = [];
+        $matchCount = preg_match_all(static::getPlaceholderPattern(), $content, $result);
+
+        if (false !== $matchCount && 0 < $matchCount) {
+            foreach ($result as $index => $placeholders) {
+                $result[$index] = array_unique($placeholders);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns information if given template is valid
+     *
+     * @param string $content Raw string with placeholders to validate (content of the template)
+     * @return bool
+     */
+    private static function isValid(string $content): bool
+    {
+        if ('' === $content) {
+            return false;
+        }
+
+        return (bool) preg_match_all(static::getPlaceholderPattern(), $content);
     }
 }

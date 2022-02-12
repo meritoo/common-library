@@ -26,6 +26,102 @@ use Meritoo\Common\ValueObject\Template;
  */
 class TemplatesTest extends BaseTestCase
 {
+    public function provideArrayWithTemplates(): ?Generator
+    {
+        yield [
+            'An empty array',
+            [],
+            new Templates(),
+        ];
+
+        yield [
+            'Number-based indexes',
+            [
+                'First name: %first_name%',
+                'Last name: %last_name%',
+            ],
+            new Templates([
+                new Template('First name: %first_name%'),
+                new Template('Last name: %last_name%'),
+            ]),
+        ];
+
+        yield [
+            'String-based indexes',
+            [
+                'first' => 'First name: %first_name%',
+                'last' => 'Last name: %last_name%',
+            ],
+            new Templates([
+                'first' => new Template('First name: %first_name%'),
+                'last' => new Template('Last name: %last_name%'),
+            ]),
+        ];
+    }
+
+    public function provideTemplatesToFind(): ?Generator
+    {
+        yield [
+            '2 templates only',
+            new Templates([
+                'first' => new Template('First name: %first_name%'),
+                'last' => new Template('Last name: %last_name%'),
+            ]),
+            'first',
+            new Template('First name: %first_name%'),
+        ];
+
+        yield [
+            'Different indexes',
+            new Templates([
+                'first' => new Template('First name: %first_name%'),
+                'last' => new Template('Last name: %last_name%'),
+                1 => new Template('Hi %name%, how are you?'),
+                '2' => new Template('Your score is: %score%'),
+            ]),
+            '1',
+            new Template('Hi %name%, how are you?'),
+        ];
+    }
+
+    public function provideTemplatesWithNotExistingIndex(): ?Generator
+    {
+        $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
+
+        yield [
+            new Templates(),
+            'test',
+            sprintf($template, 'test'),
+        ];
+
+        yield [
+            new Templates([
+                'first' => new Template('First name: %first_name%'),
+                'last' => new Template('Last name: %last_name%'),
+            ]),
+            'test',
+            sprintf($template, 'test'),
+        ];
+
+        yield [
+            new Templates([
+                'first' => new Template('First name: %first_name%'),
+                'last' => new Template('Last name: %last_name%'),
+            ]),
+            '',
+            sprintf($template, ''),
+        ];
+
+        yield [
+            new Templates([
+                'first' => new Template('First name: %first_name%'),
+                'last' => new Template('Last name: %last_name%'),
+            ]),
+            '4',
+            sprintf($template, 4),
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -37,14 +133,15 @@ class TemplatesTest extends BaseTestCase
 
     /**
      * @param string    $description Description of test
-     * @param array     $templates   Pairs of key-value where: key - template's index, value - template's content
-     * @param Templates $expected    Expected collection/storage of templates
+     * @param Templates $templates   All templates
+     * @param string    $index       Index that contains required template
+     * @param Template  $expected    Expected template
      *
-     * @dataProvider provideArrayWithTemplates
+     * @dataProvider provideTemplatesToFind
      */
-    public function testFromArray(string $description, array $templates, Templates $expected): void
+    public function testFindTemplate(string $description, Templates $templates, string $index, Template $expected): void
     {
-        static::assertEquals($expected, Templates::fromArray($templates), $description);
+        static::assertEquals($expected, $templates->findTemplate($index), $description);
     }
 
     public function testFindTemplateUsingEmptyCollection(): void
@@ -79,110 +176,13 @@ class TemplatesTest extends BaseTestCase
 
     /**
      * @param string    $description Description of test
-     * @param Templates $templates   All templates
-     * @param string    $index       Index that contains required template
-     * @param Template  $expected    Expected template
+     * @param array     $templates   Pairs of key-value where: key - template's index, value - template's content
+     * @param Templates $expected    Expected collection/storage of templates
      *
-     * @dataProvider provideTemplatesToFind
+     * @dataProvider provideArrayWithTemplates
      */
-    public function testFindTemplate(string $description, Templates $templates, string $index, Template $expected): void
+    public function testFromArray(string $description, array $templates, Templates $expected): void
     {
-        static::assertEquals($expected, $templates->findTemplate($index), $description);
-    }
-
-    public function provideArrayWithTemplates(): ?Generator
-    {
-        yield[
-            'An empty array',
-            [],
-            new Templates(),
-        ];
-
-        yield[
-            'Number-based indexes',
-            [
-                'First name: %first_name%',
-                'Last name: %last_name%',
-            ],
-            new Templates([
-                new Template('First name: %first_name%'),
-                new Template('Last name: %last_name%'),
-            ]),
-        ];
-
-        yield[
-            'String-based indexes',
-            [
-                'first' => 'First name: %first_name%',
-                'last'  => 'Last name: %last_name%',
-            ],
-            new Templates([
-                'first' => new Template('First name: %first_name%'),
-                'last'  => new Template('Last name: %last_name%'),
-            ]),
-        ];
-    }
-
-    public function provideTemplatesWithNotExistingIndex(): ?Generator
-    {
-        $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
-
-        yield[
-            new Templates(),
-            'test',
-            sprintf($template, 'test'),
-        ];
-
-        yield[
-            new Templates([
-                'first' => new Template('First name: %first_name%'),
-                'last'  => new Template('Last name: %last_name%'),
-            ]),
-            'test',
-            sprintf($template, 'test'),
-        ];
-
-        yield[
-            new Templates([
-                'first' => new Template('First name: %first_name%'),
-                'last'  => new Template('Last name: %last_name%'),
-            ]),
-            '',
-            sprintf($template, ''),
-        ];
-
-        yield[
-            new Templates([
-                'first' => new Template('First name: %first_name%'),
-                'last'  => new Template('Last name: %last_name%'),
-            ]),
-            '4',
-            sprintf($template, 4),
-        ];
-    }
-
-    public function provideTemplatesToFind(): ?Generator
-    {
-        yield[
-            '2 templates only',
-            new Templates([
-                'first' => new Template('First name: %first_name%'),
-                'last'  => new Template('Last name: %last_name%'),
-            ]),
-            'first',
-            new Template('First name: %first_name%'),
-        ];
-
-        yield[
-            'Different indexes',
-            new Templates([
-                'first' => new Template('First name: %first_name%'),
-                'last'  => new Template('Last name: %last_name%'),
-                1       => new Template('Hi %name%, how are you?'),
-                '2'     => new Template('Your score is: %score%'),
-            ]),
-            '1',
-            new Template('Hi %name%, how are you?'),
-        ];
+        static::assertEquals($expected, Templates::fromArray($templates), $description);
     }
 }

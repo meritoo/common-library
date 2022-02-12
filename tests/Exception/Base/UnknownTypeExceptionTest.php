@@ -29,15 +29,15 @@ class UnknownTypeExceptionTest extends BaseTestCase
         static::assertConstructorVisibilityAndArguments(UnknownTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
-    public function testWithoutException()
-    {
-        self::assertEquals('Test 2', (new TestService())->getTranslatedType('test_2'));
-    }
-
     public function testTheException()
     {
         $this->expectException(UnknownTestTypeException::class);
         self::assertEmpty((new TestService())->getTranslatedType('test_3'));
+    }
+
+    public function testWithoutException()
+    {
+        self::assertEquals('Test 2', (new TestService())->getTranslatedType('test_2'));
     }
 }
 
@@ -89,8 +89,8 @@ class TestService
      * Returns translated type (for testing purposes)
      *
      * @param string $type Type of something (for testing purposes)
-     * @throws UnknownTestTypeException
      * @return string
+     * @throws UnknownTestTypeException
      */
     public function getTranslatedType(string $type): string
     {

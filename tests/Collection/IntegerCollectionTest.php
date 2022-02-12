@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Meritoo\Test\Common\Collection;
 
+use Generator;
 use Meritoo\Common\Collection\IntegerCollection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -25,6 +26,45 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class IntegerCollectionTest extends BaseTestCase
 {
+    public function provideDifferentTypesOfElements(): ?Generator
+    {
+        yield [
+            'An empty array',
+            [],
+            [],
+        ];
+
+        yield [
+            'Valid elements only',
+            [
+                1,
+                2,
+                3,
+            ],
+            [
+                1,
+                2,
+                3,
+            ],
+        ];
+
+        yield [
+            'Mixed elements',
+            [
+                1,
+                'test',
+                '',
+                [],
+                234,
+                'test',
+            ],
+            [
+                0 => 1,
+                4 => 234,
+            ],
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -48,44 +88,5 @@ class IntegerCollectionTest extends BaseTestCase
     ): void {
         $collection = new IntegerCollection($elements);
         static::assertSame($expectedElements, $collection->toArray(), $description);
-    }
-
-    public function provideDifferentTypesOfElements(): ?\Generator
-    {
-        yield[
-            'An empty array',
-            [],
-            [],
-        ];
-
-        yield[
-            'Valid elements only',
-            [
-                1,
-                2,
-                3,
-            ],
-            [
-                1,
-                2,
-                3,
-            ],
-        ];
-
-        yield[
-            'Mixed elements',
-            [
-                1,
-                'test',
-                '',
-                [],
-                234,
-                'test',
-            ],
-            [
-                0 => 1,
-                4 => 234,
-            ],
-        ];
     }
 }

@@ -88,13 +88,33 @@ class Address
     }
 
     /**
-     * Returns street
+     * Returns number of building
      *
      * @return string
      */
-    public function getStreet()
+    public function getBuildingNumber()
     {
-        return $this->street;
+        return $this->buildingNumber;
+    }
+
+    /**
+     * Returns city, location
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Returns number of flat
+     *
+     * @return string
+     */
+    public function getFlatNumber()
+    {
+        return $this->flatNumber;
     }
 
     /**
@@ -118,23 +138,13 @@ class Address
     }
 
     /**
-     * Returns number of building
+     * Returns street
      *
      * @return string
      */
-    public function getBuildingNumber()
+    public function getStreet()
     {
-        return $this->buildingNumber;
-    }
-
-    /**
-     * Returns number of flat
-     *
-     * @return string
-     */
-    public function getFlatNumber()
-    {
-        return $this->flatNumber;
+        return $this->street;
     }
 
     /**
@@ -145,15 +155,5 @@ class Address
     public function getZipCode()
     {
         return $this->zipCode;
-    }
-
-    /**
-     * Returns city, location
-     *
-     * @return string
-     */
-    public function getCity()
-    {
-        return $this->city;
     }
 }

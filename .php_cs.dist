@@ -8,24 +8,23 @@ $finder = PhpCsFixer\Finder::create()
     ])
     ->notPath([
         'tests/Resources/var/',
-    ])
-;
+    ]);
 
 return PhpCsFixer\Config::create()
     ->setRules([
-        '@Symfony'                            => true,
-        '@PhpCsFixer'                         => true,
-        '@PHP71Migration'                     => true,
-        'array_syntax'                        => ['syntax' => 'short'],
-        'binary_operator_spaces'              => [
+        '@Symfony' => true,
+        '@PhpCsFixer' => true,
+        '@PHP71Migration' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'binary_operator_spaces' => [
             'align_double_arrow' => true,
         ],
-        'blank_line_before_return'            => false,
-        'cast_spaces'                         => false,
-        'concat_space'                        => [
+        'blank_line_before_return' => false,
+        'cast_spaces' => false,
+        'concat_space' => [
             'spacing' => 'one',
         ],
-        'ordered_class_elements'              => [
+        'ordered_class_elements' => [
             'order' => [
                 'use_trait',
                 'constant_public',
@@ -43,11 +42,11 @@ return PhpCsFixer\Config::create()
             ],
         ],
         'phpdoc_add_missing_param_annotation' => true,
-        'phpdoc_align'                        => false,
-        'phpdoc_order'                        => true,
-        'phpdoc_separation'                   => false,
-        'phpdoc_summary'                      => false,
-        'trim_array_spaces'                   => false,
+        'phpdoc_align' => false,
+        'phpdoc_order' => true,
+        'phpdoc_separation' => false,
+        'phpdoc_summary' => false,
+        'trim_array_spaces' => false,
     ])
     ->setFinder($finder)
 ;

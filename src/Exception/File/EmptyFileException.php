@@ -8,13 +8,15 @@
 
 namespace Meritoo\Common\Exception\File;
 
+use Exception;
+
 /**
  * An exception used while file with given path is empty (has no content)
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class EmptyFileException extends \Exception
+class EmptyFileException extends Exception
 {
     /**
      * Creates exception

@@ -21,10 +21,39 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Type\UnknownDatePartTypeException
+ * @covers    \Meritoo\Common\Exception\Type\UnknownDatePartTypeException
  */
 class UnknownDatePartTypeExceptionTest extends BaseTestCase
 {
+    /**
+     * Provides type of date part, incorrect value and expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideDatePartAndValue()
+    {
+        $template = 'The \'%s\' type of date part (with value %s) is unknown. Probably doesn\'t exist or there is a'
+            .' typo. You should use one of these types: day, hour, minute, month, second, year.';
+
+        yield [
+            DatePartType::DAY,
+            '44',
+            sprintf($template, DatePartType::DAY, '44'),
+        ];
+
+        yield [
+            DatePartType::MONTH,
+            '22',
+            sprintf($template, DatePartType::MONTH, '22'),
+        ];
+
+        yield [
+            DatePartType::MINUTE,
+            '77',
+            sprintf($template, DatePartType::MINUTE, '77'),
+        ];
+    }
+
     public function testConstructorVisibilityAndArguments()
     {
         static::assertConstructorVisibilityAndArguments(UnknownDatePartTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
@@ -41,34 +70,5 @@ class UnknownDatePartTypeExceptionTest extends BaseTestCase
     {
         $exception = UnknownDatePartTypeException::createException($unknownDatePart, $value);
         static::assertSame($expectedMessage, $exception->getMessage());
-    }
-
-    /**
-     * Provides type of date part, incorrect value and expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideDatePartAndValue()
-    {
-        $template = 'The \'%s\' type of date part (with value %s) is unknown. Probably doesn\'t exist or there is a'
-            . ' typo. You should use one of these types: day, hour, minute, month, second, year.';
-
-        yield[
-            DatePartType::DAY,
-            '44',
-            sprintf($template, DatePartType::DAY, '44'),
-        ];
-
-        yield[
-            DatePartType::MONTH,
-            '22',
-            sprintf($template, DatePartType::MONTH, '22'),
-        ];
-
-        yield[
-            DatePartType::MINUTE,
-            '77',
-            sprintf($template, DatePartType::MINUTE, '77'),
-        ];
     }
 }

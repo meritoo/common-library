@@ -28,7 +28,7 @@ class MissingPlaceholdersInValuesException extends Exception
     public static function create(string $content, array $missingPlaceholders): MissingPlaceholdersInValuesException
     {
         $template = 'Cannot fill template \'%s\', because of missing values for placeholder(s): %s. Did you provide all'
-            . ' required values?';
+            .' required values?';
         $message = sprintf($template, $content, implode(', ', $missingPlaceholders));
 
         return new static($message);

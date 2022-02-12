@@ -111,6 +111,29 @@ class DatePeriod extends BaseType
     }
 
     /**
+     * Returns the end date of period
+     *
+     * @return null|DateTime
+     */
+    public function getEndDate(): ?DateTime
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * Sets the end date of period
+     *
+     * @param null|DateTime $endDate (optional) The end date of period. Default: null.
+     * @return $this
+     */
+    public function setEndDate(?DateTime $endDate = null): self
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
      * Returns formatted one of the period's date: start date or end date
      *
      * @param string $format    Format used to format the date
@@ -134,29 +157,6 @@ class DatePeriod extends BaseType
         }
 
         return $date->format($format);
-    }
-
-    /**
-     * Returns the end date of period
-     *
-     * @return null|DateTime
-     */
-    public function getEndDate(): ?DateTime
-    {
-        return $this->endDate;
-    }
-
-    /**
-     * Sets the end date of period
-     *
-     * @param null|DateTime $endDate (optional) The end date of period. Default: null.
-     * @return $this
-     */
-    public function setEndDate(?DateTime $endDate = null): self
-    {
-        $this->endDate = $endDate;
-
-        return $this;
     }
 
     /**

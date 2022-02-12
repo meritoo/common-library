@@ -19,7 +19,7 @@ use Meritoo\Common\ValueObject\Address;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\ValueObject\Address
+ * @covers    \Meritoo\Common\ValueObject\Address
  */
 class AddressTest extends BaseTestCase
 {
@@ -48,13 +48,6 @@ class AddressTest extends BaseTestCase
         );
     }
 
-    public function testGetFlatNumber()
-    {
-        static::assertSame('200', $this->address->getFlatNumber());
-        static::assertSame('', $this->addressWithoutFlat->getFlatNumber());
-        static::assertSame('300', $this->addressWithoutStreet->getFlatNumber());
-    }
-
     public function testGetBuildingNumber()
     {
         static::assertSame('10', $this->address->getBuildingNumber());
@@ -62,11 +55,18 @@ class AddressTest extends BaseTestCase
         static::assertSame('1', $this->addressWithoutStreet->getBuildingNumber());
     }
 
-    public function testGetStreet()
+    public function testGetCity()
     {
-        static::assertSame('4th Avenue', $this->address->getStreet());
-        static::assertSame('Green Street', $this->addressWithoutFlat->getStreet());
-        static::assertSame('', $this->addressWithoutStreet->getStreet());
+        static::assertSame('New York', $this->address->getCity());
+        static::assertSame('San Francisco', $this->addressWithoutFlat->getCity());
+        static::assertSame('Saint Louis', $this->addressWithoutStreet->getCity());
+    }
+
+    public function testGetFlatNumber()
+    {
+        static::assertSame('200', $this->address->getFlatNumber());
+        static::assertSame('', $this->addressWithoutFlat->getFlatNumber());
+        static::assertSame('300', $this->addressWithoutStreet->getFlatNumber());
     }
 
     public function testGetFullStreet()
@@ -76,11 +76,11 @@ class AddressTest extends BaseTestCase
         static::assertSame('', $this->addressWithoutStreet->getFullStreet());
     }
 
-    public function testGetCity()
+    public function testGetStreet()
     {
-        static::assertSame('New York', $this->address->getCity());
-        static::assertSame('San Francisco', $this->addressWithoutFlat->getCity());
-        static::assertSame('Saint Louis', $this->addressWithoutStreet->getCity());
+        static::assertSame('4th Avenue', $this->address->getStreet());
+        static::assertSame('Green Street', $this->addressWithoutFlat->getStreet());
+        static::assertSame('', $this->addressWithoutStreet->getStreet());
     }
 
     public function testGetZipCode()
@@ -92,9 +92,9 @@ class AddressTest extends BaseTestCase
 
     public function testToString()
     {
-        static::assertSame('4th Avenue 10/200, 00123, New York', (string)$this->address);
-        static::assertSame('Green Street 22, 00456, San Francisco', (string)$this->addressWithoutFlat);
-        static::assertSame('00111, Saint Louis', (string)$this->addressWithoutStreet);
+        static::assertSame('4th Avenue 10/200, 00123, New York', (string) $this->address);
+        static::assertSame('Green Street 22, 00456, San Francisco', (string) $this->addressWithoutFlat);
+        static::assertSame('00111, Saint Louis', (string) $this->addressWithoutStreet);
     }
 
     protected function setUp(): void

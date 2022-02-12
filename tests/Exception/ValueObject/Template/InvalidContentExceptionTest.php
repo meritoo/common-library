@@ -24,6 +24,29 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class InvalidContentExceptionTest extends BaseTestCase
 {
+    public function provideContent(): ?Generator
+    {
+        $template = 'Content of template \'%s\' is invalid. Did you use string with 1 placeholder at least?';
+
+        yield [
+            'An empty string',
+            '',
+            sprintf($template, ''),
+        ];
+
+        yield [
+            'Simple string',
+            'Lorem ipsum',
+            sprintf($template, 'Lorem ipsum'),
+        ];
+
+        yield [
+            'One sentence',
+            'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.',
+            sprintf($template, 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.'),
+        ];
+    }
+
     public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -44,28 +67,5 @@ class InvalidContentExceptionTest extends BaseTestCase
     {
         $exception = InvalidContentException::create($content);
         static::assertSame($expectedMessage, $exception->getMessage(), $description);
-    }
-
-    public function provideContent(): ?Generator
-    {
-        $template = 'Content of template \'%s\' is invalid. Did you use string with 1 placeholder at least?';
-
-        yield[
-            'An empty string',
-            '',
-            sprintf($template, ''),
-        ];
-
-        yield[
-            'Simple string',
-            'Lorem ipsum',
-            sprintf($template, 'Lorem ipsum'),
-        ];
-
-        yield[
-            'One sentence',
-            'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.',
-            sprintf($template, 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.'),
-        ];
     }
 }

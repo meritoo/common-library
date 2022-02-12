@@ -20,13 +20,33 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Regex\InvalidHtmlAttributesException
+ * @covers    \Meritoo\Common\Exception\Regex\InvalidHtmlAttributesException
  */
 class InvalidHtmlAttributesExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    /**
+     * Provides html attributes
+     *
+     * @return Generator
+     */
+    public function provideHtmlAttributes()
     {
-        static::assertConstructorVisibilityAndArguments(InvalidHtmlAttributesException::class, OopVisibilityType::IS_PUBLIC, 3);
+        $template = 'HTML attributes \'%s\' are invalid. Is there everything ok?';
+
+        yield [
+            'abc = def',
+            sprintf($template, 'abc = def'),
+        ];
+
+        yield [
+            'abc = def ghi = jkl',
+            sprintf($template, 'abc = def ghi = jkl'),
+        ];
+
+        yield [
+            'abc=def ghi=jkl',
+            sprintf($template, 'abc=def ghi=jkl'),
+        ];
     }
 
     /**
@@ -41,28 +61,8 @@ class InvalidHtmlAttributesExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides html attributes
-     *
-     * @return Generator
-     */
-    public function provideHtmlAttributes()
+    public function testConstructorVisibilityAndArguments()
     {
-        $template = 'HTML attributes \'%s\' are invalid. Is there everything ok?';
-
-        yield[
-            'abc = def',
-            sprintf($template, 'abc = def'),
-        ];
-
-        yield[
-            'abc = def ghi = jkl',
-            sprintf($template, 'abc = def ghi = jkl'),
-        ];
-
-        yield[
-            'abc=def ghi=jkl',
-            sprintf($template, 'abc=def ghi=jkl'),
-        ];
+        static::assertConstructorVisibilityAndArguments(InvalidHtmlAttributesException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 }

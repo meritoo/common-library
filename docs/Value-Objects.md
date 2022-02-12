@@ -15,6 +15,7 @@ Located in `Meritoo\Common\ValueObject` namespace and in `src/ValueObject/` dire
 ##### Info
 
 Represents address of company, institution, user etc. Contains properties:
+
 1. `$street` - the street
 2. `$buildingNumber` - the number of building
 3. `$flatNumber` - the number of flat
@@ -66,6 +67,7 @@ $asString = (string)$address; // "4th Avenue 10/200, 00123, New York"
 ##### Info
 
 Represents bank account. Contains properties:
+
 1. `$bankName` - name of bank
 2. `$accountNumber` - number of bank's account
 
@@ -101,6 +103,7 @@ $asString = (string)$bank; // "Bank of America, 1234567890"
 ##### Info
 
 Represents a company. Contains properties:
+
 1. `$name` - name of company
 2. `$address` - address of company
 3. `$bankAccount` - bank account of company
@@ -145,7 +148,9 @@ $asString = (string)$company; // "Test 1, 4th Avenue 10/200, 00123, New York, Ba
 
 ##### Info
 
-Represents human. Based on `\Meritoo\Common\Traits\ValueObject\HumanTrait` trait. Contains properties same as `HumanTrait` trait:
+Represents human. Based on `\Meritoo\Common\Traits\ValueObject\HumanTrait` trait. Contains properties same
+as `HumanTrait` trait:
+
 1. `$firstName` - first name
 2. `$lastName` - last name
 3. `$email` - email address
@@ -186,6 +191,7 @@ $asString2 = (string)$human2; // "John Scott <john@scott.com>"
 ##### Info
 
 Size, e.g. of image. Contains properties:
+
 1. `width` - the width
 2. `height` - the height
 3. `unit` - unit used when width or height should be returned with unit, default: `"px"`
@@ -218,13 +224,15 @@ New instance can be created using static methods:
 ##### Methods
 
 Has:
+
 - getters and setters for `width` and `height` properties.
 - setter for `separator` property
 - `toString()` and `toArray()` methods that returns size represented as string and array
 
 ##### Conversion to string (using `__toString()` method)
 
-Instance of `Size` may be represented as string that contains width and height separated by separator (default: `" x "`).
+Instance of `Size` may be represented as string that contains width and height separated by separator (default: `" x "`)
+.
 
 Example:
 
@@ -248,6 +256,7 @@ $asString2 = (string)$size; // "200X100"
 ##### Info
 
 Template with placeholders that may be filled by real data. Contains properties:
+
 1. `$content` - raw string with placeholders (content of the template)
 
 ##### New instance
@@ -258,7 +267,9 @@ New instance can be created using constructor:
 new Template('First name: %first_name%');
 ```
 
-Each placeholder should be wrapped by `%` character, e.g. `%first_name%`. If content of template is an empty string or does not contain 1 placeholder at least, an `Meritoo\Common\Exception\ValueObject\Template\InvalidContentException` exception will be thrown.
+Each placeholder should be wrapped by `%` character, e.g. `%first_name%`. If content of template is an empty string or
+does not contain 1 placeholder at least, an `Meritoo\Common\Exception\ValueObject\Template\InvalidContentException`
+exception will be thrown.
 
 Examples of invalid content of template:
 
@@ -270,7 +281,8 @@ new Template('This is %test'); // With starting tag only (invalid placeholder)
 
 ##### Methods
 
-Has 1 public method: `fill(array $values)`. Returns content of the template filled with given values (by replacing placeholders with their proper values).
+Has 1 public method: `fill(array $values)`. Returns content of the template filled with given values (by replacing
+placeholders with their proper values).
 
 Example of usage:
 
@@ -282,7 +294,8 @@ $result = $template->fill([
 ]); // "My name is Jane and I am photographer"
 ```
 
-Throws an `Meritoo\Common\Exception\ValueObject\Template\NotEnoughValuesException` exception if there is not enough values (iow. more placeholders than values).
+Throws an `Meritoo\Common\Exception\ValueObject\Template\NotEnoughValuesException` exception if there is not enough
+values (iow. more placeholders than values).
 
 ### Version
 
@@ -293,6 +306,7 @@ Throws an `Meritoo\Common\Exception\ValueObject\Template\NotEnoughValuesExceptio
 ##### Info
 
 Represents version of software. Contains properties:
+
 1. `$majorPart` - the "major" part of version
 2. `$minorPart` - the "minor" part of version
 3. `$patchPart` - the "patch" part of version
@@ -303,22 +317,22 @@ New instance can be created using:
 
 1. Constructor:
 
-	```php
-    new Version(1, 0, 2);
-    ```
+   ```php
+   new Version(1, 0, 2);
+   ```
 
 2. Static methods:
-	1. `fromArray(array $version)` - creates new instance using given version as array
+    1. `fromArray(array $version)` - creates new instance using given version as array
 
-	```php
-	Version::fromArray([1, 0, 2]);
-	```
+   ```php
+   Version::fromArray([1, 0, 2]);
+   ```
 
-	2. `fromString(string $version)` - creates new instance using given version as string:
+    2. `fromString(string $version)` - creates new instance using given version as string:
 
-	```php
-    Version::fromString('1.0.2');
-    ```
+   ```php
+   Version::fromString('1.0.2');
+   ```
 
 ##### Methods
 
@@ -326,7 +340,8 @@ Has getters for each property: `getMajorPart()`, `getMinorPart()`, `getPatchPart
 
 ##### Conversion to string (using `__toString()` method)
 
-Instance of `Version` may be represented as string that contains all properties separated by `.` (`$majorPart`.`$minorPart`.`$patchPart`).
+Instance of `Version` may be represented as string that contains all properties separated by `.` (`$majorPart`
+.`$minorPart`.`$patchPart`).
 
 Example:
 
@@ -342,9 +357,9 @@ $asString = (string)$version; // "1.0.2"
 3. [Templates](Collection/Templates.md)
 4. [Exceptions](Exceptions.md)
 5. [Static methods](Static-methods.md)
-   1. [Arrays](Static-methods/Arrays.md)
-   2. [Regex](Static-methods/Regex.md)
-   3. [Uri](Static-methods/Uri.md)
+    1. [Arrays](Static-methods/Arrays.md)
+    2. [Regex](Static-methods/Regex.md)
+    3. [Uri](Static-methods/Uri.md)
 6. [**Value Objects**](Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../README.md)

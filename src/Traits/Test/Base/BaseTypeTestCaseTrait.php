@@ -22,6 +22,13 @@ use Meritoo\Common\Type\Base\BaseType;
 trait BaseTypeTestCaseTrait
 {
     /**
+     * Provides type to verify and information if it's correct
+     *
+     * @return Generator
+     */
+    abstract public function provideTypeToVerify(): Generator;
+
+    /**
      * Verifies availability of all types
      */
     public function testAvailabilityOfAllTypes(): void
@@ -46,11 +53,11 @@ trait BaseTypeTestCaseTrait
     }
 
     /**
-     * Provides type to verify and information if it's correct
+     * Returns all expected types of the tested type
      *
-     * @return Generator
+     * @return array
      */
-    abstract public function provideTypeToVerify(): Generator;
+    abstract protected function getAllExpectedTypes(): array;
 
     /**
      * Returns instance of the tested type
@@ -58,11 +65,4 @@ trait BaseTypeTestCaseTrait
      * @return BaseType
      */
     abstract protected function getTestedTypeInstance(): BaseType;
-
-    /**
-     * Returns all expected types of the tested type
-     *
-     * @return array
-     */
-    abstract protected function getAllExpectedTypes(): array;
 }

@@ -20,13 +20,28 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Regex\InvalidUrlException
+ * @covers    \Meritoo\Common\Exception\Regex\InvalidUrlException
  */
 class InvalidUrlExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    /**
+     * Provides invalid url and expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideUrl()
     {
-        static::assertConstructorVisibilityAndArguments(InvalidUrlException::class, OopVisibilityType::IS_PUBLIC, 3);
+        $template = 'Url \'%s\' is invalid. Is there everything ok?';
+
+        yield [
+            'aa/bb/cc',
+            sprintf($template, 'aa/bb/cc'),
+        ];
+
+        yield [
+            'http:/images\show\car.jpg',
+            sprintf($template, 'http:/images\show\car.jpg'),
+        ];
     }
 
     /**
@@ -41,23 +56,8 @@ class InvalidUrlExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides invalid url and expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideUrl()
+    public function testConstructorVisibilityAndArguments()
     {
-        $template = 'Url \'%s\' is invalid. Is there everything ok?';
-
-        yield[
-            'aa/bb/cc',
-            sprintf($template, 'aa/bb/cc'),
-        ];
-
-        yield[
-            'http:/images\show\car.jpg',
-            sprintf($template, 'http:/images\show\car.jpg'),
-        ];
+        static::assertConstructorVisibilityAndArguments(InvalidUrlException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 }

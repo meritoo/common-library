@@ -21,18 +21,18 @@ File: `src/Utilities/Regex.php`
 
 1)
 
-  - value: non-scalar or `null`
-  - result: `false`
+- value: non-scalar or `null`
+- result: `false`
 
 2)
 
-  - value: `""` (an empty string)
-  - result: `""` (an empty string)
+- value: `""` (an empty string)
+- result: `""` (an empty string)
 
 3)
 
-  - value: `"Lorem ipsum. Dolor sit 12.34 amet."`
-  - result: `"lorem-ipsum-dolor-sit-1234-amet"`
+- value: `"Lorem ipsum. Dolor sit 12.34 amet."`
+- result: `"lorem-ipsum-dolor-sit-1234-amet"`
 
 ### clearBeginningSlash(string): string
 
@@ -46,18 +46,18 @@ File: `src/Utilities/Regex.php`
 
 1)
 
-  - string: `"lorem ipsum"`
-  - result: `"lorem ipsum"`
+- string: `"lorem ipsum"`
+- result: `"lorem ipsum"`
 
 2)
 
-  - string: `"/lorem ipsum"`
-  - result: `"lorem ipsum"`
+- string: `"/lorem ipsum"`
+- result: `"lorem ipsum"`
 
 3)
 
-  - string: `"/ lorem 123 ipsum"`
-  - result: `" lorem 123 ipsum"`
+- string: `"/ lorem 123 ipsum"`
+- result: `" lorem 123 ipsum"`
 
 ### clearEndingSlash(string): string
 
@@ -71,18 +71,18 @@ File: `src/Utilities/Regex.php`
 
 1)
 
-  - string: `"lorem ipsum"`
-  - result: `"lorem ipsum"`
+- string: `"lorem ipsum"`
+- result: `"lorem ipsum"`
 
 2)
 
-  - string: `"lorem ipsum/"`
-  - result: `"lorem ipsum"`
+- string: `"lorem ipsum/"`
+- result: `"lorem ipsum"`
 
 3)
 
-  - string: `"lorem 123 ipsum /"`
-  - result: `"lorem 123 ipsum "`
+- string: `"lorem 123 ipsum /"`
+- result: `"lorem 123 ipsum "`
 
 # More
 
@@ -91,9 +91,9 @@ File: `src/Utilities/Regex.php`
 3. [Templates](../Collection/Templates.md)
 4. [Exceptions](../Exceptions.md)
 5. [Static methods](../Static-methods.md)
-   1. [Arrays](../Static-methods/Arrays.md)
-   2. [**Regex**](Regex.md)
-   3. [Uri](Uri.md)
+    1. [Arrays](../Static-methods/Arrays.md)
+    2. [**Regex**](Regex.md)
+    3. [Uri](Uri.md)
 6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

@@ -6,7 +6,8 @@ Common and useful classes, methods, exceptions etc.
 
 ### Create instance of exception
 
-This package contains a lot of exceptions. Each of them contains static method `create()` with proper arguments that is used to create instance of the exception. Example:
+This package contains a lot of exceptions. Each of them contains static method `create()` with proper arguments that is
+used to create instance of the exception. Example:
 
 ```php
 use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
@@ -17,11 +18,14 @@ throw IncorrectBundleNameException::create('RisusIpsum');
 
 ##### Short description
 
-It's a `Meritoo\Common\Exception\Base\UnknownTypeException` class. Related to `Meritoo\Common\Type\Base\BaseType` class that represents type of something, e.g. type of button, order.
+It's a `Meritoo\Common\Exception\Base\UnknownTypeException` class. Related to `Meritoo\Common\Type\Base\BaseType` class
+that represents type of something, e.g. type of button, order.
 
 ##### Usage
 
-You can extend `Meritoo\Common\Exception\Base\UnknownTypeException` class and create your own static method, e.g. `createException()`, which will be used create instance of the exception. Inside the `createException()` method you can call `parent::create()` method.
+You can extend `Meritoo\Common\Exception\Base\UnknownTypeException` class and create your own static method,
+e.g. `createException()`, which will be used create instance of the exception. Inside the `createException()` method you
+can call `parent::create()` method.
 
 ##### Example
 
@@ -58,9 +62,9 @@ class UnknownSimpleTypeException extends UnknownTypeException
 3. [Templates](Collection/Templates.md)
 4. [**Exceptions**](Exceptions.md)
 5. [Static methods](Static-methods.md)
-   1. [Arrays](Static-methods/Arrays.md)
-   2. [Regex](Static-methods/Regex.md)
-   3. [Uri](Static-methods/Uri.md)
+    1. [Arrays](Static-methods/Arrays.md)
+    2. [Regex](Static-methods/Regex.md)
+    3. [Uri](Static-methods/Uri.md)
 6. [Value Objects](Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../README.md)

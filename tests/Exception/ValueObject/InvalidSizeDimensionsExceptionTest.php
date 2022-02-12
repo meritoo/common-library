@@ -19,10 +19,33 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\ValueObject\InvalidSizeDimensionsException
+ * @covers    \Meritoo\Common\Exception\ValueObject\InvalidSizeDimensionsException
  */
 class InvalidSizeDimensionsExceptionTest extends BaseTestCase
 {
+    public function provideWidthAndHeight()
+    {
+        $template = 'Dimensions of size should be positive, but they are not: %d, %d. Is there everything ok?';
+
+        yield [
+            0,
+            0,
+            sprintf($template, 0, 0),
+        ];
+
+        yield [
+            -1,
+            -1,
+            sprintf($template, -1, -1),
+        ];
+
+        yield [
+            200,
+            100,
+            sprintf($template, 200, 100),
+        ];
+    }
+
     public function testConstructorVisibilityAndArguments()
     {
         static::assertConstructorVisibilityAndArguments(
@@ -43,28 +66,5 @@ class InvalidSizeDimensionsExceptionTest extends BaseTestCase
     {
         $exception = InvalidSizeDimensionsException::create($width, $height);
         static::assertSame($expectedMessage, $exception->getMessage());
-    }
-
-    public function provideWidthAndHeight()
-    {
-        $template = 'Dimensions of size should be positive, but they are not: %d, %d. Is there everything ok?';
-
-        yield[
-            0,
-            0,
-            sprintf($template, 0, 0),
-        ];
-
-        yield[
-            -1,
-            -1,
-            sprintf($template, -1, -1),
-        ];
-
-        yield[
-            200,
-            100,
-            sprintf($template, 200, 100),
-        ];
     }
 }

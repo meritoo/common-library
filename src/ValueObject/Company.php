@@ -70,16 +70,6 @@ class Company
     }
 
     /**
-     * Returns name of company
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Returns address of company
      *
      * @return Address
@@ -97,5 +87,15 @@ class Company
     public function getBankAccount()
     {
         return $this->bankAccount;
+    }
+
+    /**
+     * Returns name of company
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

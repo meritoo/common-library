@@ -20,66 +20,144 @@ use ReflectionException;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\Locale
+ * @covers    \Meritoo\Common\Utilities\Locale
  */
 class LocaleTest extends BaseTestCase
 {
+    /**
+     * Provides category
+     *
+     * @return Generator
+     */
+    public function provideCategoryLanguageCodeAndExpectedLocale()
+    {
+        yield [
+            LC_ALL,
+            'fr',
+            '',
+            'fr_FR.UTF-8',
+        ];
+
+        yield [
+            LC_COLLATE,
+            'fr',
+            'FR',
+            'fr_FR.UTF-8',
+        ];
+
+        yield [
+            LC_CTYPE,
+            'en',
+            'US',
+            'en_US.UTF-8',
+        ];
+
+        yield [
+            LC_NUMERIC,
+            'en',
+            'GB',
+            'en_GB.UTF-8',
+        ];
+
+        yield [
+            LC_MONETARY,
+            'es',
+            '',
+            'es_ES.UTF-8',
+        ];
+
+        yield [
+            LC_MONETARY,
+            'es',
+            'ES',
+            'es_ES.UTF-8',
+        ];
+
+        yield [
+            LC_TIME,
+            'it',
+            '',
+            'it_IT.UTF-8',
+        ];
+
+        yield [
+            LC_TIME,
+            'it',
+            'IT',
+            'it_IT.UTF-8',
+        ];
+
+        yield [
+            LC_TIME,
+            'it',
+            'it',
+            'it_IT.UTF-8',
+        ];
+    }
+
+    /**
+     * Provides language, encoding and country code
+     *
+     * @return Generator
+     */
+    public function provideLanguageEncodingAndCountryCode()
+    {
+        yield [
+            'fr',
+            '',
+            '',
+            'fr_FR',
+        ];
+
+        yield [
+            'fr',
+            '',
+            'UTF-8',
+            'fr_FR.UTF-8',
+        ];
+
+        yield [
+            'fr',
+            'FR',
+            '',
+            'fr_FR',
+        ];
+
+        yield [
+            'fr',
+            'FR',
+            'UTF-8',
+            'fr_FR.UTF-8',
+        ];
+
+        yield [
+            'en',
+            'US',
+            '',
+            'en_US',
+        ];
+
+        yield [
+            'en',
+            'US',
+            'UTF-8',
+            'en_US.UTF-8',
+        ];
+
+        yield [
+            'en',
+            'US',
+            'ISO-8859-1',
+            'en_US.ISO-8859-1',
+        ];
+    }
+
     /**
      * @throws ReflectionException
      */
     public function testConstructor()
     {
         static::assertHasNoConstructor(Locale::class);
-    }
-
-    /**
-     * @param mixed $languageCode Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testGetLongFormEmptyLanguageCode($languageCode)
-    {
-        self::assertEquals('', Locale::getLongForm($languageCode));
-    }
-
-    /**
-     * @param string $languageCode Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
-     * @param string $countryCode  Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
-     * @param string $encoding     Encoding of the final locale
-     * @param string $expected     Expected long form of the locale
-     *
-     * @dataProvider provideLanguageEncodingAndCountryCode
-     */
-    public function testGetLongForm($languageCode, $countryCode, $encoding, $expected)
-    {
-        self::assertEquals($expected, Locale::getLongForm($languageCode, $countryCode, $encoding));
-    }
-
-    /**
-     * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testSetLocaleEmptyCategoryAndLanguageCode($emptyValue)
-    {
-        self::assertFalse(Locale::setLocale($emptyValue, $emptyValue));
-    }
-
-    public function testSetLocaleIncorrectCategory()
-    {
-        self::assertFalse(Locale::setLocale(-1, 'en'));
-    }
-
-    /**
-     * @param int    $category       Named constant specifying the category of the functions affected by the locale
-     *                               setting. It's the same constant as required by setlocale() function.
-     * @param string $languageCode   Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
-     * @param string $countryCode    Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
-     * @param string $expectedLocale Expected locale
-     *
-     * @dataProvider provideCategoryLanguageCodeAndExpectedLocale
-     */
-    public function testSetLocale($category, $languageCode, $countryCode, $expectedLocale)
-    {
-        self::assertEquals($expectedLocale, Locale::setLocale($category, $languageCode, $countryCode));
     }
 
     /**
@@ -98,130 +176,52 @@ class LocaleTest extends BaseTestCase
     }
 
     /**
-     * Provides language, encoding and country code
+     * @param string $languageCode Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
+     * @param string $countryCode  Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
+     * @param string $encoding     Encoding of the final locale
+     * @param string $expected     Expected long form of the locale
      *
-     * @return Generator
+     * @dataProvider provideLanguageEncodingAndCountryCode
      */
-    public function provideLanguageEncodingAndCountryCode()
+    public function testGetLongForm($languageCode, $countryCode, $encoding, $expected)
     {
-        yield[
-            'fr',
-            '',
-            '',
-            'fr_FR',
-        ];
-
-        yield[
-            'fr',
-            '',
-            'UTF-8',
-            'fr_FR.UTF-8',
-        ];
-
-        yield[
-            'fr',
-            'FR',
-            '',
-            'fr_FR',
-        ];
-
-        yield[
-            'fr',
-            'FR',
-            'UTF-8',
-            'fr_FR.UTF-8',
-        ];
-
-        yield[
-            'en',
-            'US',
-            '',
-            'en_US',
-        ];
-
-        yield[
-            'en',
-            'US',
-            'UTF-8',
-            'en_US.UTF-8',
-        ];
-
-        yield[
-            'en',
-            'US',
-            'ISO-8859-1',
-            'en_US.ISO-8859-1',
-        ];
+        self::assertEquals($expected, Locale::getLongForm($languageCode, $countryCode, $encoding));
     }
 
     /**
-     * Provides category
-     *
-     * @return Generator
+     * @param mixed $languageCode Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
      */
-    public function provideCategoryLanguageCodeAndExpectedLocale()
+    public function testGetLongFormEmptyLanguageCode($languageCode)
     {
-        yield[
-            LC_ALL,
-            'fr',
-            '',
-            'fr_FR.UTF-8',
-        ];
+        self::assertEquals('', Locale::getLongForm($languageCode));
+    }
 
-        yield[
-            LC_COLLATE,
-            'fr',
-            'FR',
-            'fr_FR.UTF-8',
-        ];
+    /**
+     * @param int    $category       Named constant specifying the category of the functions affected by the locale
+     *                               setting. It's the same constant as required by setlocale() function.
+     * @param string $languageCode   Language code, in ISO 639-1 format. Short form of the locale, e.g. "fr".
+     * @param string $countryCode    Country code, in ISO 3166-1 alpha-2 format, e.g. "FR"
+     * @param string $expectedLocale Expected locale
+     *
+     * @dataProvider provideCategoryLanguageCodeAndExpectedLocale
+     */
+    public function testSetLocale($category, $languageCode, $countryCode, $expectedLocale)
+    {
+        self::assertEquals($expectedLocale, Locale::setLocale($category, $languageCode, $countryCode));
+    }
 
-        yield[
-            LC_CTYPE,
-            'en',
-            'US',
-            'en_US.UTF-8',
-        ];
+    /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyValue
+     */
+    public function testSetLocaleEmptyCategoryAndLanguageCode($emptyValue)
+    {
+        self::assertFalse(Locale::setLocale($emptyValue, $emptyValue));
+    }
 
-        yield[
-            LC_NUMERIC,
-            'en',
-            'GB',
-            'en_GB.UTF-8',
-        ];
-
-        yield[
-            LC_MONETARY,
-            'es',
-            '',
-            'es_ES.UTF-8',
-        ];
-
-        yield[
-            LC_MONETARY,
-            'es',
-            'ES',
-            'es_ES.UTF-8',
-        ];
-
-        yield[
-            LC_TIME,
-            'it',
-            '',
-            'it_IT.UTF-8',
-        ];
-
-        yield[
-            LC_TIME,
-            'it',
-            'IT',
-            'it_IT.UTF-8',
-        ];
-
-        yield[
-            LC_TIME,
-            'it',
-            'it',
-            'it_IT.UTF-8',
-        ];
+    public function testSetLocaleIncorrectCategory()
+    {
+        self::assertFalse(Locale::setLocale(-1, 'en'));
     }
 }

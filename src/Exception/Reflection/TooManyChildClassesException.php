@@ -30,7 +30,7 @@ class TooManyChildClassesException extends Exception
     public static function create($parentClass, array $childClasses): TooManyChildClassesException
     {
         $template = "The '%s' class requires one child class at most who will extend her, but more than one child"
-            . " class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";
+            ." class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";
 
         $parentClassName = Reflection::getClassName($parentClass) ?? '[unknown class]';
         $message = sprintf($template, $parentClassName, implode("\n- ", $childClasses), $parentClassName);

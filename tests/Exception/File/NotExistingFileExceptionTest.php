@@ -20,13 +20,28 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\File\NotExistingFileException
+ * @covers    \Meritoo\Common\Exception\File\NotExistingFileException
  */
 class NotExistingFileExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    /**
+     * Provides path of not existing file and expected exception's message
+     *
+     * @return Generator
+     */
+    public function providePathOfFile()
     {
-        static::assertConstructorVisibilityAndArguments(NotExistingFileException::class, OopVisibilityType::IS_PUBLIC, 3);
+        $template = 'File with path \'%s\' does not exist (or is not readable). Did you provide path of proper file?';
+
+        yield [
+            'aa/bb/cc',
+            sprintf($template, 'aa/bb/cc'),
+        ];
+
+        yield [
+            'images/show/car.jpg',
+            sprintf($template, 'images/show/car.jpg'),
+        ];
     }
 
     /**
@@ -41,23 +56,8 @@ class NotExistingFileExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides path of not existing file and expected exception's message
-     *
-     * @return Generator
-     */
-    public function providePathOfFile()
+    public function testConstructorVisibilityAndArguments()
     {
-        $template = 'File with path \'%s\' does not exist (or is not readable). Did you provide path of proper file?';
-
-        yield[
-            'aa/bb/cc',
-            sprintf($template, 'aa/bb/cc'),
-        ];
-
-        yield[
-            'images/show/car.jpg',
-            sprintf($template, 'images/show/car.jpg'),
-        ];
+        static::assertConstructorVisibilityAndArguments(NotExistingFileException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 }

@@ -30,35 +30,157 @@ use ReflectionProperty;
 class Reflection
 {
     /**
-     * Returns names of methods for given class / object
+     * Returns child classes of given class.
+     * It's an array of namespaces of the child classes or null (if given class has not child classes).
      *
-     * @param object|string $class              The object or name of object's class
-     * @param bool          $withoutInheritance (optional) If is set to true, only methods for given class are returned.
-     *                                          Otherwise - all methods, with inherited methods too.
-     * @return array
+     * @param array|object|string $class Class who child classes should be returned. An array of objects, strings,
+     *                                   object or string.
+     * @return null|array
+     * @throws CannotResolveClassNameException
      */
-    public static function getMethods($class, bool $withoutInheritance = false): array
+    public static function getChildClasses($class): ?array
     {
-        $effect = [];
+        $allClasses = get_declared_classes();
 
-        $reflection = new ReflectionClass($class);
-        $methods = $reflection->getMethods();
+        /*
+         * No classes?
+         * Nothing to do
+         */
+        if (empty($allClasses)) {
+            return null;
+        }
 
-        if (!empty($methods)) {
-            $className = self::getClassName($class);
+        $className = self::getClassName($class);
 
-            foreach ($methods as $method) {
-                if ($method instanceof ReflectionMethod) {
-                    if ($withoutInheritance && $className !== $method->class) {
-                        continue;
-                    }
+        // Oops, cannot resolve class
+        if (null === $className) {
+            throw CannotResolveClassNameException::create('');
+        }
 
-                    $effect[] = $method->name;
+        $childClasses = [];
+
+        foreach ($allClasses as $oneClass) {
+            if (self::isChildOfClass($oneClass, $className)) {
+                /*
+                 * Attention. I have to use static::getRealClass() method to avoid problem with the proxy / cache
+                 * classes. Example:
+                 * - My\ExtraBundle\Entity\MyEntity
+                 * - Proxies\__CG__\My\ExtraBundle\Entity\MyEntity
+                 *
+                 * It's actually the same class, so I have to skip it.
+                 */
+                $realClass = static::getRealClass($oneClass);
+
+                if (in_array($realClass, $childClasses, true)) {
+                    continue;
                 }
+
+                $childClasses[] = $realClass;
             }
         }
 
-        return $effect;
+        return $childClasses;
+    }
+
+    /**
+     * Returns a class name for given source
+     *
+     * @param array|object|string $source           An array of objects, namespaces, object or namespace
+     * @param bool                $withoutNamespace (optional) If is set to true, namespace is omitted. Otherwise -
+     *                                              not, full name of class is returned, with namespace.
+     * @return null|string
+     */
+    public static function getClassName($source, bool $withoutNamespace = false): ?string
+    {
+        /*
+         * First argument is not proper source of class?
+         * Nothing to do
+         */
+        if (empty($source) || (!is_array($source) && !is_object($source) && !is_string($source))) {
+            return null;
+        }
+
+        $name = '';
+
+        /*
+         * An array of objects was provided?
+         * Let's use first of them
+         */
+        if (is_array($source)) {
+            $source = Arrays::getFirstElement($source);
+        }
+
+        // Let's prepare name of class
+        if (is_object($source)) {
+            $name = get_class($source);
+        } elseif (is_string($source) && (class_exists($source) || trait_exists($source))) {
+            $name = $source;
+        }
+
+        /*
+         * Name of class is still unknown?
+         * Nothing to do
+         */
+        if (empty($name)) {
+            return null;
+        }
+
+        /*
+         * Namespace is not required?
+         * Let's return name of class only
+         */
+        if ($withoutNamespace) {
+            $classOnly = Miscellaneous::getLastElementOfString($name, '\\');
+
+            if (null !== $classOnly) {
+                $name = $classOnly;
+            }
+
+            return $name;
+        }
+
+        return static::getRealClass($name);
+    }
+
+    /**
+     * Returns namespace of class for given source
+     *
+     * @param array|object|string $source An array of objects, namespaces, object or namespace
+     * @return string
+     */
+    public static function getClassNamespace($source): string
+    {
+        $fullClassName = self::getClassName($source);
+
+        if (null === $fullClassName || '' === $fullClassName) {
+            return '';
+        }
+
+        $className = self::getClassName($source, true);
+
+        if ($className === $fullClassName) {
+            return $className;
+        }
+
+        return Miscellaneous::getStringWithoutLastElement($fullClassName, '\\');
+    }
+
+    /**
+     * Returns value of given constant
+     *
+     * @param object|string $class    The object or name of object's class
+     * @param string        $constant Name of the constant that contains a value
+     * @return mixed
+     */
+    public static function getConstantValue($class, string $constant)
+    {
+        $reflection = new ReflectionClass($class);
+
+        if (self::hasConstant($class, $constant)) {
+            return $reflection->getConstant($constant);
+        }
+
+        return null;
     }
 
     /**
@@ -101,60 +223,160 @@ class Reflection
     }
 
     /**
-     * Returns information if given class / object has given method
+     * Returns names of methods for given class / object
      *
-     * @param object|string $class  The object or name of object's class
-     * @param string        $method Name of the method to find
-     * @return bool
+     * @param object|string $class              The object or name of object's class
+     * @param bool          $withoutInheritance (optional) If is set to true, only methods for given class are returned.
+     *                                          Otherwise - all methods, with inherited methods too.
+     * @return array
      */
-    public static function hasMethod($class, string $method): bool
+    public static function getMethods($class, bool $withoutInheritance = false): array
     {
-        $reflection = new ReflectionClass($class);
+        $effect = [];
 
-        return $reflection->hasMethod($method);
+        $reflection = new ReflectionClass($class);
+        $methods = $reflection->getMethods();
+
+        if (!empty($methods)) {
+            $className = self::getClassName($class);
+
+            foreach ($methods as $method) {
+                if ($method instanceof ReflectionMethod) {
+                    if ($withoutInheritance && $className !== $method->class) {
+                        continue;
+                    }
+
+                    $effect[] = $method->name;
+                }
+            }
+        }
+
+        return $effect;
     }
 
     /**
-     * Returns information if given class / object has given property
+     * Returns namespace of one child class which extends given class.
+     * Extended class should has only one child class.
      *
-     * @param object|string $class    The object or name of object's class
-     * @param string        $property Name of the property to find
-     * @return bool
-     */
-    public static function hasProperty($class, string $property): bool
-    {
-        $reflection = new ReflectionClass($class);
-
-        return $reflection->hasProperty($property);
-    }
-
-    /**
-     * Returns information if given class / object has given constant
-     *
-     * @param object|string $class    The object or name of object's class
-     * @param string        $constant Name of the constant to find
-     * @return bool
-     */
-    public static function hasConstant($class, string $constant): bool
-    {
-        $reflection = new ReflectionClass($class);
-
-        return $reflection->hasConstant($constant);
-    }
-
-    /**
-     * Returns value of given constant
-     *
-     * @param object|string $class    The object or name of object's class
-     * @param string        $constant Name of the constant that contains a value
+     * @param array|object|string $parentClass Class who child class should be returned. An array of objects,
+     *                                         namespaces, object or namespace.
      * @return mixed
+     * @throws TooManyChildClassesException|MissingChildClassesException|CannotResolveClassNameException
      */
-    public static function getConstantValue($class, string $constant)
+    public static function getOneChildClass($parentClass)
     {
-        $reflection = new ReflectionClass($class);
+        $childClasses = self::getChildClasses($parentClass);
 
-        if (self::hasConstant($class, $constant)) {
-            return $reflection->getConstant($constant);
+        /*
+         * No child classes?
+         * Oops, the base / parent class hasn't child class
+         */
+        if (empty($childClasses)) {
+            throw MissingChildClassesException::create($parentClass);
+        }
+
+        /*
+         * More than 1 child class?
+         * Oops, the base / parent class has too many child classes
+         */
+        if (count($childClasses) > 1) {
+            throw TooManyChildClassesException::create($parentClass, $childClasses);
+        }
+
+        return trim($childClasses[0]);
+    }
+
+    /**
+     * Returns a parent class or false if there is no parent class
+     *
+     * @param array|object|string $source An array of objects, namespaces, object or namespace
+     * @return false|ReflectionClass
+     */
+    public static function getParentClass($source)
+    {
+        $className = self::getClassName($source);
+        $reflection = new ReflectionClass($className);
+
+        return $reflection->getParentClass();
+    }
+
+    /**
+     * Returns name of the parent class.
+     * If given class does not extend another, returns null.
+     *
+     * @param array|object|string $class An array of objects, namespaces, object or namespace
+     * @return null|string
+     */
+    public static function getParentClassName($class): ?string
+    {
+        $className = self::getClassName($class);
+        $reflection = new ReflectionClass($className);
+        $parentClass = $reflection->getParentClass();
+
+        if (null === $parentClass || false === $parentClass) {
+            return null;
+        }
+
+        return $parentClass->getName();
+    }
+
+    /**
+     * Returns given object properties
+     *
+     * @param array|object|string $source         An array of objects, namespaces, object or namespace
+     * @param int                 $filter         (optional) Filter of properties. Uses \ReflectionProperty class
+     *                                            constants. By default all properties are returned.
+     * @param bool                $includeParents (optional) If is set to true, properties of parent classes are
+     *                                            included (recursively). Otherwise - not.
+     * @return ReflectionProperty[]
+     */
+    public static function getProperties($source, int $filter = null, bool $includeParents = false): array
+    {
+        $className = self::getClassName($source);
+        $reflection = new ReflectionClass($className);
+
+        if (null === $filter) {
+            $filter = ReflectionProperty::IS_PRIVATE
+                + ReflectionProperty::IS_PROTECTED
+                + ReflectionProperty::IS_PUBLIC
+                + ReflectionProperty::IS_STATIC;
+        }
+
+        $properties = $reflection->getProperties($filter);
+        $parentProperties = [];
+
+        if ($includeParents) {
+            $parent = self::getParentClass($source);
+
+            if (false !== $parent) {
+                $parentClass = $parent->getName();
+                $parentProperties = self::getProperties($parentClass, $filter, $includeParents);
+            }
+        }
+
+        return array_merge($properties, $parentProperties);
+    }
+
+    /**
+     * Returns property, the \ReflectionProperty instance, of given object
+     *
+     * @param array|object|string $class    An array of objects, namespaces, object or namespace
+     * @param string              $property Name of the property
+     * @param int|null            $filter   (optional) Filter of properties. Uses \ReflectionProperty class constants.
+     *                                      By default all properties are allowed / processed.
+     * @return null|ReflectionProperty
+     */
+    public static function getProperty($class, string $property, int $filter = null): ?ReflectionProperty
+    {
+        $className = self::getClassName($class);
+        $properties = self::getProperties($className, $filter);
+
+        if (!empty($properties)) {
+            foreach ($properties as $reflectionProperty) {
+                if ($reflectionProperty->getName() === $property) {
+                    return $reflectionProperty;
+                }
+            }
         }
 
         return null;
@@ -243,101 +465,45 @@ class Reflection
     }
 
     /**
-     * Returns a class name for given source
+     * Returns information if given class / object has given constant
      *
-     * @param array|object|string $source           An array of objects, namespaces, object or namespace
-     * @param bool                $withoutNamespace (optional) If is set to true, namespace is omitted. Otherwise -
-     *                                              not, full name of class is returned, with namespace.
-     * @return null|string
-     */
-    public static function getClassName($source, bool $withoutNamespace = false): ?string
-    {
-        /*
-         * First argument is not proper source of class?
-         * Nothing to do
-         */
-        if (empty($source) || (!is_array($source) && !is_object($source) && !is_string($source))) {
-            return null;
-        }
-
-        $name = '';
-
-        /*
-         * An array of objects was provided?
-         * Let's use first of them
-         */
-        if (is_array($source)) {
-            $source = Arrays::getFirstElement($source);
-        }
-
-        // Let's prepare name of class
-        if (is_object($source)) {
-            $name = get_class($source);
-        } elseif (is_string($source) && (class_exists($source) || trait_exists($source))) {
-            $name = $source;
-        }
-
-        /*
-         * Name of class is still unknown?
-         * Nothing to do
-         */
-        if (empty($name)) {
-            return null;
-        }
-
-        /*
-         * Namespace is not required?
-         * Let's return name of class only
-         */
-        if ($withoutNamespace) {
-            $classOnly = Miscellaneous::getLastElementOfString($name, '\\');
-
-            if (null !== $classOnly) {
-                $name = $classOnly;
-            }
-
-            return $name;
-        }
-
-        return static::getRealClass($name);
-    }
-
-    /**
-     * Returns namespace of class for given source
-     *
-     * @param array|object|string $source An array of objects, namespaces, object or namespace
-     * @return string
-     */
-    public static function getClassNamespace($source): string
-    {
-        $fullClassName = self::getClassName($source);
-
-        if (null === $fullClassName || '' === $fullClassName) {
-            return '';
-        }
-
-        $className = self::getClassName($source, true);
-
-        if ($className === $fullClassName) {
-            return $className;
-        }
-
-        return Miscellaneous::getStringWithoutLastElement($fullClassName, '\\');
-    }
-
-    /**
-     * Returns information if given interface is implemented by given class / object
-     *
-     * @param array|object|string $source    An array of objects, namespaces, object or namespace
-     * @param string              $interface The interface that should be implemented
+     * @param object|string $class    The object or name of object's class
+     * @param string        $constant Name of the constant to find
      * @return bool
      */
-    public static function isInterfaceImplemented($source, string $interface): bool
+    public static function hasConstant($class, string $constant): bool
     {
-        $className = self::getClassName($source);
-        $interfaces = class_implements($className);
+        $reflection = new ReflectionClass($class);
 
-        return in_array($interface, $interfaces, true);
+        return $reflection->hasConstant($constant);
+    }
+
+    /**
+     * Returns information if given class / object has given method
+     *
+     * @param object|string $class  The object or name of object's class
+     * @param string        $method Name of the method to find
+     * @return bool
+     */
+    public static function hasMethod($class, string $method): bool
+    {
+        $reflection = new ReflectionClass($class);
+
+        return $reflection->hasMethod($method);
+    }
+
+    /**
+     * Returns information if given class / object has given property
+     *
+     * @param object|string $class    The object or name of object's class
+     * @param string        $property Name of the property to find
+     * @return bool
+     */
+    public static function hasProperty($class, string $property): bool
+    {
+        $reflection = new ReflectionClass($class);
+
+        return $reflection->hasProperty($property);
     }
 
     /**
@@ -362,164 +528,69 @@ class Reflection
     }
 
     /**
-     * Returns given object properties
+     * Returns information if given interface is implemented by given class / object
      *
-     * @param array|object|string $source         An array of objects, namespaces, object or namespace
-     * @param int                 $filter         (optional) Filter of properties. Uses \ReflectionProperty class
-     *                                            constants. By default all properties are returned.
-     * @param bool                $includeParents (optional) If is set to true, properties of parent classes are
-     *                                            included (recursively). Otherwise - not.
-     * @return ReflectionProperty[]
+     * @param array|object|string $source    An array of objects, namespaces, object or namespace
+     * @param string              $interface The interface that should be implemented
+     * @return bool
      */
-    public static function getProperties($source, int $filter = null, bool $includeParents = false): array
+    public static function isInterfaceImplemented($source, string $interface): bool
     {
         $className = self::getClassName($source);
-        $reflection = new ReflectionClass($className);
+        $interfaces = class_implements($className);
 
-        if (null === $filter) {
-            $filter = ReflectionProperty::IS_PRIVATE
-                + ReflectionProperty::IS_PROTECTED
-                + ReflectionProperty::IS_PUBLIC
-                + ReflectionProperty::IS_STATIC;
-        }
-
-        $properties = $reflection->getProperties($filter);
-        $parentProperties = [];
-
-        if ($includeParents) {
-            $parent = self::getParentClass($source);
-
-            if (false !== $parent) {
-                $parentClass = $parent->getName();
-                $parentProperties = self::getProperties($parentClass, $filter, $includeParents);
-            }
-        }
-
-        return array_merge($properties, $parentProperties);
+        return in_array($interface, $interfaces, true);
     }
 
     /**
-     * Returns a parent class or false if there is no parent class
+     * Sets values of properties in given object
      *
-     * @param array|object|string $source An array of objects, namespaces, object or namespace
-     * @return false|ReflectionClass
+     * @param mixed $object           Object that should contains given property
+     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
      */
-    public static function getParentClass($source)
+    public static function setPropertiesValues($object, array $propertiesValues): void
     {
-        $className = self::getClassName($source);
-        $reflection = new ReflectionClass($className);
-
-        return $reflection->getParentClass();
-    }
-
-    /**
-     * Returns child classes of given class.
-     * It's an array of namespaces of the child classes or null (if given class has not child classes).
-     *
-     * @param array|object|string $class Class who child classes should be returned. An array of objects, strings,
-     *                                   object or string.
-     * @return null|array
-     * @throws CannotResolveClassNameException
-     */
-    public static function getChildClasses($class): ?array
-    {
-        $allClasses = get_declared_classes();
-
         /*
-         * No classes?
+         * No properties?
          * Nothing to do
          */
-        if (empty($allClasses)) {
-            return null;
+        if (empty($propertiesValues)) {
+            return;
         }
 
-        $className = self::getClassName($class);
-
-        // Oops, cannot resolve class
-        if (null === $className) {
-            throw CannotResolveClassNameException::create('');
+        foreach ($propertiesValues as $property => $value) {
+            static::setPropertyValue($object, $property, $value);
         }
-
-        $childClasses = [];
-
-        foreach ($allClasses as $oneClass) {
-            if (self::isChildOfClass($oneClass, $className)) {
-                /*
-                 * Attention. I have to use static::getRealClass() method to avoid problem with the proxy / cache
-                 * classes. Example:
-                 * - My\ExtraBundle\Entity\MyEntity
-                 * - Proxies\__CG__\My\ExtraBundle\Entity\MyEntity
-                 *
-                 * It's actually the same class, so I have to skip it.
-                 */
-                $realClass = static::getRealClass($oneClass);
-
-                if (in_array($realClass, $childClasses, true)) {
-                    continue;
-                }
-
-                $childClasses[] = $realClass;
-            }
-        }
-
-        return $childClasses;
     }
 
     /**
-     * Returns namespace of one child class which extends given class.
-     * Extended class should has only one child class.
+     * Sets value of given property in given object
      *
-     * @param array|object|string $parentClass Class who child class should be returned. An array of objects,
-     *                                         namespaces, object or namespace.
-     * @return mixed
-     * @throws TooManyChildClassesException|MissingChildClassesException|CannotResolveClassNameException
+     * @param mixed  $object   Object that should contains given property
+     * @param string $property Name of the property
+     * @param mixed  $value    Value of the property
+     * @throws NotExistingPropertyException
      */
-    public static function getOneChildClass($parentClass)
+    public static function setPropertyValue($object, string $property, $value): void
     {
-        $childClasses = self::getChildClasses($parentClass);
+        $reflectionProperty = self::getProperty($object, $property);
 
-        /*
-         * No child classes?
-         * Oops, the base / parent class hasn't child class
-         */
-        if (empty($childClasses)) {
-            throw MissingChildClassesException::create($parentClass);
+        // Oops, property does not exist
+        if (null === $reflectionProperty) {
+            throw NotExistingPropertyException::create($object, $property);
         }
 
-        /*
-         * More than 1 child class?
-         * Oops, the base / parent class has too many child classes
-         */
-        if (count($childClasses) > 1) {
-            throw TooManyChildClassesException::create($parentClass, $childClasses);
+        $isPublic = $reflectionProperty->isPublic();
+
+        if (!$isPublic) {
+            $reflectionProperty->setAccessible(true);
         }
 
-        return trim($childClasses[0]);
-    }
+        $reflectionProperty->setValue($object, $value);
 
-    /**
-     * Returns property, the \ReflectionProperty instance, of given object
-     *
-     * @param array|object|string $class    An array of objects, namespaces, object or namespace
-     * @param string              $property Name of the property
-     * @param int|null            $filter   (optional) Filter of properties. Uses \ReflectionProperty class constants.
-     *                                      By default all properties are allowed / processed.
-     * @return null|ReflectionProperty
-     */
-    public static function getProperty($class, string $property, int $filter = null): ?ReflectionProperty
-    {
-        $className = self::getClassName($class);
-        $properties = self::getProperties($className, $filter);
-
-        if (!empty($properties)) {
-            foreach ($properties as $reflectionProperty) {
-                if ($reflectionProperty->getName() === $property) {
-                    return $reflectionProperty;
-                }
-            }
+        if (!$isPublic) {
+            $reflectionProperty->setAccessible(false);
         }
-
-        return null;
     }
 
     /**
@@ -561,135 +632,6 @@ class Reflection
         }
 
         return $uses;
-    }
-
-    /**
-     * Returns name of the parent class.
-     * If given class does not extend another, returns null.
-     *
-     * @param array|object|string $class An array of objects, namespaces, object or namespace
-     * @return null|string
-     */
-    public static function getParentClassName($class): ?string
-    {
-        $className = self::getClassName($class);
-        $reflection = new ReflectionClass($className);
-        $parentClass = $reflection->getParentClass();
-
-        if (null === $parentClass || false === $parentClass) {
-            return null;
-        }
-
-        return $parentClass->getName();
-    }
-
-    /**
-     * Sets value of given property in given object
-     *
-     * @param mixed  $object   Object that should contains given property
-     * @param string $property Name of the property
-     * @param mixed  $value    Value of the property
-     * @throws NotExistingPropertyException
-     */
-    public static function setPropertyValue($object, string $property, $value): void
-    {
-        $reflectionProperty = self::getProperty($object, $property);
-
-        // Oops, property does not exist
-        if (null === $reflectionProperty) {
-            throw NotExistingPropertyException::create($object, $property);
-        }
-
-        $isPublic = $reflectionProperty->isPublic();
-
-        if (!$isPublic) {
-            $reflectionProperty->setAccessible(true);
-        }
-
-        $reflectionProperty->setValue($object, $value);
-
-        if (!$isPublic) {
-            $reflectionProperty->setAccessible(false);
-        }
-    }
-
-    /**
-     * Sets values of properties in given object
-     *
-     * @param mixed $object           Object that should contains given property
-     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
-     */
-    public static function setPropertiesValues($object, array $propertiesValues): void
-    {
-        /*
-         * No properties?
-         * Nothing to do
-         */
-        if (empty($propertiesValues)) {
-            return;
-        }
-
-        foreach ($propertiesValues as $property => $value) {
-            static::setPropertyValue($object, $property, $value);
-        }
-    }
-
-    /**
-     * Returns the real class name of a class name that could be a proxy
-     *
-     * @param string $class Class to verify
-     * @return string
-     */
-    private static function getRealClass(string $class): string
-    {
-        if (false === $pos = strrpos($class, '\\' . Proxy::MARKER . '\\')) {
-            return $class;
-        }
-
-        return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
-    }
-
-    /**
-     * Returns value of given property using the property represented by reflection.
-     * If value cannot be fetched, makes the property accessible temporarily.
-     *
-     * @param mixed                   $object             Object that should contains given property
-     * @param string                  $property           Name of the property that contains a value
-     * @param null|ReflectionProperty $reflectionProperty (optional) Property represented by reflection
-     * @return mixed
-     */
-    private static function getPropertyValueByReflectionProperty(
-        $object,
-        string $property,
-        ?ReflectionProperty $reflectionProperty = null
-    ) {
-        $value = null;
-        $valueFound = false;
-        $className = self::getClassName($object);
-
-        try {
-            if (null === $reflectionProperty) {
-                $reflectionProperty = new ReflectionProperty($className, $property);
-            }
-
-            $value = $reflectionProperty->getValue($object);
-            $valueFound = true;
-        } catch (ReflectionException $exception) {
-        }
-
-        if (null !== $reflectionProperty) {
-            $reflectionProperty->setAccessible(true);
-
-            $value = $reflectionProperty->getValue($object);
-            $valueFound = true;
-
-            $reflectionProperty->setAccessible(false);
-        }
-
-        return [
-            $value,
-            $valueFound,
-        ];
     }
 
     /**
@@ -827,5 +769,63 @@ class Reflection
         }
 
         return null;
+    }
+
+    /**
+     * Returns value of given property using the property represented by reflection.
+     * If value cannot be fetched, makes the property accessible temporarily.
+     *
+     * @param mixed                   $object             Object that should contains given property
+     * @param string                  $property           Name of the property that contains a value
+     * @param null|ReflectionProperty $reflectionProperty (optional) Property represented by reflection
+     * @return mixed
+     */
+    private static function getPropertyValueByReflectionProperty(
+        $object,
+        string $property,
+        ?ReflectionProperty $reflectionProperty = null
+    ) {
+        $value = null;
+        $valueFound = false;
+        $className = self::getClassName($object);
+
+        try {
+            if (null === $reflectionProperty) {
+                $reflectionProperty = new ReflectionProperty($className, $property);
+            }
+
+            $value = $reflectionProperty->getValue($object);
+            $valueFound = true;
+        } catch (ReflectionException $exception) {
+        }
+
+        if (null !== $reflectionProperty) {
+            $reflectionProperty->setAccessible(true);
+
+            $value = $reflectionProperty->getValue($object);
+            $valueFound = true;
+
+            $reflectionProperty->setAccessible(false);
+        }
+
+        return [
+            $value,
+            $valueFound,
+        ];
+    }
+
+    /**
+     * Returns the real class name of a class name that could be a proxy
+     *
+     * @param string $class Class to verify
+     * @return string
+     */
+    private static function getRealClass(string $class): string
+    {
+        if (false === $pos = strrpos($class, '\\'.Proxy::MARKER.'\\')) {
+            return $class;
+        }
+
+        return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
     }
 }

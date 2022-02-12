@@ -21,16 +21,18 @@ File: `src/Utilities/Arrays.php`
 
 1)
 
-  - array: `[]` (an empty array)
-  - result: `false`
+- array: `[]` (an empty array)
+- result: `false`
 
 2)
-  - array: `["", -1]`
-  - result: `false`
+
+- array: `["", -1]`
+- result: `false`
 
 3)
-  - array: `["", null, ""]`
-  - result: `true`
+
+- array: `["", null, ""]`
+- result: `true`
 
 ### getNonEmptyValues(array $values)
 
@@ -44,18 +46,18 @@ File: `src/Utilities/Arrays.php`
 
 1)
 
-  - values: `[]` (no values)
-  - result: `[]` (an empty array)
+- values: `[]` (no values)
+- result: `[]` (an empty array)
 
 2)
 
-  - values: `[null, ""]` (all empty values)
-  - result: `[]` (an empty array)
+- values: `[null, ""]` (all empty values)
+- result: `[]` (an empty array)
 
 3)
 
-  - values: `["test 1", "", 123, null, 0]`
-  - result: `["test 1", 123, 0]`
+- values: `["test 1", "", 123, null, 0]`
+- result: `["test 1", 123, 0]`
 
 ### getNonEmptyValuesAsString(array $values, $separator = ', ')
 
@@ -70,27 +72,27 @@ File: `src/Utilities/Arrays.php`
 
 1)
 
-  - values: `[]` (no values)
-  - separator: default or any other string
-  - result: `""` (an empty string)
+- values: `[]` (no values)
+- separator: default or any other string
+- result: `""` (an empty string)
 
 2)
 
-  - values: `[null, ""]` (all empty values)
-  - separator: default or any other string
-  - result: `""` (an empty string)
+- values: `[null, ""]` (all empty values)
+- separator: default or any other string
+- result: `""` (an empty string)
 
 3)
 
-  - values: `["test 1", "", 123, null, 0]`
-  - separator: `", "` (default)
-  - result: `"test 1, 123, 0"`
+- values: `["test 1", "", 123, null, 0]`
+- separator: `", "` (default)
+- result: `"test 1, 123, 0"`
 
 4)
 
-  - values: `["test 1", "", 123, null, 0]`
-  - separator: `" | "`
-  - result: `"test 1 | 123 | 0"`
+- values: `["test 1", "", 123, null, 0]`
+- separator: `" | "`
+- result: `"test 1 | 123 | 0"`
 
 # More
 
@@ -99,9 +101,9 @@ File: `src/Utilities/Arrays.php`
 3. [Templates](../Collection/Templates.md)
 4. [Exceptions](../Exceptions.md)
 5. [Static methods](../Static-methods.md)
-   1. [**Arrays**](Arrays.md)
-   2. [Regex](Regex.md)
-   3. [Uri](Uri.md)
+    1. [**Arrays**](Arrays.md)
+    2. [Regex](Regex.md)
+    3. [Uri](Uri.md)
 6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

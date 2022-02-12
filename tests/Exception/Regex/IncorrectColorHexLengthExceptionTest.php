@@ -20,13 +20,28 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException
+ * @covers    \Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException
  */
 class IncorrectColorHexLengthExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    /**
+     * Provides incorrect hexadecimal value of color and expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideColor()
     {
-        static::assertConstructorVisibilityAndArguments(IncorrectColorHexLengthException::class, OopVisibilityType::IS_PUBLIC, 3);
+        $template = 'Length of hexadecimal value of color \'%s\' is incorrect. It\'s %d, but it should be 3 or 6. Is there everything ok?';
+
+        yield [
+            '',
+            sprintf($template, '', strlen('')),
+        ];
+
+        yield [
+            'aa-bb-cc',
+            sprintf($template, 'aa-bb-cc', strlen('aa-bb-cc')),
+        ];
     }
 
     /**
@@ -41,23 +56,8 @@ class IncorrectColorHexLengthExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides incorrect hexadecimal value of color and expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideColor()
+    public function testConstructorVisibilityAndArguments()
     {
-        $template = 'Length of hexadecimal value of color \'%s\' is incorrect. It\'s %d, but it should be 3 or 6. Is there everything ok?';
-
-        yield[
-            '',
-            sprintf($template, '', strlen('')),
-        ];
-
-        yield[
-            'aa-bb-cc',
-            sprintf($template, 'aa-bb-cc', strlen('aa-bb-cc')),
-        ];
+        static::assertConstructorVisibilityAndArguments(IncorrectColorHexLengthException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 }

@@ -19,13 +19,307 @@ use Meritoo\Common\Utilities\MimeTypes;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\MimeTypes
+ * @covers    \Meritoo\Common\Utilities\MimeTypes
  */
 class MimeTypesTest extends BaseTestCase
 {
+    /**
+     * Provides real file path to get information if the file is an image
+     *
+     * @return Generator
+     */
+    public function provideExistingFilePathToCheckIsImagePath()
+    {
+        yield [
+            $this->getFilePathForTesting('minion.jpg'),
+            true,
+        ];
+
+        yield [
+            $this->getFilePathForTesting('lorem-ipsum.txt'),
+            false,
+        ];
+    }
+
+    /**
+     * Provides real file path to get mime type
+     *
+     * @return Generator
+     */
+    public function provideFilePathToGetMimeTypeOfRealFile()
+    {
+        yield [
+            $this->getFilePathForTesting('minion.jpg'),
+            'image/jpeg',
+        ];
+
+        yield [
+            $this->getFilePathForTesting('lorem-ipsum.txt'),
+            'text/plain',
+        ];
+    }
+
+    /**
+     * Provides mime type of image
+     *
+     * @return Generator
+     */
+    public function provideImageMimeType()
+    {
+        yield ['image/bmp'];
+        yield ['image/jpeg'];
+        yield ['image/png'];
+        yield ['image/tiff'];
+        yield ['image/vnd.microsoft.icon'];
+        yield ['image/x-rgb'];
+    }
+
+    /**
+     * Provides existing mime type used to get multiple, more than one extension
+     *
+     * @return Generator
+     */
+    public function provideMimeTypeToGetMultipleExtension()
+    {
+        yield [
+            'application/postscript',
+            [
+                'ai',
+                'eps',
+                'ps',
+            ],
+        ];
+
+        yield [
+            'audio/midi',
+            [
+                'mid',
+                'midi',
+                'kar',
+                'rmi',
+            ],
+        ];
+
+        yield [
+            'image/jpeg',
+            [
+                'jpeg',
+                'jpe',
+                'jpg',
+            ],
+        ];
+
+        yield [
+            'text/html',
+            [
+                'html',
+                'htm',
+            ],
+        ];
+
+        yield [
+            'text/plain',
+            [
+                'txt',
+                'text',
+                'conf',
+                'def',
+                'list',
+                'log',
+                'in',
+            ],
+        ];
+
+        yield [
+            'video/mp4',
+            [
+                'mp4',
+                'mp4v',
+                'mpg4',
+                'm4v',
+            ],
+        ];
+    }
+
+    /**
+     * Provides existing mime type used to get single, one extension
+     *
+     * @return Generator
+     */
+    public function provideMimeTypeToGetSingleExtension()
+    {
+        yield [
+            'application/x-7z-compressed',
+            '7z',
+        ];
+
+        yield [
+            'application/json',
+            'json',
+        ];
+
+        yield [
+            'application/zip',
+            'zip',
+        ];
+    }
+
+    /**
+     * Provides mime types used to get extensions
+     *
+     * @return Generator
+     */
+    public function provideMimesTypesToGetExtensions()
+    {
+        yield [
+            [
+                'application/x-7z-compressed',
+                'application/json',
+            ],
+            [
+                'application/x-7z-compressed' => '7z',
+                'application/json' => 'json',
+            ],
+        ];
+
+        yield [
+            [
+                'application/mathematica',
+                'application/xml',
+                'audio/mp4',
+                'video/mp4',
+            ],
+            [
+                'application/mathematica' => [
+                    'ma',
+                    'nb',
+                    'mb',
+                ],
+                'application/xml' => [
+                    'xml',
+                    'xsl',
+                ],
+                'audio/mp4' => 'mp4a',
+                'video/mp4' => [
+                    'mp4',
+                    'mp4v',
+                    'mpg4',
+                    'm4v',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Provides mime types used to get extensions as upper case
+     *
+     * @return Generator
+     */
+    public function provideMimesTypesToGetExtensionsUpperCase()
+    {
+        yield [
+            [
+                'application/x-7z-compressed',
+                'application/json',
+            ],
+            [
+                'application/x-7z-compressed' => '7Z',
+                'application/json' => 'JSON',
+            ],
+        ];
+
+        yield [
+            [
+                'application/xml',
+                'audio/mp4',
+                'text/html',
+                'video/mp4',
+            ],
+            [
+                'application/xml' => [
+                    'XML',
+                    'XSL',
+                ],
+                'audio/mp4' => 'MP4A',
+                'text/html' => [
+                    'HTML',
+                    'HTM',
+                ],
+                'video/mp4' => [
+                    'MP4',
+                    'MP4V',
+                    'MPG4',
+                    'M4V',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Provides mime type of non-image
+     *
+     * @return Generator
+     */
+    public function provideNonImageMimeType()
+    {
+        yield ['application/rtf'];
+        yield ['audio/mp4'];
+        yield ['text/plain'];
+        yield ['text/html'];
+    }
+
+    /**
+     * Provides not existing mime type
+     *
+     * @return Generator
+     */
+    public function provideNotExistingMimeType()
+    {
+        yield ['lorem/ipsum'];
+        yield ['dolor'];
+        yield ['x/y/z'];
+    }
+
+    /**
+     * Provides not existing mime types
+     *
+     * @return Generator
+     */
+    public function provideNotExistingMimeTypes()
+    {
+        yield [
+            [],
+        ];
+
+        yield [
+            [
+                '',
+                null,
+                false,
+                0,
+            ],
+        ];
+
+        yield [
+            [
+                'lorem/ipsum',
+                'dolor/sit',
+            ],
+        ];
+    }
+
     public function testConstructor()
     {
         static::assertHasNoConstructor(MimeTypes::class);
+    }
+
+    /**
+     * @param bool $mimeType The mime type, e.g. "video/mpeg"
+     * @dataProvider provideBooleanValue
+     */
+    public function testGetExtensionBooleanMimeType($mimeType)
+    {
+        self::assertEquals('', MimeTypes::getExtension($mimeType));
     }
 
     /**
@@ -38,12 +332,14 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * @param bool $mimeType The mime type, e.g. "video/mpeg"
-     * @dataProvider provideBooleanValue
+     * @param string $mimeType   The mime type, e.g. "video/mpeg"
+     * @param array  $extensions Expected extensions
+     *
+     * @dataProvider provideMimeTypeToGetMultipleExtension
      */
-    public function testGetExtensionBooleanMimeType($mimeType)
+    public function testGetExtensionMultiple($mimeType, $extensions)
     {
-        self::assertEquals('', MimeTypes::getExtension($mimeType));
+        self::assertEquals($extensions, MimeTypes::getExtension($mimeType));
     }
 
     /**
@@ -67,14 +363,14 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * @param string $mimeType   The mime type, e.g. "video/mpeg"
-     * @param array  $extensions Expected extensions
+     * @param array $mimesTypes The mimes types, e.g. ['video/mpeg', 'image/jpeg']
+     * @param array $extensions Expected extensions
      *
-     * @dataProvider provideMimeTypeToGetMultipleExtension
+     * @dataProvider provideMimesTypesToGetExtensions
      */
-    public function testGetExtensionMultiple($mimeType, $extensions)
+    public function testGetExtensions($mimesTypes, $extensions)
     {
-        self::assertEquals($extensions, MimeTypes::getExtension($mimeType));
+        self::assertEquals($extensions, MimeTypes::getExtensions($mimesTypes));
     }
 
     /**
@@ -84,17 +380,6 @@ class MimeTypesTest extends BaseTestCase
     public function testGetExtensionsNotExistingMimeTypes($mimesTypes)
     {
         self::assertEquals([], MimeTypes::getExtensions($mimesTypes));
-    }
-
-    /**
-     * @param array $mimesTypes The mimes types, e.g. ['video/mpeg', 'image/jpeg']
-     * @param array $extensions Expected extensions
-     *
-     * @dataProvider provideMimesTypesToGetExtensions
-     */
-    public function testGetExtensions($mimesTypes, $extensions)
-    {
-        self::assertEquals($extensions, MimeTypes::getExtensions($mimesTypes));
     }
 
     /**
@@ -138,12 +423,12 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * @param string $mimeType Not existing mime type, e.g. "lorem/ipsum"
-     * @dataProvider provideNotExistingMimeType
+     * @param string $mimeType Mime type of image, e.g. "image/jpeg"
+     * @dataProvider provideImageMimeType
      */
-    public function testIsImageNotExistingMimeType($mimeType)
+    public function testIsImageImageMimeType($mimeType)
     {
-        self::assertFalse(MimeTypes::isImage($mimeType));
+        self::assertTrue(MimeTypes::isImage($mimeType));
     }
 
     /**
@@ -156,19 +441,19 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
+     * @param string $mimeType Not existing mime type, e.g. "lorem/ipsum"
+     * @dataProvider provideNotExistingMimeType
+     */
+    public function testIsImageNotExistingMimeType($mimeType)
+    {
+        self::assertFalse(MimeTypes::isImage($mimeType));
+    }
+
+    /**
      * @param mixed $path Empty value, e.g. ""
      * @dataProvider provideEmptyValue
      */
     public function testIsImagePathEmptyPath($path)
-    {
-        self::assertFalse(MimeTypes::isImagePath($path));
-    }
-
-    /**
-     * @param mixed $path Path of not existing file, e.g. "lorem/ipsum.jpg"
-     * @dataProvider provideNotExistingFilePath
-     */
-    public function testIsImagePathNotExistingPath($path)
     {
         self::assertFalse(MimeTypes::isImagePath($path));
     }
@@ -185,296 +470,11 @@ class MimeTypesTest extends BaseTestCase
     }
 
     /**
-     * @param string $mimeType Mime type of image, e.g. "image/jpeg"
-     * @dataProvider provideImageMimeType
+     * @param mixed $path Path of not existing file, e.g. "lorem/ipsum.jpg"
+     * @dataProvider provideNotExistingFilePath
      */
-    public function testIsImageImageMimeType($mimeType)
+    public function testIsImagePathNotExistingPath($path)
     {
-        self::assertTrue(MimeTypes::isImage($mimeType));
-    }
-
-    /**
-     * Provides not existing mime type
-     *
-     * @return Generator
-     */
-    public function provideNotExistingMimeType()
-    {
-        yield['lorem/ipsum'];
-        yield['dolor'];
-        yield['x/y/z'];
-    }
-
-    /**
-     * Provides mime type of non-image
-     *
-     * @return Generator
-     */
-    public function provideNonImageMimeType()
-    {
-        yield['application/rtf'];
-        yield['audio/mp4'];
-        yield['text/plain'];
-        yield['text/html'];
-    }
-
-    /**
-     * Provides mime type of image
-     *
-     * @return Generator
-     */
-    public function provideImageMimeType()
-    {
-        yield['image/bmp'];
-        yield['image/jpeg'];
-        yield['image/png'];
-        yield['image/tiff'];
-        yield['image/vnd.microsoft.icon'];
-        yield['image/x-rgb'];
-    }
-
-    /**
-     * Provides existing mime type used to get single, one extension
-     *
-     * @return Generator
-     */
-    public function provideMimeTypeToGetSingleExtension()
-    {
-        yield[
-            'application/x-7z-compressed',
-            '7z',
-        ];
-
-        yield[
-            'application/json',
-            'json',
-        ];
-
-        yield[
-            'application/zip',
-            'zip',
-        ];
-    }
-
-    /**
-     * Provides existing mime type used to get multiple, more than one extension
-     *
-     * @return Generator
-     */
-    public function provideMimeTypeToGetMultipleExtension()
-    {
-        yield[
-            'application/postscript',
-            [
-                'ai',
-                'eps',
-                'ps',
-            ],
-        ];
-
-        yield[
-            'audio/midi',
-            [
-                'mid',
-                'midi',
-                'kar',
-                'rmi',
-            ],
-        ];
-
-        yield[
-            'image/jpeg',
-            [
-                'jpeg',
-                'jpe',
-                'jpg',
-            ],
-        ];
-
-        yield[
-            'text/html',
-            [
-                'html',
-                'htm',
-            ],
-        ];
-
-        yield[
-            'text/plain',
-            [
-                'txt',
-                'text',
-                'conf',
-                'def',
-                'list',
-                'log',
-                'in',
-            ],
-        ];
-
-        yield[
-            'video/mp4',
-            [
-                'mp4',
-                'mp4v',
-                'mpg4',
-                'm4v',
-            ],
-        ];
-    }
-
-    /**
-     * Provides not existing mime types
-     *
-     * @return Generator
-     */
-    public function provideNotExistingMimeTypes()
-    {
-        yield[
-            [],
-        ];
-
-        yield[
-            [
-                '',
-                null,
-                false,
-                0,
-            ],
-        ];
-
-        yield[
-            [
-                'lorem/ipsum',
-                'dolor/sit',
-            ],
-        ];
-    }
-
-    /**
-     * Provides mime types used to get extensions
-     *
-     * @return Generator
-     */
-    public function provideMimesTypesToGetExtensions()
-    {
-        yield[
-            [
-                'application/x-7z-compressed',
-                'application/json',
-            ],
-            [
-                'application/x-7z-compressed' => '7z',
-                'application/json'            => 'json',
-            ],
-        ];
-
-        yield[
-            [
-                'application/mathematica',
-                'application/xml',
-                'audio/mp4',
-                'video/mp4',
-            ],
-            [
-                'application/mathematica' => [
-                    'ma',
-                    'nb',
-                    'mb',
-                ],
-                'application/xml'         => [
-                    'xml',
-                    'xsl',
-                ],
-                'audio/mp4'               => 'mp4a',
-                'video/mp4'               => [
-                    'mp4',
-                    'mp4v',
-                    'mpg4',
-                    'm4v',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Provides mime types used to get extensions as upper case
-     *
-     * @return Generator
-     */
-    public function provideMimesTypesToGetExtensionsUpperCase()
-    {
-        yield[
-            [
-                'application/x-7z-compressed',
-                'application/json',
-            ],
-            [
-                'application/x-7z-compressed' => '7Z',
-                'application/json'            => 'JSON',
-            ],
-        ];
-
-        yield[
-            [
-                'application/xml',
-                'audio/mp4',
-                'text/html',
-                'video/mp4',
-            ],
-            [
-                'application/xml' => [
-                    'XML',
-                    'XSL',
-                ],
-                'audio/mp4'       => 'MP4A',
-                'text/html'       => [
-                    'HTML',
-                    'HTM',
-                ],
-                'video/mp4'       => [
-                    'MP4',
-                    'MP4V',
-                    'MPG4',
-                    'M4V',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Provides real file path to get mime type
-     *
-     * @return Generator
-     */
-    public function provideFilePathToGetMimeTypeOfRealFile()
-    {
-        yield[
-            $this->getFilePathForTesting('minion.jpg'),
-            'image/jpeg',
-        ];
-
-        yield[
-            $this->getFilePathForTesting('lorem-ipsum.txt'),
-            'text/plain',
-        ];
-    }
-
-    /**
-     * Provides real file path to get information if the file is an image
-     *
-     * @return Generator
-     */
-    public function provideExistingFilePathToCheckIsImagePath()
-    {
-        yield[
-            $this->getFilePathForTesting('minion.jpg'),
-            true,
-        ];
-
-        yield[
-            $this->getFilePathForTesting('lorem-ipsum.txt'),
-            false,
-        ];
+        self::assertFalse(MimeTypes::isImagePath($path));
     }
 }

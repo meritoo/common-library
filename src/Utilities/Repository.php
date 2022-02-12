@@ -27,6 +27,86 @@ class Repository
     public const POSITION_KEY = 'position';
 
     /**
+     * Returns query builder for given entity's repository.
+     * The entity should contain given property, e.g. "name".
+     *
+     * @param EntityRepository $repository Repository of the entity
+     * @param string           $property   (optional) Name of property used by the ORDER BY clause
+     * @param string           $direction  (optional) Direction used by the ORDER BY clause ("ASC" or "DESC")
+     * @return QueryBuilder
+     */
+    public static function getEntityOrderedQueryBuilder(
+        EntityRepository $repository,
+        $property = 'name',
+        $direction = 'ASC'
+    ) {
+        $alias = 'qb';
+        $queryBuilder = $repository->createQueryBuilder($alias);
+
+        if (empty($property)) {
+            return $queryBuilder;
+        }
+
+        return $queryBuilder->orderBy(sprintf('%s.%s', $alias, $property), $direction);
+    }
+
+    /**
+     * Returns extreme position (max or min) of given items
+     *
+     * @param array $items Objects who have "getPosition()" and "setPosition()" methods or arrays
+     * @param bool  $max   (optional) If is set to true, maximum value is returned. Otherwise - minimum.
+     * @return int
+     */
+    public static function getExtremePosition(array $items, $max = true)
+    {
+        /*
+         * No items?
+         * Nothing to do
+         */
+        if (empty($items)) {
+            return null;
+        }
+
+        $extreme = null;
+
+        foreach ($items as $item) {
+            // Not sortable?
+            if (!self::isSortable($item)) {
+                continue;
+            }
+
+            $position = null;
+
+            // Let's grab the position
+            if (is_object($item)) {
+                $position = $item->getPosition();
+            } elseif (array_key_exists(static::POSITION_KEY, $item)) {
+                $position = $item[static::POSITION_KEY];
+            }
+
+            // Maximum value is expected?
+            if ($max) {
+                // Position was found and it's larger than previously found position (the extreme position)?
+                if (null === $extreme || (null !== $position && $position > $extreme)) {
+                    $extreme = $position;
+                }
+
+                continue;
+            }
+
+            /*
+             * Minimum value is expected here.
+             * Position was found and it's smaller than previously found position (the extreme position)?
+             */
+            if (null === $extreme || (null !== $position && $position < $extreme)) {
+                $extreme = $position;
+            }
+        }
+
+        return $extreme;
+    }
+
+    /**
      * Replenishes positions of given items
      *
      * @param array $items  Objects who have "getPosition()" and "setPosition()" methods or arrays
@@ -90,86 +170,6 @@ class Repository
              */
             $item[static::POSITION_KEY] = $position;
         }
-    }
-
-    /**
-     * Returns extreme position (max or min) of given items
-     *
-     * @param array $items Objects who have "getPosition()" and "setPosition()" methods or arrays
-     * @param bool  $max   (optional) If is set to true, maximum value is returned. Otherwise - minimum.
-     * @return int
-     */
-    public static function getExtremePosition(array $items, $max = true)
-    {
-        /*
-         * No items?
-         * Nothing to do
-         */
-        if (empty($items)) {
-            return null;
-        }
-
-        $extreme = null;
-
-        foreach ($items as $item) {
-            // Not sortable?
-            if (!self::isSortable($item)) {
-                continue;
-            }
-
-            $position = null;
-
-            // Let's grab the position
-            if (is_object($item)) {
-                $position = $item->getPosition();
-            } elseif (array_key_exists(static::POSITION_KEY, $item)) {
-                $position = $item[static::POSITION_KEY];
-            }
-
-            // Maximum value is expected?
-            if ($max) {
-                // Position was found and it's larger than previously found position (the extreme position)?
-                if (null === $extreme || (null !== $position && $position > $extreme)) {
-                    $extreme = $position;
-                }
-
-                continue;
-            }
-
-            /*
-             * Minimum value is expected here.
-             * Position was found and it's smaller than previously found position (the extreme position)?
-             */
-            if (null === $extreme || (null !== $position && $position < $extreme)) {
-                $extreme = $position;
-            }
-        }
-
-        return $extreme;
-    }
-
-    /**
-     * Returns query builder for given entity's repository.
-     * The entity should contain given property, e.g. "name".
-     *
-     * @param EntityRepository $repository Repository of the entity
-     * @param string           $property   (optional) Name of property used by the ORDER BY clause
-     * @param string           $direction  (optional) Direction used by the ORDER BY clause ("ASC" or "DESC")
-     * @return QueryBuilder
-     */
-    public static function getEntityOrderedQueryBuilder(
-        EntityRepository $repository,
-        $property = 'name',
-        $direction = 'ASC'
-    ) {
-        $alias = 'qb';
-        $queryBuilder = $repository->createQueryBuilder($alias);
-
-        if (empty($property)) {
-            return $queryBuilder;
-        }
-
-        return $queryBuilder->orderBy(sprintf('%s.%s', $alias, $property), $direction);
     }
 
     /**

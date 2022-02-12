@@ -33,6 +33,17 @@ class BaseTestCaseTraitTest extends BaseTestCase
 {
     use BaseTestCaseTrait;
 
+    public function testAssertConstructorVisibilityAndArgumentsUsingClassWithoutConstructor(): void
+    {
+        $this->expectException(ClassWithoutConstructorException::class);
+        static::assertConstructorVisibilityAndArguments(SimpleTestCase::class, OopVisibilityType::IS_PUBLIC);
+    }
+
+    public function testAssertHasNoConstructor(): void
+    {
+        static::assertHasNoConstructor(SimpleTestCase::class);
+    }
+
     public function testAssertMethodVisibility(): void
     {
         $method = new ReflectionMethod(SimpleTestCase::class, 'assertMethodVisibility');
@@ -51,54 +62,6 @@ class BaseTestCaseTraitTest extends BaseTestCase
     {
         $method = new ReflectionMethod(SimpleTestCase::class, 'thePrivateMethod');
         static::assertMethodVisibility($method, OopVisibilityType::IS_PRIVATE);
-    }
-
-    public function testAssertConstructorVisibilityAndArgumentsUsingClassWithoutConstructor(): void
-    {
-        $this->expectException(ClassWithoutConstructorException::class);
-        static::assertConstructorVisibilityAndArguments(SimpleTestCase::class, OopVisibilityType::IS_PUBLIC);
-    }
-
-    public function testAssertHasNoConstructor(): void
-    {
-        static::assertHasNoConstructor(SimpleTestCase::class);
-    }
-
-    public function testProvideEmptyValue(): void
-    {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideEmptyValue();
-
-        $expected = [
-            [''],
-            ['   '],
-            [null],
-            [0],
-            [false],
-            [[]],
-        ];
-
-        foreach ($values as $index => $value) {
-            static::assertSame($expected[$index], $value);
-        }
-    }
-
-    public function testProvideEmptyScalarValue(): void
-    {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideEmptyScalarValue();
-
-        $expected = [
-            [''],
-            ['   '],
-            [null],
-            [0],
-            [false],
-        ];
-
-        foreach ($values as $index => $value) {
-            static::assertSame($expected[$index], $value);
-        }
     }
 
     public function testProvideBooleanValue(): void
@@ -164,19 +127,40 @@ class BaseTestCaseTraitTest extends BaseTestCase
         }
     }
 
-    public function testProvideNotExistingFilePath(): void
+    public function testProvideEmptyScalarValue(): void
     {
         $testCase = new SimpleTestCase();
-        $paths = $testCase->provideNotExistingFilePath();
+        $values = $testCase->provideEmptyScalarValue();
 
         $expected = [
-            ['lets-test.doc'],
-            ['lorem/ipsum.jpg'],
-            ['surprise/me/one/more/time.txt'],
+            [''],
+            ['   '],
+            [null],
+            [0],
+            [false],
         ];
 
-        foreach ($paths as $index => $path) {
-            static::assertSame($expected[$index], $path);
+        foreach ($values as $index => $value) {
+            static::assertSame($expected[$index], $value);
+        }
+    }
+
+    public function testProvideEmptyValue(): void
+    {
+        $testCase = new SimpleTestCase();
+        $values = $testCase->provideEmptyValue();
+
+        $expected = [
+            [''],
+            ['   '],
+            [null],
+            [0],
+            [false],
+            [[]],
+        ];
+
+        foreach ($values as $index => $value) {
+            static::assertSame($expected[$index], $value);
         }
     }
 
@@ -193,6 +177,22 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
         foreach ($values as $index => $value) {
             static::assertEquals($expected[$index], $value);
+        }
+    }
+
+    public function testProvideNotExistingFilePath(): void
+    {
+        $testCase = new SimpleTestCase();
+        $paths = $testCase->provideNotExistingFilePath();
+
+        $expected = [
+            ['lets-test.doc'],
+            ['lorem/ipsum.jpg'],
+            ['surprise/me/one/more/time.txt'],
+        ];
+
+        foreach ($paths as $index => $path) {
+            static::assertSame($expected[$index], $path);
         }
     }
 }

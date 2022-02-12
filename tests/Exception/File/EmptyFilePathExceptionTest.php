@@ -19,18 +19,18 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\File\EmptyFilePathException
+ * @covers    \Meritoo\Common\Exception\File\EmptyFilePathException
  */
 class EmptyFilePathExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
-    {
-        static::assertConstructorVisibilityAndArguments(EmptyFilePathException::class, OopVisibilityType::IS_PUBLIC, 3);
-    }
-
     public function testConstructorMessage()
     {
         $exception = EmptyFilePathException::create();
         static::assertSame('Path of the file is empty. Did you provide path of proper file?', $exception->getMessage());
+    }
+
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertConstructorVisibilityAndArguments(EmptyFilePathException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 }

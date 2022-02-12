@@ -8,13 +8,15 @@
 
 namespace Meritoo\Common\Exception\ValueObject;
 
+use Exception;
+
 /**
  * An exception used while dimensions of size, passed to the instance of Size class, are invalid
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class InvalidSizeDimensionsException extends \Exception
+class InvalidSizeDimensionsException extends Exception
 {
     /**
      * Creates exception

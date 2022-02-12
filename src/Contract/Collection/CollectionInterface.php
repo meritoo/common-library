@@ -22,25 +22,23 @@ use IteratorAggregate;
  */
 interface CollectionInterface extends Countable, ArrayAccess, IteratorAggregate
 {
-    public function toArray(): array;
-
     public function add($element, $index = null): void;
 
     public function addMultiple($elements, bool $useIndexes = false): void;
 
-    public function prepend($element): void;
+    public function clear(): void;
 
-    public function remove($element): void;
-
-    public function getPrevious($element);
-
-    public function getNext($element);
+    public function getByIndex($index);
 
     public function getFirst();
 
     public function getLast();
 
-    public function getByIndex($index);
+    public function getNext($element);
+
+    public function getPrevious($element);
+
+    public function has($element): bool;
 
     public function isEmpty(): bool;
 
@@ -48,9 +46,11 @@ interface CollectionInterface extends Countable, ArrayAccess, IteratorAggregate
 
     public function isLast($element): bool;
 
-    public function has($element): bool;
-
-    public function clear(): void;
-
     public function limit(int $max, int $offset = 0): self;
+
+    public function prepend($element): void;
+
+    public function remove($element): void;
+
+    public function toArray(): array;
 }

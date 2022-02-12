@@ -29,32 +29,32 @@ class OopVisibilityTypeTest extends BaseTypeTestCase
      */
     public function provideTypeToVerify(): Generator
     {
-        yield[
+        yield [
             OopVisibilityType::isCorrectType(''),
             false,
         ];
 
-        yield[
+        yield [
             OopVisibilityType::isCorrectType(null),
             false,
         ];
 
-        yield[
+        yield [
             OopVisibilityType::isCorrectType('-1'),
             false,
         ];
 
-        yield[
+        yield [
             OopVisibilityType::isCorrectType('1'),
             true,
         ];
 
-        yield[
+        yield [
             OopVisibilityType::isCorrectType('2'),
             true,
         ];
 
-        yield[
+        yield [
             OopVisibilityType::isCorrectType('3'),
             true,
         ];
@@ -66,9 +66,9 @@ class OopVisibilityTypeTest extends BaseTypeTestCase
     protected function getAllExpectedTypes(): array
     {
         return [
-            'IS_PRIVATE'   => 3,
+            'IS_PRIVATE' => 3,
             'IS_PROTECTED' => 2,
-            'IS_PUBLIC'    => 1,
+            'IS_PUBLIC' => 1,
         ];
     }
 

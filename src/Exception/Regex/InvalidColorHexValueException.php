@@ -8,13 +8,15 @@
 
 namespace Meritoo\Common\Exception\Regex;
 
+use Exception;
+
 /**
  * An exception used while given hexadecimal value of color is invalid
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class InvalidColorHexValueException extends \Exception
+class InvalidColorHexValueException extends Exception
 {
     /**
      * Creates exception

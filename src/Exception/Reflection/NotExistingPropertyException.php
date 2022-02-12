@@ -8,13 +8,15 @@
 
 namespace Meritoo\Common\Exception\Reflection;
 
+use Exception;
+
 /**
  * An exception used while property does not exist in instance of class
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class NotExistingPropertyException extends \Exception
+class NotExistingPropertyException extends Exception
 {
     /**
      * Creates exception

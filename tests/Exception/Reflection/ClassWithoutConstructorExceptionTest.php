@@ -25,6 +25,23 @@ use Meritoo\Common\Utilities\Arrays;
  */
 class ClassWithoutConstructorExceptionTest extends BaseTestCase
 {
+    public function provideClassName(): Generator
+    {
+        $template = 'Oops, class \'%s\' hasn\'t constructor. Did you use proper class?';
+
+        yield [
+            'An empty name of class',
+            '',
+            sprintf($template, ''),
+        ];
+
+        yield [
+            'The Arrays class',
+            Arrays::class,
+            sprintf($template, Arrays::class),
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -45,22 +62,5 @@ class ClassWithoutConstructorExceptionTest extends BaseTestCase
     {
         $exception = ClassWithoutConstructorException::create($className);
         static::assertSame($expectedMessage, $exception->getMessage(), $description);
-    }
-
-    public function provideClassName(): Generator
-    {
-        $template = 'Oops, class \'%s\' hasn\'t constructor. Did you use proper class?';
-
-        yield[
-            'An empty name of class',
-            '',
-            sprintf($template, ''),
-        ];
-
-        yield[
-            'The Arrays class',
-            Arrays::class,
-            sprintf($template, Arrays::class),
-        ];
     }
 }

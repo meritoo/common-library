@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.8
+
+1.
+
 # 1.1.7
 
 1. [Arrays] Allow to define a key of next level elements in a function that returns elements from given level
@@ -32,8 +36,8 @@ Common and useful classes, methods, exceptions etc.
 
 # 1.1.1
 
-1. [BaseCollection] Treat the `null` index as "no index" only while adding new element, iow. do not treat empty
-string as "no index" behaviour.
+1. [BaseCollection] Treat the `null` index as "no index" only while adding new element, iow. do not treat empty string
+   as "no index" behaviour.
 2. [Miscellaneous] [Regex] Use simpler & stronger pattern to match name of file
 3. Do not install `hirak/prestissimo` package while running Travis CI (incompatible with your PHP version, PHP
    extensions and Composer version)
@@ -41,9 +45,9 @@ string as "no index" behaviour.
 
 # 1.1.0
 
-1. Rename Meritoo\Common\Collection\Collection class to Meritoo\Common\Collection\BaseCollection.
-Add BaseCollection::isValidType() method to validate type of element before add it to collection.
-Add BaseCollection ::prepareElements() method to allow preparation of elements in custom way.
+1. Rename Meritoo\Common\Collection\Collection class to Meritoo\Common\Collection\BaseCollection. Add BaseCollection::
+   isValidType() method to validate type of element before add it to collection. Add BaseCollection ::prepareElements()
+   method to allow preparation of elements in custom way.
 
 # 1.0.6
 
@@ -67,8 +71,8 @@ Add BaseCollection ::prepareElements() method to allow preparation of elements i
 # 1.0.3
 
 1. Travis CI > run many tasks using Phing > update configuration
-2. Template with placeholders > verification of placeholders without values > make stronger and point out which are 
-missing
+2. Template with placeholders > verification of placeholders without values > make stronger and point out which are
+   missing
 3. Reflection > getPropertyValue() method > look for the property in parent classes
 
 # 1.0.2
@@ -82,13 +86,13 @@ missing
 7. PHPUnit > execute tests in random order
 8. Implement [Psalm](https://github.com/vimeo/psalm)
 9. Infection (Mutation Testing Framework) > fix bugs while running (generate proper code coverage, bugs while running
-tests randomly)
+   tests randomly)
 10. Phing > php-coveralls > add task
 
 # 1.0.1
 
-1. Regex > make compatible with PHP 7.3 Tests > Regex > fix "preg_match(): Compilation failed: invalid range in 
-character class at offset 4" bug
+1. Regex > make compatible with PHP 7.3 Tests > Regex > fix "preg_match(): Compilation failed: invalid range in
+   character class at offset 4" bug
 2. Collection/storage of templates
 3. Template with placeholders that may be filled by real data
 4. RenderableInterface > something that may be rendered
@@ -135,7 +139,8 @@ character class at offset 4" bug
 
 1. Tests > refactoring & minor improvements
 2. Utilities > CssSelector > useful methods related to CSS selectors
-3. Utilities > Bootstrap4CssSelector > useful methods related to CSS selectors and the Bootstrap4 (front-end component library)
+3. Utilities > Bootstrap4CssSelector > useful methods related to CSS selectors and the Bootstrap4 (front-end component
+   library)
 
 # 0.1.2
 
@@ -174,5 +179,6 @@ character class at offset 4" bug
 4. StyleCI & PHP Coding Standards Fixer: update configuration
 5. Documentation > Docker > add paragraph for PHP Coding Standards Fixer
 6. Coding standard > fix automatically
-7. StyleCI configuration > fix bug "The provided fixer 'binary_operator_spaces' cannot be enabled again because it was already enabled"
+7. StyleCI configuration > fix bug "The provided fixer 'binary_operator_spaces' cannot be enabled again because it was
+   already enabled"
 8. StyleCI > disable & remove

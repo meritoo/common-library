@@ -24,6 +24,29 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class TemplateNotFoundExceptionTest extends BaseTestCase
 {
+    public function provideIndexAndException(): ?Generator
+    {
+        $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
+
+        yield [
+            'An empty string',
+            '',
+            new TemplateNotFoundException(sprintf($template, '')),
+        ];
+
+        yield [
+            'Non-empty string',
+            'test',
+            new TemplateNotFoundException(sprintf($template, 'test')),
+        ];
+
+        yield [
+            'Integer',
+            '2',
+            new TemplateNotFoundException(sprintf($template, 2)),
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -44,28 +67,5 @@ class TemplateNotFoundExceptionTest extends BaseTestCase
     {
         $created = TemplateNotFoundException::create($index);
         static::assertEquals($expected, $created, $description);
-    }
-
-    public function provideIndexAndException(): ?Generator
-    {
-        $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
-
-        yield[
-            'An empty string',
-            '',
-            new TemplateNotFoundException(sprintf($template, '')),
-        ];
-
-        yield[
-            'Non-empty string',
-            'test',
-            new TemplateNotFoundException(sprintf($template, 'test')),
-        ];
-
-        yield[
-            'Integer',
-            '2',
-            new TemplateNotFoundException(sprintf($template, 2)),
-        ];
     }
 }

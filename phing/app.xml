@@ -3,17 +3,17 @@
 <project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.16.0">
     <!-- Properties -->
     <if>
-        <available file="${project.basedir}/phing/properties" property="custom.properties.available"/>
+        <available file="${project.basedir}/phing/properties" property="custom.properties.available" />
         <then>
-            <property file="${project.basedir}/phing/properties"/>
+            <property file="${project.basedir}/phing/properties" />
         </then>
         <else>
-            <property file="${project.basedir}/phing/properties.dist"/>
+            <property file="${project.basedir}/phing/properties.dist" />
         </else>
     </if>
 
     <!-- Filesets -->
-    <import file="${project.basedir}/phing/filesets.xml"/>
+    <import file="${project.basedir}/phing/filesets.xml" />
 
     <!-- Default / main target -->
     <target name="build:main"
@@ -33,16 +33,16 @@
     <target name="app:composer:self-update">
         <if>
             <not>
-                <available file="${composer.path}" property="composer.local.unavailable"/>
+                <available file="${composer.path}" property="composer.local.unavailable" />
             </not>
             <then>
                 <if>
-                    <os family="windows"/>
+                    <os family="windows" />
                     <then>
-                        <fail message="Composer not found! Go to http://getcomposer.org/download and download the Composer."/>
+                        <fail message="Composer not found! Go to http://getcomposer.org/download and download the Composer." />
                     </then>
                     <else>
-                        <exec command="${composer.download_command}" checkreturn="true" passthru="true"/>
+                        <exec command="${composer.download_command}" checkreturn="true" passthru="true" />
                     </else>
                 </if>
             </then>
@@ -50,41 +50,41 @@
 
         <!-- Update Composer -->
         <composer php="${composer.php}" composer="${composer.path}" command="selfupdate">
-            <arg value="--ansi"/>
+            <arg value="--ansi" />
         </composer>
     </target>
 
     <!-- Validates composer.* files -->
     <target name="app:composer:validate" depends="app:composer:install">
         <composer php="${composer.php}" composer="${composer.path}" command="validate">
-            <arg value="--no-check-all"/>
-            <arg value="--strict"/>
-            <arg value="--ansi"/>
+            <arg value="--no-check-all" />
+            <arg value="--strict" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
     <!-- Project clean -->
     <target name="app:clean">
         <if>
-            <equals arg1="${env}" arg2="prod"/>
+            <equals arg1="${env}" arg2="prod" />
             <then>
-                <echo message="[Skipped] Cleaning project (and directories cleanup) -> 'prod' environment"/>
+                <echo message="[Skipped] Cleaning project (and directories cleanup) -> 'prod' environment" />
             </then>
             <else>
-                <foreach list="${directoriesToEmpty}" param="directory" target="app:clean:empty"/>
+                <foreach list="${directoriesToEmpty}" param="directory" target="app:clean:empty" />
             </else>
         </if>
 
-        <foreach list="${directoriesToCheck}" param="directory" target="app:clean:check"/>
-        <foreach list="${directoriesToEmpty}" param="directory" target="app:permissions"/>
+        <foreach list="${directoriesToCheck}" param="directory" target="app:clean:check" />
+        <foreach list="${directoriesToEmpty}" param="directory" target="app:permissions" />
     </target>
 
     <!-- Cleaning directory (making empty) directory -->
     <target name="app:clean:empty">
         <if>
-            <available file="${directory}" type="dir" property="dir_is_available"/>
+            <available file="${directory}" type="dir" property="dir_is_available" />
             <then>
-                <delete includeemptydirs="true" dir="${directory}"/>
+                <delete includeemptydirs="true" dir="${directory}" />
             </then>
         </if>
     </target>
@@ -93,20 +93,20 @@
     <target name="app:clean:check">
         <if>
             <not>
-                <available file="${directory}" type="dir" property="dir_is_available"/>
+                <available file="${directory}" type="dir" property="dir_is_available" />
             </not>
             <then>
                 <if>
                     <or>
-                        <contains string="${directory}" substring="cache"/>
-                        <contains string="${directory}" substring="logs"/>
-                        <contains string="${directory}" substring="sessions"/>
+                        <contains string="${directory}" substring="cache" />
+                        <contains string="${directory}" substring="logs" />
+                        <contains string="${directory}" substring="sessions" />
                     </or>
                     <then>
-                        <mkdir dir="${directory}" mode="0777"/>
+                        <mkdir dir="${directory}" mode="0777" />
                     </then>
                     <else>
-                        <mkdir dir="${directory}" mode="0775"/>
+                        <mkdir dir="${directory}" mode="0775" />
                     </else>
                 </if>
             </then>
@@ -116,24 +116,24 @@
     <!-- Installs vendors -->
     <target name="app:composer:install" depends="app:composer:self-update">
         <composer php="${composer.php}" composer="${composer.path}" command="install">
-            <arg value="--optimize-autoloader"/>
-            <arg value="--ansi"/>
+            <arg value="--optimize-autoloader" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
     <!-- Clearing cache -->
     <target name="app:cache">
         <if>
-            <istrue value="${cache.clearWithWarmup}"/>
+            <istrue value="${cache.clearWithWarmup}" />
             <then>
                 <SymfonyConsole console="bin/console" command="cache:clear">
-                    <arg name="env" value="${env}"/>
+                    <arg name="env" value="${env}" />
                 </SymfonyConsole>
             </then>
             <else>
                 <SymfonyConsole console="bin/console" command="cache:clear">
-                    <arg name="env" value="${env}"/>
-                    <arg name="no-warmup"/>
+                    <arg name="env" value="${env}" />
+                    <arg name="no-warmup" />
                 </SymfonyConsole>
             </else>
         </if>
@@ -142,15 +142,15 @@
     <!-- Clearing cache (faster) -->
     <target name="app:cache:faster">
         <SymfonyConsole console="bin/console" command="cache:clear">
-            <arg name="env" value="${env}"/>
-            <arg name="no-optional-warmers"/>
+            <arg name="env" value="${env}" />
+            <arg name="no-optional-warmers" />
         </SymfonyConsole>
     </target>
 
     <!-- Warming up cache -->
     <target name="app:cache:warmup">
         <SymfonyConsole console="bin/console" command="cache:warmup">
-            <arg name="env" value="${env}"/>
+            <arg name="env" value="${env}" />
         </SymfonyConsole>
     </target>
 
@@ -158,10 +158,10 @@
     <target name="app:permissions">
         <if>
             <not>
-                <os family="windows"/>
+                <os family="windows" />
             </not>
             <then>
-                <exec command="chmod -R 777 ${directory}/*"/>
+                <exec command="chmod -R 777 ${directory}/*" />
             </then>
         </if>
     </target>
@@ -169,11 +169,11 @@
     <!-- Checkout and finalization -->
     <target name="app:checkout">
         <tstamp>
-            <format property="date_end" pattern="%Y-%m-%d %H:%M"/>
+            <format property="date_end" pattern="%Y-%m-%d %H:%M" />
         </tstamp>
 
-        <echo msg="------------------------------------"/>
-        <echo msg="Build finished at: ${date_end}"/>
-        <echo msg="------------------------------------"/>
+        <echo msg="------------------------------------" />
+        <echo msg="Build finished at: ${date_end}" />
+        <echo msg="------------------------------------" />
     </target>
 </project>

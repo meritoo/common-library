@@ -83,23 +83,13 @@ trait HumanTrait
     }
 
     /**
-     * Returns first name
+     * Returns birth date
      *
-     * @return string
+     * @return null|DateTime
      */
-    public function getFirstName(): string
+    public function getBirthDate(): ?DateTime
     {
-        return $this->firstName;
-    }
-
-    /**
-     * Returns last name
-     *
-     * @return string
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
+        return $this->birthDate;
     }
 
     /**
@@ -113,13 +103,13 @@ trait HumanTrait
     }
 
     /**
-     * Returns birth date
+     * Returns first name
      *
-     * @return null|DateTime
+     * @return string
      */
-    public function getBirthDate(): ?DateTime
+    public function getFirstName(): string
     {
-        return $this->birthDate;
+        return $this->firstName;
     }
 
     /**
@@ -140,5 +130,15 @@ trait HumanTrait
         }
 
         return trim(sprintf('%s %s', $beginning, $finish));
+    }
+
+    /**
+     * Returns last name
+     *
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
     }
 }

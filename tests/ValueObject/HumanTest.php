@@ -8,6 +8,7 @@
 
 namespace Meritoo\Test\Common\ValueObject;
 
+use DateTime;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Human;
@@ -19,10 +20,37 @@ use Meritoo\Common\ValueObject\Human;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\ValueObject\Human
+ * @covers    \Meritoo\Common\ValueObject\Human
  */
 class HumanTest extends BaseTestCase
 {
+    public function provideHuman()
+    {
+        yield [
+            'Without any data (an empty human)',
+            new Human('', ''),
+            '',
+        ];
+
+        yield [
+            'With first and last name only',
+            new Human('John', 'Scott'),
+            'John Scott',
+        ];
+
+        yield [
+            'With first name, last name and email',
+            new Human('John', 'Scott', 'john@scott.com'),
+            'John Scott <john@scott.com>',
+        ];
+
+        yield [
+            'With whole/complete data',
+            new Human('John', 'Scott', 'john@scott.com', new DateTime('2001-01-01')),
+            'John Scott <john@scott.com>',
+        ];
+    }
+
     public function testConstructor()
     {
         static::assertConstructorVisibilityAndArguments(
@@ -33,52 +61,13 @@ class HumanTest extends BaseTestCase
         );
     }
 
-    /**
-     * @param string $description Description of test
-     * @param Human  $human       Human to verify
-     * @param string $expected    Expected string
-     *
-     * @dataProvider provideHuman
-     */
-    public function testToString($description, Human $human, $expected)
-    {
-        static::assertSame($expected, (string)$human, $description);
-    }
-
-    public function testGetFirstName()
-    {
-        $empty = new Human('', '');
-        static::assertSame('', $empty->getFirstName());
-
-        $human = new Human('John', 'Scott');
-        static::assertSame('John', $human->getFirstName());
-    }
-
-    public function testGetLastName()
-    {
-        $empty = new Human('', '');
-        static::assertSame('', $empty->getLastName());
-
-        $human = new Human('John', 'Scott');
-        static::assertSame('Scott', $human->getLastName());
-    }
-
     public function testGetBirthDate()
     {
         $empty = new Human('', '');
         static::assertNull($empty->getBirthDate());
 
-        $human = new Human('John', 'Scott', '', new \DateTime('2001-01-01'));
-        static::assertEquals(new \DateTime('2001-01-01'), $human->getBirthDate());
-    }
-
-    public function testGetFullName()
-    {
-        $empty = new Human('', '');
-        static::assertSame('', $empty->getFullName());
-
-        $human = new Human('John', 'Scott', '', new \DateTime('2001-01-01'));
-        static::assertSame('John Scott', $human->getFullName());
+        $human = new Human('John', 'Scott', '', new DateTime('2001-01-01'));
+        static::assertEquals(new DateTime('2001-01-01'), $human->getBirthDate());
     }
 
     public function testGetEmail()
@@ -90,30 +79,42 @@ class HumanTest extends BaseTestCase
         static::assertSame('john@scott.com', $human->getEmail());
     }
 
-    public function provideHuman()
+    public function testGetFirstName()
     {
-        yield[
-            'Without any data (an empty human)',
-            new Human('', ''),
-            '',
-        ];
+        $empty = new Human('', '');
+        static::assertSame('', $empty->getFirstName());
 
-        yield[
-            'With first and last name only',
-            new Human('John', 'Scott'),
-            'John Scott',
-        ];
+        $human = new Human('John', 'Scott');
+        static::assertSame('John', $human->getFirstName());
+    }
 
-        yield[
-            'With first name, last name and email',
-            new Human('John', 'Scott', 'john@scott.com'),
-            'John Scott <john@scott.com>',
-        ];
+    public function testGetFullName()
+    {
+        $empty = new Human('', '');
+        static::assertSame('', $empty->getFullName());
 
-        yield[
-            'With whole/complete data',
-            new Human('John', 'Scott', 'john@scott.com', new \DateTime('2001-01-01')),
-            'John Scott <john@scott.com>',
-        ];
+        $human = new Human('John', 'Scott', '', new DateTime('2001-01-01'));
+        static::assertSame('John Scott', $human->getFullName());
+    }
+
+    public function testGetLastName()
+    {
+        $empty = new Human('', '');
+        static::assertSame('', $empty->getLastName());
+
+        $human = new Human('John', 'Scott');
+        static::assertSame('Scott', $human->getLastName());
+    }
+
+    /**
+     * @param string $description Description of test
+     * @param Human  $human       Human to verify
+     * @param string $expected    Expected string
+     *
+     * @dataProvider provideHuman
+     */
+    public function testToString($description, Human $human, $expected)
+    {
+        static::assertSame($expected, (string) $human, $description);
     }
 }

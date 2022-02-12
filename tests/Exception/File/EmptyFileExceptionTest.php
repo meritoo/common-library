@@ -20,10 +20,30 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\File\EmptyFileException
+ * @covers    \Meritoo\Common\Exception\File\EmptyFileException
  */
 class EmptyFileExceptionTest extends BaseTestCase
 {
+    /**
+     * Provides path of the empty file and expected exception's message
+     *
+     * @return Generator
+     */
+    public function providePathOfFile()
+    {
+        $template = 'File with path \'%s\' is empty (has no content). Did you provide path of proper file?';
+
+        yield [
+            'aa/bb/cc',
+            sprintf($template, 'aa/bb/cc'),
+        ];
+
+        yield [
+            'images/show/car.jpg',
+            sprintf($template, 'images/show/car.jpg'),
+        ];
+    }
+
     public function testConstructorVisibilityAndArguments()
     {
         static::assertConstructorVisibilityAndArguments(EmptyFileException::class, OopVisibilityType::IS_PUBLIC, 3);
@@ -39,25 +59,5 @@ class EmptyFileExceptionTest extends BaseTestCase
     {
         $exception = EmptyFileException::create($emptyFilePath);
         static::assertSame($expectedMessage, $exception->getMessage());
-    }
-
-    /**
-     * Provides path of the empty file and expected exception's message
-     *
-     * @return Generator
-     */
-    public function providePathOfFile()
-    {
-        $template = 'File with path \'%s\' is empty (has no content). Did you provide path of proper file?';
-
-        yield[
-            'aa/bb/cc',
-            sprintf($template, 'aa/bb/cc'),
-        ];
-
-        yield[
-            'images/show/car.jpg',
-            sprintf($template, 'images/show/car.jpg'),
-        ];
     }
 }

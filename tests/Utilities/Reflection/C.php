@@ -20,13 +20,13 @@ namespace Meritoo\Test\Common\Utilities\Reflection;
  */
 class C extends B
 {
-    public function getPositive()
-    {
-        return true;
-    }
-
     public function getNegative()
     {
         return false;
+    }
+
+    public function getPositive()
+    {
+        return true;
     }
 }

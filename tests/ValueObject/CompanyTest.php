@@ -21,7 +21,7 @@ use Meritoo\Common\ValueObject\Company;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\ValueObject\Company
+ * @covers    \Meritoo\Common\ValueObject\Company
  */
 class CompanyTest extends BaseTestCase
 {
@@ -43,12 +43,6 @@ class CompanyTest extends BaseTestCase
             3,
             2
         );
-    }
-
-    public function testGetName()
-    {
-        static::assertSame('Test 1', $this->company->getName());
-        static::assertSame('Test 2', $this->companyWithoutBankAccount->getName());
     }
 
     public function testGetAddress()
@@ -74,10 +68,16 @@ class CompanyTest extends BaseTestCase
         static::assertNull($this->companyWithoutBankAccount->getBankAccount());
     }
 
+    public function testGetName()
+    {
+        static::assertSame('Test 1', $this->company->getName());
+        static::assertSame('Test 2', $this->companyWithoutBankAccount->getName());
+    }
+
     public function testToString()
     {
-        static::assertSame('Test 1, 4th Avenue 10/200, 00123, New York, Bank 1, 12345', (string)$this->company);
-        static::assertSame('Test 2, Green Street 22, 00456, San Francisco', (string)$this->companyWithoutBankAccount);
+        static::assertSame('Test 1, 4th Avenue 10/200, 00123, New York, Bank 1, 12345', (string) $this->company);
+        static::assertSame('Test 2, Green Street 22, 00456, San Francisco', (string) $this->companyWithoutBankAccount);
     }
 
     /**

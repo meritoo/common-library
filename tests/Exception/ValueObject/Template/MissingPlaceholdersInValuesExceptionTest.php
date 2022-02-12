@@ -8,6 +8,7 @@
 
 namespace Meritoo\Test\Common\Exception\ValueObject\Template;
 
+use Generator;
 use Meritoo\Common\Exception\ValueObject\Template\MissingPlaceholdersInValuesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -23,6 +24,39 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class MissingPlaceholdersInValuesExceptionTest extends BaseTestCase
 {
+    public function provideContentAndMissingPlaceholders(): ?Generator
+    {
+        $template = 'Cannot fill template \'%s\', because of missing values for placeholder(s): %s. Did you provide all'
+            .' required values?';
+
+        yield [
+            'Missing 2nd placeholder',
+            '%test1% - %test2%',
+            [
+                'test2',
+            ],
+            sprintf(
+                $template,
+                '%test1% - %test2%',
+                'test2'
+            ),
+        ];
+
+        yield [
+            'Missing 2nd and 3rd placeholder',
+            '%test1% / %test2% / %test3%',
+            [
+                'test2',
+                'test3',
+            ],
+            sprintf(
+                $template,
+                '%test1% / %test2% / %test3%',
+                'test2, test3'
+            ),
+        ];
+    }
+
     public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -48,38 +82,5 @@ class MissingPlaceholdersInValuesExceptionTest extends BaseTestCase
     ): void {
         $exception = MissingPlaceholdersInValuesException::create($content, $missingPlaceholders);
         static::assertSame($expectedMessage, $exception->getMessage(), $description);
-    }
-
-    public function provideContentAndMissingPlaceholders(): ?\Generator
-    {
-        $template = 'Cannot fill template \'%s\', because of missing values for placeholder(s): %s. Did you provide all'
-            . ' required values?';
-
-        yield[
-            'Missing 2nd placeholder',
-            '%test1% - %test2%',
-            [
-                'test2',
-            ],
-            sprintf(
-                $template,
-                '%test1% - %test2%',
-                'test2'
-            ),
-        ];
-
-        yield[
-            'Missing 2nd and 3rd placeholder',
-            '%test1% / %test2% / %test3%',
-            [
-                'test2',
-                'test3',
-            ],
-            sprintf(
-                $template,
-                '%test1% / %test2% / %test3%',
-                'test2, test3'
-            ),
-        ];
     }
 }

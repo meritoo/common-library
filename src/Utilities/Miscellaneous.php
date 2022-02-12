@@ -20,574 +20,6 @@ use Transliterator;
 class Miscellaneous
 {
     /**
-     * Returns directory's content (names of directories and files)
-     *
-     * @param string $directoryPath Path of directory who content should be returned
-     * @param bool   $recursive     (optional) If is set to true, sub-directories are also searched for content.
-     *                              Otherwise - only content of given directory is returned.
-     * @param int    $maxFilesCount (optional) Maximum files that will be returned. If it's null, all files are
-     *                              returned.
-     * @return null|array
-     */
-    public static function getDirectoryContent($directoryPath, $recursive = false, $maxFilesCount = null)
-    {
-        /*
-         * Path of directory is unknown or does not exist and is not readable?
-         * Nothing to do
-         */
-        if (empty($directoryPath) || !is_readable($directoryPath)) {
-            return null;
-        }
-
-        $files = [];
-        $startFileName = '';
-
-        if (self::isFilePath($directoryPath)) {
-            $startDirectoryPath = dirname($directoryPath);
-            $startFileName = str_replace($startDirectoryPath, '', $directoryPath);
-
-            $directoryPath = $startDirectoryPath;
-        }
-
-        $count = 0;
-        $startFileFound = false;
-
-        if (!Regex::endsWith($directoryPath, '/')) {
-            $directoryPath .= '/';
-        }
-
-        if (Regex::startsWith($startFileName, '/')) {
-            $startFileName = mb_substr($startFileName, 1);
-        }
-
-        $directoryContent = scandir($directoryPath, SCANDIR_SORT_ASCENDING);
-
-        if (!empty($directoryContent)) {
-            foreach ($directoryContent as $fileName) {
-                if ('.' !== $fileName && '..' !== $fileName) {
-                    $content = null;
-
-                    if (!empty($startFileName) && !$startFileFound) {
-                        if ($fileName === $startFileName) {
-                            $startFileFound = true;
-                        }
-
-                        continue;
-                    }
-
-                    if ($recursive && is_dir($directoryPath . $fileName)) {
-                        $content = self::getDirectoryContent($directoryPath . $fileName, true, $maxFilesCount - $count);
-                    }
-
-                    if (null !== $content) {
-                        $files[$fileName] = $content;
-
-                        if (null !== $maxFilesCount) {
-                            $count += Arrays::getNonArrayElementsCount($content);
-                        }
-                    } else {
-                        $files[] = $fileName;
-
-                        if (null !== $maxFilesCount) {
-                            ++$count;
-                        }
-                    }
-
-                    if (null !== $maxFilesCount && $count >= $maxFilesCount) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $files;
-    }
-
-    /**
-     * Returns information if given path it's a file's path, if the path contains file name
-     *
-     * @param string $path The path to check
-     * @return bool
-     */
-    public static function isFilePath($path)
-    {
-        $info = pathinfo($path);
-
-        return isset($info['extension']) && !empty($info['extension']);
-    }
-
-    /**
-     * Converts checkbox value to boolean
-     *
-     * @param string $checkboxValue Checkbox value
-     * @return bool
-     */
-    public static function checkboxValue2Boolean($checkboxValue)
-    {
-        $mapping = [
-            'on'  => true,
-            'off' => false,
-        ];
-
-        $clearValue = strtolower(trim($checkboxValue));
-
-        if (isset($mapping[$clearValue])) {
-            return $mapping[$clearValue];
-        }
-
-        return false;
-    }
-
-    /**
-     * Converts checkbox value to integer
-     *
-     * @param string $checkboxValue Checkbox value
-     * @return int
-     */
-    public static function checkboxValue2Integer($checkboxValue)
-    {
-        return (int)self::checkboxValue2Boolean($checkboxValue);
-    }
-
-    /**
-     * Returns name of file with given extension after verification if it contains the extension
-     *
-     * @param string $fileName  The file name to verify
-     * @param string $extension The extension to verify and include
-     * @return string
-     */
-    public static function includeFileExtension($fileName, $extension)
-    {
-        $fileExtension = self::getFileExtension($fileName, true);
-
-        /*
-         * File has given extension?
-         * Nothing to do
-         */
-        if ($fileExtension === strtolower($extension)) {
-            return $fileName;
-        }
-
-        return sprintf('%s.%s', $fileName, $extension);
-    }
-
-    /**
-     * Returns file extension
-     *
-     * @param string $fileName    File name
-     * @param bool   $asLowerCase (optional) if true extension is returned as lowercase string
-     * @return string
-     */
-    public static function getFileExtension($fileName, $asLowerCase = false)
-    {
-        $extension = '';
-        $matches = [];
-
-        if (preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
-            $extension = end($matches);
-        }
-
-        if ($asLowerCase) {
-            return strtolower($extension);
-        }
-
-        return $extension;
-    }
-
-    /**
-     * Returns file name from given path
-     *
-     * @param string $path A path that contains file name
-     * @return string
-     */
-    public static function getFileNameFromPath(string $path): string
-    {
-        $matches = [];
-        $pattern = Regex::getFileNamePattern();
-
-        if ((bool)preg_match($pattern, $path, $matches)) {
-            return $matches[0];
-        }
-
-        return '';
-    }
-
-    /**
-     * Returns unique name for file based on given original name
-     *
-     * @param string $originalFileName Original name of the file
-     * @param int    $objectId         (optional) Object ID, the ID of database's row. May be included into the
-     *                                 generated / unique name.
-     * @return string
-     */
-    public static function getUniqueFileName($originalFileName, $objectId = 0)
-    {
-        $withoutExtension = self::getFileNameWithoutExtension($originalFileName);
-        $extension = self::getFileExtension($originalFileName, true);
-
-        /*
-         * Let's clear name of file
-         *
-         * Attention.
-         * The name without extension should be cleared to avoid incorrect name by replacing "." with "-".
-         */
-        $withoutExtension = Urlizer::urlize($withoutExtension);
-
-        // Now I have to complete the template used to build / generate unique name
-        $template = '%s-%s.%s'; // [file's name]-[unique key].[file's extension]
-
-        // Add some uniqueness
-        $unique = self::getUniqueString(mt_rand());
-
-        // Finally build and return the unique name
-        if ($objectId > 0) {
-            $template = '%s-%s-%s.%s'; // [file's name]-[unique key]-[object ID].[file's extension]
-
-            return sprintf($template, $withoutExtension, $unique, $objectId, $extension);
-        }
-
-        return sprintf($template, $withoutExtension, $unique, $extension);
-    }
-
-    /**
-     * Returns file name without extension
-     *
-     * @param string $fileName The file name
-     * @return string
-     */
-    public static function getFileNameWithoutExtension($fileName)
-    {
-        $matches = [];
-
-        if (is_string($fileName) && (bool)preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
-            return $matches[1];
-        }
-
-        return '';
-    }
-
-    /**
-     * Converts value to non-negative integer (element of the set {0, 1, 2, 3, ...})
-     *
-     * @param mixed $value               Value to convert
-     * @param int   $negativeReplacement (optional) Replacement for negative value
-     * @return int
-     */
-    public static function value2NonNegativeInteger($value, $negativeReplacement = 0)
-    {
-        $effect = (int)$value;
-
-        if ($effect < 0) {
-            return $negativeReplacement;
-        }
-
-        return $effect;
-    }
-
-    /**
-     * Returns information if given PHP module is compiled and loaded
-     *
-     * @param string $phpModuleName PHP module name
-     * @return bool
-     */
-    public static function isPhpModuleLoaded($phpModuleName)
-    {
-        $phpModulesArray = get_loaded_extensions();
-
-        return in_array($phpModuleName, $phpModulesArray, false);
-    }
-
-    /**
-     * Converts given string characters to latin characters
-     *
-     * @param string $string          String to convert
-     * @param bool   $lowerCaseHuman  (optional) If is set to true, converted string is returned as lowercase and
-     *                                human-readable. Otherwise - as original.
-     * @param string $replacementChar (optional) Replacement character for all non-latin characters and uppercase
-     *                                letters, if 2nd argument is set to true
-     * @return string
-     */
-    public static function toLatin($string, $lowerCaseHuman = true, $replacementChar = '-')
-    {
-        if (is_string($string)) {
-            $string = trim($string);
-        }
-
-        /*
-         * Empty value?
-         * Nothing to do
-         */
-        if (empty($string)) {
-            return '';
-        }
-
-        $converter = Transliterator::create('Latin-ASCII;');
-
-        /*
-         * Oops, cannot instantiate converter
-         * Nothing to do
-         */
-        if (null === $converter) {
-            return '';
-        }
-
-        $converted = $converter->transliterate($string);
-
-        // Make the string lowercase and human-readable
-        if ($lowerCaseHuman) {
-            $matches = [];
-            $matchCount = preg_match_all('|[A-Z]{1}[^A-Z]*|', $converted, $matches);
-
-            if ($matchCount > 0) {
-                $parts = $matches[0];
-                $converted = mb_strtolower(implode($replacementChar, $parts));
-            }
-        }
-
-        /*
-         * Let's replace special characters to spaces
-         * ...and finally spaces to $replacementChar
-         */
-        $replaced = preg_replace('|[^a-zA-Z0-9]|', ' ', $converted);
-
-        return preg_replace('| +|', $replacementChar, trim($replaced));
-    }
-
-    /**
-     * Returns unique string
-     *
-     * @param string $prefix (optional) Prefix of the unique string. May be used while generating the unique
-     *                       string simultaneously on several hosts at the same microsecond.
-     * @param bool   $hashed (optional) If is set to true, the unique string is hashed additionally. Otherwise - not.
-     * @return string
-     */
-    public static function getUniqueString($prefix = '', $hashed = false)
-    {
-        $unique = uniqid($prefix, true);
-
-        if ($hashed) {
-            return sha1($unique);
-        }
-
-        return $unique;
-    }
-
-    /**
-     * Replaces part of string with other string or strings.
-     * There is a few combination of what should be searched and with what it should be replaced.
-     *
-     * @param array|string $subject      The string or an array of strings to search and replace
-     * @param array|string $search       String or pattern or array of patterns to find. It may be: string, an array
-     *                                   of strings or an array of patterns.
-     * @param array|string $replacement  The string or an array of strings to replace. It may be: string or an array
-     *                                   of strings.
-     * @param bool         $quoteStrings (optional) If is set to true, strings are surrounded with single quote sign
-     * @return string
-     *
-     * Example:
-     * a) an array of strings to search
-     * $subject = [
-     *      'Lorem ipsum dolor sit amet.',
-     *      'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
-     * ];
-     *
-     * b) an array of patterns
-     * $search = [
-     *      '|ipsum|',
-     *      '|pellentesque|',
-     * ];
-     *
-     * c) an array of strings to replace
-     * $replacement = [
-     *      'commodo',
-     *      'interdum',
-     * ];
-     *
-     * The result:
-     * [
-     *      'Lorem commodo dolor sit amet.',
-     *      'Etiam ullamcorper. Suspendisse a interdum dui, non felis.',
-     * ];
-     */
-    public static function replace($subject, $search, $replacement, $quoteStrings = false)
-    {
-        /*
-         * Unknown source or item to find or replacement is an empty array?
-         * Nothing to do
-         */
-        if (empty($subject) || empty($search) || [] === $replacement) {
-            return $subject;
-        }
-
-        $effect = $subject;
-
-        $searchIsString = is_string($search);
-        $searchIsArray = is_array($search);
-
-        /*
-         * Value to find is neither a string nor an array OR it's an empty string?
-         * Nothing to do
-         */
-        if ((!$searchIsString && !$searchIsArray) || ($searchIsString && '' === $search)) {
-            return $effect;
-        }
-
-        $replacementIsString = is_string($replacement);
-        $replacementIsArray = is_array($replacement);
-
-        $bothAreStrings = $searchIsString && $replacementIsString;
-        $bothAreArrays = $searchIsArray && $replacementIsArray;
-
-        if ($quoteStrings) {
-            if ($replacementIsString) {
-                $replacement = '\'' . $replacement . '\'';
-            } elseif ($replacementIsArray) {
-                foreach ($replacement as &$item) {
-                    if (is_string($item)) {
-                        $item = '\'' . $item . '\'';
-                    }
-                }
-
-                unset($item);
-            }
-        }
-
-        // 1st step: replace strings, simple operation with strings
-        if ($bothAreStrings) {
-            $effect = str_replace($search, $replacement, $subject);
-        }
-
-        /*
-         * 2nd step: replace with regular expressions.
-         * Attention. Searched and replacement value should be the same type: strings or arrays.
-         */
-        if ($effect === $subject && ($bothAreStrings || $bothAreArrays)) {
-            /*
-             * I have to avoid string that contains spaces only, e.g. "  ".
-             * It's required to avoid bug: preg_replace(): Empty regular expression.
-             */
-            if ($searchIsArray || ($searchIsString && !empty(trim($search)))) {
-                $replaced = @preg_replace($search, $replacement, $subject);
-
-                if (null !== $replaced && [] !== $replaced) {
-                    $effect = $replaced;
-                }
-            }
-        }
-
-        /*
-         * 3rd step: complex replace of the replacement defined as an array.
-         * It may be useful when you want to search for a one string and replace the string with multiple values.
-         */
-        if ($effect === $subject && $searchIsString && $replacementIsArray) {
-            $subjectIsArray = is_array($subject);
-            $effect = '';
-
-            if ($subjectIsArray) {
-                $effect = [];
-            }
-
-            $subject = Arrays::makeArray($subject);
-
-            // I have to iterate through the subjects, because explode() function expects strings as both arguments
-            // (1st and 2nd)
-            foreach ($subject as $subSubject) {
-                $subEffect = '';
-
-                $exploded = explode($search, $subSubject);
-                $explodedCount = count($exploded);
-
-                foreach ($exploded as $key => $item) {
-                    $subEffect .= $item;
-
-                    // The replacement shouldn't be included when the searched string was not found
-                    if ($explodedCount > 1 && $key < $explodedCount - 1 && isset($replacement[$key])) {
-                        $subEffect .= $replacement[$key];
-                    }
-                }
-
-                if ($subjectIsArray) {
-                    $effect[] = $subEffect;
-
-                    continue;
-                }
-
-                $effect .= $subEffect;
-            }
-        }
-
-        return $effect;
-    }
-
-    /**
-     * Returns new file name after adding prefix or suffix (or both of them) to the name
-     *
-     * @param string $fileName The file name
-     * @param string $prefix   File name prefix
-     * @param string $suffix   File name suffix
-     * @return string
-     */
-    public static function getNewFileName($fileName, $prefix, $suffix)
-    {
-        $effect = $fileName;
-
-        if (!empty($fileName) && (!empty($prefix) || !empty($suffix))) {
-            $name = self::getFileNameWithoutExtension($fileName);
-            $extension = self::getFileExtension($fileName);
-
-            $effect = sprintf('%s%s%s.%s', $prefix, $name, $suffix, $extension);
-        }
-
-        return $effect;
-    }
-
-    /**
-     * Returns operating system name PHP is running on
-     *
-     * @return string
-     */
-    public static function getOperatingSystemNameServer()
-    {
-        return PHP_OS;
-        /*
-         * Previous version:
-         * return php_uname('s');
-         */
-    }
-
-    /**
-     * Returns part of string preserving words
-     *
-     * @param string $text      The string / text
-     * @param int    $maxLength Maximum length of given string
-     * @param string $suffix    (optional) The suffix to add at the end of string
-     * @return string
-     */
-    public static function substringToWord(string $text, int $maxLength, string $suffix = '...'): string
-    {
-        $effect = $text;
-        $encoding = 'utf-8';
-
-        $textLength = mb_strlen($text, $encoding);
-        $suffixLength = mb_strlen($suffix, $encoding);
-
-        $maxLength -= $suffixLength;
-
-        if ($textLength > $maxLength) {
-            $effect = mb_substr($text, 0, $maxLength, $encoding);
-            $lastSpacePosition = mb_strrpos($effect, ' ', 0, $encoding);
-
-            if (false !== $lastSpacePosition) {
-                $effect = mb_substr($effect, 0, $lastSpacePosition, $encoding);
-            }
-
-            $effect .= $suffix;
-        }
-
-        return $effect;
-    }
-
-    /**
      * Breaks long text
      *
      * @param string $text                   The text to check and break
@@ -676,271 +108,46 @@ class Miscellaneous
         return $effect;
     }
 
-    /**
-     * Removes the directory.
-     * If not empty, removes also contents.
-     *
-     * @param string $directoryPath Directory path
-     * @param bool   $contentOnly   (optional) If is set to true, only content of the directory is removed, not
-     *                              directory itself. Otherwise - directory is removed too (default behaviour).
-     * @return null|bool
-     */
-    public static function removeDirectory($directoryPath, $contentOnly = false)
+    public static function calculateGreatestCommonDivisor(int $first, int $second): int
     {
-        /*
-         * Directory does not exist?
-         * Nothing to do
-         */
-        if (!file_exists($directoryPath)) {
-            return null;
+        if (0 === $second) {
+            return $first;
         }
 
-        /*
-         * It's not a directory?
-         * Let's treat it like file
-         */
-        if (!is_dir($directoryPath)) {
-            return unlink($directoryPath);
-        }
-
-        foreach (scandir($directoryPath, SCANDIR_SORT_ASCENDING) as $item) {
-            if ('.' === $item || '..' === $item) {
-                continue;
-            }
-
-            if (!self::removeDirectory($directoryPath . DIRECTORY_SEPARATOR . $item)) {
-                return false;
-            }
-        }
-
-        // Directory should be removed too?
-        if (!$contentOnly) {
-            return rmdir($directoryPath);
-        }
-
-        return true;
+        return static::calculateGreatestCommonDivisor($second, $first % $second);
     }
 
     /**
-     * Returns information if value is decimal
+     * Converts checkbox value to boolean
      *
-     * @param mixed $value The value to check
+     * @param string $checkboxValue Checkbox value
      * @return bool
      */
-    public static function isDecimal($value)
+    public static function checkboxValue2Boolean($checkboxValue)
     {
-        return is_scalar($value) && is_numeric($value) && floor($value) !== (float) $value;
-    }
-
-    /**
-     * Returns the string in camel case
-     *
-     * @param string $string    The string to convert e.g. this-is-eXamplE (return: thisIsExample)
-     * @param string $separator (optional) Separator used to find parts of the string, e.g. '-' or ','
-     * @return string
-     */
-    public static function getCamelCase($string, $separator = ' ')
-    {
-        if (empty($string)) {
-            return '';
-        }
-
-        $effect = '';
-        $members = explode($separator, $string);
-
-        foreach ($members as $key => $value) {
-            $value = mb_strtolower($value);
-
-            if (0 === $key) {
-                $effect .= self::lowercaseFirst($value);
-            } else {
-                $effect .= self::uppercaseFirst($value);
-            }
-        }
-
-        return $effect;
-    }
-
-    /**
-     * Make a string's first character lowercase
-     *
-     * @param string    $text          The text to get first character lowercase
-     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
-     * @return string
-     *
-     * Values of the $restLowercase argument:
-     * - null (default): nothing is done with the string
-     * - true: the rest of string is lowercased
-     * - false: the rest of string is uppercased
-     */
-    public static function lowercaseFirst($text, $restLowercase = null)
-    {
-        if (empty($text)) {
-            return '';
-        }
-
-        $effect = $text;
-
-        if ($restLowercase) {
-            $effect = mb_strtolower($effect);
-        } elseif (false === $restLowercase) {
-            $effect = mb_strtoupper($effect);
-        }
-
-        return lcfirst($effect);
-    }
-
-    /**
-     * Make a string's first character uppercase
-     *
-     * @param string    $text          The text to get uppercase
-     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
-     * @return string
-     *
-     * Values of the $restLowercase argument:
-     * - null (default): nothing is done with the string
-     * - true: the rest of string is lowercased
-     * - false: the rest of string is uppercased
-     */
-    public static function uppercaseFirst($text, $restLowercase = null)
-    {
-        if (empty($text)) {
-            return '';
-        }
-
-        $effect = $text;
-
-        if ($restLowercase) {
-            $effect = mb_strtolower($effect);
-        } elseif (false === $restLowercase) {
-            $effect = mb_strtoupper($effect);
-        }
-
-        return ucfirst($effect);
-    }
-
-    /**
-     * Quotes given value with apostrophes or quotation marks
-     *
-     * @param mixed $value         The value to quote
-     * @param bool  $useApostrophe (optional) If is set to true, apostrophes are used. Otherwise - quotation marks.
-     * @return string
-     */
-    public static function quoteValue($value, $useApostrophe = true)
-    {
-        if (is_string($value)) {
-            $quotes = '"';
-
-            if ($useApostrophe) {
-                $quotes = '\'';
-            }
-
-            $value = sprintf('%s%s%s', $quotes, $value, $quotes);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Returns size (of file or directory) in human readable format
-     *
-     * @param int $sizeInBytes The size in bytes
-     * @return string
-     */
-    public static function getHumanReadableSize($sizeInBytes)
-    {
-        $units = [
-            'B',
-            'KB',
-            'MB',
-            'GB',
-            'TB',
-            'PB',
+        $mapping = [
+            'on' => true,
+            'off' => false,
         ];
 
-        $index = floor(log($sizeInBytes, 1024));
-        $size = round($sizeInBytes / (1024 ** $index), 2);
-        $unit = $units[(int)$index];
+        $clearValue = strtolower(trim($checkboxValue));
 
-        return sprintf('%s %s', $size, $unit);
+        if (isset($mapping[$clearValue])) {
+            return $mapping[$clearValue];
+        }
+
+        return false;
     }
 
     /**
-     * Returns string without the last element.
-     * The string should contain given separator.
+     * Converts checkbox value to integer
      *
-     * @param string $string    The string to check
-     * @param string $separator The separator which divides elements of string
-     * @return string
+     * @param string $checkboxValue Checkbox value
+     * @return int
      */
-    public static function getStringWithoutLastElement($string, $separator)
+    public static function checkboxValue2Integer($checkboxValue)
     {
-        $elements = self::getStringElements($string, $separator);
-        $lastKey = Arrays::getLastKey($elements);
-
-        unset($elements[$lastKey]);
-
-        return implode($separator, $elements);
-    }
-
-    /**
-     * Returns elements of given string divided by given separator
-     *
-     * @param string $string    The string to check
-     * @param string $separator The separator which divides elements of string
-     * @return array
-     */
-    public static function getStringElements(string $string, string $separator): array
-    {
-        if (empty($string) || empty($separator)) {
-            return [];
-        }
-
-        $matches = [];
-        $pattern = sprintf('|[^\%s]+|', $separator);
-        $matchCount = preg_match_all($pattern, $string, $matches);
-
-        if ($matchCount > 1) {
-            return $matches[0];
-        }
-
-        return [];
-    }
-
-    /**
-     * Returns the last element of given string divided by given separator
-     *
-     * @param string $string    The string to check
-     * @param string $separator The separator which divides elements of string
-     * @return null|string
-     */
-    public static function getLastElementOfString($string, $separator): ?string
-    {
-        $elements = self::getStringElements($string, $separator);
-
-        if (empty($elements)) {
-            return null;
-        }
-
-        return Arrays::getLastElement($elements);
-    }
-
-    /**
-     * Returns smartly trimmed string.
-     * If the string is empty, contains only spaces, e.g. " ", nothing is done and the original string is returned.
-     *
-     * @param string $string The string to trim
-     * @return string
-     */
-    public static function trimSmart($string)
-    {
-        $trimmed = trim($string);
-
-        if (empty($trimmed)) {
-            return $string;
-        }
-
-        return $trimmed;
+        return (int) self::checkboxValue2Boolean($checkboxValue);
     }
 
     /**
@@ -1017,65 +224,367 @@ class Miscellaneous
     }
 
     /**
-     * Removes the starting / beginning directory's separator
+     * Adds missing the "0" characters to given number until given length is reached
      *
-     * @param string $text      Text that may contain a directory's separator at the start / beginning
-     * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), separator
-     *                          provided by operating system will be used.
+     * Example:
+     * - number: 201
+     * - length: 6
+     * - will be returned: 000201
+     *
+     * If "before" parameter is false, zeros will be inserted after given number. If given number is longer than
+     * given length the number will be returned as it was given to the method.
+     *
+     * @param mixed $number Number for who the "0" characters should be inserted
+     * @param int   $length Wanted length of final number
+     * @param bool  $before (optional) If false, 0 characters will be inserted after given number
      * @return string
      */
-    public static function removeStartingDirectorySeparator($text, $separator = '')
+    public static function fillMissingZeros($number, $length, $before = true)
     {
         /*
-         * Not a string?
+         * It's not a number? Empty string is not a number too.
          * Nothing to do
          */
-        if (!is_string($text)) {
+        if (!is_numeric($number)) {
             return '';
         }
 
-        if (empty($separator)) {
-            $separator = DIRECTORY_SEPARATOR;
+        $text = trim($number);
+        $textLength = mb_strlen($text);
+
+        if ($length <= $textLength) {
+            return $text;
         }
 
-        $effect = trim($text);
+        for ($i = ($length - $textLength); 0 < $i; --$i) {
+            if ($before) {
+                $text = '0'.$text;
 
-        if (Regex::startsWithDirectorySeparator($effect, $separator)) {
-            $effect = mb_substr($effect, mb_strlen($separator));
+                continue;
+            }
+
+            $text .= '0';
+        }
+
+        return $text;
+    }
+
+    /**
+     * Returns the string in camel case
+     *
+     * @param string $string    The string to convert e.g. this-is-eXamplE (return: thisIsExample)
+     * @param string $separator (optional) Separator used to find parts of the string, e.g. '-' or ','
+     * @return string
+     */
+    public static function getCamelCase($string, $separator = ' ')
+    {
+        if (empty($string)) {
+            return '';
+        }
+
+        $effect = '';
+        $members = explode($separator, $string);
+
+        foreach ($members as $key => $value) {
+            $value = mb_strtolower($value);
+
+            if (0 === $key) {
+                $effect .= self::lowercaseFirst($value);
+            } else {
+                $effect .= self::uppercaseFirst($value);
+            }
         }
 
         return $effect;
     }
 
     /**
-     * Removes the ending directory's separator
+     * Returns directory's content (names of directories and files)
      *
-     * @param string $text      Text that may contain a directory's separator at the end
-     * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), system's
-     *                          separator is used.
-     * @return string
+     * @param string $directoryPath Path of directory who content should be returned
+     * @param bool   $recursive     (optional) If is set to true, sub-directories are also searched for content.
+     *                              Otherwise - only content of given directory is returned.
+     * @param int    $maxFilesCount (optional) Maximum files that will be returned. If it's null, all files are
+     *                              returned.
+     * @return null|array
      */
-    public static function removeEndingDirectorySeparator($text, $separator = '')
+    public static function getDirectoryContent($directoryPath, $recursive = false, $maxFilesCount = null)
     {
         /*
-         * Not a string?
+         * Path of directory is unknown or does not exist and is not readable?
          * Nothing to do
          */
-        if (!is_string($text)) {
-            return '';
+        if (empty($directoryPath) || !is_readable($directoryPath)) {
+            return null;
         }
 
-        if (empty($separator)) {
-            $separator = DIRECTORY_SEPARATOR;
+        $files = [];
+        $startFileName = '';
+
+        if (self::isFilePath($directoryPath)) {
+            $startDirectoryPath = dirname($directoryPath);
+            $startFileName = str_replace($startDirectoryPath, '', $directoryPath);
+
+            $directoryPath = $startDirectoryPath;
         }
 
-        $effect = trim($text);
+        $count = 0;
+        $startFileFound = false;
 
-        if (Regex::endsWithDirectorySeparator($effect, $separator)) {
-            $effect = mb_substr($effect, 0, mb_strlen($effect) - mb_strlen($separator));
+        if (!Regex::endsWith($directoryPath, '/')) {
+            $directoryPath .= '/';
+        }
+
+        if (Regex::startsWith($startFileName, '/')) {
+            $startFileName = mb_substr($startFileName, 1);
+        }
+
+        $directoryContent = scandir($directoryPath, SCANDIR_SORT_ASCENDING);
+
+        if (!empty($directoryContent)) {
+            foreach ($directoryContent as $fileName) {
+                if ('.' !== $fileName && '..' !== $fileName) {
+                    $content = null;
+
+                    if (!empty($startFileName) && !$startFileFound) {
+                        if ($fileName === $startFileName) {
+                            $startFileFound = true;
+                        }
+
+                        continue;
+                    }
+
+                    if ($recursive && is_dir($directoryPath.$fileName)) {
+                        $content = self::getDirectoryContent($directoryPath.$fileName, true, $maxFilesCount - $count);
+                    }
+
+                    if (null !== $content) {
+                        $files[$fileName] = $content;
+
+                        if (null !== $maxFilesCount) {
+                            $count += Arrays::getNonArrayElementsCount($content);
+                        }
+                    } else {
+                        $files[] = $fileName;
+
+                        if (null !== $maxFilesCount) {
+                            ++$count;
+                        }
+                    }
+
+                    if (null !== $maxFilesCount && $count >= $maxFilesCount) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $files;
+    }
+
+    /**
+     * Returns file extension
+     *
+     * @param string $fileName    File name
+     * @param bool   $asLowerCase (optional) if true extension is returned as lowercase string
+     * @return string
+     */
+    public static function getFileExtension($fileName, $asLowerCase = false)
+    {
+        $extension = '';
+        $matches = [];
+
+        if (preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
+            $extension = end($matches);
+        }
+
+        if ($asLowerCase) {
+            return strtolower($extension);
+        }
+
+        return $extension;
+    }
+
+    /**
+     * Returns file name from given path
+     *
+     * @param string $path A path that contains file name
+     * @return string
+     */
+    public static function getFileNameFromPath(string $path): string
+    {
+        $matches = [];
+        $pattern = Regex::getFileNamePattern();
+
+        if ((bool) preg_match($pattern, $path, $matches)) {
+            return $matches[0];
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns file name without extension
+     *
+     * @param string $fileName The file name
+     * @return string
+     */
+    public static function getFileNameWithoutExtension($fileName)
+    {
+        $matches = [];
+
+        if (is_string($fileName) && (bool) preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
+            return $matches[1];
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns size (of file or directory) in human readable format
+     *
+     * @param int $sizeInBytes The size in bytes
+     * @return string
+     */
+    public static function getHumanReadableSize($sizeInBytes)
+    {
+        $units = [
+            'B',
+            'KB',
+            'MB',
+            'GB',
+            'TB',
+            'PB',
+        ];
+
+        $index = floor(log($sizeInBytes, 1024));
+        $size = round($sizeInBytes / (1024 ** $index), 2);
+        $unit = $units[(int) $index];
+
+        return sprintf('%s %s', $size, $unit);
+    }
+
+    /**
+     * Returns inverted value of color for given color
+     *
+     * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
+     * @return string
+     */
+    public static function getInvertedColor($color)
+    {
+        // Prepare the color for later usage
+        $color = trim($color);
+        $withHash = Regex::startsWith($color, '#');
+
+        /*
+         * Verify and get valid value of color.
+         * An exception will be thrown if the value is not a color.
+         */
+        $validColor = Regex::getValidColorHexValue($color);
+
+        // Grab color's components
+        $red = hexdec(substr($validColor, 0, 2));
+        $green = hexdec(substr($validColor, 2, 2));
+        $blue = hexdec(substr($validColor, 4, 2));
+
+        // Calculate inverted color's components
+        $redInverted = self::getValidColorComponent(255 - $red);
+        $greenInverted = self::getValidColorComponent(255 - $green);
+        $blueInverted = self::getValidColorComponent(255 - $blue);
+
+        // Voila, here is the inverted color
+        $invertedColor = sprintf('%s%s%s', $redInverted, $greenInverted, $blueInverted);
+
+        if ($withHash) {
+            return sprintf('#%s', $invertedColor);
+        }
+
+        return $invertedColor;
+    }
+
+    /**
+     * Returns the last element of given string divided by given separator
+     *
+     * @param string $string    The string to check
+     * @param string $separator The separator which divides elements of string
+     * @return null|string
+     */
+    public static function getLastElementOfString($string, $separator): ?string
+    {
+        $elements = self::getStringElements($string, $separator);
+
+        if (empty($elements)) {
+            return null;
+        }
+
+        return Arrays::getLastElement($elements);
+    }
+
+    /**
+     * Returns new file name after adding prefix or suffix (or both of them) to the name
+     *
+     * @param string $fileName The file name
+     * @param string $prefix   File name prefix
+     * @param string $suffix   File name suffix
+     * @return string
+     */
+    public static function getNewFileName($fileName, $prefix, $suffix)
+    {
+        $effect = $fileName;
+
+        if (!empty($fileName) && (!empty($prefix) || !empty($suffix))) {
+            $name = self::getFileNameWithoutExtension($fileName);
+            $extension = self::getFileExtension($fileName);
+
+            $effect = sprintf('%s%s%s.%s', $prefix, $name, $suffix, $extension);
         }
 
         return $effect;
+    }
+
+    /**
+     * Returns operating system name PHP is running on
+     *
+     * @return string
+     */
+    public static function getOperatingSystemNameServer()
+    {
+        return PHP_OS;
+        /*
+         * Previous version:
+         * return php_uname('s');
+         */
+    }
+
+    /**
+     * Returns project's root path.
+     * Looks for directory that contains composer.json.
+     *
+     * @return string
+     */
+    public static function getProjectRootPath(): string
+    {
+        $projectRootPath = '';
+
+        $fileName = 'composer.json';
+        $directoryPath = __DIR__;
+
+        // Path of directory it's not the path of last directory?
+        while (DIRECTORY_SEPARATOR !== $directoryPath) {
+            $filePath = static::concatenatePaths($directoryPath, $fileName);
+
+            /*
+             * Is here file we are looking for?
+             * Maybe it's a project's root path
+             */
+            if (file_exists($filePath)) {
+                $projectRootPath = $directoryPath;
+            }
+
+            $directoryPath = dirname($directoryPath);
+        }
+
+        return $projectRootPath;
     }
 
     /**
@@ -1125,62 +634,45 @@ class Miscellaneous
     }
 
     /**
-     * Adds missing the "0" characters to given number until given length is reached
+     * Returns elements of given string divided by given separator
      *
-     * Example:
-     * - number: 201
-     * - length: 6
-     * - will be returned: 000201
-     *
-     * If "before" parameter is false, zeros will be inserted after given number. If given number is longer than
-     * given length the number will be returned as it was given to the method.
-     *
-     * @param mixed $number Number for who the "0" characters should be inserted
-     * @param int   $length Wanted length of final number
-     * @param bool  $before (optional) If false, 0 characters will be inserted after given number
-     * @return string
+     * @param string $string    The string to check
+     * @param string $separator The separator which divides elements of string
+     * @return array
      */
-    public static function fillMissingZeros($number, $length, $before = true)
+    public static function getStringElements(string $string, string $separator): array
     {
-        /*
-         * It's not a number? Empty string is not a number too.
-         * Nothing to do
-         */
-        if (!is_numeric($number)) {
-            return '';
+        if (empty($string) || empty($separator)) {
+            return [];
         }
 
-        $text = trim($number);
-        $textLength = mb_strlen($text);
+        $matches = [];
+        $pattern = sprintf('|[^\%s]+|', $separator);
+        $matchCount = preg_match_all($pattern, $string, $matches);
 
-        if ($length <= $textLength) {
-            return $text;
+        if ($matchCount > 1) {
+            return $matches[0];
         }
 
-        for ($i = ($length - $textLength); 0 < $i; --$i) {
-            if ($before) {
-                $text = '0' . $text;
-
-                continue;
-            }
-
-            $text .= '0';
-        }
-
-        return $text;
+        return [];
     }
 
     /**
-     * Returns information if given value is located in interval between given utmost left and right values
+     * Returns string without the last element.
+     * The string should contain given separator.
      *
-     * @param float|int $value Value to verify
-     * @param float|int $left  Left utmost value of interval
-     * @param float|int $right Right utmost value of interval
-     * @return bool
+     * @param string $string    The string to check
+     * @param string $separator The separator which divides elements of string
+     * @return string
      */
-    public static function isBetween($value, $left, $right)
+    public static function getStringWithoutLastElement($string, $separator)
     {
-        return $value > $left && $value < $right;
+        $elements = self::getStringElements($string, $separator);
+        $lastKey = Arrays::getLastKey($elements);
+
+        unset($elements[$lastKey]);
+
+        return implode($separator, $elements);
     }
 
     /**
@@ -1200,6 +692,62 @@ class Miscellaneous
     }
 
     /**
+     * Returns unique name for file based on given original name
+     *
+     * @param string $originalFileName Original name of the file
+     * @param int    $objectId         (optional) Object ID, the ID of database's row. May be included into the
+     *                                 generated / unique name.
+     * @return string
+     */
+    public static function getUniqueFileName($originalFileName, $objectId = 0)
+    {
+        $withoutExtension = self::getFileNameWithoutExtension($originalFileName);
+        $extension = self::getFileExtension($originalFileName, true);
+
+        /*
+         * Let's clear name of file
+         *
+         * Attention.
+         * The name without extension should be cleared to avoid incorrect name by replacing "." with "-".
+         */
+        $withoutExtension = Urlizer::urlize($withoutExtension);
+
+        // Now I have to complete the template used to build / generate unique name
+        $template = '%s-%s.%s'; // [file's name]-[unique key].[file's extension]
+
+        // Add some uniqueness
+        $unique = self::getUniqueString(mt_rand());
+
+        // Finally build and return the unique name
+        if ($objectId > 0) {
+            $template = '%s-%s-%s.%s'; // [file's name]-[unique key]-[object ID].[file's extension]
+
+            return sprintf($template, $withoutExtension, $unique, $objectId, $extension);
+        }
+
+        return sprintf($template, $withoutExtension, $unique, $extension);
+    }
+
+    /**
+     * Returns unique string
+     *
+     * @param string $prefix (optional) Prefix of the unique string. May be used while generating the unique
+     *                       string simultaneously on several hosts at the same microsecond.
+     * @param bool   $hashed (optional) If is set to true, the unique string is hashed additionally. Otherwise - not.
+     * @return string
+     */
+    public static function getUniqueString($prefix = '', $hashed = false)
+    {
+        $unique = uniqid($prefix, true);
+
+        if ($hashed) {
+            return sha1($unique);
+        }
+
+        return $unique;
+    }
+
+    /**
      * Returns valid value of color's component (e.g. red).
      * If given value is greater than 0, returns the value. Otherwise - 0.
      *
@@ -1210,7 +758,7 @@ class Miscellaneous
      */
     public static function getValidColorComponent($colorComponent, $asHexadecimal = true)
     {
-        $colorComponent = (int)$colorComponent;
+        $colorComponent = (int) $colorComponent;
 
         if ($colorComponent < 0 || $colorComponent > 255) {
             $colorComponent = 0;
@@ -1230,72 +778,202 @@ class Miscellaneous
     }
 
     /**
-     * Returns inverted value of color for given color
+     * Returns name of file with given extension after verification if it contains the extension
      *
-     * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
+     * @param string $fileName  The file name to verify
+     * @param string $extension The extension to verify and include
      * @return string
      */
-    public static function getInvertedColor($color)
+    public static function includeFileExtension($fileName, $extension)
     {
-        // Prepare the color for later usage
-        $color = trim($color);
-        $withHash = Regex::startsWith($color, '#');
+        $fileExtension = self::getFileExtension($fileName, true);
 
         /*
-         * Verify and get valid value of color.
-         * An exception will be thrown if the value is not a color.
+         * File has given extension?
+         * Nothing to do
          */
-        $validColor = Regex::getValidColorHexValue($color);
-
-        // Grab color's components
-        $red = hexdec(substr($validColor, 0, 2));
-        $green = hexdec(substr($validColor, 2, 2));
-        $blue = hexdec(substr($validColor, 4, 2));
-
-        // Calculate inverted color's components
-        $redInverted = self::getValidColorComponent(255 - $red);
-        $greenInverted = self::getValidColorComponent(255 - $green);
-        $blueInverted = self::getValidColorComponent(255 - $blue);
-
-        // Voila, here is the inverted color
-        $invertedColor = sprintf('%s%s%s', $redInverted, $greenInverted, $blueInverted);
-
-        if ($withHash) {
-            return sprintf('#%s', $invertedColor);
+        if ($fileExtension === strtolower($extension)) {
+            return $fileName;
         }
 
-        return $invertedColor;
+        return sprintf('%s.%s', $fileName, $extension);
     }
 
     /**
-     * Returns project's root path.
-     * Looks for directory that contains composer.json.
+     * Returns information if given value is located in interval between given utmost left and right values
      *
-     * @return string
+     * @param float|int $value Value to verify
+     * @param float|int $left  Left utmost value of interval
+     * @param float|int $right Right utmost value of interval
+     * @return bool
      */
-    public static function getProjectRootPath(): string
+    public static function isBetween($value, $left, $right)
     {
-        $projectRootPath = '';
+        return $value > $left && $value < $right;
+    }
 
-        $fileName = 'composer.json';
-        $directoryPath = __DIR__;
+    /**
+     * Returns information if value is decimal
+     *
+     * @param mixed $value The value to check
+     * @return bool
+     */
+    public static function isDecimal($value)
+    {
+        return is_scalar($value) && is_numeric($value) && floor($value) !== (float) $value;
+    }
 
-        // Path of directory it's not the path of last directory?
-        while (DIRECTORY_SEPARATOR !== $directoryPath) {
-            $filePath = static::concatenatePaths($directoryPath, $fileName);
+    /**
+     * Returns information if given path it's a file's path, if the path contains file name
+     *
+     * @param string $path The path to check
+     * @return bool
+     */
+    public static function isFilePath($path)
+    {
+        $info = pathinfo($path);
 
-            /*
-             * Is here file we are looking for?
-             * Maybe it's a project's root path
-             */
-            if (file_exists($filePath)) {
-                $projectRootPath = $directoryPath;
-            }
+        return isset($info['extension']) && !empty($info['extension']);
+    }
 
-            $directoryPath = dirname($directoryPath);
+    /**
+     * Returns information if given PHP module is compiled and loaded
+     *
+     * @param string $phpModuleName PHP module name
+     * @return bool
+     */
+    public static function isPhpModuleLoaded($phpModuleName)
+    {
+        $phpModulesArray = get_loaded_extensions();
+
+        return in_array($phpModuleName, $phpModulesArray, false);
+    }
+
+    /**
+     * Make a string's first character lowercase
+     *
+     * @param string    $text          The text to get first character lowercase
+     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
+     * @return string
+     *
+     * Values of the $restLowercase argument:
+     * - null (default): nothing is done with the string
+     * - true: the rest of string is lowercased
+     * - false: the rest of string is uppercased
+     */
+    public static function lowercaseFirst($text, $restLowercase = null)
+    {
+        if (empty($text)) {
+            return '';
         }
 
-        return $projectRootPath;
+        $effect = $text;
+
+        if ($restLowercase) {
+            $effect = mb_strtolower($effect);
+        } elseif (false === $restLowercase) {
+            $effect = mb_strtoupper($effect);
+        }
+
+        return lcfirst($effect);
+    }
+
+    /**
+     * Quotes given value with apostrophes or quotation marks
+     *
+     * @param mixed $value         The value to quote
+     * @param bool  $useApostrophe (optional) If is set to true, apostrophes are used. Otherwise - quotation marks.
+     * @return string
+     */
+    public static function quoteValue($value, $useApostrophe = true)
+    {
+        if (is_string($value)) {
+            $quotes = '"';
+
+            if ($useApostrophe) {
+                $quotes = '\'';
+            }
+
+            $value = sprintf('%s%s%s', $quotes, $value, $quotes);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Removes the directory.
+     * If not empty, removes also contents.
+     *
+     * @param string $directoryPath Directory path
+     * @param bool   $contentOnly   (optional) If is set to true, only content of the directory is removed, not
+     *                              directory itself. Otherwise - directory is removed too (default behaviour).
+     * @return null|bool
+     */
+    public static function removeDirectory($directoryPath, $contentOnly = false)
+    {
+        /*
+         * Directory does not exist?
+         * Nothing to do
+         */
+        if (!file_exists($directoryPath)) {
+            return null;
+        }
+
+        /*
+         * It's not a directory?
+         * Let's treat it like file
+         */
+        if (!is_dir($directoryPath)) {
+            return unlink($directoryPath);
+        }
+
+        foreach (scandir($directoryPath, SCANDIR_SORT_ASCENDING) as $item) {
+            if ('.' === $item || '..' === $item) {
+                continue;
+            }
+
+            if (!self::removeDirectory($directoryPath.DIRECTORY_SEPARATOR.$item)) {
+                return false;
+            }
+        }
+
+        // Directory should be removed too?
+        if (!$contentOnly) {
+            return rmdir($directoryPath);
+        }
+
+        return true;
+    }
+
+    /**
+     * Removes the ending directory's separator
+     *
+     * @param string $text      Text that may contain a directory's separator at the end
+     * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), system's
+     *                          separator is used.
+     * @return string
+     */
+    public static function removeEndingDirectorySeparator($text, $separator = '')
+    {
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($text)) {
+            return '';
+        }
+
+        if (empty($separator)) {
+            $separator = DIRECTORY_SEPARATOR;
+        }
+
+        $effect = trim($text);
+
+        if (Regex::endsWithDirectorySeparator($effect, $separator)) {
+            $effect = mb_substr($effect, 0, mb_strlen($effect) - mb_strlen($separator));
+        }
+
+        return $effect;
     }
 
     /**
@@ -1319,12 +997,334 @@ class Miscellaneous
         return substr($string, 1);
     }
 
-    public static function calculateGreatestCommonDivisor(int $first, int $second): int
+    /**
+     * Removes the starting / beginning directory's separator
+     *
+     * @param string $text      Text that may contain a directory's separator at the start / beginning
+     * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), separator
+     *                          provided by operating system will be used.
+     * @return string
+     */
+    public static function removeStartingDirectorySeparator($text, $separator = '')
     {
-        if (0 === $second) {
-            return $first;
+        /*
+         * Not a string?
+         * Nothing to do
+         */
+        if (!is_string($text)) {
+            return '';
         }
 
-        return static::calculateGreatestCommonDivisor($second, $first % $second);
+        if (empty($separator)) {
+            $separator = DIRECTORY_SEPARATOR;
+        }
+
+        $effect = trim($text);
+
+        if (Regex::startsWithDirectorySeparator($effect, $separator)) {
+            $effect = mb_substr($effect, mb_strlen($separator));
+        }
+
+        return $effect;
+    }
+
+    /**
+     * Replaces part of string with other string or strings.
+     * There is a few combination of what should be searched and with what it should be replaced.
+     *
+     * @param array|string $subject      The string or an array of strings to search and replace
+     * @param array|string $search       String or pattern or array of patterns to find. It may be: string, an array
+     *                                   of strings or an array of patterns.
+     * @param array|string $replacement  The string or an array of strings to replace. It may be: string or an array
+     *                                   of strings.
+     * @param bool         $quoteStrings (optional) If is set to true, strings are surrounded with single quote sign
+     * @return string
+     *
+     * Example:
+     * a) an array of strings to search
+     * $subject = [
+     *      'Lorem ipsum dolor sit amet.',
+     *      'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.',
+     * ];
+     *
+     * b) an array of patterns
+     * $search = [
+     *      '|ipsum|',
+     *      '|pellentesque|',
+     * ];
+     *
+     * c) an array of strings to replace
+     * $replacement = [
+     *      'commodo',
+     *      'interdum',
+     * ];
+     *
+     * The result:
+     * [
+     *      'Lorem commodo dolor sit amet.',
+     *      'Etiam ullamcorper. Suspendisse a interdum dui, non felis.',
+     * ];
+     */
+    public static function replace($subject, $search, $replacement, $quoteStrings = false)
+    {
+        /*
+         * Unknown source or item to find or replacement is an empty array?
+         * Nothing to do
+         */
+        if (empty($subject) || empty($search) || [] === $replacement) {
+            return $subject;
+        }
+
+        $effect = $subject;
+
+        $searchIsString = is_string($search);
+        $searchIsArray = is_array($search);
+
+        /*
+         * Value to find is neither a string nor an array OR it's an empty string?
+         * Nothing to do
+         */
+        if ((!$searchIsString && !$searchIsArray) || ($searchIsString && '' === $search)) {
+            return $effect;
+        }
+
+        $replacementIsString = is_string($replacement);
+        $replacementIsArray = is_array($replacement);
+
+        $bothAreStrings = $searchIsString && $replacementIsString;
+        $bothAreArrays = $searchIsArray && $replacementIsArray;
+
+        if ($quoteStrings) {
+            if ($replacementIsString) {
+                $replacement = '\''.$replacement.'\'';
+            } elseif ($replacementIsArray) {
+                foreach ($replacement as &$item) {
+                    if (is_string($item)) {
+                        $item = '\''.$item.'\'';
+                    }
+                }
+
+                unset($item);
+            }
+        }
+
+        // 1st step: replace strings, simple operation with strings
+        if ($bothAreStrings) {
+            $effect = str_replace($search, $replacement, $subject);
+        }
+
+        /*
+         * 2nd step: replace with regular expressions.
+         * Attention. Searched and replacement value should be the same type: strings or arrays.
+         */
+        if ($effect === $subject && ($bothAreStrings || $bothAreArrays)) {
+            /*
+             * I have to avoid string that contains spaces only, e.g. "  ".
+             * It's required to avoid bug: preg_replace(): Empty regular expression.
+             */
+            if ($searchIsArray || ($searchIsString && !empty(trim($search)))) {
+                $replaced = @preg_replace($search, $replacement, $subject);
+
+                if (null !== $replaced && [] !== $replaced) {
+                    $effect = $replaced;
+                }
+            }
+        }
+
+        /*
+         * 3rd step: complex replace of the replacement defined as an array.
+         * It may be useful when you want to search for a one string and replace the string with multiple values.
+         */
+        if ($effect === $subject && $searchIsString && $replacementIsArray) {
+            $subjectIsArray = is_array($subject);
+            $effect = '';
+
+            if ($subjectIsArray) {
+                $effect = [];
+            }
+
+            $subject = Arrays::makeArray($subject);
+
+            // I have to iterate through the subjects, because explode() function expects strings as both arguments
+            // (1st and 2nd)
+            foreach ($subject as $subSubject) {
+                $subEffect = '';
+
+                $exploded = explode($search, $subSubject);
+                $explodedCount = count($exploded);
+
+                foreach ($exploded as $key => $item) {
+                    $subEffect .= $item;
+
+                    // The replacement shouldn't be included when the searched string was not found
+                    if ($explodedCount > 1 && $key < $explodedCount - 1 && isset($replacement[$key])) {
+                        $subEffect .= $replacement[$key];
+                    }
+                }
+
+                if ($subjectIsArray) {
+                    $effect[] = $subEffect;
+
+                    continue;
+                }
+
+                $effect .= $subEffect;
+            }
+        }
+
+        return $effect;
+    }
+
+    /**
+     * Returns part of string preserving words
+     *
+     * @param string $text      The string / text
+     * @param int    $maxLength Maximum length of given string
+     * @param string $suffix    (optional) The suffix to add at the end of string
+     * @return string
+     */
+    public static function substringToWord(string $text, int $maxLength, string $suffix = '...'): string
+    {
+        $effect = $text;
+        $encoding = 'utf-8';
+
+        $textLength = mb_strlen($text, $encoding);
+        $suffixLength = mb_strlen($suffix, $encoding);
+
+        $maxLength -= $suffixLength;
+
+        if ($textLength > $maxLength) {
+            $effect = mb_substr($text, 0, $maxLength, $encoding);
+            $lastSpacePosition = mb_strrpos($effect, ' ', 0, $encoding);
+
+            if (false !== $lastSpacePosition) {
+                $effect = mb_substr($effect, 0, $lastSpacePosition, $encoding);
+            }
+
+            $effect .= $suffix;
+        }
+
+        return $effect;
+    }
+
+    /**
+     * Converts given string characters to latin characters
+     *
+     * @param string $string          String to convert
+     * @param bool   $lowerCaseHuman  (optional) If is set to true, converted string is returned as lowercase and
+     *                                human-readable. Otherwise - as original.
+     * @param string $replacementChar (optional) Replacement character for all non-latin characters and uppercase
+     *                                letters, if 2nd argument is set to true
+     * @return string
+     */
+    public static function toLatin($string, $lowerCaseHuman = true, $replacementChar = '-')
+    {
+        if (is_string($string)) {
+            $string = trim($string);
+        }
+
+        /*
+         * Empty value?
+         * Nothing to do
+         */
+        if (empty($string)) {
+            return '';
+        }
+
+        $converter = Transliterator::create('Latin-ASCII;');
+
+        /*
+         * Oops, cannot instantiate converter
+         * Nothing to do
+         */
+        if (null === $converter) {
+            return '';
+        }
+
+        $converted = $converter->transliterate($string);
+
+        // Make the string lowercase and human-readable
+        if ($lowerCaseHuman) {
+            $matches = [];
+            $matchCount = preg_match_all('|[A-Z]{1}[^A-Z]*|', $converted, $matches);
+
+            if ($matchCount > 0) {
+                $parts = $matches[0];
+                $converted = mb_strtolower(implode($replacementChar, $parts));
+            }
+        }
+
+        /*
+         * Let's replace special characters to spaces
+         * ...and finally spaces to $replacementChar
+         */
+        $replaced = preg_replace('|[^a-zA-Z0-9]|', ' ', $converted);
+
+        return preg_replace('| +|', $replacementChar, trim($replaced));
+    }
+
+    /**
+     * Returns smartly trimmed string.
+     * If the string is empty, contains only spaces, e.g. " ", nothing is done and the original string is returned.
+     *
+     * @param string $string The string to trim
+     * @return string
+     */
+    public static function trimSmart($string)
+    {
+        $trimmed = trim($string);
+
+        if (empty($trimmed)) {
+            return $string;
+        }
+
+        return $trimmed;
+    }
+
+    /**
+     * Make a string's first character uppercase
+     *
+     * @param string    $text          The text to get uppercase
+     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
+     * @return string
+     *
+     * Values of the $restLowercase argument:
+     * - null (default): nothing is done with the string
+     * - true: the rest of string is lowercased
+     * - false: the rest of string is uppercased
+     */
+    public static function uppercaseFirst($text, $restLowercase = null)
+    {
+        if (empty($text)) {
+            return '';
+        }
+
+        $effect = $text;
+
+        if ($restLowercase) {
+            $effect = mb_strtolower($effect);
+        } elseif (false === $restLowercase) {
+            $effect = mb_strtoupper($effect);
+        }
+
+        return ucfirst($effect);
+    }
+
+    /**
+     * Converts value to non-negative integer (element of the set {0, 1, 2, 3, ...})
+     *
+     * @param mixed $value               Value to convert
+     * @param int   $negativeReplacement (optional) Replacement for negative value
+     * @return int
+     */
+    public static function value2NonNegativeInteger($value, $negativeReplacement = 0)
+    {
+        $effect = (int) $value;
+
+        if ($effect < 0) {
+            return $negativeReplacement;
+        }
+
+        return $effect;
     }
 }

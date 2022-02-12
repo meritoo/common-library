@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Meritoo\Test\Common\Collection;
 
+use Generator;
 use Meritoo\Common\Collection\StringCollection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -25,6 +26,46 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class StringCollectionTest extends BaseTestCase
 {
+    public function provideDifferentTypesOfElements(): ?Generator
+    {
+        yield [
+            'An empty array',
+            [],
+            [],
+        ];
+
+        yield [
+            'Valid elements only',
+            [
+                '1',
+                'test',
+                '',
+            ],
+            [
+                '1',
+                'test',
+                '',
+            ],
+        ];
+
+        yield [
+            'Mixed elements',
+            [
+                1,
+                'test',
+                '',
+                [],
+                234,
+                'test',
+            ],
+            [
+                1 => 'test',
+                2 => '',
+                5 => 'test',
+            ],
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -48,45 +89,5 @@ class StringCollectionTest extends BaseTestCase
     ): void {
         $collection = new StringCollection($elements);
         static::assertSame($expectedElements, $collection->toArray(), $description);
-    }
-
-    public function provideDifferentTypesOfElements(): ?\Generator
-    {
-        yield[
-            'An empty array',
-            [],
-            [],
-        ];
-
-        yield[
-            'Valid elements only',
-            [
-                '1',
-                'test',
-                '',
-            ],
-            [
-                '1',
-                'test',
-                '',
-            ],
-        ];
-
-        yield[
-            'Mixed elements',
-            [
-                1,
-                'test',
-                '',
-                [],
-                234,
-                'test',
-            ],
-            [
-                1 => 'test',
-                2 => '',
-                5 => 'test',
-            ],
-        ];
     }
 }

@@ -10,7 +10,7 @@ Located here: `Meritoo\Common\Test\Base\BaseTestCase`.
 
 1. Just extend the `BaseTestCase` class or implement `Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait` trait.
 2. Use one of available data providers, e.g. `@dataProvider provideEmptyValue`, or asserts,
-e.g. `static::assertMethodVisibility($method, $visibilityType);`
+   e.g. `static::assertMethodVisibility($method, $visibilityType);`
 
 ##### Examples
 
@@ -55,9 +55,9 @@ class MimeTypesTest extends BaseTestCase
 3. [Templates](Collection/Templates.md)
 4. [Exceptions](Exceptions.md)
 5. [Static methods](Static-methods.md)
-   1. [Arrays](Static-methods/Arrays.md)
-   2. [Regex](Static-methods/Regex.md)
-   3. [Uri](Static-methods/Uri.md)
+    1. [Arrays](Static-methods/Arrays.md)
+    2. [Regex](Static-methods/Regex.md)
+    3. [Uri](Static-methods/Uri.md)
 6. [Value Objects](Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../README.md)

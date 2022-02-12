@@ -19,7 +19,7 @@ use Meritoo\Common\Utilities\Composer;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\Composer
+ * @covers    \Meritoo\Common\Utilities\Composer
  */
 class ComposerTest extends BaseTestCase
 {
@@ -30,21 +30,27 @@ class ComposerTest extends BaseTestCase
      */
     private $composerJsonPath;
 
+    /**
+     * Provides names and values of existing nodes
+     *
+     * @return Generator
+     */
+    public function getExistingNode(): Generator
+    {
+        yield [
+            'name',
+            'test/test',
+        ];
+
+        yield [
+            'version',
+            '1.0.2',
+        ];
+    }
+
     public function testConstructor()
     {
         static::assertHasNoConstructor(Composer::class);
-    }
-
-    public function testGetValueNotExistingComposerJson(): void
-    {
-        self::assertNull(Composer::getValue('', ''));
-        self::assertNull(Composer::getValue('not/existing/composer.json', ''));
-    }
-
-    public function testGetValueNotExistingNode(): void
-    {
-        self::assertNull(Composer::getValue($this->composerJsonPath, ''));
-        self::assertNull(Composer::getValue($this->composerJsonPath, 'not_existing_node'));
     }
 
     /**
@@ -58,22 +64,16 @@ class ComposerTest extends BaseTestCase
         self::assertEquals($nodeValue, Composer::getValue($this->composerJsonPath, $nodeName));
     }
 
-    /**
-     * Provides names and values of existing nodes
-     *
-     * @return Generator
-     */
-    public function getExistingNode(): Generator
+    public function testGetValueNotExistingComposerJson(): void
     {
-        yield[
-            'name',
-            'test/test',
-        ];
+        self::assertNull(Composer::getValue('', ''));
+        self::assertNull(Composer::getValue('not/existing/composer.json', ''));
+    }
 
-        yield[
-            'version',
-            '1.0.2',
-        ];
+    public function testGetValueNotExistingNode(): void
+    {
+        self::assertNull(Composer::getValue($this->composerJsonPath, ''));
+        self::assertNull(Composer::getValue($this->composerJsonPath, 'not_existing_node'));
     }
 
     /**

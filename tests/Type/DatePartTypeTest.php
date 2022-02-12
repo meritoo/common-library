@@ -20,7 +20,7 @@ use Meritoo\Common\Type\DatePartType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Type\DatePartType
+ * @covers    \Meritoo\Common\Type\DatePartType
  */
 class DatePartTypeTest extends BaseTypeTestCase
 {
@@ -29,52 +29,52 @@ class DatePartTypeTest extends BaseTypeTestCase
      */
     public function provideTypeToVerify(): Generator
     {
-        yield[
+        yield [
             DatePartType::isCorrectType(''),
             false,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType(null),
             false,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('0'),
             false,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('1'),
             false,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('day'),
             true,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('hour'),
             true,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('minute'),
             true,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('month'),
             true,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('second'),
             true,
         ];
 
-        yield[
+        yield [
             DatePartType::isCorrectType('year'),
             true,
         ];
@@ -86,12 +86,12 @@ class DatePartTypeTest extends BaseTypeTestCase
     protected function getAllExpectedTypes(): array
     {
         return [
-            'DAY'    => 'day',
-            'HOUR'   => 'hour',
+            'DAY' => 'day',
+            'HOUR' => 'hour',
             'MINUTE' => 'minute',
-            'MONTH'  => 'month',
+            'MONTH' => 'month',
             'SECOND' => 'second',
-            'YEAR'   => 'year',
+            'YEAR' => 'year',
         ];
     }
 

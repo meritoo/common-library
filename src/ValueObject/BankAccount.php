@@ -60,16 +60,6 @@ class BankAccount
     }
 
     /**
-     * Returns name of bank
-     *
-     * @return string
-     */
-    public function getBankName()
-    {
-        return $this->bankName;
-    }
-
-    /**
      * Returns number of bank's account
      *
      * @return string
@@ -77,5 +67,15 @@ class BankAccount
     public function getAccountNumber()
     {
         return $this->accountNumber;
+    }
+
+    /**
+     * Returns name of bank
+     *
+     * @return string
+     */
+    public function getBankName()
+    {
+        return $this->bankName;
     }
 }

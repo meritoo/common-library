@@ -8,13 +8,15 @@
 
 namespace Meritoo\Common\Exception\File;
 
+use Exception;
+
 /**
  * An exception used while file with given path does not exist
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class NotExistingFileException extends \Exception
+class NotExistingFileException extends Exception
 {
     /**
      * Creates exception

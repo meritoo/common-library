@@ -10,8 +10,9 @@ Common and useful classes, methods, exceptions etc.
 
 ### Info
 
-It's a set of some elements with the same type, e.g. objects. It's iterable and countable. Provides very useful
-methods. Some of them:
+It's a set of some elements with the same type, e.g. objects. It's iterable and countable. Provides very useful methods.
+Some of them:
+
 - `getFirst()` - returns the first element in the collection
 - `getLast()` - returns the last element in the collection
 - `isEmpty()` - returns information if collection is empty
@@ -82,8 +83,8 @@ var_dump($simpleCollection->has('dolor')); // bool(true)
 3. [Templates](Templates.md)
 4. [Exceptions](../Exceptions.md)
 5. [Static methods](../Static-methods.md)
-   1. [Arrays](../Static-methods/Arrays.md)
-   2. [Regex](../Static-methods/Regex.md)
+    1. [Arrays](../Static-methods/Arrays.md)
+    2. [Regex](../Static-methods/Regex.md)
 6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

@@ -17,6 +17,45 @@ namespace Meritoo\Common\Utilities;
 class Uri
 {
     /**
+     * Adds protocol to given url, if the url does not contain given protocol.
+     * Returns the new url.
+     *
+     * @param string $url      Url string
+     * @param string $protocol (optional) Protocol string
+     * @return string
+     */
+    public static function addProtocolToUrl($url, $protocol = 'http')
+    {
+        $pattern = sprintf('/^%s.*/', $protocol);
+
+        if ((bool) preg_match($pattern, $url)) {
+            return $url;
+        }
+
+        return sprintf('%s://%s', $protocol, $url);
+    }
+
+    public static function buildUrl(string $rootUrl, string ...$urlParts): string
+    {
+        $rootUrl = Regex::clearEndingSlash($rootUrl);
+
+        if (empty($urlParts) || Arrays::containsEmptyStringsOnly($urlParts)) {
+            return $rootUrl;
+        }
+
+        array_walk($urlParts, static function (&$part) {
+            $part = Regex::clearBeginningSlash($part);
+            $part = Regex::clearEndingSlash($part);
+        });
+
+        return sprintf(
+            '%s/%s',
+            $rootUrl,
+            implode('/', $urlParts)
+        );
+    }
+
+    /**
      * Returns full uri string
      *
      * @param bool $withoutHost (optional) If is set to true, means that host / server name is omitted
@@ -42,36 +81,7 @@ class Uri
             return $requestedUrl;
         }
 
-        return self::getServerNameOrIp(true) . $requestedUrl;
-    }
-
-    /**
-     * Returns server name or IP address
-     *
-     * @param bool $withProtocol (optional) If is set to true, protocol name is included. Otherwise isn't.
-     * @return string
-     */
-    public static function getServerNameOrIp($withProtocol = false)
-    {
-        $host = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_HOST');
-
-        /*
-         * Unknown host / server?
-         * Nothing to do
-         */
-        if (empty($host)) {
-            return '';
-        }
-
-        /*
-         * With protocol?
-         * Let's include the protocol
-         */
-        if ($withProtocol) {
-            return sprintf('%s://%s', self::getProtocolName(), $host);
-        }
-
-        return $host;
+        return self::getServerNameOrIp(true).$requestedUrl;
     }
 
     /**
@@ -109,6 +119,69 @@ class Uri
     }
 
     /**
+     * Returns url to resource secured by given htpasswd login and password
+     *
+     * @param string $url      A path / url to some resource, e.g. page, image, css file
+     * @param string $user     (optional) User name used to log in
+     * @param string $password (optional) User password used to log in
+     * @return string
+     */
+    public static function getSecuredUrl($url, $user = '', $password = '')
+    {
+        /*
+         * Url is not provided?
+         * Nothing to do
+         */
+        if (empty($url)) {
+            return '';
+        }
+
+        $protocol = self::getProtocolName();
+        $host = self::getServerNameOrIp();
+
+        if (!Regex::startsWith($url, '/')) {
+            $url = sprintf('/%s', $url);
+        }
+
+        $url = $host.$url;
+
+        if (!empty($user) && !empty($password)) {
+            $url = sprintf('%s:%s@%s', $user, $password, $url);
+        }
+
+        return sprintf('%s://%s', $protocol, $url);
+    }
+
+    /**
+     * Returns server name or IP address
+     *
+     * @param bool $withProtocol (optional) If is set to true, protocol name is included. Otherwise isn't.
+     * @return string
+     */
+    public static function getServerNameOrIp($withProtocol = false)
+    {
+        $host = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_HOST');
+
+        /*
+         * Unknown host / server?
+         * Nothing to do
+         */
+        if (empty($host)) {
+            return '';
+        }
+
+        /*
+         * With protocol?
+         * Let's include the protocol
+         */
+        if ($withProtocol) {
+            return sprintf('%s://%s', self::getProtocolName(), $host);
+        }
+
+        return $host;
+    }
+
+    /**
      * Returns user's IP address
      *
      * @return string
@@ -119,35 +192,26 @@ class Uri
     }
 
     /**
-     * Returns name and version of user's web browser
+     * Returns name of user's operating system
      *
-     * @param bool $withVersion (optional) If is set to true, version of the browser is returned too. Otherwise -
-     *                          name only.
      * @return string
      */
-    public static function getUserWebBrowserName($withVersion = false)
+    public static function getUserOperatingSystemName()
     {
         $info = self::getUserWebBrowserInfo();
 
-        $knownBrowsers = [
-            'Firefox/([\d\.]+)$' => 'Mozilla Firefox',
-            'OPR/([\d\.]+)$'     => 'Opera',
-            'Chrome/([\d\.]+)$'  => 'Google Chrome',
-            'Safari/([\d\.]+)$'  => 'Apple Safari',
+        $knownSystems = [
+            'Linux' => 'Linux',
+            'Win' => 'Windows',
+            'Mac' => 'Mac OS',
         ];
 
-        foreach ($knownBrowsers as $pattern => $browserName) {
+        foreach ($knownSystems as $pattern => $systemName) {
             $matches = [];
             $matchCount = preg_match(sprintf('|%s|', $pattern), $info, $matches);
 
             if ($matchCount > 0) {
-                if ($withVersion) {
-                    $version = $matches[1];
-
-                    return sprintf('%s %s', $browserName, $version);
-                }
-
-                return $browserName;
+                return $systemName;
             }
         }
 
@@ -181,46 +245,39 @@ class Uri
     }
 
     /**
-     * Returns name of user's operating system
+     * Returns name and version of user's web browser
      *
+     * @param bool $withVersion (optional) If is set to true, version of the browser is returned too. Otherwise -
+     *                          name only.
      * @return string
      */
-    public static function getUserOperatingSystemName()
+    public static function getUserWebBrowserName($withVersion = false)
     {
         $info = self::getUserWebBrowserInfo();
 
-        $knownSystems = [
-            'Linux' => 'Linux',
-            'Win'   => 'Windows',
-            'Mac'   => 'Mac OS',
+        $knownBrowsers = [
+            'Firefox/([\d\.]+)$' => 'Mozilla Firefox',
+            'OPR/([\d\.]+)$' => 'Opera',
+            'Chrome/([\d\.]+)$' => 'Google Chrome',
+            'Safari/([\d\.]+)$' => 'Apple Safari',
         ];
 
-        foreach ($knownSystems as $pattern => $systemName) {
+        foreach ($knownBrowsers as $pattern => $browserName) {
             $matches = [];
             $matchCount = preg_match(sprintf('|%s|', $pattern), $info, $matches);
 
             if ($matchCount > 0) {
-                return $systemName;
+                if ($withVersion) {
+                    $version = $matches[1];
+
+                    return sprintf('%s %s', $browserName, $version);
+                }
+
+                return $browserName;
             }
         }
 
         return '';
-    }
-
-    /**
-     * Returns information if running server is localhost
-     *
-     * @return bool
-     */
-    public static function isServerLocalhost()
-    {
-        $serverNameOrIp = strtolower(self::getServerNameOrIp());
-
-        return in_array($serverNameOrIp, [
-            'localhost',
-            '127.0.0.1',
-            '127.0.1.1',
-        ]);
     }
 
     /**
@@ -261,6 +318,22 @@ class Uri
     }
 
     /**
+     * Returns information if running server is localhost
+     *
+     * @return bool
+     */
+    public static function isServerLocalhost()
+    {
+        $serverNameOrIp = strtolower(self::getServerNameOrIp());
+
+        return in_array($serverNameOrIp, [
+            'localhost',
+            '127.0.0.1',
+            '127.0.1.1',
+        ]);
+    }
+
+    /**
      * Replenishes protocol in the given url
      *
      * @param string $url      The url to check and replenish
@@ -297,78 +370,5 @@ class Uri
         }
 
         return sprintf('%s://%s', $protocol, $url);
-    }
-
-    /**
-     * Returns url to resource secured by given htpasswd login and password
-     *
-     * @param string $url      A path / url to some resource, e.g. page, image, css file
-     * @param string $user     (optional) User name used to log in
-     * @param string $password (optional) User password used to log in
-     * @return string
-     */
-    public static function getSecuredUrl($url, $user = '', $password = '')
-    {
-        /*
-         * Url is not provided?
-         * Nothing to do
-         */
-        if (empty($url)) {
-            return '';
-        }
-
-        $protocol = self::getProtocolName();
-        $host = self::getServerNameOrIp();
-
-        if (!Regex::startsWith($url, '/')) {
-            $url = sprintf('/%s', $url);
-        }
-
-        $url = $host . $url;
-
-        if (!empty($user) && !empty($password)) {
-            $url = sprintf('%s:%s@%s', $user, $password, $url);
-        }
-
-        return sprintf('%s://%s', $protocol, $url);
-    }
-
-    /**
-     * Adds protocol to given url, if the url does not contain given protocol.
-     * Returns the new url.
-     *
-     * @param string $url      Url string
-     * @param string $protocol (optional) Protocol string
-     * @return string
-     */
-    public static function addProtocolToUrl($url, $protocol = 'http')
-    {
-        $pattern = sprintf('/^%s.*/', $protocol);
-
-        if ((bool)preg_match($pattern, $url)) {
-            return $url;
-        }
-
-        return sprintf('%s://%s', $protocol, $url);
-    }
-
-    public static function buildUrl(string $rootUrl, string ...$urlParts): string
-    {
-        $rootUrl = Regex::clearEndingSlash($rootUrl);
-
-        if (empty($urlParts) || Arrays::containsEmptyStringsOnly($urlParts)) {
-            return $rootUrl;
-        }
-
-        array_walk($urlParts, static function (&$part) {
-            $part = Regex::clearBeginningSlash($part);
-            $part = Regex::clearEndingSlash($part);
-        });
-
-        return sprintf(
-            '%s/%s',
-            $rootUrl,
-            implode('/', $urlParts)
-        );
     }
 }

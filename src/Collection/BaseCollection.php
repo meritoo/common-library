@@ -41,16 +41,6 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns representation of object as array
-     *
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return $this->elements;
-    }
-
-    /**
      * Adds given element (at the end of collection)
      *
      * @param mixed $element The element to add
@@ -97,45 +87,50 @@ abstract class BaseCollection implements CollectionInterface
         }
     }
 
-    /**
-     * Prepends given element (adds given element at the beginning of collection)
-     *
-     * @param mixed $element The element to prepend
-     */
-    public function prepend($element): void
+    public function clear(): void
     {
-        array_unshift($this->elements, $element);
+        $this->elements = [];
+    }
+
+    public function count(): int
+    {
+        return count($this->elements);
     }
 
     /**
-     * Removes given element
+     * Returns element with given index
      *
-     * @param mixed $element The element to remove
-     */
-    public function remove($element): void
-    {
-        if (0 === $this->count()) {
-            return;
-        }
-
-        foreach ($this->elements as $index => $existing) {
-            if ($element === $existing) {
-                unset($this->elements[$index]);
-
-                break;
-            }
-        }
-    }
-
-    /**
-     * Returns previous element for given element
-     *
-     * @param mixed $element The element to verify
+     * @param mixed $index Index / key of the element
      * @return null|mixed
      */
-    public function getPrevious($element)
+    public function getByIndex($index)
     {
-        return Arrays::getPreviousElement($this->elements, $element);
+        return $this->elements[$index] ?? null;
+    }
+
+    /**
+     * Returns the first element in the collection
+     *
+     * @return mixed
+     */
+    public function getFirst()
+    {
+        return Arrays::getFirstElement($this->elements);
+    }
+
+    public function getIterator(): ArrayIterator
+    {
+        return new ArrayIterator($this->elements);
+    }
+
+    /**
+     * Returns the last element in the collection
+     *
+     * @return mixed
+     */
+    public function getLast()
+    {
+        return Arrays::getLastElement($this->elements);
     }
 
     /**
@@ -150,34 +145,27 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns the first element in the collection
+     * Returns previous element for given element
      *
-     * @return mixed
-     */
-    public function getFirst()
-    {
-        return Arrays::getFirstElement($this->elements);
-    }
-
-    /**
-     * Returns the last element in the collection
-     *
-     * @return mixed
-     */
-    public function getLast()
-    {
-        return Arrays::getLastElement($this->elements);
-    }
-
-    /**
-     * Returns element with given index
-     *
-     * @param mixed $index Index / key of the element
+     * @param mixed $element The element to verify
      * @return null|mixed
      */
-    public function getByIndex($index)
+    public function getPrevious($element)
     {
-        return $this->elements[$index] ?? null;
+        return Arrays::getPreviousElement($this->elements, $element);
+    }
+
+    /**
+     * Returns information if the collection has given element, iow. if given element exists in the collection
+     *
+     * @param mixed $element The element to verify
+     * @return bool
+     */
+    public function has($element): bool
+    {
+        $index = Arrays::getIndexOf($this->elements, $element);
+
+        return null !== $index && false !== $index;
     }
 
     /**
@@ -212,24 +200,6 @@ abstract class BaseCollection implements CollectionInterface
         return end($this->elements) === $element;
     }
 
-    /**
-     * Returns information if the collection has given element, iow. if given element exists in the collection
-     *
-     * @param mixed $element The element to verify
-     * @return bool
-     */
-    public function has($element): bool
-    {
-        $index = Arrays::getIndexOf($this->elements, $element);
-
-        return null !== $index && false !== $index;
-    }
-
-    public function clear(): void
-    {
-        $this->elements = [];
-    }
-
     public function limit(int $max, int $offset = 0): CollectionInterface
     {
         $result = clone $this;
@@ -260,11 +230,6 @@ abstract class BaseCollection implements CollectionInterface
         return $result;
     }
 
-    public function count(): int
-    {
-        return count($this->elements);
-    }
-
     public function offsetExists($offset): bool
     {
         return $this->exists($offset);
@@ -291,10 +256,53 @@ abstract class BaseCollection implements CollectionInterface
         }
     }
 
-    public function getIterator(): ArrayIterator
+    /**
+     * Prepends given element (adds given element at the beginning of collection)
+     *
+     * @param mixed $element The element to prepend
+     */
+    public function prepend($element): void
     {
-        return new ArrayIterator($this->elements);
+        array_unshift($this->elements, $element);
     }
+
+    /**
+     * Removes given element
+     *
+     * @param mixed $element The element to remove
+     */
+    public function remove($element): void
+    {
+        if (0 === $this->count()) {
+            return;
+        }
+
+        foreach ($this->elements as $index => $existing) {
+            if ($element === $existing) {
+                unset($this->elements[$index]);
+
+                break;
+            }
+        }
+    }
+
+    /**
+     * Returns representation of object as array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->elements;
+    }
+
+    /**
+     * Returns information if given element has valid type
+     *
+     * @param mixed $element Element of collection
+     * @return bool
+     */
+    abstract protected function isValidType($element): bool;
 
     /**
      * Prepares elements to initialize the collection.
@@ -309,12 +317,15 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns information if given element has valid type
+     * Returns information if element with given index/key exists
      *
-     * @param mixed $element Element of collection
+     * @param int|string $index The index/key of element
      * @return bool
      */
-    abstract protected function isValidType($element): bool;
+    private function exists($index): bool
+    {
+        return isset($this->elements[$index]) || array_key_exists($index, $this->elements);
+    }
 
     /**
      * Returns elements of collection with valid types
@@ -339,16 +350,5 @@ abstract class BaseCollection implements CollectionInterface
         }
 
         return $result;
-    }
-
-    /**
-     * Returns information if element with given index/key exists
-     *
-     * @param int|string $index The index/key of element
-     * @return bool
-     */
-    private function exists($index): bool
-    {
-        return isset($this->elements[$index]) || array_key_exists($index, $this->elements);
     }
 }

@@ -25,9 +25,9 @@ composer require meritoo/common-library
 2. [Collection of elements](docs/Collection/BaseCollection.md)
 3. [Exceptions](docs/Static-methods.md)
 4. [Static methods](docs/Static-methods.md)
-   1. [Arrays](docs/Static-methods/Arrays.md)
-   2. [Regex](docs/Static-methods/Regex.md)
-   3. [Uri](docs/Static-methods/Uri.md)
+    1. [Arrays](docs/Static-methods/Arrays.md)
+    2. [Regex](docs/Static-methods/Regex.md)
+    3. [Uri](docs/Static-methods/Uri.md)
 5. [Value Objects](docs/Value-Objects.md)
 
 # Development

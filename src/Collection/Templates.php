@@ -25,8 +25,8 @@ class Templates extends BaseCollection
      * Finds and returns template with given index
      *
      * @param string $index Index that contains required template
-     * @throws TemplateNotFoundException
      * @return Template
+     * @throws TemplateNotFoundException
      */
     public function findTemplate(string $index): Template
     {

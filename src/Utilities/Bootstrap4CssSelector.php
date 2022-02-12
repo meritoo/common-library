@@ -47,6 +47,23 @@ class Bootstrap4CssSelector
     }
 
     /**
+     * Returns selector of field's group
+     *
+     * @param string $formName Name of form (value of the "name" attribute)
+     * @return string
+     */
+    public static function getFieldGroupSelector($formName)
+    {
+        $formSelector = CssSelector::getFormByNameSelector($formName);
+
+        if (empty($formSelector)) {
+            return '';
+        }
+
+        return sprintf('%s .form-group', $formSelector);
+    }
+
+    /**
      * Returns selector of radio-button's validation error
      *
      * @param string $formName      Name of form (value of the "name" attribute)
@@ -64,22 +81,5 @@ class Bootstrap4CssSelector
         $errorContainerSelector = static::getFieldErrorContainerSelector();
 
         return sprintf('%s legend.col-form-label %s', $fieldSetSelector, $errorContainerSelector);
-    }
-
-    /**
-     * Returns selector of field's group
-     *
-     * @param string $formName Name of form (value of the "name" attribute)
-     * @return string
-     */
-    public static function getFieldGroupSelector($formName)
-    {
-        $formSelector = CssSelector::getFormByNameSelector($formName);
-
-        if (empty($formSelector)) {
-            return '';
-        }
-
-        return sprintf('%s .form-group', $formSelector);
     }
 }

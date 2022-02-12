@@ -29,7 +29,7 @@ class MissingChildClassesException extends Exception
     public static function create($parentClass): MissingChildClassesException
     {
         $template = 'The \'%s\' class requires one child class at least who will extend her (maybe is an abstract'
-            . ' class), but the child classes are missing. Did you forget to extend this class?';
+            .' class), but the child classes are missing. Did you forget to extend this class?';
 
         $parentClassName = Reflection::getClassName($parentClass) ?? '[unknown class]';
         $message = sprintf($template, $parentClassName);

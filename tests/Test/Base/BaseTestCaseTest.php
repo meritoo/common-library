@@ -21,28 +21,59 @@ use Meritoo\Common\Utilities\GeneratorUtility;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Test\Base\BaseTestCase
+ * @covers    \Meritoo\Common\Test\Base\BaseTestCase
  */
 class BaseTestCaseTest extends BaseTestCase
 {
+    /**
+     * Provides name of file and path of directory containing the file
+     *
+     * @return Generator
+     */
+    public function provideFileNameAndDirectoryPath()
+    {
+        yield [
+            'abc.jpg',
+            '',
+        ];
+
+        yield [
+            'abc.def.jpg',
+            '',
+        ];
+
+        yield [
+            'abc.jpg',
+            'def',
+        ];
+
+        yield [
+            'abc.def.jpg',
+            'def',
+        ];
+    }
+
     public function testConstructor()
     {
         static::assertConstructorVisibilityAndArguments(BaseTestCase::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
-    public function testProvideEmptyValue()
+    /**
+     * @param string $fileName      Name of file
+     * @param string $directoryPath Path of directory containing the file
+     *
+     * @dataProvider provideFileNameAndDirectoryPath
+     */
+    public function testGetFilePathForTesting($fileName, $directoryPath)
     {
-        $elements = [
-            [''],
-            ['   '],
-            [null],
-            [0],
-            [false],
-            [[]],
-        ];
+        $path = (new SimpleTestCase())->getFilePathForTesting($fileName, $directoryPath);
 
-        $generator = (new SimpleTestCase())->provideEmptyValue();
-        self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
+        if (!empty($directoryPath)) {
+            $directoryPath .= '/';
+        }
+
+        $expectedContains = sprintf('/data/tests/%s%s', $directoryPath, $fileName);
+        static::assertStringContainsString($expectedContains, $path);
     }
 
     public function testProvideBooleanValue()
@@ -109,6 +140,21 @@ class BaseTestCaseTest extends BaseTestCase
         self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
     }
 
+    public function testProvideEmptyValue()
+    {
+        $elements = [
+            [''],
+            ['   '],
+            [null],
+            [0],
+            [false],
+            [[]],
+        ];
+
+        $generator = (new SimpleTestCase())->provideEmptyValue();
+        self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
+    }
+
     public function testProvideNotExistingFilePath()
     {
         $elements = [
@@ -119,52 +165,6 @@ class BaseTestCaseTest extends BaseTestCase
 
         $generator = (new SimpleTestCase())->provideNotExistingFilePath();
         self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
-    }
-
-    /**
-     * @param string $fileName      Name of file
-     * @param string $directoryPath Path of directory containing the file
-     *
-     * @dataProvider provideFileNameAndDirectoryPath
-     */
-    public function testGetFilePathForTesting($fileName, $directoryPath)
-    {
-        $path = (new SimpleTestCase())->getFilePathForTesting($fileName, $directoryPath);
-
-        if (!empty($directoryPath)) {
-            $directoryPath .= '/';
-        }
-
-        $expectedContains = sprintf('/data/tests/%s%s', $directoryPath, $fileName);
-        static::assertStringContainsString($expectedContains, $path);
-    }
-
-    /**
-     * Provides name of file and path of directory containing the file
-     *
-     * @return Generator
-     */
-    public function provideFileNameAndDirectoryPath()
-    {
-        yield[
-            'abc.jpg',
-            '',
-        ];
-
-        yield[
-            'abc.def.jpg',
-            '',
-        ];
-
-        yield[
-            'abc.jpg',
-            'def',
-        ];
-
-        yield[
-            'abc.def.jpg',
-            'def',
-        ];
     }
 }
 

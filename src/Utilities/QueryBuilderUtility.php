@@ -23,25 +23,68 @@ use Doctrine\ORM\QueryBuilder;
 class QueryBuilderUtility
 {
     /**
-     * Returns root alias of given query builder.
-     * If null is returned, alias was not found.
+     * Adds given parameters to given query builder.
+     * Attention. Existing parameters will be overridden.
      *
-     * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
-     * @return null|string
+     * @param QueryBuilder          $queryBuilder The query builder
+     * @param array|ArrayCollection $parameters   Parameters to add. Collection of Doctrine\ORM\Query\Parameter
+     *                                            instances or an array with key-value pairs.
+     * @return QueryBuilder
      */
-    public static function getRootAlias(QueryBuilder $queryBuilder)
+    public static function addParameters(QueryBuilder $queryBuilder, $parameters)
     {
-        $aliases = $queryBuilder->getRootAliases();
-
         /*
-         * No aliases?
+         * No parameters?
          * Nothing to do
          */
-        if (empty($aliases)) {
-            return null;
+        if (empty($parameters)) {
+            return $queryBuilder;
         }
 
-        return Arrays::getFirstElement($aliases);
+        foreach ($parameters as $key => $parameter) {
+            $name = $key;
+            $value = $parameter;
+
+            if ($parameter instanceof Parameter) {
+                $name = $parameter->getName();
+                $value = $parameter->getValue();
+            }
+
+            $queryBuilder->setParameter($name, $value);
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Deletes given entities
+     *
+     * @param EntityManager         $entityManager The entity manager
+     * @param array|ArrayCollection $entities      The entities to delete
+     * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects (default
+     *                                             behaviour). Otherwise - not.
+     * @return bool
+     */
+    public static function deleteEntities(EntityManager $entityManager, $entities, $flushDeleted = true)
+    {
+        /*
+         * No entities provided?
+         * Nothing to do
+         */
+        if (empty($entities)) {
+            return false;
+        }
+
+        foreach ($entities as $entity) {
+            $entityManager->remove($entity);
+        }
+
+        // The deleted objects should be flushed?
+        if ($flushDeleted) {
+            $entityManager->flush();
+        }
+
+        return true;
     }
 
     /**
@@ -81,6 +124,28 @@ class QueryBuilderUtility
         }
 
         return null;
+    }
+
+    /**
+     * Returns root alias of given query builder.
+     * If null is returned, alias was not found.
+     *
+     * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
+     * @return null|string
+     */
+    public static function getRootAlias(QueryBuilder $queryBuilder)
+    {
+        $aliases = $queryBuilder->getRootAliases();
+
+        /*
+         * No aliases?
+         * Nothing to do
+         */
+        if (empty($aliases)) {
+            return null;
+        }
+
+        return Arrays::getFirstElement($aliases);
     }
 
     /**
@@ -145,71 +210,6 @@ class QueryBuilderUtility
             }
 
             $queryBuilder = $queryBuilder->andWhere($predicate);
-        }
-
-        return $queryBuilder;
-    }
-
-    /**
-     * Deletes given entities
-     *
-     * @param EntityManager         $entityManager The entity manager
-     * @param array|ArrayCollection $entities      The entities to delete
-     * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects (default
-     *                                             behaviour). Otherwise - not.
-     * @return bool
-     */
-    public static function deleteEntities(EntityManager $entityManager, $entities, $flushDeleted = true)
-    {
-        /*
-         * No entities provided?
-         * Nothing to do
-         */
-        if (empty($entities)) {
-            return false;
-        }
-
-        foreach ($entities as $entity) {
-            $entityManager->remove($entity);
-        }
-
-        // The deleted objects should be flushed?
-        if ($flushDeleted) {
-            $entityManager->flush();
-        }
-
-        return true;
-    }
-
-    /**
-     * Adds given parameters to given query builder.
-     * Attention. Existing parameters will be overridden.
-     *
-     * @param QueryBuilder          $queryBuilder The query builder
-     * @param array|ArrayCollection $parameters   Parameters to add. Collection of Doctrine\ORM\Query\Parameter
-     *                                            instances or an array with key-value pairs.
-     * @return QueryBuilder
-     */
-    public static function addParameters(QueryBuilder $queryBuilder, $parameters)
-    {
-        /*
-         * No parameters?
-         * Nothing to do
-         */
-        if (empty($parameters)) {
-            return $queryBuilder;
-        }
-
-        foreach ($parameters as $key => $parameter) {
-            $name = $key;
-            $value = $parameter;
-
-            if ($parameter instanceof Parameter) {
-                $name = $parameter->getName();
-                $value = $parameter->getValue();
-            }
-
-            $queryBuilder->setParameter($name, $value);
         }
 
         return $queryBuilder;

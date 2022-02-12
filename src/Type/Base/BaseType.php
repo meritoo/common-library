@@ -27,17 +27,6 @@ abstract class BaseType
     private $all;
 
     /**
-     * Returns information if given type is correct
-     *
-     * @param null|string $type The type to check
-     * @return bool
-     */
-    public static function isCorrectType(?string $type): bool
-    {
-        return in_array($type, (new static())->getAll());
-    }
-
-    /**
      * Returns all types
      *
      * @return array
@@ -49,5 +38,16 @@ abstract class BaseType
         }
 
         return $this->all;
+    }
+
+    /**
+     * Returns information if given type is correct
+     *
+     * @param null|string $type The type to check
+     * @return bool
+     */
+    public static function isCorrectType(?string $type): bool
+    {
+        return in_array($type, (new static())->getAll());
     }
 }

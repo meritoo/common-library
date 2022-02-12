@@ -18,7 +18,7 @@ use Meritoo\Common\Utilities\GeneratorUtility;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Utilities\GeneratorUtility
+ * @covers    \Meritoo\Common\Utilities\GeneratorUtility
  */
 class GeneratorUtilityTest extends BaseTestCase
 {

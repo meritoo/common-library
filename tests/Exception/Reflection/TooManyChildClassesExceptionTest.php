@@ -12,6 +12,7 @@ use Generator;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use stdClass;
 
 /**
  * Test case of an exception used while given class has more than one child class
@@ -24,6 +25,38 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class TooManyChildClassesExceptionTest extends BaseTestCase
 {
+    /**
+     * Provides name of class that has more than one child class, but it shouldn't, child classes, and expected
+     * exception's message
+     *
+     * @return Generator
+     */
+    public function provideParentAndChildClasses(): ?Generator
+    {
+        $template = "The '%s' class requires one child class at most who will extend her, but more than one child"
+            ." class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";
+
+        yield [
+            BaseTestCase::class,
+            [
+                stdClass::class,
+                OopVisibilityType::class,
+            ],
+            sprintf($template, BaseTestCase::class, implode("\n- ", [
+                stdClass::class,
+                OopVisibilityType::class,
+            ]), BaseTestCase::class),
+        ];
+
+        yield [
+            TooManyChildClassesException::class,
+            [
+                stdClass::class,
+            ],
+            sprintf($template, TooManyChildClassesException::class, implode("\n- ", [stdClass::class]), TooManyChildClassesException::class),
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -45,37 +78,5 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
     {
         $exception = TooManyChildClassesException::create($parentClass, $childClasses);
         static::assertSame($expectedMessage, $exception->getMessage());
-    }
-
-    /**
-     * Provides name of class that has more than one child class, but it shouldn't, child classes, and expected
-     * exception's message
-     *
-     * @return Generator
-     */
-    public function provideParentAndChildClasses(): ?Generator
-    {
-        $template = "The '%s' class requires one child class at most who will extend her, but more than one child"
-            . " class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";
-
-        yield[
-            BaseTestCase::class,
-            [
-                \stdClass::class,
-                OopVisibilityType::class,
-            ],
-            sprintf($template, BaseTestCase::class, implode("\n- ", [
-                \stdClass::class,
-                OopVisibilityType::class,
-            ]), BaseTestCase::class),
-        ];
-
-        yield[
-            TooManyChildClassesException::class,
-            [
-                \stdClass::class,
-            ],
-            sprintf($template, TooManyChildClassesException::class, implode("\n- ", [\stdClass::class]), TooManyChildClassesException::class),
-        ];
     }
 }

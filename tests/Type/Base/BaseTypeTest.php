@@ -23,6 +23,138 @@ use Meritoo\Common\Type\Base\BaseType;
  */
 class BaseTypeTest extends BaseTestCase
 {
+    /**
+     * Provides type of something for testing the getAll() method
+     *
+     * @return Generator
+     */
+    public function provideType(): ?Generator
+    {
+        yield [
+            new TestEmptyType(),
+            [],
+        ];
+
+        yield [
+            new TestType(),
+            [
+                'TEST_1' => TestType::TEST_1,
+                'TEST_2' => TestType::TEST_2,
+            ],
+        ];
+    }
+
+    /**
+     * Provides type of something for testing the isCorrectType() method
+     *
+     * @return Generator
+     */
+    public function provideTypeToVerifyUsingTestEmptyType(): ?Generator
+    {
+        yield [
+            null,
+            false,
+        ];
+
+        yield [
+            'null',
+            false,
+        ];
+
+        yield [
+            'false',
+            false,
+        ];
+
+        yield [
+            'true',
+            false,
+        ];
+
+        yield [
+            '',
+            false,
+        ];
+
+        yield [
+            '0',
+            false,
+        ];
+
+        yield [
+            '1',
+            false,
+        ];
+
+        yield [
+            'lorem',
+            false,
+        ];
+    }
+
+    /**
+     * Provides type of something for testing the isCorrectType() method
+     *
+     * @return Generator
+     */
+    public function provideTypeToVerifyUsingTestType(): ?Generator
+    {
+        yield [
+            null,
+            false,
+        ];
+
+        yield [
+            'null',
+            false,
+        ];
+
+        yield [
+            'false',
+            false,
+        ];
+
+        yield [
+            'true',
+            false,
+        ];
+
+        yield [
+            '',
+            false,
+        ];
+
+        yield [
+            '0',
+            false,
+        ];
+
+        yield [
+            '1',
+            false,
+        ];
+
+        yield [
+            'lorem',
+            false,
+        ];
+
+        yield [
+            'test',
+            false,
+        ];
+
+        yield [
+            'test_1',
+            true,
+        ];
+
+        yield [
+            'test_2',
+            true,
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertHasNoConstructor(BaseType::class);
@@ -60,138 +192,6 @@ class BaseTypeTest extends BaseTestCase
     public function testIsCorrectTypeUsingTestType(?string $toVerifyType, bool $isCorrect): void
     {
         self::assertEquals($isCorrect, TestType::isCorrectType($toVerifyType));
-    }
-
-    /**
-     * Provides type of something for testing the getAll() method
-     *
-     * @return Generator
-     */
-    public function provideType(): ?Generator
-    {
-        yield[
-            new TestEmptyType(),
-            [],
-        ];
-
-        yield[
-            new TestType(),
-            [
-                'TEST_1' => TestType::TEST_1,
-                'TEST_2' => TestType::TEST_2,
-            ],
-        ];
-    }
-
-    /**
-     * Provides type of something for testing the isCorrectType() method
-     *
-     * @return Generator
-     */
-    public function provideTypeToVerifyUsingTestEmptyType(): ?Generator
-    {
-        yield[
-            null,
-            false,
-        ];
-
-        yield[
-            'null',
-            false,
-        ];
-
-        yield[
-            'false',
-            false,
-        ];
-
-        yield[
-            'true',
-            false,
-        ];
-
-        yield[
-            '',
-            false,
-        ];
-
-        yield[
-            '0',
-            false,
-        ];
-
-        yield[
-            '1',
-            false,
-        ];
-
-        yield[
-            'lorem',
-            false,
-        ];
-    }
-
-    /**
-     * Provides type of something for testing the isCorrectType() method
-     *
-     * @return Generator
-     */
-    public function provideTypeToVerifyUsingTestType(): ?Generator
-    {
-        yield[
-            null,
-            false,
-        ];
-
-        yield[
-            'null',
-            false,
-        ];
-
-        yield[
-            'false',
-            false,
-        ];
-
-        yield[
-            'true',
-            false,
-        ];
-
-        yield[
-            '',
-            false,
-        ];
-
-        yield[
-            '0',
-            false,
-        ];
-
-        yield[
-            '1',
-            false,
-        ];
-
-        yield[
-            'lorem',
-            false,
-        ];
-
-        yield[
-            'test',
-            false,
-        ];
-
-        yield[
-            'test_1',
-            true,
-        ];
-
-        yield[
-            'test_2',
-            true,
-        ];
     }
 }
 

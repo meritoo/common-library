@@ -11,7 +11,7 @@
          verbose="true"
 >
     <php>
-        <ini name="error_reporting" value="-1"/>
+        <ini name="error_reporting" value="-1" />
     </php>
 
     <testsuites>
@@ -30,9 +30,9 @@
     </filter>
 
     <logging>
-        <log type="coverage-html" target="build/reports/phpunit-coverage/html"/>
-        <log type="coverage-xml" target="build/reports/infection/coverage-xml"/>
-        <log type="junit" target="build/reports/infection/phpunit.junit.xml"/>
-        <log type="coverage-clover" target="build/reports/coveralls/clover.xml"/>
+        <log type="coverage-html" target="build/reports/phpunit-coverage/html" />
+        <log type="coverage-xml" target="build/reports/infection/coverage-xml" />
+        <log type="junit" target="build/reports/infection/phpunit.junit.xml" />
+        <log type="coverage-clover" target="build/reports/coveralls/clover.xml" />
     </logging>
 </phpunit>

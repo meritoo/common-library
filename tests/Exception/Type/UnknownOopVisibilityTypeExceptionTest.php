@@ -25,13 +25,27 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments(): void
+    /**
+     * Provides path of the empty file and expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideUnknownType(): Generator
     {
-        static::assertConstructorVisibilityAndArguments(
-            UnknownOopVisibilityTypeException::class,
-            OopVisibilityType::IS_PUBLIC,
-            3
-        );
+        $allTypes = (new OopVisibilityType())->getAll();
+
+        $template = 'The \'%s\' type of OOP-related visibility is unknown. Probably doesn\'t exist or there is a typo.'
+            .' You should use one of these types: %s.';
+
+        yield [
+            '',
+            sprintf($template, '', implode(', ', $allTypes)),
+        ];
+
+        yield [
+            123,
+            sprintf($template, 123, implode(', ', $allTypes)),
+        ];
     }
 
     /**
@@ -46,26 +60,12 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides path of the empty file and expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideUnknownType(): Generator
+    public function testConstructorVisibilityAndArguments(): void
     {
-        $allTypes = (new OopVisibilityType())->getAll();
-
-        $template = 'The \'%s\' type of OOP-related visibility is unknown. Probably doesn\'t exist or there is a typo.'
-            . ' You should use one of these types: %s.';
-
-        yield[
-            '',
-            sprintf($template, '', implode(', ', $allTypes)),
-        ];
-
-        yield[
-            123,
-            sprintf($template, 123, implode(', ', $allTypes)),
-        ];
+        static::assertConstructorVisibilityAndArguments(
+            UnknownOopVisibilityTypeException::class,
+            OopVisibilityType::IS_PUBLIC,
+            3
+        );
     }
 }

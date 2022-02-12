@@ -8,9 +8,11 @@
 
 namespace Meritoo\Test\Common\Exception\Reflection;
 
+use Generator;
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use stdClass;
 
 /**
  * Class NotExistingPropertyExceptionTest
@@ -23,6 +25,39 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class NotExistingPropertyExceptionTest extends BaseTestCase
 {
+    public function provideObjectPropertyAndMessage(): ?Generator
+    {
+        $template = 'Property \'%s\' does not exist in instance of class \'%s\'. Did you use proper name of property?';
+
+        yield [
+            'An empty string as name of property',
+            new stdClass(),
+            '',
+            sprintf($template, '', get_class(new stdClass())),
+        ];
+
+        yield [
+            'Null as name of property',
+            new stdClass(),
+            null,
+            sprintf($template, '', get_class(new stdClass())),
+        ];
+
+        yield [
+            'String with spaces as name of property',
+            new stdClass(),
+            'This is test',
+            sprintf($template, 'This is test', get_class(new stdClass())),
+        ];
+
+        yield [
+            'String without spaces as name of property',
+            new stdClass(),
+            'ThisIsTest',
+            sprintf($template, 'ThisIsTest', get_class(new stdClass())),
+        ];
+    }
+
     public function testConstructor(): void
     {
         static::assertConstructorVisibilityAndArguments(
@@ -44,38 +79,5 @@ class NotExistingPropertyExceptionTest extends BaseTestCase
     {
         $exception = NotExistingPropertyException::create($object, $property);
         static::assertSame($expectedMessage, $exception->getMessage(), $description);
-    }
-
-    public function provideObjectPropertyAndMessage(): ?\Generator
-    {
-        $template = 'Property \'%s\' does not exist in instance of class \'%s\'. Did you use proper name of property?';
-
-        yield[
-            'An empty string as name of property',
-            new \stdClass(),
-            '',
-            sprintf($template, '', get_class(new \stdClass())),
-        ];
-
-        yield[
-            'Null as name of property',
-            new \stdClass(),
-            null,
-            sprintf($template, '', get_class(new \stdClass())),
-        ];
-
-        yield[
-            'String with spaces as name of property',
-            new \stdClass(),
-            'This is test',
-            sprintf($template, 'This is test', get_class(new \stdClass())),
-        ];
-
-        yield[
-            'String without spaces as name of property',
-            new \stdClass(),
-            'ThisIsTest',
-            sprintf($template, 'ThisIsTest', get_class(new \stdClass())),
-        ];
     }
 }

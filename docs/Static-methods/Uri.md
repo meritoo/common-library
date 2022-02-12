@@ -22,15 +22,15 @@ File: `src/Utilities/Uri.php`
 
 1)
 
-  - rootUrl: `"http://my.example"`
-  - urlParts: `""` (an empty string)
-  - result: `"http://my.example"`
+- rootUrl: `"http://my.example"`
+- urlParts: `""` (an empty string)
+- result: `"http://my.example"`
 
 2)
 
-  - rootUrl: `"http://my.example"`
-  - urlParts: `"/test", "/123"`
-  - result: `"http://my.example/test/123"`
+- rootUrl: `"http://my.example"`
+- urlParts: `"/test", "/123"`
+- result: `"http://my.example/test/123"`
 
 # More
 
@@ -39,9 +39,9 @@ File: `src/Utilities/Uri.php`
 3. [Templates](../Collection/Templates.md)
 4. [Exceptions](../Exceptions.md)
 5. [Static methods](../Static-methods.md)
-   1. [Arrays](Arrays.md)
-   2. [Regex](Regex.md)
-   3. [**Uri**](Uri.md)
+    1. [Arrays](Arrays.md)
+    2. [Regex](Regex.md)
+    3. [**Uri**](Uri.md)
 6. [Value Objects](../Value-Objects.md)
 
 [&lsaquo; Back to `Readme`](../../README.md)

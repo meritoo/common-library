@@ -20,13 +20,28 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers \Meritoo\Common\Exception\Regex\InvalidColorHexValueException
+ * @covers    \Meritoo\Common\Exception\Regex\InvalidColorHexValueException
  */
 class InvalidColorHexValueExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    /**
+     * Provides invalid hexadecimal value of color and expected exception's message
+     *
+     * @return Generator
+     */
+    public function provideColor()
     {
-        static::assertConstructorVisibilityAndArguments(InvalidColorHexValueException::class, OopVisibilityType::IS_PUBLIC, 3);
+        $template = 'Hexadecimal value of color \'%s\' is invalid. Is there everything ok?';
+
+        yield [
+            '',
+            sprintf($template, ''),
+        ];
+
+        yield [
+            'aa-bb-cc',
+            sprintf($template, 'aa-bb-cc'),
+        ];
     }
 
     /**
@@ -41,23 +56,8 @@ class InvalidColorHexValueExceptionTest extends BaseTestCase
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    /**
-     * Provides invalid hexadecimal value of color and expected exception's message
-     *
-     * @return Generator
-     */
-    public function provideColor()
+    public function testConstructorVisibilityAndArguments()
     {
-        $template = 'Hexadecimal value of color \'%s\' is invalid. Is there everything ok?';
-
-        yield[
-            '',
-            sprintf($template, ''),
-        ];
-
-        yield[
-            'aa-bb-cc',
-            sprintf($template, 'aa-bb-cc'),
-        ];
+        static::assertConstructorVisibilityAndArguments(InvalidColorHexValueException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 }
