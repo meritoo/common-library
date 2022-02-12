@@ -86,4 +86,4 @@ tests.database = ${dir.data.temporary}/database.sqlite
 # - Infection (mutation tests)
 #
 tests.phpunit.command = ./vendor/bin/phpunit --verbose
-tests.mutation.command = ./vendor/bin/infection --ansi --threads=5 --coverage=build/reports/infection
+tests.mutation.command = ./vendor/bin/infection --ansi --threads=$(nproc) --coverage=build/reports/infection
