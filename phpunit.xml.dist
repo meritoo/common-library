@@ -2,7 +2,7 @@
 
 <!-- https://phpunit.readthedocs.io/en/8.2/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/8.2/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
          backupGlobals="false"
          bootstrap="vendor/autoload.php"
          colors="true"
@@ -10,10 +10,19 @@
          forceCoversAnnotation="true"
          verbose="true"
 >
+    <coverage>
+        <include>
+            <directory>src</directory>
+        </include>
+        <report>
+            <clover outputFile="build/reports/coveralls/clover.xml" />
+            <html outputDirectory="build/reports/phpunit-coverage/html" />
+            <xml outputDirectory="build/reports/infection/coverage-xml" />
+        </report>
+    </coverage>
     <php>
         <ini name="error_reporting" value="-1" />
     </php>
-
     <testsuites>
         <testsuite name="Meritoo Package - Main Test Suite">
             <directory>tests</directory>
@@ -22,17 +31,7 @@
             <directory>tests/Collection</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>src</directory>
-        </whitelist>
-    </filter>
-
     <logging>
-        <log type="coverage-html" target="build/reports/phpunit-coverage/html" />
-        <log type="coverage-xml" target="build/reports/infection/coverage-xml" />
-        <log type="junit" target="build/reports/infection/phpunit.junit.xml" />
-        <log type="coverage-clover" target="build/reports/coveralls/clover.xml" />
+        <junit outputFile="build/reports/infection/phpunit.junit.xml" />
     </logging>
 </phpunit>
