@@ -721,6 +721,21 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame(5, $this->simpleCollection->count());
     }
 
+    public function testAppend(): void
+    {
+        $this->emptyCollection->append('lorem-ipsum');
+
+        static::assertFalse($this->emptyCollection->isEmpty());
+        static::assertSame(1, $this->emptyCollection->count());
+        static::assertSame('lorem-ipsum', $this->emptyCollection[0]);
+
+        $this->simpleCollection->append('lorem-ipsum');
+
+        static::assertFalse($this->simpleCollection->isEmpty());
+        static::assertSame(8, $this->simpleCollection->count());
+        static::assertSame('lorem-ipsum', $this->simpleCollection[347]);
+    }
+
     public function testPrepend()
     {
         $this->emptyCollection->prepend('lorem-ipsum');

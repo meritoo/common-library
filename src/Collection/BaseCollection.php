@@ -27,12 +27,12 @@ abstract class BaseCollection implements CollectionInterface
      *
      * @var array
      */
-    private $elements;
+    private array $elements;
 
     /**
      * Class constructor
      *
-     * @param array $elements (optional) The elements of collection
+     * @param array $elements (optional) Elements of collection
      */
     public function __construct(array $elements = [])
     {
@@ -41,10 +41,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Adds given element (at the end of collection)
-     *
-     * @param mixed $element The element to add
-     * @param mixed $index   (optional) Index / key of the element
+     * {@inheritdoc}
      */
     public function add($element, $index = null): void
     {
@@ -62,11 +59,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Adds given elements (at the end of collection)
-     *
-     * @param array|CollectionInterface $elements   The elements to add
-     * @param bool                      $useIndexes (optional) If is set to true, indexes of given elements will be
-     *                                              used in this collection. Otherwise - not.
+     * {@inheritdoc}
      */
     public function addMultiple($elements, bool $useIndexes = false): void
     {
@@ -87,21 +80,32 @@ abstract class BaseCollection implements CollectionInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function append($element): void
+    {
+        $this->elements[] = $element;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function clear(): void
     {
         $this->elements = [];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function count(): int
     {
         return count($this->elements);
     }
 
     /**
-     * Returns element with given index
-     *
-     * @param mixed $index Index / key of the element
-     * @return null|mixed
+     * {@inheritdoc}
      */
     public function getByIndex($index)
     {
@@ -109,24 +113,23 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns the first element in the collection
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getFirst()
     {
         return Arrays::getFirstElement($this->elements);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->elements);
     }
 
     /**
-     * Returns the last element in the collection
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getLast()
     {
@@ -134,10 +137,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns next element for given element
-     *
-     * @param mixed $element The element to verify
-     * @return null|mixed
+     * {@inheritdoc}
      */
     public function getNext($element)
     {
@@ -145,10 +145,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns previous element for given element
-     *
-     * @param mixed $element The element to verify
-     * @return null|mixed
+     * {@inheritdoc}
      */
     public function getPrevious($element)
     {
@@ -156,10 +153,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns information if the collection has given element, iow. if given element exists in the collection
-     *
-     * @param mixed $element The element to verify
-     * @return bool
+     * {@inheritdoc}
      */
     public function has($element): bool
     {
@@ -169,9 +163,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns information if collection is empty
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isEmpty(): bool
     {
@@ -179,10 +171,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns information if given element is first in the collection
-     *
-     * @param mixed $element The element to verify
-     * @return bool
+     * {@inheritdoc}
      */
     public function isFirst($element): bool
     {
@@ -190,17 +179,17 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns information if given element is last in the collection
-     *
-     * @param mixed $element The element to verify
-     * @return bool
+     * {@inheritdoc}
      */
     public function isLast($element): bool
     {
         return end($this->elements) === $element;
     }
 
-    public function limit(int $max, int $offset = 0): CollectionInterface
+    /**
+     * {@inheritdoc}
+     */
+    public function limit(int $max, int $offset = 0): self
     {
         $result = clone $this;
 
@@ -230,11 +219,17 @@ abstract class BaseCollection implements CollectionInterface
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function offsetExists($offset): bool
     {
         return $this->exists($offset);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function offsetGet($offset)
     {
         if ($this->exists($offset)) {
@@ -244,11 +239,17 @@ abstract class BaseCollection implements CollectionInterface
         return null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function offsetSet($offset, $value): void
     {
         $this->elements[$offset] = $value;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function offsetUnset($offset): void
     {
         if ($this->exists($offset)) {
@@ -257,9 +258,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Prepends given element (adds given element at the beginning of collection)
-     *
-     * @param mixed $element The element to prepend
+     * {@inheritdoc}
      */
     public function prepend($element): void
     {
@@ -267,9 +266,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Removes given element
-     *
-     * @param mixed $element The element to remove
+     * {@inheritdoc}
      */
     public function remove($element): void
     {
@@ -287,9 +284,7 @@ abstract class BaseCollection implements CollectionInterface
     }
 
     /**
-     * Returns representation of object as array
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
