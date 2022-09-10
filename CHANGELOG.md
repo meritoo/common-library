@@ -4,7 +4,8 @@ Common and useful classes, methods, exceptions etc.
 
 # 1.1.8
 
-1.
+1. [Composer] Upgrade all dev packages (to the latest, stable versions for PHP `7.4`)
+2. [BaseCollection] Interfaces of different types of collections. May be used to build specific collections.
 
 # 1.1.7
 
