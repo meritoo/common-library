@@ -376,17 +376,17 @@ class DateTest extends BaseTestCase
 
     public function testGenerateRandomTimeCustomFormat(): void
     {
-        self::assertRegExp('/^0[1-9]{1}|1[0-2]{1}$/', Date::generateRandomTime('h')); // 01 through 12
-        self::assertRegExp('/^[0-5]?[0-9]$/', Date::generateRandomTime('i')); // 00 through 59
-        self::assertRegExp('/^[0-5]?[0-9]$/', Date::generateRandomTime('s')); // 00 through 59
+        self::assertMatchesRegularExpression('/^0[1-9]{1}|1[0-2]{1}$/', Date::generateRandomTime('h')); // 01 through 12
+        self::assertMatchesRegularExpression('/^[0-5]?[0-9]$/', Date::generateRandomTime('i')); // 00 through 59
+        self::assertMatchesRegularExpression('/^[0-5]?[0-9]$/', Date::generateRandomTime('s')); // 00 through 59
 
-        self::assertRegExp('/^\d{2}:\d{2}$/', Date::generateRandomTime('H:i'));
-        self::assertRegExp('/^[1-9]|1[0-2]:\d{2}$/', Date::generateRandomTime('g:i'));
+        self::assertMatchesRegularExpression('/^\d{2}:\d{2}$/', Date::generateRandomTime('H:i'));
+        self::assertMatchesRegularExpression('/^[1-9]|1[0-2]:\d{2}$/', Date::generateRandomTime('g:i'));
     }
 
     public function testGenerateRandomTimeDefaultFormat(): void
     {
-        self::assertRegExp('/\d{2}:\d{2}:\d{2}/', Date::generateRandomTime());
+        self::assertMatchesRegularExpression('/\d{2}:\d{2}:\d{2}/', Date::generateRandomTime());
     }
 
     /**
@@ -408,7 +408,7 @@ class DateTest extends BaseTestCase
 
     public function testGetCurrentDayOfWeek(): void
     {
-        self::assertRegExp('/^[0-6]{1}$/', (string) Date::getCurrentDayOfWeek());
+        self::assertMatchesRegularExpression('/^[0-6]{1}$/', (string) Date::getCurrentDayOfWeek());
     }
 
     public function testGetCurrentDayOfWeekName(): void
@@ -431,7 +431,7 @@ class DateTest extends BaseTestCase
 
         $pattern = sprintf('/^%s$/', implode('|', $days));
 
-        self::assertRegExp($pattern, Date::getCurrentDayOfWeekName());
+        self::assertMatchesRegularExpression($pattern, Date::getCurrentDayOfWeekName());
     }
 
     /**
@@ -886,7 +886,7 @@ class DateTest extends BaseTestCase
      */
     public function testGetDayOfWeek(int $year, int $month, int $day): void
     {
-        self::assertRegExp('/^[0-6]{1}$/', (string) Date::getDayOfWeek($year, $month, $day));
+        self::assertMatchesRegularExpression('/^[0-6]{1}$/', (string) Date::getDayOfWeek($year, $month, $day));
     }
 
     /**
