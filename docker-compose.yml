@@ -5,7 +5,7 @@ services:
     # Required to run project
     #
     php:
-        image: meritoo/php
+        image: meritoo/php:7.4
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-php
         entrypoint: php
         command: -S 0.0.0.0:9999
@@ -14,7 +14,7 @@ services:
         volumes:
             - .:/var/www/application:cached
     composer:
-        image: meritoo/php
+        image: meritoo/php:7.4
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-composer
         entrypoint: php -d memory_limit=-1 /usr/local/bin/composer
         volumes:
@@ -23,7 +23,7 @@ services:
     # Required to run PHPUnit's tests
     #
     phpunit:
-        image: meritoo/php
+        image: meritoo/php:7.4
         container_name: ${DOCKER_CONTAINER_OWNER}-${DOCKER_CONTAINER_PROJECT}-phpunit
         entrypoint: ./vendor/bin/phpunit
         command: --version
