@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.1.9
+
+1. Remove old, unnecessary methods
+
 # 1.1.8
 
 1. [Composer] Upgrade all dev packages (to the latest, stable versions for PHP `7.4`)

@@ -515,7 +515,7 @@ class Regex
             return false;
         }
 
-        $color = Miscellaneous::replace($color, '/#/', '');
+        $color = str_replace('#', '', $color);
         $length = strlen($color);
 
         // Color hasn't 3 or 6 characters length?
@@ -529,7 +529,7 @@ class Regex
 
         // Make the color 6 characters length, if has 3
         if (3 === $length) {
-            $color = Miscellaneous::replace($color, '/(.)(.)(.)/', '$1$1$2$2$3$3');
+            $color = preg_replace('/(.)(.)(.)/', '$1$1$2$2$3$3', $color);
         }
 
         $pattern = self::$patterns['color'];
