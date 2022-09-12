@@ -9,7 +9,6 @@
 namespace Meritoo\Common\Utilities;
 
 use finfo;
-use RuntimeException;
 
 /**
  * Useful methods for mime types of files
@@ -746,8 +745,7 @@ class MimeTypes
      * Returns mime type of given file
      *
      * @param string $filePath Path of the file to check
-     * @return string
-     * @throws RuntimeException
+     * @return string|false
      */
     public static function getMimeType($filePath)
     {
@@ -759,25 +757,7 @@ class MimeTypes
             return '';
         }
 
-        // 1st possibility: the finfo class
-        if (class_exists('finfo')) {
-            $finfo = new finfo();
-
-            return $finfo->file($filePath, FILEINFO_MIME_TYPE);
-        }
-
-        // 2nd possibility: the mime_content_type function
-        if (function_exists('mime_content_type')) {
-            return mime_content_type($filePath);
-        }
-
-        // Oops, there is no possibility to read the mime type
-        $template = 'Neither \'finfo\' class nor \'mime_content_type\' function exists. There is no way to read the'
-            .' mime type of file \'%s\'.';
-
-        $message = sprintf($template, $filePath);
-
-        throw new RuntimeException($message);
+        return (new finfo())->file($filePath, FILEINFO_MIME_TYPE);
     }
 
     /**
