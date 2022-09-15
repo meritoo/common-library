@@ -98,6 +98,6 @@ class TestService
             return ucfirst(str_replace('_', ' ', $type));
         }
 
-        throw new UnknownTestTypeException($type);
+        throw UnknownTestTypeException::createException($type);
     }
 }

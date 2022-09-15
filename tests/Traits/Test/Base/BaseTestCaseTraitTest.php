@@ -16,6 +16,7 @@ use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
 use ReflectionMethod;
 use stdClass;
@@ -64,6 +65,14 @@ class BaseTestCaseTraitTest extends BaseTestCase
     {
         $method = new ReflectionMethod(SimpleTestCase::class, 'thePrivateMethod');
         static::assertMethodVisibility($method, OopVisibilityType::IS_PRIVATE);
+    }
+
+    public function testSetTestsDataDirPath(): void
+    {
+        $this->instance->changeTestsDataDirPath();
+
+        $value = Reflection::getPropertyValue($this->instance, 'testsDataDirPath');
+        self::assertSame('just testing', $value);
     }
 
     public function testProvideBooleanValue(): void
