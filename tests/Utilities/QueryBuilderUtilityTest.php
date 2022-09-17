@@ -30,6 +30,8 @@ use stdClass;
  */
 class QueryBuilderUtilityTest extends BaseTestCase
 {
+    private QueryBuilder $queryBuilder;
+
     /**
      * Provides query builder and criteria used in WHERE clause
      *
@@ -336,23 +338,27 @@ class QueryBuilderUtilityTest extends BaseTestCase
             'ipsum' => 22,
         ];
 
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-        $queryBuilder = new QueryBuilder($entityManager);
-        $newQueryBuilder = QueryBuilderUtility::setCriteria($queryBuilder, $criteria);
+        $newQueryBuilder = QueryBuilderUtility::setCriteria($this->queryBuilder, $criteria);
 
-        static::assertSame($queryBuilder, $newQueryBuilder);
+        static::assertSame($this->queryBuilder, $newQueryBuilder);
         static::assertCount(count($criteria), $newQueryBuilder->getParameters());
         static::assertNotNull($newQueryBuilder->getDQLPart('where'));
     }
 
     public function testSetCriteriaWithoutCriteria()
     {
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-        $queryBuilder = new QueryBuilder($entityManager);
-        $newQueryBuilder = QueryBuilderUtility::setCriteria($queryBuilder);
+        $newQueryBuilder = QueryBuilderUtility::setCriteria($this->queryBuilder);
 
-        static::assertSame($queryBuilder, $newQueryBuilder);
+        static::assertSame($this->queryBuilder, $newQueryBuilder);
         static::assertCount(0, $newQueryBuilder->getParameters());
         static::assertNull($newQueryBuilder->getDQLPart('where'));
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->queryBuilder = new QueryBuilder($entityManager);
     }
 }

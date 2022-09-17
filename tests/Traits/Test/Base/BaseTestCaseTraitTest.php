@@ -33,6 +33,8 @@ class BaseTestCaseTraitTest extends BaseTestCase
 {
     use BaseTestCaseTrait;
 
+    private SimpleTestCase $instance;
+
     public function testAssertConstructorVisibilityAndArgumentsUsingClassWithoutConstructor(): void
     {
         $this->expectException(ClassWithoutConstructorException::class);
@@ -66,8 +68,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideBooleanValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideBooleanValue();
+        $values = $this->instance->provideBooleanValue();
 
         $expected = [
             [false],
@@ -81,8 +82,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideDateTimeInstance(): void
     {
-        $testCase = new SimpleTestCase();
-        $instances = $testCase->provideDateTimeInstance();
+        $instances = $this->instance->provideDateTimeInstance();
 
         $expected = [
             [new DateTime()],
@@ -105,8 +105,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideDateTimeRelativeFormatInstance(): void
     {
-        $testCase = new SimpleTestCase();
-        $formats = $testCase->provideDateTimeRelativeFormat();
+        $formats = $this->instance->provideDateTimeRelativeFormat();
 
         $expected = [
             ['now'],
@@ -129,8 +128,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideEmptyScalarValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideEmptyScalarValue();
+        $values = $this->instance->provideEmptyScalarValue();
 
         $expected = [
             [''],
@@ -147,8 +145,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideEmptyValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideEmptyValue();
+        $values = $this->instance->provideEmptyValue();
 
         $expected = [
             [''],
@@ -166,8 +163,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideNonScalarValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideNonScalarValue();
+        $values = $this->instance->provideNonScalarValue();
 
         $expected = [
             [[]],
@@ -182,8 +178,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideNotExistingFilePath(): void
     {
-        $testCase = new SimpleTestCase();
-        $paths = $testCase->provideNotExistingFilePath();
+        $paths = $this->instance->provideNotExistingFilePath();
 
         $expected = [
             ['lets-test.doc'],
@@ -194,5 +189,11 @@ class BaseTestCaseTraitTest extends BaseTestCase
         foreach ($paths as $index => $path) {
             static::assertSame($expected[$index], $path);
         }
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->instance = new SimpleTestCase();
     }
 }
