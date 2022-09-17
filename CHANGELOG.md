@@ -4,7 +4,7 @@ Common and useful classes, methods, exceptions etc.
 
 # 1.1.9
 
-1. Remove old, unnecessary methods
+1. Remove old, unnecessary methods. Implement setUp() methods. Increase code coverage.
 
 # 1.1.8
 

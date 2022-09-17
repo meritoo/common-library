@@ -43,7 +43,8 @@ class QueryBuilderUtilityTest extends BaseTestCase
             ->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['getExpressionBuilder'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $entityManager
             ->expects(static::any())
@@ -249,7 +250,8 @@ class QueryBuilderUtilityTest extends BaseTestCase
             ->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->setMethods($methods)
-            ->getMock();
+            ->getMock()
+        ;
 
         $entities1 = [];
 
@@ -272,7 +274,8 @@ class QueryBuilderUtilityTest extends BaseTestCase
             ->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->setMethods($methods)
-            ->getMock();
+            ->getMock()
+        ;
 
         $entities1 = [];
 
