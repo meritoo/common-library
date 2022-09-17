@@ -29,7 +29,6 @@ class MiscellaneousTest extends BaseTestCase
 {
     private $stringSmall;
     private $stringCommaSeparated;
-    private $stringDotSeparated;
     private $stringWithoutSpaces;
 
     public function provideDataToReplaceWithQuoteStrings()
@@ -1636,7 +1635,6 @@ class MiscellaneousTest extends BaseTestCase
 
         $this->stringSmall = 'Lorem ipsum dolor sit amet.';
         $this->stringCommaSeparated = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
-        $this->stringDotSeparated = 'Etiam ullamcorper. Suspendisse a pellentesque dui, non felis.';
         $this->stringWithoutSpaces = 'LoremIpsumDolorSitAmetConsecteturAdipiscingElit';
     }
 
@@ -1646,6 +1644,6 @@ class MiscellaneousTest extends BaseTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        unset($this->stringSmall, $this->stringCommaSeparated, $this->stringDotSeparated, $this->stringWithoutSpaces);
+        unset($this->stringSmall, $this->stringCommaSeparated, $this->stringWithoutSpaces);
     }
 }
