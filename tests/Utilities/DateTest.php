@@ -391,7 +391,7 @@ class DateTest extends BaseTestCase
 
     /**
      * @param mixed $value Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testGenerateRandomTimeEmptyFormat($value): void
     {
@@ -830,19 +830,14 @@ class DateTest extends BaseTestCase
         self::assertEquals($effect, Date::getDatesCollection(new DateTime('2017-01-01'), 3, 'P%dM'));
     }
 
-    /**
-     * @param mixed $invalidCount Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testGetDatesCollectionInvalidCount($invalidCount): void
+    public function testGetDatesCollectionInvalidCount(): void
     {
-        self::assertEquals([], Date::getDatesCollection(new DateTime(), $invalidCount));
         self::assertEquals([], Date::getDatesCollection(new DateTime(), -1));
     }
 
     /**
      * @param mixed $invalidInterval Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testGetDatesCollectionInvalidInterval($invalidInterval): void
     {
@@ -966,7 +961,7 @@ class DateTest extends BaseTestCase
 
     /**
      * @param mixed $value Empty source of date format
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testIsValidDateFormatEmptyFormats($value): void
     {

@@ -25,7 +25,7 @@ class InvalidSizeDimensionsException extends Exception
      * @param int $height The height
      * @return InvalidSizeDimensionsException
      */
-    public static function create($width, $height)
+    public static function create(int $width, int $height): InvalidSizeDimensionsException
     {
         $template = 'Dimensions of size should be positive, but they are not: %d, %d. Is there everything ok?';
         $message = sprintf($template, $width, $height);

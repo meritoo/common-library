@@ -23,6 +23,9 @@ use Meritoo\Common\Type\DatePeriod;
  */
 class Date
 {
+    public const DATE_FORMAT = 'Y-m-d';
+    public const TIME_FORMAT = 'H:i:s';
+
     /**
      * The 'days' unit of date difference.
      * Difference between dates in days.
@@ -70,12 +73,12 @@ class Date
      *                       method.
      * @return null|string
      */
-    public static function generateRandomTime($format = 'H:i:s'): ?string
+    public static function generateRandomTime(string $format = self::TIME_FORMAT): ?string
     {
         $dateTime = new DateTime();
 
         /*
-         * Format si empty or is incorrect?
+         * Format is empty or incorrect?
          * Nothing to do
          */
         if (empty($format) || $dateTime->format($format) === $format) {
@@ -113,6 +116,7 @@ class Date
      * Returns current day of week
      *
      * @return int
+     * @throws UnknownDatePartTypeException
      */
     public static function getCurrentDayOfWeek(): int
     {
@@ -158,12 +162,12 @@ class Date
      *
      * @param DateTime|string $dateStart      The start date
      * @param DateTime|string $dateEnd        The end date
-     * @param string          $differenceUnit (optional) Unit of date difference. One of this class
+     * @param string|null     $differenceUnit (optional) Unit of date difference. One of this class
      *                                        DATE_DIFFERENCE_UNIT_* constants. If is set to null all units are
-     *                                        returned in the array.
+     *                                        returned as array.
      * @return array|int
      */
-    public static function getDateDifference($dateStart, $dateEnd, $differenceUnit = null)
+    public static function getDateDifference($dateStart, $dateEnd, string $differenceUnit = null)
     {
         $validDateStart = self::isValidDate($dateStart, true);
         $validDateEnd = self::isValidDate($dateEnd, true);
@@ -192,8 +196,8 @@ class Date
         $daySeconds = $hourSeconds * 24;
 
         /*
-         * These units are related, because while calculating difference in the lowest unit, difference in the
-         * highest unit is required, e.g. while calculating hours I have to know difference in days
+         * These units are related, because while calculating difference in the lowest unit, difference in the highest
+         * unit is required, e.g. while calculating hours I have to know difference in days
          */
         $relatedUnits = [
             self::DATE_DIFFERENCE_UNIT_DAYS,
@@ -285,12 +289,15 @@ class Date
      *                                     month", "yyyy"). Otherwise - not and every incorrect value is refused
      *                                     (default behaviour).
      * @param string $dateFormat           (optional) Format of date used to verify if given value is actually a date.
-     *                                     It should be format matched to the given value, e.g. "Y-m-d H:i" for
-     *                                     "2015-01-01 10:00" value. Default: "Y-m-d".
+     *                                     It should match given value, e.g. "Y-m-d H:i" for "2015-01-01 10:00" value.
+     *                                     Default: "Y-m-d".
      * @return bool|DateTime
      */
-    public static function getDateTime($value, $allowCompoundFormats = false, $dateFormat = 'Y-m-d')
-    {
+    public static function getDateTime(
+        $value,
+        bool $allowCompoundFormats = false,
+        string $dateFormat = self::DATE_FORMAT
+    ) {
         /*
          * Empty value?
          * Nothing to do :)
@@ -324,9 +331,9 @@ class Date
                 if (false === $dateFromFormat) {
                     /*
                      * Nothing to do more, because:
-                     * a) instance of the DateTime was created
+                     * 1. Instance of the DateTime was created
                      * and
-                     * b) if createFromFormat() method failed, given value is one of the allowed relative formats
+                     * 2. If createFromFormat() method failed, given value is one of the allowed relative formats
                      * ("now", "last day of next month")
                      * and...
                      */
@@ -346,7 +353,7 @@ class Date
                         /*
                          * ...and
                          * c) it's special compound format that contains characters that each may be used by
-                         * DateTime::format() method and it raises problem while trying to verify the value at the end
+                         * DateTime::format() method, and it raises problem while trying to verify the value at the end
                          * of this method:
                          *
                          * (new DateTime())->format($value);
@@ -398,17 +405,20 @@ class Date
      * @return array
      * @throws Exception
      */
-    public static function getDatesCollection(DateTime $startDate, $datesCount, $intervalTemplate = 'P%dD'): array
-    {
+    public static function getDatesCollection(
+        DateTime $startDate,
+        int $datesCount,
+        string $intervalTemplate = 'P%dD'
+    ): array {
         $dates = [];
 
         /*
-         * The template used to build date interval have to be string.
+         * The template used to build date interval should be string.
          * Otherwise cannot run preg_match() function and an error occurs.
          */
         if (is_string($intervalTemplate)) {
             /*
-             * Let's verify the interval template. It should contains the "%d" placeholder and something before and
+             * Let's verify the interval template. It should contain the "%d" placeholder and something before and
              * after it.
              *
              * Examples:
@@ -416,13 +426,11 @@ class Date
              * - P%dM
              * - P1Y%dMT1H
              */
-            $intervalPattern = '/^(\w*)\%d(\w*)$/';
+            $intervalPattern = '/^(\w*)%d(\w*)$/';
             $matches = [];
             $matchCount = preg_match($intervalPattern, $intervalTemplate, $matches);
 
             if ($matchCount > 0 && (!empty($matches[1]) || !empty($matches[2]))) {
-                $datesCount = (int) $datesCount;
-
                 for ($index = 1; $index <= $datesCount; ++$index) {
                     $date = clone $startDate;
                     $dates[$index] = $date->add(new DateInterval(sprintf($intervalTemplate, $index)));
@@ -595,7 +603,7 @@ class Date
      * @param int $day   The day value
      * @return string
      */
-    public static function getDayOfWeekName($year, $month, $day): string
+    public static function getDayOfWeekName(int $year, int $month, int $day): string
     {
         $hour = 0;
         $minute = 0;
@@ -616,30 +624,27 @@ class Date
     /**
      * Returns random date based on given start date
      *
-     * @param DateTime $startDate        (optional) Beginning of the random date. If not provided, current date will
-     *                                   be used (default behaviour).
-     * @param int      $start            (optional) Start of random partition. If not provided, 1 will be used
-     *                                   (default behaviour).
-     * @param int      $end              (optional) End of random partition. If not provided, 100 will be used
-     *                                   (default behaviour).
-     * @param string   $intervalTemplate (optional) Template used to build date interval. The placeholder is replaced
-     *                                   with next, iterated value. If not provided, "P%sD" will be used (default
-     *                                   behaviour).
+     * @param DateTime|null $startDate        (optional) Beginning of the random date. If not provided, current date
+     *                                        will be used (default behaviour).
+     * @param int           $start            (optional) Start of random partition. If not provided, 1 will be used
+     *                                        (default behaviour).
+     * @param int           $end              (optional) End of random partition. If not provided, 100 will be used
+     *                                        (default behaviour).
+     * @param string        $intervalTemplate (optional) Template used to build date interval. The placeholder is
+     *                                        replaced with next, iterated value. If not provided, "P%sD" will be used
+     *                                        (default behaviour).
      * @return DateTime
      * @throws Exception
      */
     public static function getRandomDate(
         DateTime $startDate = null,
-        $start = 1,
-        $end = 100,
-        $intervalTemplate = 'P%sD'
+        int $start = 1,
+        int $end = 100,
+        string $intervalTemplate = 'P%sD'
     ): DateTime {
         if (null === $startDate) {
             $startDate = new DateTime();
         }
-
-        $start = (int) $start;
-        $end = (int) $end;
 
         /*
          * Incorrect end of random partition?
@@ -664,7 +669,7 @@ class Date
      *                                    month", "yyyy"). Otherwise - not and every incorrect value is refused.
      * @return bool
      */
-    public static function isValidDate($value, $allowCompoundFormats = false): bool
+    public static function isValidDate($value, bool $allowCompoundFormats = false): bool
     {
         return self::getDateTime($value, $allowCompoundFormats) instanceof DateTime;
     }
@@ -675,9 +680,9 @@ class Date
      * @param string $format The validated format of date
      * @return bool
      */
-    public static function isValidDateFormat($format): bool
+    public static function isValidDateFormat(string $format): bool
     {
-        if (empty($format) || !is_string($format)) {
+        if (empty($format)) {
             return false;
         }
 
@@ -694,10 +699,6 @@ class Date
 
         // It's instance of DateTime?
         // The format is valid
-        if ($fromFormat instanceof DateTime) {
-            return true;
-        }
-
         return $fromFormat instanceof DateTime;
     }
 

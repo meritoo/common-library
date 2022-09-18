@@ -20,42 +20,11 @@ use DateTime;
  */
 trait HumanTrait
 {
-    /**
-     * First name
-     *
-     * @var string
-     */
-    protected $firstName;
+    protected string $firstName;
+    protected string $lastName;
+    protected ?string $email;
+    protected ?DateTime $birthDate;
 
-    /**
-     * Last name
-     *
-     * @var string
-     */
-    protected $lastName;
-
-    /**
-     * Email address
-     *
-     * @var null|string
-     */
-    protected $email;
-
-    /**
-     * Birth date
-     *
-     * @var null|DateTime
-     */
-    protected $birthDate;
-
-    /**
-     * Class constructor
-     *
-     * @param string        $firstName First name
-     * @param string        $lastName  Last name
-     * @param null|string   $email     (optional) Email address. Default: null.
-     * @param null|DateTime $birthDate (optional) Birth date. Default: null.
-     */
     public function __construct(string $firstName, string $lastName, ?string $email = null, ?DateTime $birthDate = null)
     {
         $this->firstName = $firstName;
@@ -64,11 +33,6 @@ trait HumanTrait
         $this->birthDate = $birthDate;
     }
 
-    /**
-     * Returns representation of object as string
-     *
-     * @return string
-     */
     public function __toString()
     {
         $template = '%s';
@@ -82,43 +46,21 @@ trait HumanTrait
         return sprintf($template, $this->getFullName(), $email);
     }
 
-    /**
-     * Returns birth date
-     *
-     * @return null|DateTime
-     */
     public function getBirthDate(): ?DateTime
     {
         return $this->birthDate;
     }
 
-    /**
-     * Returns email address
-     *
-     * @return null|string
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * Returns first name
-     *
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->firstName;
     }
 
-    /**
-     * Returns the full name
-     *
-     * @param bool $firstNameFirst (optional) If is set to true, first name is the first part (default behaviour).
-     *                             Otherwise - name.
-     * @return string
-     */
     public function getFullName(bool $firstNameFirst = true): string
     {
         $beginning = $this->lastName;
@@ -132,11 +74,6 @@ trait HumanTrait
         return trim(sprintf('%s %s', $beginning, $finish));
     }
 
-    /**
-     * Returns last name
-     *
-     * @return string
-     */
     public function getLastName(): string
     {
         return $this->lastName;

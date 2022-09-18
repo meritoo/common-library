@@ -19,19 +19,9 @@ use Meritoo\Common\Utilities\Reflection;
  */
 abstract class BaseType
 {
-    /**
-     * All types
-     *
-     * @var null|array
-     */
-    private $all;
+    private ?array $all = null;
 
-    /**
-     * Returns all types
-     *
-     * @return array
-     */
-    public function getAll(): array
+    public function getAll(): ?array
     {
         if (null === $this->all) {
             $this->all = Reflection::getConstants($this);
@@ -40,14 +30,8 @@ abstract class BaseType
         return $this->all;
     }
 
-    /**
-     * Returns information if given type is correct
-     *
-     * @param null|string $type The type to check
-     * @return bool
-     */
     public static function isCorrectType(?string $type): bool
     {
-        return in_array($type, (new static())->getAll());
+        return in_array($type, (new static())->getAll(), true);
     }
 }

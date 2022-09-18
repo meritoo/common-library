@@ -10,6 +10,7 @@ namespace Meritoo\Common\Utilities;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use ReflectionException;
 
 /**
  * Useful methods for repository
@@ -19,6 +20,9 @@ use Doctrine\ORM\QueryBuilder;
  */
 class Repository
 {
+    public const ORDER_BY_ASCENDING = 'ASC';
+    public const ORDER_BY_DESCENDING = 'DESC';
+
     /**
      * Name of key responsible for sorting/position of an item in array
      *
@@ -37,9 +41,9 @@ class Repository
      */
     public static function getEntityOrderedQueryBuilder(
         EntityRepository $repository,
-        $property = 'name',
-        $direction = 'ASC'
-    ) {
+        string $property = 'name',
+        string $direction = self::ORDER_BY_ASCENDING
+    ): QueryBuilder {
         $alias = 'qb';
         $queryBuilder = $repository->createQueryBuilder($alias);
 
@@ -56,8 +60,9 @@ class Repository
      * @param array $items Objects who have "getPosition()" and "setPosition()" methods or arrays
      * @param bool  $max   (optional) If is set to true, maximum value is returned. Otherwise - minimum.
      * @return int
+     * @throws ReflectionException
      */
-    public static function getExtremePosition(array $items, $max = true)
+    public static function getExtremePosition(array $items, bool $max = true): ?int
     {
         /*
          * No items?
@@ -115,8 +120,9 @@ class Repository
      * @param bool  $force  (optional) If is set to true, positions are set even there is no extreme position.
      *                      Otherwise - if extreme position is unknown (is null) replenishment is stopped / skipped
      *                      (default behaviour).
+     * @throws ReflectionException
      */
-    public static function replenishPositions(array &$items, $asLast = true, $force = false)
+    public static function replenishPositions(array &$items, bool $asLast = true, bool $force = false): void
     {
         $position = self::getExtremePosition($items, $asLast);
 
@@ -182,8 +188,9 @@ class Repository
      *
      * @param mixed $item An item to verify (object who has "getPosition()" and "setPosition()" methods or an array)
      * @return bool
+     * @throws ReflectionException
      */
-    private static function isSortable($item)
+    private static function isSortable($item): bool
     {
         return is_array($item)
             ||
@@ -202,7 +209,7 @@ class Repository
      * @param mixed $item An item to verify (object who has "getPosition()" and "setPosition()" methods or an array)
      * @return bool
      */
-    private static function isSorted($item)
+    private static function isSorted($item): bool
     {
         return
             (is_object($item) && null !== $item->getPosition())

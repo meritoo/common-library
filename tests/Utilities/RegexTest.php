@@ -40,16 +40,6 @@ class RegexTest extends BaseTestCase
         $file2Path = $this->getFilePathForTesting('minion.jpg');
 
         yield [
-            null,
-            false,
-        ];
-
-        yield [
-            [],
-            false,
-        ];
-
-        yield [
             '',
             false,
         ];
@@ -1527,16 +1517,6 @@ class RegexTest extends BaseTestCase
     public function provideValueSlug()
     {
         yield [
-            [],
-            false,
-        ];
-
-        yield [
-            null,
-            false,
-        ];
-
-        yield [
             '',
             '',
         ];
@@ -1615,7 +1595,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public static function testAreValidHtmlAttributesUsingEmptyValue($emptyValue)
     {
@@ -1896,15 +1876,6 @@ class RegexTest extends BaseTestCase
     }
 
     /**
-     * @param mixed $nonScalarValue Non scalar value, e.g. [] or null
-     * @dataProvider provideNonScalarValue
-     */
-    public function testGetValidColorHexValueUsingNonScalarValue($nonScalarValue)
-    {
-        self::assertFalse(Regex::getValidColorHexValue($nonScalarValue));
-    }
-
-    /**
      * @param string $value    Value to verify
      * @param bool   $expected Information if value is a binary value
      *
@@ -1969,7 +1940,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public static function testIsSizeValueUsingEmptyValue($emptyValue)
     {
@@ -1978,7 +1949,6 @@ class RegexTest extends BaseTestCase
 
     public function testIsSubPathOf()
     {
-        self::assertFalse(Regex::isSubPathOf(null, null));
         self::assertFalse(Regex::isSubPathOf('', ''));
 
         self::assertFalse(Regex::isSubPathOf('', '/my/directory'));
@@ -2006,7 +1976,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testIsValidBundleNameUsingEmptyValue($emptyValue)
     {
@@ -2026,7 +1996,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public static function testIsValidEmailUsingEmptyValue($emptyValue)
     {
@@ -2046,7 +2016,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testIsValidHtmlAttributeUsingEmptyValue($emptyValue)
     {
@@ -2075,7 +2045,6 @@ class RegexTest extends BaseTestCase
 
     public function testIsValidNip()
     {
-        self::assertFalse(Regex::isValidNip(null));
         self::assertFalse(Regex::isValidNip(''));
         self::assertFalse(Regex::isValidNip(1234));
         self::assertFalse(Regex::isValidNip(1234567890));
@@ -2100,13 +2069,10 @@ class RegexTest extends BaseTestCase
         self::assertEquals($expected, Regex::isValidPhoneNumber($phoneNumber));
     }
 
-    /**
-     * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public static function testIsValidPhoneNumberUsingEmptyValue($emptyValue)
+    public static function testIsValidPhoneNumberUsingEmptyValue()
     {
-        self::assertFalse(Regex::isValidPhoneNumber($emptyValue));
+        self::assertFalse(Regex::isValidPhoneNumber(''));
+        self::assertFalse(Regex::isValidPhoneNumber('   '));
     }
 
     /**
@@ -2122,7 +2088,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public static function testIsValidTaxIdUsingEmptyValue($emptyValue)
     {
@@ -2149,7 +2115,6 @@ class RegexTest extends BaseTestCase
 
         $invalidUrls = [
             '',
-            null,
             false,
             true,
             0,

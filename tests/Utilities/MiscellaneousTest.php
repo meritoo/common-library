@@ -1005,18 +1005,34 @@ class MiscellaneousTest extends BaseTestCase
         static::assertSame($expected, Miscellaneous::calculateGreatestCommonDivisor($first, $second));
     }
 
+    /**
+     * @param scalar $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyScalarValue
+     */
+    public function testCheckboxValue2BooleanIfValueIsEmpty($emptyValue): void
+    {
+        self::assertFalse(Miscellaneous::checkboxValue2Boolean($emptyValue));
+    }
+
     public function testCheckboxValue2Boolean()
     {
         self::assertTrue(Miscellaneous::checkboxValue2Boolean('on'));
         self::assertFalse(Miscellaneous::checkboxValue2Boolean('  off'));
-        self::assertFalse(Miscellaneous::checkboxValue2Boolean(null));
+    }
+
+    /**
+     * @param mixed $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyScalarValue
+     */
+    public function testCheckboxValue2IntegerIfValueIsEmpty($emptyValue): void
+    {
+        self::assertSame(0, Miscellaneous::checkboxValue2Integer($emptyValue));
     }
 
     public function testCheckboxValue2Integer()
     {
         self::assertEquals(1, Miscellaneous::checkboxValue2Integer('on'));
         self::assertEquals(0, Miscellaneous::checkboxValue2Integer('  off'));
-        self::assertEquals(0, Miscellaneous::checkboxValue2Integer(null));
     }
 
     public function testConcatenatePathsInNixOs()
@@ -1109,12 +1125,12 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * @param string $string The string to convert e.g. this-is-eXamplE (return: thisIsExample)
-     * @dataProvider provideEmptyValue
+     * @param string $emptyValue The string to convert e.g. this-is-eXamplE (return: thisIsExample)
+     * @dataProvider provideEmptyScalarValue
      */
-    public function testGetCamelCaseEmptyValue($string)
+    public function testGetCamelCaseEmptyValue($emptyValue)
     {
-        self::assertEquals('', Miscellaneous::getCamelCase($string));
+        self::assertEquals('', Miscellaneous::getCamelCase($emptyValue));
     }
 
     public function testGetDirectoryContent()
@@ -1122,7 +1138,6 @@ class MiscellaneousTest extends BaseTestCase
         $directoryPath = __DIR__.'/../';
         $filePath = __FILE__;
 
-        self::assertNull(Miscellaneous::getDirectoryContent(null));
         self::assertNull(Miscellaneous::getDirectoryContent(''));
 
         self::assertGreaterThanOrEqual(0, count(Miscellaneous::getDirectoryContent($directoryPath)));
@@ -1164,12 +1179,12 @@ class MiscellaneousTest extends BaseTestCase
     }
 
     /**
-     * @param string $fileName Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @param string $emptyValue Empty value, e.g. ""
+     * @dataProvider provideEmptyScalarValue
      */
-    public function testGetFileNameWithoutExtensionEmptyValue($fileName)
+    public function testGetFileNameWithoutExtensionEmptyValue($emptyValue)
     {
-        self::assertEquals('', Miscellaneous::getFileNameWithoutExtension($fileName));
+        self::assertEquals('', Miscellaneous::getFileNameWithoutExtension($emptyValue));
     }
 
     public function testGetHumanReadableSize()
@@ -1219,7 +1234,6 @@ class MiscellaneousTest extends BaseTestCase
     {
         $this->expectException(IncorrectColorHexLengthException::class);
 
-        Miscellaneous::getInvertedColor(null);
         Miscellaneous::getInvertedColor('');
         Miscellaneous::getInvertedColor(1);
         Miscellaneous::getInvertedColor(12);
@@ -1325,7 +1339,7 @@ class MiscellaneousTest extends BaseTestCase
     public function testGetUniqueFileName()
     {
         $originalFileName = 'Lorem.ipsum-dolor.sit.JPG';
-        $pattern = '|^lorem\-ipsum\-dolor\-sit\-[a-z0-9.-]+\.jpg$|';
+        $pattern = '|^lorem-ipsum-dolor-sit-[a-z0-9.-]+\.jpg$|';
 
         // With object ID
         $uniqueFileName1 = Miscellaneous::getUniqueFileName($originalFileName, 123);
@@ -1357,8 +1371,6 @@ class MiscellaneousTest extends BaseTestCase
     public function testGetValidColorComponent()
     {
         // Negative cases
-        self::assertEquals(0, Miscellaneous::getValidColorComponent(null));
-        self::assertEquals(0, Miscellaneous::getValidColorComponent(''));
         self::assertEquals(0, Miscellaneous::getValidColorComponent('0'));
         self::assertEquals(0, Miscellaneous::getValidColorComponent(0));
         self::assertEquals(0, Miscellaneous::getValidColorComponent(256));
@@ -1432,7 +1444,6 @@ class MiscellaneousTest extends BaseTestCase
     public function testLowercaseFirst()
     {
         self::assertEquals('', Miscellaneous::lowercaseFirst(''));
-        self::assertEquals('', Miscellaneous::lowercaseFirst(null));
         self::assertEquals('', Miscellaneous::lowercaseFirst(false));
 
         $text = 'LorEM ipsum dolor sit Amet';
@@ -1503,13 +1514,10 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals($expected, Miscellaneous::removeEndingDirectorySeparator($text, $separator));
     }
 
-    /**
-     * @param string $text Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testRemoveEndingDirectorySeparatorEmptyValue($text)
+    public function testRemoveEndingDirectorySeparatorEmptyValue()
     {
-        self::assertEquals('', Miscellaneous::removeEndingDirectorySeparator($text));
+        self::assertEquals('', Miscellaneous::removeEndingDirectorySeparator(''));
+        self::assertEquals('', Miscellaneous::removeEndingDirectorySeparator('   '));
     }
 
     /**
@@ -1542,13 +1550,10 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals($expected, Miscellaneous::removeStartingDirectorySeparator($text, $separator));
     }
 
-    /**
-     * @param string $text Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
-    public function testRemoveStartingDirectorySeparatorEmptyValue($text)
+    public function testRemoveStartingDirectorySeparatorEmptyValue()
     {
-        self::assertEquals('', Miscellaneous::removeStartingDirectorySeparator($text));
+        self::assertEquals('', Miscellaneous::removeStartingDirectorySeparator(''));
+        self::assertEquals('', Miscellaneous::removeStartingDirectorySeparator('   '));
     }
 
     public function testSubstringToWord()
@@ -1564,7 +1569,7 @@ class MiscellaneousTest extends BaseTestCase
 
     /**
      * @param mixed $string Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testToLatinEmptyValue($string)
     {
@@ -1597,7 +1602,6 @@ class MiscellaneousTest extends BaseTestCase
 
     public function testTrimSmart()
     {
-        self::assertNull(Miscellaneous::trimSmart(null));
         self::assertEquals(' ', Miscellaneous::trimSmart(' '));
         self::assertEquals('lorem ipsum', Miscellaneous::trimSmart(' lorem ipsum'));
         self::assertEquals('lorem ipsum', Miscellaneous::trimSmart(' lorem ipsum     '));
@@ -1606,7 +1610,6 @@ class MiscellaneousTest extends BaseTestCase
     public function testUppercaseFirst()
     {
         self::assertEquals('', Miscellaneous::uppercaseFirst(''));
-        self::assertEquals('', Miscellaneous::uppercaseFirst(null));
         self::assertEquals('', Miscellaneous::uppercaseFirst(false));
 
         $text = 'lorEM ipsum dolor sit Amet';
@@ -1623,7 +1626,7 @@ class MiscellaneousTest extends BaseTestCase
     {
         self::assertEquals(2, Miscellaneous::value2NonNegativeInteger('2'));
         self::assertEquals(0, Miscellaneous::value2NonNegativeInteger('a'));
-        self::assertEquals('-', Miscellaneous::value2NonNegativeInteger('-4', '-'));
+        self::assertEquals(111, Miscellaneous::value2NonNegativeInteger('-4', 111));
     }
 
     /**

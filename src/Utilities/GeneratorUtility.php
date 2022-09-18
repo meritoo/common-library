@@ -24,7 +24,7 @@ class GeneratorUtility
      * @param Generator $generator The generator who elements should be returned
      * @return array
      */
-    public static function getGeneratorElements(Generator $generator)
+    public static function getGeneratorElements(Generator $generator): array
     {
         $elements = [];
 

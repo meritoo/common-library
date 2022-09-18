@@ -132,11 +132,6 @@ class TemplatesTest extends BaseTestCase
     }
 
     /**
-     * @param string    $description Description of test
-     * @param Templates $templates   All templates
-     * @param string    $index       Index that contains required template
-     * @param Template  $expected    Expected template
-     *
      * @dataProvider provideTemplatesToFind
      */
     public function testFindTemplate(string $description, Templates $templates, string $index, Template $expected): void
@@ -157,10 +152,6 @@ class TemplatesTest extends BaseTestCase
     }
 
     /**
-     * @param Templates $templates       All templates
-     * @param string    $index           Index that contains required template
-     * @param string    $expectedMessage Expected message of exception
-     *
      * @dataProvider provideTemplatesWithNotExistingIndex
      */
     public function testFindTemplateUsingNotExistingIndex(
@@ -175,10 +166,6 @@ class TemplatesTest extends BaseTestCase
     }
 
     /**
-     * @param string    $description Description of test
-     * @param array     $templates   Pairs of key-value where: key - template's index, value - template's content
-     * @param Templates $expected    Expected collection/storage of templates
-     *
      * @dataProvider provideArrayWithTemplates
      */
     public function testFromArray(string $description, array $templates, Templates $expected): void

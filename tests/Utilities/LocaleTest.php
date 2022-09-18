@@ -190,7 +190,7 @@ class LocaleTest extends BaseTestCase
 
     /**
      * @param mixed $languageCode Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testGetLongFormEmptyLanguageCode($languageCode)
     {
@@ -213,11 +213,11 @@ class LocaleTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testSetLocaleEmptyCategoryAndLanguageCode($emptyValue)
     {
-        self::assertFalse(Locale::setLocale($emptyValue, $emptyValue));
+        self::assertFalse(Locale::setLocale(0, $emptyValue));
     }
 
     public function testSetLocaleIncorrectCategory()

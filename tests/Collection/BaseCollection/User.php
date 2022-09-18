@@ -21,11 +21,8 @@ namespace Meritoo\Test\Common\Collection\BaseCollection;
  */
 final class User
 {
-    /** @var string */
-    private $firstName;
-
-    /** @var string */
-    private $lastName;
+    private string $firstName;
+    private string $lastName;
 
     public function __construct(string $firstName, string $lastName)
     {

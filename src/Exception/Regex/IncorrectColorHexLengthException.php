@@ -24,7 +24,7 @@ class IncorrectColorHexLengthException extends Exception
      * @param string $color Incorrect hexadecimal value of color
      * @return IncorrectColorHexLengthException
      */
-    public static function create($color)
+    public static function create(string $color): IncorrectColorHexLengthException
     {
         $template = 'Length of hexadecimal value of color \'%s\' is incorrect. It\'s %d, but it should be 3 or 6.'
             .' Is there everything ok?';

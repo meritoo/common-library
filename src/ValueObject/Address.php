@@ -18,52 +18,19 @@ use Meritoo\Common\Utilities\Arrays;
  */
 class Address
 {
-    /**
-     * The street
-     *
-     * @var string
-     */
-    protected $street;
+    protected string $street;
+    protected string $buildingNumber;
+    protected string $flatNumber;
+    protected string $zipCode;
+    protected string $city;
 
-    /**
-     * The number of building
-     *
-     * @var string
-     */
-    protected $buildingNumber;
-
-    /**
-     * The number of flat
-     *
-     * @var string
-     */
-    protected $flatNumber;
-
-    /**
-     * The zip code
-     *
-     * @var string
-     */
-    protected $zipCode;
-
-    /**
-     * The city, location
-     *
-     * @var string
-     */
-    protected $city;
-
-    /**
-     * Class constructor
-     *
-     * @param string $city           City, location
-     * @param string $zipCode        The zip code
-     * @param string $street         The street
-     * @param string $buildingNumber The number of building
-     * @param string $flatNumber     (optional) The number of flat. Default: "".
-     */
-    public function __construct($city, $zipCode, $street, $buildingNumber, $flatNumber = '')
-    {
+    public function __construct(
+        string $city,
+        string $zipCode,
+        string $street,
+        string $buildingNumber,
+        string $flatNumber = ''
+    ) {
         $this->city = $city;
         $this->zipCode = $zipCode;
         $this->street = $street;
@@ -71,12 +38,7 @@ class Address
         $this->flatNumber = $flatNumber;
     }
 
-    /**
-     * Returns representation of object as string
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $values = [
             $this->getFullStreet(),
@@ -87,42 +49,22 @@ class Address
         return Arrays::getNonEmptyValuesAsString($values);
     }
 
-    /**
-     * Returns number of building
-     *
-     * @return string
-     */
-    public function getBuildingNumber()
+    public function getBuildingNumber(): string
     {
         return $this->buildingNumber;
     }
 
-    /**
-     * Returns city, location
-     *
-     * @return string
-     */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
 
-    /**
-     * Returns number of flat
-     *
-     * @return string
-     */
-    public function getFlatNumber()
+    public function getFlatNumber(): string
     {
         return $this->flatNumber;
     }
 
-    /**
-     * Returns full street (name + building & flat number)
-     *
-     * @return string
-     */
-    public function getFullStreet()
+    public function getFullStreet(): string
     {
         if (empty($this->street)) {
             return '';
@@ -137,22 +79,12 @@ class Address
         return sprintf('%s %s', $this->street, $numbers);
     }
 
-    /**
-     * Returns street
-     *
-     * @return string
-     */
-    public function getStreet()
+    public function getStreet(): string
     {
         return $this->street;
     }
 
-    /**
-     * Returns zip code
-     *
-     * @return string
-     */
-    public function getZipCode()
+    public function getZipCode(): string
     {
         return $this->zipCode;
     }

@@ -18,38 +18,16 @@ use Meritoo\Common\Utilities\Arrays;
  */
 class BankAccount
 {
-    /**
-     * Name of bank
-     *
-     * @var string
-     */
-    protected $bankName;
+    protected string $bankName;
+    protected string $accountNumber;
 
-    /**
-     * Number of bank's account
-     *
-     * @var string
-     */
-    protected $accountNumber;
-
-    /**
-     * Class constructor
-     *
-     * @param string $bankName      Name of bank
-     * @param string $accountNumber Number of bank's account
-     */
-    public function __construct($bankName, $accountNumber)
+    public function __construct(string $bankName, string $accountNumber)
     {
         $this->bankName = $bankName;
         $this->accountNumber = $accountNumber;
     }
 
-    /**
-     * Returns representation of object as string
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $values = [
             $this->bankName,
@@ -59,22 +37,12 @@ class BankAccount
         return Arrays::getNonEmptyValuesAsString($values);
     }
 
-    /**
-     * Returns number of bank's account
-     *
-     * @return string
-     */
-    public function getAccountNumber()
+    public function getAccountNumber(): string
     {
         return $this->accountNumber;
     }
 
-    /**
-     * Returns name of bank
-     *
-     * @return string
-     */
-    public function getBankName()
+    public function getBankName(): string
     {
         return $this->bankName;
     }

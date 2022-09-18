@@ -28,7 +28,7 @@ class Xml
      * @param SimpleXMLElement $element2 Second element to merge
      * @return SimpleXMLElement
      */
-    public static function mergeNodes(SimpleXMLElement $element1, SimpleXMLElement $element2)
+    public static function mergeNodes(SimpleXMLElement $element1, SimpleXMLElement $element2): SimpleXMLElement
     {
         $document1 = new DOMDocument();
         $document2 = new DOMDocument();

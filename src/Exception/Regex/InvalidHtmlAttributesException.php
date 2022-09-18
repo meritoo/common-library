@@ -24,7 +24,7 @@ class InvalidHtmlAttributesException extends Exception
      * @param string $htmlAttributes Invalid html attributes
      * @return InvalidHtmlAttributesException
      */
-    public static function create($htmlAttributes)
+    public static function create(string $htmlAttributes): InvalidHtmlAttributesException
     {
         $message = sprintf('HTML attributes \'%s\' are invalid. Is there everything ok?', $htmlAttributes);
 

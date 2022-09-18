@@ -9,6 +9,8 @@
 namespace Meritoo\Common\Utilities;
 
 use Gedmo\Sluggable\Util\Urlizer;
+use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
+use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Transliterator;
 
 /**
@@ -19,6 +21,11 @@ use Transliterator;
  */
 class Miscellaneous
 {
+    private const LONG_TEXT_SEPARATOR = '<br>';
+    private const FILE_NAME_PATTERN = '/(.+)\.(.+)/';
+    private const START_WITH_UPPERCASE_LETTER_PATTERN = '/[A-Z][^A-Z]*/';
+    private const SPECIAL_CHARACTERS_PATTERN = '/[^a-zA-Z0-9]/';
+
     /**
      * Breaks long text
      *
@@ -30,12 +37,12 @@ class Miscellaneous
      * @return string
      */
     public static function breakLongText(
-        $text,
-        $perLine = 100,
-        $separator = '<br>',
-        $encoding = 'utf-8',
-        $proportionalAberration = 20
-    ) {
+        string $text,
+        int $perLine = 100,
+        string $separator = self::LONG_TEXT_SEPARATOR,
+        string $encoding = Locale::UTF8_ENCODING,
+        int $proportionalAberration = 20
+    ): string {
         $effect = $text;
         $textLength = mb_strlen($text);
 
@@ -78,7 +85,6 @@ class Miscellaneous
                     $spacePosition = mb_strrpos($lineWithAberration, ' ', 0, $encoding);
 
                     if (false !== $spacePosition && 0 < $spacePosition) {
-                        /** @var int $spacePosition */
                         $perLine = $spacePosition;
                         $insertSeparator = true;
                     }
@@ -123,20 +129,16 @@ class Miscellaneous
      * @param string $checkboxValue Checkbox value
      * @return bool
      */
-    public static function checkboxValue2Boolean($checkboxValue)
+    public static function checkboxValue2Boolean(string $checkboxValue): bool
     {
         $mapping = [
             'on' => true,
             'off' => false,
         ];
 
-        $clearValue = strtolower(trim($checkboxValue));
+        $clearValue = mb_strtolower(trim($checkboxValue));
 
-        if (isset($mapping[$clearValue])) {
-            return $mapping[$clearValue];
-        }
-
-        return false;
+        return $mapping[$clearValue] ?? false;
     }
 
     /**
@@ -145,7 +147,7 @@ class Miscellaneous
      * @param string $checkboxValue Checkbox value
      * @return int
      */
-    public static function checkboxValue2Integer($checkboxValue)
+    public static function checkboxValue2Integer(string $checkboxValue): int
     {
         return (int) self::checkboxValue2Boolean($checkboxValue);
     }
@@ -165,7 +167,7 @@ class Miscellaneous
      *                            passed as following arguments.
      * @return string
      */
-    public static function concatenatePaths($paths)
+    public static function concatenatePaths($paths): string
     {
         // If paths are not provided as array, get the paths from methods' arguments
         if (!is_array($paths)) {
@@ -234,12 +236,12 @@ class Miscellaneous
      * If "before" parameter is false, zeros will be inserted after given number. If given number is longer than
      * given length the number will be returned as it was given to the method.
      *
-     * @param mixed $number Number for who the "0" characters should be inserted
+     * @param mixed $number Number for whom the "0" characters should be inserted
      * @param int   $length Wanted length of final number
      * @param bool  $before (optional) If false, 0 characters will be inserted after given number
      * @return string
      */
-    public static function fillMissingZeros($number, $length, $before = true)
+    public static function fillMissingZeros($number, int $length, bool $before = true): string
     {
         /*
          * It's not a number? Empty string is not a number too.
@@ -276,7 +278,7 @@ class Miscellaneous
      * @param string $separator (optional) Separator used to find parts of the string, e.g. '-' or ','
      * @return string
      */
-    public static function getCamelCase($string, $separator = ' ')
+    public static function getCamelCase(string $string, string $separator = ' '): string
     {
         if (empty($string)) {
             return '';
@@ -301,15 +303,18 @@ class Miscellaneous
     /**
      * Returns directory's content (names of directories and files)
      *
-     * @param string $directoryPath Path of directory who content should be returned
-     * @param bool   $recursive     (optional) If is set to true, sub-directories are also searched for content.
-     *                              Otherwise - only content of given directory is returned.
-     * @param int    $maxFilesCount (optional) Maximum files that will be returned. If it's null, all files are
-     *                              returned.
+     * @param string   $directoryPath Path of directory who content should be returned
+     * @param bool     $recursive     (optional) If is set to true, subdirectories are also searched for content.
+     *                                Otherwise - only content of given directory is returned.
+     * @param int|null $maxFilesCount (optional) Maximum files that will be returned. If it's null, all files are
+     *                                returned.
      * @return null|array
      */
-    public static function getDirectoryContent($directoryPath, $recursive = false, $maxFilesCount = null)
-    {
+    public static function getDirectoryContent(
+        string $directoryPath,
+        bool $recursive = false,
+        ?int $maxFilesCount = null
+    ): ?array {
         /*
          * Path of directory is unknown or does not exist and is not readable?
          * Nothing to do
@@ -389,12 +394,12 @@ class Miscellaneous
      * @param bool   $asLowerCase (optional) if true extension is returned as lowercase string
      * @return string
      */
-    public static function getFileExtension($fileName, $asLowerCase = false)
+    public static function getFileExtension(string $fileName, bool $asLowerCase = false): string
     {
         $extension = '';
         $matches = [];
 
-        if (preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
+        if (preg_match(self::FILE_NAME_PATTERN, $fileName, $matches)) {
             $extension = end($matches);
         }
 
@@ -416,7 +421,7 @@ class Miscellaneous
         $matches = [];
         $pattern = Regex::getFileNamePattern();
 
-        if ((bool) preg_match($pattern, $path, $matches)) {
+        if (preg_match($pattern, $path, $matches)) {
             return $matches[0];
         }
 
@@ -429,11 +434,11 @@ class Miscellaneous
      * @param string $fileName The file name
      * @return string
      */
-    public static function getFileNameWithoutExtension($fileName)
+    public static function getFileNameWithoutExtension(string $fileName): string
     {
         $matches = [];
 
-        if (is_string($fileName) && (bool) preg_match('|(.+)\.(.+)|', $fileName, $matches)) {
+        if (preg_match(self::FILE_NAME_PATTERN, $fileName, $matches)) {
             return $matches[1];
         }
 
@@ -441,12 +446,12 @@ class Miscellaneous
     }
 
     /**
-     * Returns size (of file or directory) in human readable format
+     * Returns size (of file or directory) in human-readable format
      *
      * @param int $sizeInBytes The size in bytes
      * @return string
      */
-    public static function getHumanReadableSize($sizeInBytes)
+    public static function getHumanReadableSize(int $sizeInBytes): string
     {
         $units = [
             'B',
@@ -469,8 +474,11 @@ class Miscellaneous
      *
      * @param string $color Hexadecimal value of color to invert (with or without hash), e.g. "dd244c" or "#22a5fe"
      * @return string
+     *
+     * @throws IncorrectColorHexLengthException
+     * @throws InvalidColorHexValueException
      */
-    public static function getInvertedColor($color)
+    public static function getInvertedColor(string $color): string
     {
         // Prepare the color for later usage
         $color = trim($color);
@@ -509,7 +517,7 @@ class Miscellaneous
      * @param string $separator The separator which divides elements of string
      * @return null|string
      */
-    public static function getLastElementOfString($string, $separator): ?string
+    public static function getLastElementOfString(string $string, string $separator): ?string
     {
         $elements = self::getStringElements($string, $separator);
 
@@ -528,7 +536,7 @@ class Miscellaneous
      * @param string $suffix   File name suffix
      * @return string
      */
-    public static function getNewFileName($fileName, $prefix, $suffix)
+    public static function getNewFileName(string $fileName, string $prefix, string $suffix): string
     {
         $effect = $fileName;
 
@@ -547,7 +555,7 @@ class Miscellaneous
      *
      * @return string
      */
-    public static function getOperatingSystemNameServer()
+    public static function getOperatingSystemNameServer(): string
     {
         return PHP_OS;
         /*
@@ -595,7 +603,7 @@ class Miscellaneous
      * @param string $variableName     Name of the variable to return value
      * @return mixed
      */
-    public static function getSafelyGlobalVariable($globalSourceType, $variableName)
+    public static function getSafelyGlobalVariable(int $globalSourceType, string $variableName)
     {
         $value = filter_input($globalSourceType, $variableName);
 
@@ -665,7 +673,7 @@ class Miscellaneous
      * @param string $separator The separator which divides elements of string
      * @return string
      */
-    public static function getStringWithoutLastElement($string, $separator)
+    public static function getStringWithoutLastElement(string $string, string $separator): string
     {
         $elements = self::getStringElements($string, $separator);
         $lastKey = Arrays::getLastKey($elements);
@@ -682,7 +690,7 @@ class Miscellaneous
      * @param mixed $variable Variable who type should be returned
      * @return string
      */
-    public static function getType($variable)
+    public static function getType($variable): string
     {
         if (is_object($variable)) {
             return Reflection::getClassName($variable);
@@ -694,12 +702,12 @@ class Miscellaneous
     /**
      * Returns unique name for file based on given original name
      *
-     * @param string $originalFileName Original name of the file
-     * @param int    $objectId         (optional) Object ID, the ID of database's row. May be included into the
-     *                                 generated / unique name.
+     * @param string   $originalFileName Original name of the file
+     * @param int|null $objectId         (optional) Object ID, the ID of database's row. May be included into the
+     *                                   generated / unique name.
      * @return string
      */
-    public static function getUniqueFileName($originalFileName, $objectId = 0)
+    public static function getUniqueFileName(string $originalFileName, ?int $objectId = null): string
     {
         $withoutExtension = self::getFileNameWithoutExtension($originalFileName);
         $extension = self::getFileExtension($originalFileName, true);
@@ -719,7 +727,7 @@ class Miscellaneous
         $unique = self::getUniqueString(mt_rand());
 
         // Finally build and return the unique name
-        if ($objectId > 0) {
+        if ($objectId !== null) {
             $template = '%s-%s-%s.%s'; // [file's name]-[unique key]-[object ID].[file's extension]
 
             return sprintf($template, $withoutExtension, $unique, $objectId, $extension);
@@ -736,7 +744,7 @@ class Miscellaneous
      * @param bool   $hashed (optional) If is set to true, the unique string is hashed additionally. Otherwise - not.
      * @return string
      */
-    public static function getUniqueString($prefix = '', $hashed = false)
+    public static function getUniqueString(string $prefix = '', bool $hashed = false): string
     {
         $unique = uniqid($prefix, true);
 
@@ -756,10 +764,8 @@ class Miscellaneous
      *                             Otherwise - decimal.
      * @return int|string
      */
-    public static function getValidColorComponent($colorComponent, $asHexadecimal = true)
+    public static function getValidColorComponent(int $colorComponent, bool $asHexadecimal = true)
     {
-        $colorComponent = (int) $colorComponent;
-
         if ($colorComponent < 0 || $colorComponent > 255) {
             $colorComponent = 0;
         }
@@ -784,7 +790,7 @@ class Miscellaneous
      * @param string $extension The extension to verify and include
      * @return string
      */
-    public static function includeFileExtension($fileName, $extension)
+    public static function includeFileExtension(string $fileName, string $extension): string
     {
         $fileExtension = self::getFileExtension($fileName, true);
 
@@ -807,7 +813,7 @@ class Miscellaneous
      * @param float|int $right Right utmost value of interval
      * @return bool
      */
-    public static function isBetween($value, $left, $right)
+    public static function isBetween($value, $left, $right): bool
     {
         return $value > $left && $value < $right;
     }
@@ -818,7 +824,7 @@ class Miscellaneous
      * @param mixed $value The value to check
      * @return bool
      */
-    public static function isDecimal($value)
+    public static function isDecimal($value): bool
     {
         return is_scalar($value) && is_numeric($value) && floor($value) !== (float) $value;
     }
@@ -829,7 +835,7 @@ class Miscellaneous
      * @param string $path The path to check
      * @return bool
      */
-    public static function isFilePath($path)
+    public static function isFilePath(string $path): bool
     {
         $info = pathinfo($path);
 
@@ -842,18 +848,18 @@ class Miscellaneous
      * @param string $phpModuleName PHP module name
      * @return bool
      */
-    public static function isPhpModuleLoaded($phpModuleName)
+    public static function isPhpModuleLoaded(string $phpModuleName): bool
     {
         $phpModulesArray = get_loaded_extensions();
 
-        return in_array($phpModuleName, $phpModulesArray, false);
+        return in_array($phpModuleName, $phpModulesArray);
     }
 
     /**
      * Make a string's first character lowercase
      *
      * @param string    $text          The text to get first character lowercase
-     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
+     * @param bool|null $restLowercase (optional) Information that to do with rest of given string
      * @return string
      *
      * Values of the $restLowercase argument:
@@ -861,7 +867,7 @@ class Miscellaneous
      * - true: the rest of string is lowercased
      * - false: the rest of string is uppercased
      */
-    public static function lowercaseFirst($text, $restLowercase = null)
+    public static function lowercaseFirst(string $text, ?bool $restLowercase = null): string
     {
         if (empty($text)) {
             return '';
@@ -885,7 +891,7 @@ class Miscellaneous
      * @param bool  $useApostrophe (optional) If is set to true, apostrophes are used. Otherwise - quotation marks.
      * @return string
      */
-    public static function quoteValue($value, $useApostrophe = true)
+    public static function quoteValue($value, bool $useApostrophe = true): string
     {
         if (is_string($value)) {
             $quotes = '"';
@@ -909,7 +915,7 @@ class Miscellaneous
      *                              directory itself. Otherwise - directory is removed too (default behaviour).
      * @return null|bool
      */
-    public static function removeDirectory($directoryPath, $contentOnly = false)
+    public static function removeDirectory(string $directoryPath, bool $contentOnly = false): ?bool
     {
         /*
          * Directory does not exist?
@@ -953,16 +959,8 @@ class Miscellaneous
      *                          separator is used.
      * @return string
      */
-    public static function removeEndingDirectorySeparator($text, $separator = '')
+    public static function removeEndingDirectorySeparator(string $text, string $separator = ''): string
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($text)) {
-            return '';
-        }
-
         if (empty($separator)) {
             $separator = DIRECTORY_SEPARATOR;
         }
@@ -1005,16 +1003,8 @@ class Miscellaneous
      *                          provided by operating system will be used.
      * @return string
      */
-    public static function removeStartingDirectorySeparator($text, $separator = '')
+    public static function removeStartingDirectorySeparator(string $text, string $separator = ''): string
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($text)) {
-            return '';
-        }
-
         if (empty($separator)) {
             $separator = DIRECTORY_SEPARATOR;
         }
@@ -1039,19 +1029,18 @@ class Miscellaneous
     public static function substringToWord(string $text, int $maxLength, string $suffix = '...'): string
     {
         $effect = $text;
-        $encoding = 'utf-8';
 
-        $textLength = mb_strlen($text, $encoding);
-        $suffixLength = mb_strlen($suffix, $encoding);
+        $textLength = mb_strlen($text, Locale::UTF8_ENCODING);
+        $suffixLength = mb_strlen($suffix, Locale::UTF8_ENCODING);
 
         $maxLength -= $suffixLength;
 
         if ($textLength > $maxLength) {
-            $effect = mb_substr($text, 0, $maxLength, $encoding);
-            $lastSpacePosition = mb_strrpos($effect, ' ', 0, $encoding);
+            $effect = mb_substr($text, 0, $maxLength, Locale::UTF8_ENCODING);
+            $lastSpacePosition = mb_strrpos($effect, ' ', 0, Locale::UTF8_ENCODING);
 
             if (false !== $lastSpacePosition) {
-                $effect = mb_substr($effect, 0, $lastSpacePosition, $encoding);
+                $effect = mb_substr($effect, 0, $lastSpacePosition, Locale::UTF8_ENCODING);
             }
 
             $effect .= $suffix;
@@ -1070,11 +1059,9 @@ class Miscellaneous
      *                                letters, if 2nd argument is set to true
      * @return string
      */
-    public static function toLatin($string, $lowerCaseHuman = true, $replacementChar = '-')
+    public static function toLatin(string $string, bool $lowerCaseHuman = true, string $replacementChar = '-'): string
     {
-        if (is_string($string)) {
-            $string = trim($string);
-        }
+        $string = trim($string);
 
         /*
          * Empty value?
@@ -1099,7 +1086,7 @@ class Miscellaneous
         // Make the string lowercase and human-readable
         if ($lowerCaseHuman) {
             $matches = [];
-            $matchCount = preg_match_all('|[A-Z]{1}[^A-Z]*|', $converted, $matches);
+            $matchCount = preg_match_all(self::START_WITH_UPPERCASE_LETTER_PATTERN, $converted, $matches);
 
             if ($matchCount > 0) {
                 $parts = $matches[0];
@@ -1111,7 +1098,7 @@ class Miscellaneous
          * Let's replace special characters to spaces
          * ...and finally spaces to $replacementChar
          */
-        $replaced = preg_replace('|[^a-zA-Z0-9]|', ' ', $converted);
+        $replaced = preg_replace(self::SPECIAL_CHARACTERS_PATTERN, ' ', $converted);
 
         return preg_replace('| +|', $replacementChar, trim($replaced));
     }
@@ -1123,7 +1110,7 @@ class Miscellaneous
      * @param string $string The string to trim
      * @return string
      */
-    public static function trimSmart($string)
+    public static function trimSmart(string $string): string
     {
         $trimmed = trim($string);
 
@@ -1138,7 +1125,7 @@ class Miscellaneous
      * Make a string's first character uppercase
      *
      * @param string    $text          The text to get uppercase
-     * @param null|bool $restLowercase (optional) Information that to do with rest of given string
+     * @param bool|null $restLowercase (optional) Information that to do with rest of given string
      * @return string
      *
      * Values of the $restLowercase argument:
@@ -1146,7 +1133,7 @@ class Miscellaneous
      * - true: the rest of string is lowercased
      * - false: the rest of string is uppercased
      */
-    public static function uppercaseFirst($text, $restLowercase = null)
+    public static function uppercaseFirst(string $text, ?bool $restLowercase = null): string
     {
         if (empty($text)) {
             return '';
@@ -1170,7 +1157,7 @@ class Miscellaneous
      * @param int   $negativeReplacement (optional) Replacement for negative value
      * @return int
      */
-    public static function value2NonNegativeInteger($value, $negativeReplacement = 0)
+    public static function value2NonNegativeInteger($value, int $negativeReplacement = 0): int
     {
         $effect = (int) $value;
 

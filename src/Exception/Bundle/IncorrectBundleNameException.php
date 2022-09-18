@@ -24,7 +24,7 @@ class IncorrectBundleNameException extends Exception
      * @param string $bundleName Incorrect name of bundle
      * @return IncorrectBundleNameException
      */
-    public static function create($bundleName)
+    public static function create(string $bundleName): IncorrectBundleNameException
     {
         $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
             .' there everything ok?';

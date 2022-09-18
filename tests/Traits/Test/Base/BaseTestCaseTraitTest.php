@@ -142,7 +142,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
         $expected = [
             [''],
             ['   '],
-            [null],
+            ['0'],
             [0],
             [false],
         ];
@@ -159,9 +159,10 @@ class BaseTestCaseTraitTest extends BaseTestCase
         $expected = [
             [''],
             ['   '],
-            [null],
+            ['0'],
             [0],
             [false],
+            [null],
             [[]],
         ];
 

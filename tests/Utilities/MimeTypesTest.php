@@ -294,9 +294,11 @@ class MimeTypesTest extends BaseTestCase
         yield [
             [
                 '',
-                null,
-                false,
+                '0',
+                'xyz',
                 0,
+                123,
+                false,
             ],
         ];
 
@@ -324,7 +326,7 @@ class MimeTypesTest extends BaseTestCase
 
     /**
      * @param mixed $mimeType Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testGetExtensionEmptyMimeType($mimeType)
     {
@@ -395,7 +397,7 @@ class MimeTypesTest extends BaseTestCase
 
     /**
      * @param mixed $filePath Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testGetMimeTypeEmptyPath($filePath)
     {
@@ -415,7 +417,7 @@ class MimeTypesTest extends BaseTestCase
 
     /**
      * @param mixed $mimeType Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testIsImageEmptyMimeType($mimeType)
     {
@@ -451,7 +453,7 @@ class MimeTypesTest extends BaseTestCase
 
     /**
      * @param mixed $path Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testIsImagePathEmptyPath($path)
     {
