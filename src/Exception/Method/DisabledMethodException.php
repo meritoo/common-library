@@ -25,7 +25,7 @@ class DisabledMethodException extends Exception
      * @param string $alternativeMethod (optional) Name of the alternative method
      * @return DisabledMethodException
      */
-    public static function create($disabledMethod, $alternativeMethod = '')
+    public static function create(string $disabledMethod, string $alternativeMethod = ''): DisabledMethodException
     {
         $template = 'Method %s() cannot be called, because is disabled.';
         $message = sprintf($template, $disabledMethod);

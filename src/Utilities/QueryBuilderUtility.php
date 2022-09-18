@@ -10,6 +10,8 @@ namespace Meritoo\Common\Utilities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
@@ -31,7 +33,7 @@ class QueryBuilderUtility
      *                                            instances or an array with key-value pairs.
      * @return QueryBuilder
      */
-    public static function addParameters(QueryBuilder $queryBuilder, $parameters)
+    public static function addParameters(QueryBuilder $queryBuilder, $parameters): QueryBuilder
     {
         /*
          * No parameters?
@@ -64,8 +66,10 @@ class QueryBuilderUtility
      * @param bool                  $flushDeleted  (optional) If is set to true, flushes the deleted objects (default
      *                                             behaviour). Otherwise - not.
      * @return bool
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public static function deleteEntities(EntityManager $entityManager, $entities, $flushDeleted = true)
+    public static function deleteEntities(EntityManager $entityManager, $entities, bool $flushDeleted = true): bool
     {
         /*
          * No entities provided?
@@ -97,7 +101,7 @@ class QueryBuilderUtility
      * @param string       $property     Name of property that maybe is joined
      * @return null|string
      */
-    public static function getJoinedPropertyAlias(QueryBuilder $queryBuilder, $property)
+    public static function getJoinedPropertyAlias(QueryBuilder $queryBuilder, string $property): ?string
     {
         $joins = $queryBuilder->getDQLPart('join');
 
@@ -133,7 +137,7 @@ class QueryBuilderUtility
      * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
      * @return null|string
      */
-    public static function getRootAlias(QueryBuilder $queryBuilder)
+    public static function getRootAlias(QueryBuilder $queryBuilder): ?string
     {
         $aliases = $queryBuilder->getRootAliases();
 
@@ -152,10 +156,10 @@ class QueryBuilderUtility
      * Sets the WHERE criteria in given query builder
      *
      * @param QueryBuilder $queryBuilder The query builder
-     * @param array        $criteria     (optional) The criteria used in WHERE clause. It may simple array with pairs
+     * @param array        $criteria     (optional) The criteria used in WHERE clause. It may be simple array with pairs
      *                                   key-value or an array of arrays where second element of sub-array is the
      *                                   comparison operator. Example below.
-     * @param null|string  $alias        (optional) Alias used in the query
+     * @param string|null  $alias        (optional) Alias used in the query
      * @return QueryBuilder
      *
      * Example of the $criteria argument:
@@ -171,8 +175,11 @@ class QueryBuilderUtility
      *      'position' => 5,
      * ]
      */
-    public static function setCriteria(QueryBuilder $queryBuilder, array $criteria = [], $alias = null)
-    {
+    public static function setCriteria(
+        QueryBuilder $queryBuilder,
+        array $criteria = [],
+        ?string $alias = null
+    ): QueryBuilder {
         /*
          * No criteria used in WHERE clause?
          * Nothing to do

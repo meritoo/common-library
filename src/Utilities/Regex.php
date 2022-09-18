@@ -25,7 +25,7 @@ class Regex
      *
      * @var array
      */
-    private static $patterns = [
+    private static array $patterns = [
         'email' => '/^'
             .'[\w\-.]{2,}'          # username
             .'@'                    # the "@" character
@@ -89,16 +89,8 @@ class Regex
      * @param string $htmlAttributes The html attributes to verify
      * @return bool
      */
-    public static function areValidHtmlAttributes($htmlAttributes)
+    public static function areValidHtmlAttributes(string $htmlAttributes): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($htmlAttributes)) {
-            return false;
-        }
-
         $pattern = self::getHtmlAttributePattern();
 
         return (bool) preg_match_all($pattern, $htmlAttributes);
@@ -118,8 +110,12 @@ class Regex
      *                                     expression. Otherwise - not (default behaviour).
      * @return array
      */
-    public static function arrayFilter($array, $arrayColumnKey, $filterExpression, $itsRegularExpression = false)
-    {
+    public static function arrayFilter(
+        array $array,
+        string $arrayColumnKey,
+        string $filterExpression,
+        bool $itsRegularExpression = false
+    ): array {
         /*
          * No elements?
          * Nothing to do
@@ -173,7 +169,7 @@ class Regex
      *                                    string is uppercased. Otherwise - not.
      * @return string
      */
-    public static function camelCase2humanReadable($string, $applyUpperCaseFirst = false)
+    public static function camelCase2humanReadable(string $string, bool $applyUpperCaseFirst = false): string
     {
         $parts = self::getCamelCaseParts($string);
 
@@ -202,8 +198,11 @@ class Regex
      * @param bool   $applyLowercase (optional) If is set to true, returned string will be lowercased. Otherwise - not.
      * @return string
      */
-    public static function camelCase2simpleLowercase($string, $separator = '', $applyLowercase = true)
-    {
+    public static function camelCase2simpleLowercase(
+        string $string,
+        string $separator = '',
+        bool $applyLowercase = true
+    ): string {
         $parts = self::getCamelCaseParts($string);
 
         if (!empty($parts)) {
@@ -238,10 +237,10 @@ class Regex
      * @param string $needle   The string to be search for
      * @return bool
      */
-    public static function contains($haystack, $needle)
+    public static function contains(string $haystack, string $needle): bool
     {
         if (1 === strlen($needle) && !self::isLetterOrDigit($needle)) {
-            $needle = '\\'.$needle;
+            $needle = sprintf('%s%s', '\\', $needle);
         }
 
         return (bool) preg_match('|.*'.$needle.'.*|', $haystack);
@@ -253,7 +252,7 @@ class Regex
      * @param string $string String to check
      * @return bool
      */
-    public static function containsEntities($string)
+    public static function containsEntities(string $string): bool
     {
         $pattern = self::getHtmlEntityPattern();
 
@@ -266,16 +265,8 @@ class Regex
      * @param string $value Value that should be transformed to slug
      * @return bool|string
      */
-    public static function createSlug($value)
+    public static function createSlug(string $value)
     {
-        /*
-         * Not a scalar value?
-         * Nothing to do
-         */
-        if (!is_scalar($value)) {
-            return false;
-        }
-
         /*
          * It's an empty string?
          * Nothing to do
@@ -286,6 +277,10 @@ class Regex
 
         $id = 'Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC; [:Punctuation:] Remove; Lower();';
         $transliterator = Transliterator::create($id);
+
+        if ($transliterator === null) {
+            return false;
+        }
 
         $cleanValue = trim($value);
         $result = $transliterator->transliterate($cleanValue);
@@ -300,10 +295,10 @@ class Regex
      * @param string $ending The ending of string, one or more characters
      * @return bool
      */
-    public static function endsWith($string, $ending)
+    public static function endsWith(string $string, string $ending): bool
     {
         if (1 === strlen($ending) && !self::isLetterOrDigit($ending)) {
-            $ending = '\\'.$ending;
+            $ending = sprintf('%s%s', '\\', $ending);
         }
 
         return (bool) preg_match('|'.$ending.'$|', $string);
@@ -315,9 +310,9 @@ class Regex
      * @param string $text      String that may contain a directory's separator at the end
      * @param string $separator (optional) The directory's separator, e.g. "/". If is empty (not provided), system's
      *                          separator is used.
-     * @return string
+     * @return bool
      */
-    public static function endsWithDirectorySeparator($text, $separator = '')
+    public static function endsWithDirectorySeparator(string $text, string $separator = ''): bool
     {
         if (empty($separator)) {
             $separator = DIRECTORY_SEPARATOR;
@@ -335,7 +330,7 @@ class Regex
      *                              Otherwise - values will be checked (default behaviour).
      * @return array
      */
-    public static function getArrayValuesByPattern($pattern, array $array, $itsKeyPattern = false)
+    public static function getArrayValuesByPattern(string $pattern, array $array, bool $itsKeyPattern = false): array
     {
         /*
          * No elements?
@@ -349,7 +344,7 @@ class Regex
             $effect = [];
 
             foreach ($array as $key => $value) {
-                if ((bool) preg_match($pattern, $key)) {
+                if (preg_match($pattern, $key)) {
                     $effect[$key] = $value;
                 }
             }
@@ -365,7 +360,7 @@ class Regex
      *
      * @return string
      */
-    public static function getBundleNamePattern()
+    public static function getBundleNamePattern(): string
     {
         return self::$patterns['bundleName'];
     }
@@ -375,7 +370,7 @@ class Regex
      *
      * @return string
      */
-    public static function getCamelCasePartPattern()
+    public static function getCamelCasePartPattern(): string
     {
         return self::$patterns['camelCasePart'];
     }
@@ -386,7 +381,7 @@ class Regex
      * @param string $string The string / text to retrieve parts
      * @return array
      */
-    public static function getCamelCaseParts($string)
+    public static function getCamelCaseParts(string $string): array
     {
         $pattern = self::getCamelCasePartPattern();
         $matches = [];
@@ -400,7 +395,7 @@ class Regex
      *
      * @return string
      */
-    public static function getEmailPattern()
+    public static function getEmailPattern(): string
     {
         return self::$patterns['email'];
     }
@@ -420,7 +415,7 @@ class Regex
      *
      * @return string
      */
-    public static function getHtmlAttributePattern()
+    public static function getHtmlAttributePattern(): string
     {
         return self::$patterns['htmlAttribute'];
     }
@@ -430,7 +425,7 @@ class Regex
      *
      * @return string
      */
-    public static function getHtmlEntityPattern()
+    public static function getHtmlEntityPattern(): string
     {
         return self::$patterns['htmlEntity'];
     }
@@ -440,7 +435,7 @@ class Regex
      *
      * @return string
      */
-    public static function getIsQuotedPattern()
+    public static function getIsQuotedPattern(): string
     {
         return self::$patterns['isQuoted'];
     }
@@ -450,7 +445,7 @@ class Regex
      *
      * @return string
      */
-    public static function getLetterOrDigitPattern()
+    public static function getLetterOrDigitPattern(): string
     {
         return self::$patterns['letterOrDigit'];
     }
@@ -460,7 +455,7 @@ class Regex
      *
      * @return string
      */
-    public static function getMoneyPattern()
+    public static function getMoneyPattern(): string
     {
         return self::$patterns['money'];
     }
@@ -470,7 +465,7 @@ class Regex
      *
      * @return string
      */
-    public static function getPhoneNumberPattern()
+    public static function getPhoneNumberPattern(): string
     {
         return self::$patterns['phone'];
     }
@@ -481,7 +476,7 @@ class Regex
      * @param string $separator (optional) Separator used to split width and height. Default: " x ".
      * @return string
      */
-    public static function getSizePattern($separator = ' x ')
+    public static function getSizePattern(string $separator = ' x '): string
     {
         $escapeMe = [
             '/',
@@ -510,7 +505,7 @@ class Regex
      *                              Otherwise - not.
      * @return string
      */
-    public static function getUrlPattern($requireProtocol = false)
+    public static function getUrlPattern(bool $requireProtocol = false): string
     {
         $urlProtocol = self::$patterns['urlProtocol'];
         $urlDomain = self::$patterns['urlDomain'];
@@ -534,13 +529,8 @@ class Regex
      * @throws InvalidColorHexValueException
      * @throws IncorrectColorHexLengthException
      */
-    public static function getValidColorHexValue($color, $throwException = true)
+    public static function getValidColorHexValue(string $color, bool $throwException = true)
     {
-        // Not a scalar value?
-        if (!is_scalar($color)) {
-            return false;
-        }
-
         $color = str_replace('#', '', $color);
         $length = strlen($color);
 
@@ -578,7 +568,7 @@ class Regex
      *
      * @return string
      */
-    public static function getWindowsBasedPathPattern()
+    public static function getWindowsBasedPathPattern(): string
     {
         return self::$patterns['windowsBasedPath'];
     }
@@ -589,16 +579,8 @@ class Regex
      * @param string $value Value to verify
      * @return bool
      */
-    public static function isBinaryValue($value)
+    public static function isBinaryValue(string $value): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($value)) {
-            return false;
-        }
-
         $pattern = self::$patterns['binaryValue'];
 
         return (bool) preg_match($pattern, $value);
@@ -624,11 +606,11 @@ class Regex
      * @param string $char Character to check
      * @return bool
      */
-    public static function isLetterOrDigit($char)
+    public static function isLetterOrDigit(string $char): bool
     {
         $pattern = self::getLetterOrDigitPattern();
 
-        return is_scalar($char) && (bool) preg_match($pattern, $char);
+        return (bool) preg_match($pattern, $char);
     }
 
     /**
@@ -637,11 +619,11 @@ class Regex
      * @param mixed $value The value to check
      * @return bool
      */
-    public static function isQuoted($value)
+    public static function isQuoted($value): bool
     {
         $pattern = self::getIsQuotedPattern();
 
-        return is_scalar($value) && (bool) preg_match($pattern, $value);
+        return is_scalar($value) && preg_match($pattern, $value);
     }
 
     /**
@@ -651,9 +633,9 @@ class Regex
      * @param string $parameterName Uri parameter name
      * @return bool
      */
-    public static function isSetUriParameter($uri, $parameterName)
+    public static function isSetUriParameter(string $uri, string $parameterName): bool
     {
-        return (bool) preg_match('|[?&]{1}'.$parameterName.'=|', $uri); // e.g. ?name=phil&type=4 -> '$type='
+        return (bool) preg_match('|[?&]'.$parameterName.'=|', $uri); // e.g. ?name=phil&type=4 -> '$type='
     }
 
     /**
@@ -663,16 +645,8 @@ class Regex
      * @param string $separator (optional) Separator used to split width and height. Default: " x ".
      * @return bool
      */
-    public static function isSizeValue($value, $separator = ' x ')
+    public static function isSizeValue(string $value, string $separator = ' x '): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($value)) {
-            return false;
-        }
-
         $pattern = self::getSizePattern($separator);
 
         return (bool) preg_match($pattern, $value);
@@ -685,7 +659,7 @@ class Regex
      * @param string $path    Main / parent path
      * @return bool
      */
-    public static function isSubPathOf($subPath, $path)
+    public static function isSubPathOf(string $subPath, string $path): bool
     {
         /*
          * Empty path?
@@ -711,16 +685,8 @@ class Regex
      * @param string $bundleName Full name of bundle to verify, e.g. "MyExtraBundle"
      * @return bool
      */
-    public static function isValidBundleName($bundleName)
+    public static function isValidBundleName(string $bundleName): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($bundleName)) {
-            return false;
-        }
-
         $pattern = self::getBundleNamePattern();
 
         return (bool) preg_match($pattern, $bundleName);
@@ -741,16 +707,8 @@ class Regex
      * - ni@g-m.p
      * - n@g-m.pl
      */
-    public static function isValidEmail($email)
+    public static function isValidEmail(string $email): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($email)) {
-            return false;
-        }
-
         $pattern = self::getEmailPattern();
 
         return (bool) preg_match($pattern, $email);
@@ -762,16 +720,8 @@ class Regex
      * @param string $htmlAttribute The html attribute to verify
      * @return bool
      */
-    public static function isValidHtmlAttribute($htmlAttribute)
+    public static function isValidHtmlAttribute(string $htmlAttribute): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($htmlAttribute)) {
-            return false;
-        }
-
         $pattern = self::getHtmlAttributePattern();
 
         return (bool) preg_match($pattern, $htmlAttribute);
@@ -783,7 +733,7 @@ class Regex
      * @param mixed $value Value to verify
      * @return bool
      */
-    public static function isValidMoneyValue($value)
+    public static function isValidMoneyValue($value): bool
     {
         /*
          * Not a scalar value?
@@ -806,16 +756,16 @@ class Regex
      *
      * @see https://pl.wikipedia.org/wiki/NIP#Znaczenie_numeru
      */
-    public static function isValidNip($nip)
+    public static function isValidNip(string $nip): bool
     {
-        $nip = preg_replace('/[\D]/', '', $nip);
+        $nip = preg_replace('/\D/', '', $nip);
 
         $invalidNips = [
             '1234567890',
             '0000000000',
         ];
 
-        if (!preg_match('/^[\d]{10}$/', $nip) || in_array($nip, $invalidNips, true)) {
+        if (!preg_match('/^\d{10}$/', $nip) || in_array($nip, $invalidNips, true)) {
             return false;
         }
 
@@ -848,16 +798,8 @@ class Regex
      * @param string $phoneNumber The phone number to validate / verify
      * @return bool
      */
-    public static function isValidPhoneNumber($phoneNumber)
+    public static function isValidPhoneNumber(string $phoneNumber): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($phoneNumber)) {
-            return false;
-        }
-
         $pattern = self::getPhoneNumberPattern();
 
         return (bool) preg_match($pattern, trim($phoneNumber));
@@ -869,16 +811,8 @@ class Regex
      * @param string $taxIdString Tax ID (NIP) string
      * @return bool
      */
-    public static function isValidTaxId($taxIdString)
+    public static function isValidTaxId(string $taxIdString): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($taxIdString)) {
-            return false;
-        }
-
         /*
          * Empty/Unknown value?
          * Nothing to do
@@ -931,16 +865,8 @@ class Regex
      *                                Otherwise - not.
      * @return bool
      */
-    public static function isValidUrl($url, $requireProtocol = false)
+    public static function isValidUrl(string $url, bool $requireProtocol = false): bool
     {
-        /*
-         * Not a string?
-         * Nothing to do
-         */
-        if (!is_string($url)) {
-            return false;
-        }
-
         $pattern = self::getUrlPattern($requireProtocol);
 
         return (bool) preg_match($pattern, $url);
@@ -952,7 +878,7 @@ class Regex
      * @param string $path The path to verify
      * @return bool
      */
-    public static function isWindowsBasedPath($path)
+    public static function isWindowsBasedPath(string $path): bool
     {
         $pattern = self::getWindowsBasedPathPattern();
 
@@ -969,7 +895,7 @@ class Regex
      *                                   not (default behaviour).
      * @return bool
      */
-    public static function pregMultiMatch($patterns, $subject, $mustAllMatch = false)
+    public static function pregMultiMatch($patterns, string $subject, bool $mustAllMatch = false): bool
     {
         /*
          * No patterns?
@@ -991,10 +917,11 @@ class Regex
 
             if ($mustAllMatch) {
                 $effect = $effect && $matched;
-            } elseif ($matched) {
-                $effect = $matched;
+                continue;
+            }
 
-                break;
+            if ($matched) {
+                return true;
             }
         }
 
@@ -1008,7 +935,7 @@ class Regex
      * @param string $beginning The beginning of string, one or more characters
      * @return bool
      */
-    public static function startsWith($string, $beginning)
+    public static function startsWith(string $string, string $beginning): bool
     {
         if (!empty($string) && !empty($beginning)) {
             if (1 === strlen($beginning) && !self::isLetterOrDigit($beginning)) {
@@ -1031,7 +958,7 @@ class Regex
      *                          separator is used.
      * @return bool
      */
-    public static function startsWithDirectorySeparator($string, $separator = '')
+    public static function startsWithDirectorySeparator(string $string, string $separator = ''): bool
     {
         if (empty($separator)) {
             $separator = DIRECTORY_SEPARATOR;

@@ -23,7 +23,7 @@ trait FormCssSelector
      * @param int    $fieldSetIndex Index/Position of the field-set
      * @return string
      */
-    public static function getFieldSetByIndexSelector($formName, $fieldSetIndex)
+    public static function getFieldSetByIndexSelector(string $formName, int $fieldSetIndex): string
     {
         $formSelector = static::getFormByNameSelector($formName);
 
@@ -40,7 +40,7 @@ trait FormCssSelector
      * @param string $formName Name of form (value of the "name" attribute)
      * @return string
      */
-    public static function getFormByNameSelector($formName)
+    public static function getFormByNameSelector(string $formName): string
     {
         $formName = trim($formName);
 
@@ -58,7 +58,7 @@ trait FormCssSelector
      * @param string $fieldId  ID of field (value of the "id" attribute)
      * @return string
      */
-    public static function getInputByIdSelector($formName, $fieldId)
+    public static function getInputByIdSelector(string $formName, string $fieldId): string
     {
         $formSelector = static::getFormByNameSelector($formName);
         $fieldId = trim($fieldId);
@@ -77,7 +77,7 @@ trait FormCssSelector
      * @param string $fieldName Name of field (value of the "name" attribute)
      * @return string
      */
-    public static function getInputByNameSelector($formName, $fieldName)
+    public static function getInputByNameSelector(string $formName, string $fieldName): string
     {
         $formSelector = static::getFormByNameSelector($formName);
         $fieldName = trim($fieldName);
@@ -96,7 +96,7 @@ trait FormCssSelector
      * @param string $fieldId  ID of field (value of the "id" attribute)
      * @return string
      */
-    public static function getLabelSelector($formName, $fieldId)
+    public static function getLabelSelector(string $formName, string $fieldId): string
     {
         $formSelector = static::getFormByNameSelector($formName);
         $fieldId = trim($fieldId);

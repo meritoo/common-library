@@ -32,28 +32,11 @@ use ReflectionClass;
  */
 class BaseCollectionTest extends BaseTestCase
 {
-    /**
-     * An empty collection
-     *
-     * @var StringCollection
-     */
-    private $emptyCollection;
+    private StringCollection $emptyCollection;
+    private StringCollection $simpleCollection;
+    private array $simpleElements;
 
-    /**
-     * Simple collection
-     *
-     * @var StringCollection
-     */
-    private $simpleCollection;
-
-    /**
-     * Elements of simple collection
-     *
-     * @var array
-     */
-    private $simpleElements;
-
-    public function provideElementGetByIndex()
+    public function provideElementGetByIndex(): ?Generator
     {
         yield [
             'An empty collection and empty index',
@@ -121,12 +104,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides element to add to collection
-     *
-     * @return Generator
-     */
-    public function provideElementToAdd()
+    public function provideElementToAdd(): ?Generator
     {
         yield [
             'This is test 1',
@@ -155,12 +133,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides element with index to add to collection
-     *
-     * @return Generator
-     */
-    public function provideElementToAddWithIndex()
+    public function provideElementToAddWithIndex(): Generator
     {
         yield [
             'This is test 1',
@@ -387,7 +360,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    public function testAddMultiple()
+    public function testAddMultiple(): void
     {
         $elements = [
             'test1',
@@ -407,7 +380,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame('test4', $this->emptyCollection[3]);
     }
 
-    public function testAddMultipleUsingEmptyArray()
+    public function testAddMultipleUsingEmptyArray(): void
     {
         $this->emptyCollection->addMultiple([]);
 
@@ -415,7 +388,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertTrue($this->emptyCollection->isEmpty());
     }
 
-    public function testAddMultipleUsingIndexes()
+    public function testAddMultipleUsingIndexes(): void
     {
         $elements = [
             'test1',
@@ -436,16 +409,15 @@ class BaseCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed               $element       The element to add
-     * @param mixed               $index         Index of element to add
-     * @param int                 $expectedCount Expected count of elements in collection
-     * @param int                 $expectedIndex Expected index of added element in collection
-     * @param CollectionInterface $collection    The collection
-     *
      * @dataProvider provideElementToAddWithIndex
      */
-    public function testAddWithIndex($element, $index, $expectedCount, $expectedIndex, CollectionInterface $collection)
-    {
+    public function testAddWithIndex(
+        $element,
+        $index,
+        $expectedCount,
+        $expectedIndex,
+        CollectionInterface $collection
+    ): void {
         $collection->add($element, $index);
 
         static::assertTrue($collection->has($element));
@@ -454,10 +426,6 @@ class BaseCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed               $element       The element to add
-     * @param int                 $expectedCount Expected count of elements in collection
-     * @param CollectionInterface $collection    The collection
-     *
      * @dataProvider provideElementToAddWithInvalidType
      */
     public function testAddWithInvalidType(
@@ -472,11 +440,6 @@ class BaseCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed               $element       The element to add
-     * @param int                 $expectedCount Expected count of elements in collection
-     * @param int                 $expectedIndex Expected index of added element in collection
-     * @param CollectionInterface $collection    The collection
-     *
      * @dataProvider provideElementToAdd
      */
     public function testAddWithoutIndex(
@@ -484,12 +447,27 @@ class BaseCollectionTest extends BaseTestCase
         int $expectedCount,
         int $expectedIndex,
         CollectionInterface $collection
-    ) {
+    ): void {
         $collection->add($element);
 
         static::assertTrue($collection->has($element));
         static::assertSame($expectedCount, $collection->count());
         static::assertSame($element, $collection[$expectedIndex]);
+    }
+
+    public function testAppend(): void
+    {
+        $this->emptyCollection->append('lorem-ipsum');
+
+        static::assertFalse($this->emptyCollection->isEmpty());
+        static::assertSame(1, $this->emptyCollection->count());
+        static::assertSame('lorem-ipsum', $this->emptyCollection[0]);
+
+        $this->simpleCollection->append('lorem-ipsum');
+
+        static::assertFalse($this->simpleCollection->isEmpty());
+        static::assertSame(8, $this->simpleCollection->count());
+        static::assertSame('lorem-ipsum', $this->simpleCollection[347]);
     }
 
     public function testClear(): void
@@ -506,13 +484,13 @@ class BaseCollectionTest extends BaseTestCase
         self::assertCount(0, $this->emptyCollection);
     }
 
-    public function testCount()
+    public function testCount(): void
     {
         static::assertSame(0, $this->emptyCollection->count());
         static::assertSame(7, $this->simpleCollection->count());
     }
 
-    public function testEmptyCollection()
+    public function testEmptyCollection(): void
     {
         static::assertSame(0, $this->emptyCollection->count());
         static::assertCount(0, $this->emptyCollection);
@@ -528,7 +506,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertNull($this->emptyCollection['abc']);
     }
 
-    public function testExistsVisibilityAndArguments()
+    public function testExistsVisibilityAndArguments(): void
     {
         $reflectionClass = new ReflectionClass(BaseCollection::class);
         $method = $reflectionClass->getMethod('exists');
@@ -538,14 +516,9 @@ class BaseCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param string              $description Description of test
-     * @param CollectionInterface $collection  Collection to search for element with given index
-     * @param mixed               $index       Index / key of the element
-     * @param mixed               $expected    Expected element with given index
-     *
      * @dataProvider provideElementGetByIndex
      */
-    public function testGetByIndex($description, CollectionInterface $collection, $index, $expected)
+    public function testGetByIndex(string $description, CollectionInterface $collection, $index, $expected): void
     {
         static::assertEquals($expected, $collection->getByIndex($index), $description);
     }
@@ -563,24 +536,24 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame($expected, $collection->toArray(), $description);
     }
 
-    public function testGetFirst()
+    public function testGetFirst(): void
     {
         static::assertNull($this->emptyCollection->getFirst());
         static::assertSame('lorem', $this->simpleCollection->getFirst());
     }
 
-    public function testGetIterator()
+    public function testGetIterator(): void
     {
         static::assertInstanceOf(ArrayIterator::class, $this->simpleCollection->getIterator());
     }
 
-    public function testGetLast()
+    public function testGetLast(): void
     {
         static::assertNull($this->emptyCollection->getLast());
         static::assertSame('adipiscing elit', $this->simpleCollection->getLast());
     }
 
-    public function testGetNext()
+    public function testGetNext(): void
     {
         static::assertNull($this->emptyCollection->getNext('abc'));
         static::assertNull($this->simpleCollection->getNext('abc'));
@@ -590,7 +563,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame('sit', $this->simpleCollection->getNext('dolor'));
     }
 
-    public function testGetPrevious()
+    public function testGetPrevious(): void
     {
         static::assertNull($this->emptyCollection->getPrevious('abc'));
         static::assertNull($this->simpleCollection->getPrevious('abc'));
@@ -600,7 +573,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame('dolor', $this->simpleCollection->getPrevious('sit'));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         static::assertFalse($this->emptyCollection->has('abc'));
         static::assertFalse($this->simpleCollection->has('abc'));
@@ -608,13 +581,13 @@ class BaseCollectionTest extends BaseTestCase
         static::assertTrue($this->simpleCollection->has('dolor'));
     }
 
-    public function testIsEmpty()
+    public function testIsEmpty(): void
     {
         static::assertTrue($this->emptyCollection->isEmpty());
         static::assertFalse($this->simpleCollection->isEmpty());
     }
 
-    public function testIsFirst()
+    public function testIsFirst(): void
     {
         static::assertFalse($this->emptyCollection->isFirst('abc'));
         static::assertFalse($this->simpleCollection->isFirst('abc'));
@@ -622,7 +595,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertTrue($this->simpleCollection->isFirst('lorem'));
     }
 
-    public function testIsLast()
+    public function testIsLast(): void
     {
         static::assertFalse($this->emptyCollection->isLast('abc'));
         static::assertFalse($this->simpleCollection->isLast('abc'));
@@ -661,7 +634,7 @@ class BaseCollectionTest extends BaseTestCase
         self::assertSame($expected, $result->toArray());
     }
 
-    public function testNotEmptyCollection()
+    public function testNotEmptyCollection(): void
     {
         static::assertSame(7, $this->simpleCollection->count());
         static::assertCount(7, $this->simpleCollection);
@@ -676,7 +649,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame('dolor', $this->simpleCollection[123]);
     }
 
-    public function testOffsetExists()
+    public function testOffsetExists(): void
     {
         static::assertFalse(isset($this->emptyCollection['abc']));
         static::assertFalse(isset($this->simpleCollection['abc']));
@@ -685,7 +658,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertTrue(isset($this->simpleCollection[345]));
     }
 
-    public function testOffsetGet()
+    public function testOffsetGet(): void
     {
         static::assertNull($this->emptyCollection['abc']);
         static::assertNull($this->simpleCollection['abc']);
@@ -694,7 +667,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame('sit', $this->simpleCollection[345]);
     }
 
-    public function testOffsetSet()
+    public function testOffsetSet(): void
     {
         $this->emptyCollection['test1'] = 1234;
         $this->simpleCollection['test2'] = 5678;
@@ -706,7 +679,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame(5678, $this->simpleCollection['test2']);
     }
 
-    public function testOffsetUnset()
+    public function testOffsetUnset(): void
     {
         unset($this->simpleCollection[0]);
 
@@ -721,22 +694,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame(5, $this->simpleCollection->count());
     }
 
-    public function testAppend(): void
-    {
-        $this->emptyCollection->append('lorem-ipsum');
-
-        static::assertFalse($this->emptyCollection->isEmpty());
-        static::assertSame(1, $this->emptyCollection->count());
-        static::assertSame('lorem-ipsum', $this->emptyCollection[0]);
-
-        $this->simpleCollection->append('lorem-ipsum');
-
-        static::assertFalse($this->simpleCollection->isEmpty());
-        static::assertSame(8, $this->simpleCollection->count());
-        static::assertSame('lorem-ipsum', $this->simpleCollection[347]);
-    }
-
-    public function testPrepend()
+    public function testPrepend(): void
     {
         $this->emptyCollection->prepend('lorem-ipsum');
 
@@ -751,7 +709,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame('lorem-ipsum', $this->simpleCollection[0]);
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         static::assertFalse($this->simpleCollection->isEmpty());
         static::assertSame(7, $this->simpleCollection->count());
@@ -764,7 +722,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertNull($this->simpleCollection[1]);
     }
 
-    public function testRemoveNotExistingElement()
+    public function testRemoveNotExistingElement(): void
     {
         $this->emptyCollection->remove('abc');
 
@@ -777,7 +735,7 @@ class BaseCollectionTest extends BaseTestCase
         static::assertSame(7, $this->simpleCollection->count());
     }
 
-    public function testToArray()
+    public function testToArray(): void
     {
         static::assertSame([], $this->emptyCollection->toArray());
         static::assertSame($this->simpleElements, $this->simpleCollection->toArray());

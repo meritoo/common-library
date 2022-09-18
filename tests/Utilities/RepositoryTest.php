@@ -10,6 +10,7 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
@@ -526,12 +527,6 @@ class RepositoryTest extends BaseTestCase
     public function providePropertyAndDirectionToGetEntityOrderedQueryBuilder()
     {
         yield [
-            null,
-            null,
-            '',
-        ];
-
-        yield [
             '',
             '',
             '',
@@ -674,7 +669,8 @@ class RepositoryTest extends BaseTestCase
             ->setMethods([
                 'createQueryBuilder',
             ])
-            ->getMock();
+            ->getMock()
+        ;
 
         $expectedQueryBuilder = new QueryBuilder($entityManager);
         $expectedQueryBuilder->from('any_table_name', 'qb');
@@ -717,7 +713,8 @@ class RepositoryTest extends BaseTestCase
             ->setMethods([
                 'createQueryBuilder',
             ])
-            ->getMock();
+            ->getMock()
+        ;
 
         $expectedQueryBuilder = new QueryBuilder($entityManager);
         $expectedQueryBuilder->from('any_table_name', 'qb');

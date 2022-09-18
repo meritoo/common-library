@@ -21,7 +21,7 @@ class Bootstrap4CssSelector
      *
      * @return string
      */
-    public static function getFieldErrorContainerSelector()
+    public static function getFieldErrorContainerSelector(): string
     {
         return '.invalid-feedback .form-error-message';
     }
@@ -33,7 +33,7 @@ class Bootstrap4CssSelector
      * @param string $fieldId  ID of field (value of the "id" attribute)
      * @return string
      */
-    public static function getFieldErrorSelector($formName, $fieldId)
+    public static function getFieldErrorSelector(string $formName, string $fieldId): string
     {
         $labelSelector = CssSelector::getLabelSelector($formName, $fieldId);
 
@@ -52,7 +52,7 @@ class Bootstrap4CssSelector
      * @param string $formName Name of form (value of the "name" attribute)
      * @return string
      */
-    public static function getFieldGroupSelector($formName)
+    public static function getFieldGroupSelector(string $formName): string
     {
         $formSelector = CssSelector::getFormByNameSelector($formName);
 
@@ -70,7 +70,7 @@ class Bootstrap4CssSelector
      * @param int    $fieldSetIndex Index/Position of the field-set
      * @return string
      */
-    public static function getRadioButtonErrorSelector($formName, $fieldSetIndex)
+    public static function getRadioButtonErrorSelector(string $formName, int $fieldSetIndex): string
     {
         $fieldSetSelector = CssSelector::getFieldSetByIndexSelector($formName, $fieldSetIndex);
 

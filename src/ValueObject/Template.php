@@ -21,26 +21,9 @@ use Meritoo\Common\Exception\ValueObject\Template\MissingPlaceholdersInValuesExc
  */
 class Template
 {
-    /**
-     * Tag used at beginning and ending of placeholder
-     *
-     * @var string
-     */
     private const PLACEHOLDER_TAG = '%';
+    private string $content;
 
-    /**
-     * Raw string with placeholders (content of the template)
-     *
-     * @var string
-     */
-    private $content;
-
-    /**
-     * Class constructor
-     *
-     * @param string $content Raw string with placeholders (content of the template)
-     * @throws InvalidContentException
-     */
     public function __construct(string $content)
     {
         if (!static::isValid($content)) {

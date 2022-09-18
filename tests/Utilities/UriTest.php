@@ -430,7 +430,7 @@ class UriTest extends BaseTestCase
 
     /**
      * @param mixed $url Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
     public function testReplenishProtocolEmptyUrl($url)
     {

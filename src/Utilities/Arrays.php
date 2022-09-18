@@ -32,7 +32,7 @@ class Arrays
      *                              first level only (default behaviour).
      * @return bool
      */
-    public static function areAllKeysIntegers(array $array, $firstLevelOnly = false)
+    public static function areAllKeysIntegers(array $array, bool $firstLevelOnly = false): bool
     {
         $pattern = '\d+';
 
@@ -96,7 +96,7 @@ class Arrays
      *                          if they are empty (e.g. null, '', 0, array()).
      * @return bool
      */
-    public static function areAllValuesEmpty(array $array, $strictNull = false)
+    public static function areAllValuesEmpty(array $array, bool $strictNull = false): bool
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -129,7 +129,7 @@ class Arrays
      * @param bool  $explicit (optional) If is set to true, all keys should exist in given array. Otherwise - not all.
      * @return bool
      */
-    public static function areKeysInArray(array $keys, array $array, $explicit = true)
+    public static function areKeysInArray(array $keys, array $array, bool $explicit = true): bool
     {
         $result = false;
 
@@ -368,11 +368,11 @@ class Arrays
      * Returns all values of given key.
      * It may be useful when you want to retrieve all values of one column.
      *
-     * @param array  $array The array which should contain values of the key
-     * @param string $key   The key
+     * @param array $array The array which should contain values of the key
+     * @param mixed $key   The key
      * @return null|array
      */
-    public static function getAllValuesOfKey(array $array, $key)
+    public static function getAllValuesOfKey(array $array, $key): ?array
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -507,7 +507,7 @@ class Arrays
      * Returns first key of array
      *
      * @param array $array The array to get the first key of
-     * @return mixed
+     * @return int|string|null
      */
     public static function getFirstKey(array $array)
     {
@@ -526,7 +526,7 @@ class Arrays
      *
      * @param array $array   The array to verify
      * @param mixed $element The element who index / key is needed
-     * @return null|bool|mixed
+     * @return false|int|string|null
      */
     public static function getIndexOf(array $array, $element)
     {
@@ -578,7 +578,7 @@ class Arrays
      * @param string $separator (optional) Separator used to stick the elements. Default: "/".
      * @return null|string
      */
-    public static function getLastElementBreadCrumb(array $array, $separator = '/')
+    public static function getLastElementBreadCrumb(array $array, string $separator = '/'): ?string
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -901,7 +901,7 @@ class Arrays
      * @param string $separator Separator used to stick together elements of given array
      * @return null|string
      */
-    public static function implodeSmart(array $array, $separator)
+    public static function implodeSmart(array $array, string $separator): ?string
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -948,7 +948,12 @@ class Arrays
          * Let's look for the first index / key of given array
          */
         if (null === $startIndex) {
-            $startIndex = self::getFirstKey($array);
+            $firstKey = self::getFirstKey($array);
+
+            if ($firstKey !== null) {
+                /** @var int $firstKey */
+                $startIndex = $firstKey;
+            }
         }
 
         /*
@@ -1080,7 +1085,7 @@ class Arrays
      *      'yet another key',
      * ]
      */
-    public static function issetRecursive(array $array, array $keys)
+    public static function issetRecursive(array $array, array $keys): bool
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -1114,7 +1119,7 @@ class Arrays
      * @param int   $sortFlags (optional) Options of ksort() function
      * @return null|array
      */
-    public static function ksortRecursive(array &$array, $sortFlags = SORT_REGULAR)
+    public static function ksortRecursive(array &$array, int $sortFlags = SORT_REGULAR): ?array
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -1238,6 +1243,8 @@ class Arrays
                 }
             }
 
+            unset($value);
+
             if (!$before) {
                 $array = array_reverse($array, true);
             }
@@ -1329,7 +1336,7 @@ class Arrays
      *      200 => 'ipsum',
      * ];
      */
-    public static function setKeysAsValues(array $array, $ignoreDuplicatedValues = true)
+    public static function setKeysAsValues(array $array, bool $ignoreDuplicatedValues = true): ?array
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -1374,14 +1381,17 @@ class Arrays
      * Position for the 1st element / child of a parent is set to 1 and incremented for the next element and
      * so on. Each parent is treated as separate array, so its elements are treated as positioned at 1st level.
      *
-     * @param array  $array         The array which should has values of position for each element
-     * @param string $keyName       (optional) Name of key which will contain the position value
-     * @param int    $startPosition (optional) Default, start value of the position for main / given array, not the
-     *                              children
+     * @param array    $array         The array which should has values of position for each element
+     * @param string   $keyName       (optional) Name of key which will contain the position value
+     * @param int|null $startPosition (optional) Default, start value of the position for main / given array, not the
+     *                                children
      * @return null|array
      */
-    public static function setPositions(array $array, $keyName = self::POSITION_KEY_NAME, $startPosition = null)
-    {
+    public static function setPositions(
+        array $array,
+        string $keyName = self::POSITION_KEY_NAME,
+        int $startPosition = null
+    ): ?array {
         // No elements? Nothing to do
         if (empty($array)) {
             return null;
@@ -1446,7 +1456,7 @@ class Arrays
      * @param array $keysOrder An array with keys of the 1st argument in proper / required order
      * @return null|array
      */
-    public static function sortByCustomKeysOrder(array $array, array $keysOrder)
+    public static function sortByCustomKeysOrder(array $array, array $keysOrder): ?array
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -1533,7 +1543,7 @@ class Arrays
      * @param array $array The array which values should be trimmed
      * @return array
      */
-    public static function trimRecursive(array $array)
+    public static function trimRecursive(array $array): array
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -1607,7 +1617,7 @@ class Arrays
      * @param string     $separator      (optional) Separator used between values. Default: ",".
      * @return null|string
      */
-    public static function values2string(array $array, $arrayColumnKey = '', $separator = ',')
+    public static function values2string(array $array, $arrayColumnKey = '', string $separator = ','): ?string
     {
         // No elements? Nothing to do
         if (empty($array)) {
@@ -1658,10 +1668,10 @@ class Arrays
      */
     public static function valuesKeys2string(
         array $array,
-        $separator = ',',
-        $valuesKeysSeparator = '=',
-        $valuesWrapper = ''
-    ) {
+        string $separator = ',',
+        string $valuesKeysSeparator = '=',
+        string $valuesWrapper = ''
+    ): ?string {
         // No elements? Nothing to do
         if (empty($array)) {
             return null;

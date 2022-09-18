@@ -8,6 +8,8 @@
 
 namespace Meritoo\Common\Utilities;
 
+use JsonException;
+
 /**
  * Useful Composer-related methods (only static functions)
  *
@@ -29,6 +31,7 @@ class Composer
      * @param string $composerJsonPath Path of composer.json file
      * @param string $nodeName         Name of node who value should be returned
      * @return null|string
+     * @throws JsonException
      */
     public static function getValue(string $composerJsonPath, string $nodeName): ?string
     {
@@ -46,7 +49,7 @@ class Composer
         }
 
         $content = file_get_contents($composerJsonPath);
-        $data = json_decode($content, false);
+        $data = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
 
         /*
          * Unknown data from the composer.json file or there is no node with given name?

@@ -25,11 +25,11 @@ use Meritoo\Test\Common\Utilities\Arrays\SimpleToString;
  */
 class ArraysTest extends BaseTestCase
 {
-    private $simpleArray;
-    private $simpleArrayWithKeys;
-    private $twoDimensionsArray;
-    private $complexArray;
-    private $superComplexArray;
+    private array $simpleArray;
+    private array $simpleArrayWithKeys;
+    private array $twoDimensionsArray;
+    private array $complexArray;
+    private array $superComplexArray;
 
     public function provideArrayToQuoteStrings()
     {

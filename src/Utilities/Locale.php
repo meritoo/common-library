@@ -16,6 +16,8 @@ namespace Meritoo\Common\Utilities;
  */
 class Locale
 {
+    public const UTF8_ENCODING = 'UTF-8';
+
     /**
      * Returns locale for given category
      *
@@ -32,7 +34,7 @@ class Locale
      * - LC_TIME for date and time formatting with strftime()
      * - LC_MESSAGES for system responses (available if PHP was compiled with libintl)
      */
-    public static function getLocale($category)
+    public static function getLocale(int $category): string
     {
         return setlocale($category, '0');
     }
@@ -50,11 +52,12 @@ class Locale
      * - country code: ''
      * - result: fr_FR
      */
-    public static function getLongForm($languageCode, $countryCode = '', $encoding = 'UTF-8')
-    {
-        if (is_string($languageCode)) {
-            $languageCode = trim($languageCode);
-        }
+    public static function getLongForm(
+        string $languageCode,
+        string $countryCode = '',
+        string $encoding = self::UTF8_ENCODING
+    ): string {
+        $languageCode = trim($languageCode);
 
         /*
          * Language code not provided?
@@ -97,13 +100,9 @@ class Locale
      * - LC_TIME for date and time formatting with strftime()
      * - LC_MESSAGES for system responses (available if PHP was compiled with libintl)
      */
-    public static function setLocale($category, $languageCode, $countryCode = '')
+    public static function setLocale(int $category, string $languageCode, string $countryCode = '')
     {
-        $category = (int) $category;
-
-        if (is_string($languageCode)) {
-            $languageCode = trim($languageCode);
-        }
+        $languageCode = trim($languageCode);
 
         $availableCategories = [
             LC_ALL,

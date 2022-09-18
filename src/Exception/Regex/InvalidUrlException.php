@@ -24,7 +24,7 @@ class InvalidUrlException extends Exception
      * @param string $url Invalid url
      * @return InvalidUrlException
      */
-    public static function create($url)
+    public static function create(string $url): InvalidUrlException
     {
         $message = sprintf('Url \'%s\' is invalid. Is there everything ok?', $url);
 

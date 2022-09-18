@@ -75,10 +75,6 @@ class DateTimeCollectionTest extends BaseTestCase
     }
 
     /**
-     * @param string $description
-     * @param array  $elements
-     * @param array  $expectedElements
-     *
      * @dataProvider provideDifferentTypesOfElements
      */
     public function testCreateWithDifferentTypesOfElements(

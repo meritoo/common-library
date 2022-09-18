@@ -24,7 +24,7 @@ class EmptyFileException extends Exception
      * @param string $emptyFilePath Path of the empty file
      * @return EmptyFileException
      */
-    public static function create($emptyFilePath)
+    public static function create(string $emptyFilePath): EmptyFileException
     {
         $template = 'File with path \'%s\' is empty (has no content). Did you provide path of proper file?';
         $message = sprintf($template, $emptyFilePath);
