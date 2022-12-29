@@ -93,7 +93,7 @@ class Uri
     {
         $matches = [];
         $protocolData = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'SERVER_PROTOCOL'); // e.g. HTTP/1.1
-        $matchCount = preg_match('|(.+)\/(.+)|', $protocolData, $matches);
+        $matchCount = preg_match('|(.+)/(.+)|', $protocolData, $matches);
 
         /*
          * $matches[1] - protocol name, e.g. HTTP

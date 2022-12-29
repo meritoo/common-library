@@ -1812,18 +1812,18 @@ class RegexTest extends BaseTestCase
 
     public function testGetMoneyPattern()
     {
-        self::assertEquals('/^[-+]?\d+([\.,]{1}\d*)?$/', Regex::getMoneyPattern());
+        self::assertEquals('/^[-+]?\d+([.,]{1}\d*)?$/', Regex::getMoneyPattern());
     }
 
     public static function testGetUrlPatternWithProtocolRequired()
     {
-        $pattern = '/^([a-z]+:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i';
+        $pattern = '|^([a-z]+://)([\da-z.-]+)\.([a-z.]{2,6})(/)?([\w.\-]*)?(\?)?([\w .\-/=&]*)/?$|i';
         self::assertEquals($pattern, Regex::getUrlPattern(true));
     }
 
     public static function testGetUrlPatternWithoutProtocol()
     {
-        $pattern = '/^([a-z]+:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i';
+        $pattern = '|^([a-z]+://)?([\da-z.-]+)\.([a-z.]{2,6})(/)?([\w.\-]*)?(\?)?([\w .\-/=&]*)/?$|i';
         self::assertEquals($pattern, Regex::getUrlPattern());
     }
 

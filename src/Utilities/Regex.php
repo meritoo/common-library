@@ -26,23 +26,49 @@ class Regex
      * @var array
      */
     private static $patterns = [
-        'email' => '/^[\w\-.]{2,}@[\w\-]+\.[\w]{2,}+$/',
+        'email' => '/^'
+            .'[\w\-.]{2,}'          # username
+            .'@'                    # the "@" character
+            .'[\w\-]+\.[\w]{2,}+'   # domain
+            .'$/',
+
         'phone' => '/^\+?[0-9 ]+$/',
         'camelCasePart' => '/([a-z]|[A-Z]){1}[a-z]*/',
-        'urlProtocol' => '/^([a-z]+:\/\/)',
-        'urlDomain' => '([\da-z\.-]+)\.([a-z\.]{2,6})(\/)?([\w\.\-]*)?(\?)?([\w \.\-\/=&]*)\/?$/i',
+        'urlProtocol' => '|^([a-z]+://)', // e.g. "http://"
+
+        'urlDomain' => '([\da-z.-]+)'   # website name, e.g. "youtube", "quora",
+            .'\.'                       # the "." character
+            .'([a-z.]{2,6})'            # domain name, e.g. "com", "net"
+            .'(/)?'                     # the "/" character after domain, e.g. "...com/"
+            .'([\w.\-]*)?'              # page name, e.g. "...com/about-us"
+            .'(\?)?'                    # optional "?" character, e.g. "...com/about-us?page=2"
+            .'([\w .\-/=&]*)'           # optional parameters after "?" character
+            .'/?'                       # optional "/" character at the end
+            .'$|i',
+
         'letterOrDigit' => '/[a-zA-Z0-9]+/',
         'htmlEntity' => '/&[a-z0-9]+;/',
-        'htmlAttribute' => '/([\w-]+)="([\w -]+)"/',
-        'fileName' => '/[\w.\- +=!@$&()?]+\.\w+$/', // e.g. "this-1_2 3 & my! 4+file.jpg"
+
+        'htmlAttribute' => '/'
+            .'([\w-]+)'     # name
+            .'='            # the "=" character
+            .'"([\w -]+)"'  # value
+            .'/',
+
+        'fileName' => '/'
+            .'[\w.\- +=!@$&()?]+'   # name
+            .'\.'                   # the "." character
+            .'\w+'                  # extension
+            .'$/', // e.g. "this-1_2 3 & my! 4+file.jpg"
+
         'isQuoted' => '/^[\'"]{1}.+[\'"]{1}$/',
         'windowsBasedPath' => '/^[A-Z]{1}:\\\.*$/',
-        'money' => '/^[-+]?\d+([\.,]{1}\d*)?$/',
-        'color' => '/^[a-f0-9]{6}$/i',
+        'money' => '/^[-+]?\d+([.,]{1}\d*)?$/',
+        'color' => '/^[[:xdigit:]]{6}$/', // "[:xdigit:]" is equivalent to "[a-fA-F0-9]"
         'bundleName' => '/^(([A-Z]{1}[a-z0-9]+)((?2))*)(Bundle)$/',
         'binaryValue' => '/[^\x20-\x7E\t\r\n]/',
-        'beginningSlash' => '|^\/|',
-        'endingSlash' => '|\/$|',
+        'beginningSlash' => '|^/|',
+        'endingSlash' => '|/$|',
 
         /*
          * Matches:
@@ -669,15 +695,12 @@ class Regex
             return false;
         }
 
-        // I have to escape all slashes (directory separators): "/" -> "\/"
-        $prepared = preg_quote($path, '/');
-
         // Slash at the ending is optional
         if (self::endsWith($path, '/')) {
-            $prepared .= '?';
+            $path .= '?';
         }
 
-        $pattern = sprintf('/^%s.*/', $prepared);
+        $pattern = sprintf('|^%s.*|', $path);
 
         return (bool) preg_match($pattern, $subPath);
     }
