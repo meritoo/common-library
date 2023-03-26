@@ -1,22 +1,26 @@
 name: Verify stability
 run-name: ${{ github.actor }} is verifying stability
-on:
-    push:
-        branches: [ "master", "develop" ]
-    pull_request:
-        branches: [ "master", "develop" ]
+on: [ push ]
+#on:
+#    push:
+#        branches: [ master, develop ]
+#    pull_request:
+#        branches: [ master, develop ]
 permissions:
     contents: read
 jobs:
     tests:
         runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php-versions: [ '8.0', '8.1', '8.2' ]
         steps:
             -   name: Hello
                 run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 7.4
+                    php-version: ${{ matrix.php-versions }}
                     extensions: dom, fileinfo, intl-72.1, json, pcre, simplexml
             -   name: Install locales
                 run: |
