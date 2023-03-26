@@ -16,6 +16,9 @@ namespace Meritoo\Common\Utilities;
  */
 class Uri
 {
+    private const PROTOCOL_NAME_AND_VERSION_PATTERN = '|(.+)/(.+)|';
+    private const HTTP_PROTOCOL = 'http';
+
     /**
      * Adds protocol to given url, if the url does not contain given protocol.
      * Returns the new url.
@@ -24,11 +27,11 @@ class Uri
      * @param string $protocol (optional) Protocol string
      * @return string
      */
-    public static function addProtocolToUrl($url, $protocol = 'http')
+    public static function addProtocolToUrl(string $url, string $protocol = self::HTTP_PROTOCOL): string
     {
         $pattern = sprintf('/^%s.*/', $protocol);
 
-        if ((bool) preg_match($pattern, $url)) {
+        if (preg_match($pattern, $url)) {
             return $url;
         }
 
@@ -61,7 +64,7 @@ class Uri
      * @param bool $withoutHost (optional) If is set to true, means that host / server name is omitted
      * @return string
      */
-    public static function getFullUri($withoutHost = false)
+    public static function getFullUri(bool $withoutHost = false): string
     {
         $requestedUrl = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'REQUEST_URI');
 
@@ -89,11 +92,11 @@ class Uri
      *
      * @return string
      */
-    public static function getProtocolName()
+    public static function getProtocolName(): string
     {
         $matches = [];
         $protocolData = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'SERVER_PROTOCOL'); // e.g. HTTP/1.1
-        $matchCount = preg_match('|(.+)\/(.+)|', $protocolData, $matches);
+        $matchCount = preg_match(self::PROTOCOL_NAME_AND_VERSION_PATTERN, $protocolData, $matches);
 
         /*
          * $matches[1] - protocol name, e.g. HTTP
@@ -113,7 +116,7 @@ class Uri
      *
      * @return string
      */
-    public static function getRefererUri()
+    public static function getRefererUri(): string
     {
         return Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_REFERER');
     }
@@ -126,7 +129,7 @@ class Uri
      * @param string $password (optional) User password used to log in
      * @return string
      */
-    public static function getSecuredUrl($url, $user = '', $password = '')
+    public static function getSecuredUrl(string $url, string $user = '', string $password = ''): string
     {
         /*
          * Url is not provided?
@@ -158,7 +161,7 @@ class Uri
      * @param bool $withProtocol (optional) If is set to true, protocol name is included. Otherwise isn't.
      * @return string
      */
-    public static function getServerNameOrIp($withProtocol = false)
+    public static function getServerNameOrIp(bool $withProtocol = false): string
     {
         $host = Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_HOST');
 
@@ -186,7 +189,7 @@ class Uri
      *
      * @return string
      */
-    public static function getUserAddressIp()
+    public static function getUserAddressIp(): string
     {
         return Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'REMOTE_ADDR');
     }
@@ -196,7 +199,7 @@ class Uri
      *
      * @return string
      */
-    public static function getUserOperatingSystemName()
+    public static function getUserOperatingSystemName(): string
     {
         $info = self::getUserWebBrowserInfo();
 
@@ -207,8 +210,7 @@ class Uri
         ];
 
         foreach ($knownSystems as $pattern => $systemName) {
-            $matches = [];
-            $matchCount = preg_match(sprintf('|%s|', $pattern), $info, $matches);
+            $matchCount = preg_match(sprintf('|%s|', $pattern), $info);
 
             if ($matchCount > 0) {
                 return $systemName;
@@ -239,7 +241,7 @@ class Uri
      * 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/600.2.5 (KHTML, like Gecko) Version/8.0.2
      * Safari/600.2.5'
      */
-    public static function getUserWebBrowserInfo()
+    public static function getUserWebBrowserInfo(): string
     {
         return Miscellaneous::getSafelyGlobalVariable(INPUT_SERVER, 'HTTP_USER_AGENT');
     }
@@ -251,7 +253,7 @@ class Uri
      *                          name only.
      * @return string
      */
-    public static function getUserWebBrowserName($withVersion = false)
+    public static function getUserWebBrowserName(bool $withVersion = false): string
     {
         $info = self::getUserWebBrowserInfo();
 
@@ -286,7 +288,7 @@ class Uri
      * @param string $url The url to check
      * @return bool
      */
-    public static function isExternalUrl($url)
+    public static function isExternalUrl(string $url): bool
     {
         /*
          * Unknown url or it's just slash?
@@ -322,7 +324,7 @@ class Uri
      *
      * @return bool
      */
-    public static function isServerLocalhost()
+    public static function isServerLocalhost(): bool
     {
         $serverNameOrIp = strtolower(self::getServerNameOrIp());
 
@@ -341,12 +343,10 @@ class Uri
      *                         is used.
      * @return string
      */
-    public static function replenishProtocol($url, $protocol = '')
+    public static function replenishProtocol(string $url, string $protocol = ''): string
     {
         // Let's trim the url
-        if (is_string($url)) {
-            $url = trim($url);
-        }
+        $url = trim($url);
 
         /*
          * Url is not provided?

@@ -41,9 +41,10 @@ class GeneratorUtilityTest extends BaseTestCase
         $elements = [
             [''],
             ['   '],
-            [null],
+            ['0'],
             [0],
             [false],
+            [null],
             [[]],
         ];
 

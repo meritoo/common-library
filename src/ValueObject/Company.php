@@ -18,47 +18,18 @@ use Meritoo\Common\Utilities\Arrays;
  */
 class Company
 {
-    /**
-     * Name of company
-     *
-     * @var string
-     */
-    protected $name;
+    protected string $name;
+    protected Address $address;
+    protected ?BankAccount $bankAccount;
 
-    /**
-     * Address of company
-     *
-     * @var Address
-     */
-    protected $address;
-
-    /**
-     * Bank account of company
-     *
-     * @var BankAccount
-     */
-    protected $bankAccount;
-
-    /**
-     * Class constructor
-     *
-     * @param string           $name        Name of company
-     * @param Address          $address     Address of company
-     * @param null|BankAccount $bankAccount (optional) Bank account of company
-     */
-    public function __construct($name, Address $address, BankAccount $bankAccount = null)
+    public function __construct($name, Address $address, ?BankAccount $bankAccount = null)
     {
         $this->name = $name;
         $this->address = $address;
         $this->bankAccount = $bankAccount;
     }
 
-    /**
-     * Returns representation of object as string
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $values = [
             $this->name,
@@ -69,32 +40,17 @@ class Company
         return Arrays::getNonEmptyValuesAsString($values);
     }
 
-    /**
-     * Returns address of company
-     *
-     * @return Address
-     */
-    public function getAddress()
+    public function getAddress(): Address
     {
         return $this->address;
     }
 
-    /**
-     * Returns bank account of company
-     *
-     * @return null|BankAccount
-     */
-    public function getBankAccount()
+    public function getBankAccount(): ?BankAccount
     {
         return $this->bankAccount;
     }
 
-    /**
-     * Returns name of company
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -24,7 +24,7 @@ class NotExistingFileException extends Exception
      * @param string $notExistingFilePath Path of not existing (or not readable) file
      * @return NotExistingFileException
      */
-    public static function create($notExistingFilePath)
+    public static function create(string $notExistingFilePath): NotExistingFileException
     {
         $template = 'File with path \'%s\' does not exist (or is not readable). Did you provide path of proper file?';
         $message = sprintf($template, $notExistingFilePath);

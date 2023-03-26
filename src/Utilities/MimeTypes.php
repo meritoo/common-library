@@ -9,7 +9,6 @@
 namespace Meritoo\Common\Utilities;
 
 use finfo;
-use RuntimeException;
 
 /**
  * Useful methods for mime types of files
@@ -19,12 +18,9 @@ use RuntimeException;
  */
 class MimeTypes
 {
-    /**
-     * Mime types data
-     *
-     * @var array
-     */
-    private static $mimeTypes = [
+    private const IMAGE_MIME_TYPE_PATTERN = '|^image/.+$|';
+
+    private static array $mimeTypes = [
         '7z' => 'application/x-7z-compressed',
         'ez' => 'application/andrew-inset',
         'atom' => 'application/atom+xml',
@@ -688,9 +684,9 @@ class MimeTypes
      * @param string $mimeType The mime type, e.g. "video/mpeg"
      * @return array|string
      */
-    public static function getExtension($mimeType)
+    public static function getExtension(string $mimeType)
     {
-        if (is_string($mimeType) && in_array($mimeType, self::$mimeTypes, true)) {
+        if (in_array($mimeType, self::$mimeTypes, true)) {
             $data = Arrays::setKeysAsValues(self::$mimeTypes, false);
 
             return $data[$mimeType];
@@ -707,7 +703,7 @@ class MimeTypes
      *                           case.
      * @return array
      */
-    public static function getExtensions(array $mimesTypes, $asUpperCase = false)
+    public static function getExtensions(array $mimesTypes, bool $asUpperCase = false): array
     {
         if (empty($mimesTypes)) {
             return [];
@@ -728,7 +724,7 @@ class MimeTypes
 
             if ($asUpperCase) {
                 if (is_array($extension)) {
-                    array_walk($extension, function (&$value) {
+                    array_walk($extension, static function (&$value) {
                         $value = strtoupper($value);
                     });
                 } else {
@@ -746,38 +742,19 @@ class MimeTypes
      * Returns mime type of given file
      *
      * @param string $filePath Path of the file to check
-     * @return string
-     * @throws RuntimeException
+     * @return string|false
      */
-    public static function getMimeType($filePath)
+    public static function getMimeType(string $filePath)
     {
         /*
-         * The file does not exist?
+         * File is not readable?
          * Nothing to do
          */
-        if (!is_string($filePath) || !is_readable($filePath)) {
+        if (!is_readable($filePath)) {
             return '';
         }
 
-        // 1st possibility: the finfo class
-        if (class_exists('finfo')) {
-            $finfo = new finfo();
-
-            return $finfo->file($filePath, FILEINFO_MIME_TYPE);
-        }
-
-        // 2nd possibility: the mime_content_type function
-        if (function_exists('mime_content_type')) {
-            return mime_content_type($filePath);
-        }
-
-        // Oops, there is no possibility to read the mime type
-        $template = 'Neither \'finfo\' class nor \'mime_content_type\' function exists. There is no way to read the'
-            .' mime type of file \'%s\'.';
-
-        $message = sprintf($template, $filePath);
-
-        throw new RuntimeException($message);
+        return (new finfo())->file($filePath, FILEINFO_MIME_TYPE);
     }
 
     /**
@@ -786,10 +763,10 @@ class MimeTypes
      * @param string $mimeType The mime type of file
      * @return bool
      */
-    public static function isImage($mimeType)
+    public static function isImage(string $mimeType): bool
     {
         if (in_array($mimeType, self::$mimeTypes, true)) {
-            return (bool) preg_match('|^image/.+$|', $mimeType);
+            return (bool) preg_match(self::IMAGE_MIME_TYPE_PATTERN, $mimeType);
         }
 
         return false;
@@ -801,7 +778,7 @@ class MimeTypes
      * @param string $path Path of the file to check
      * @return bool
      */
-    public static function isImagePath($path)
+    public static function isImagePath(string $path): bool
     {
         $mimeType = self::getMimeType($path);
 

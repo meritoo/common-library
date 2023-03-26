@@ -34,7 +34,7 @@ trait BaseTestCaseTrait
      *
      * @var string
      */
-    private static $testsDataDirPath = 'data/tests';
+    private static string $testsDataDirPath = 'data/tests';
 
     /**
      * Provides boolean value
@@ -89,7 +89,7 @@ trait BaseTestCaseTrait
     {
         yield [''];
         yield ['   '];
-        yield [null];
+        yield ['0'];
         yield [0];
         yield [false];
     }
@@ -103,9 +103,10 @@ trait BaseTestCaseTrait
     {
         yield [''];
         yield ['   '];
-        yield [null];
+        yield ['0'];
         yield [0];
         yield [false];
+        yield [null];
         yield [[]];
     }
 

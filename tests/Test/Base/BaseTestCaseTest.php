@@ -25,6 +25,8 @@ use Meritoo\Common\Utilities\GeneratorUtility;
  */
 class BaseTestCaseTest extends BaseTestCase
 {
+    private SimpleTestCase $instance;
+
     /**
      * Provides name of file and path of directory containing the file
      *
@@ -66,7 +68,7 @@ class BaseTestCaseTest extends BaseTestCase
      */
     public function testGetFilePathForTesting($fileName, $directoryPath)
     {
-        $path = (new SimpleTestCase())->getFilePathForTesting($fileName, $directoryPath);
+        $path = $this->instance->getFilePathForTesting($fileName, $directoryPath);
 
         if (!empty($directoryPath)) {
             $directoryPath .= '/';
@@ -83,7 +85,7 @@ class BaseTestCaseTest extends BaseTestCase
             [true],
         ];
 
-        $generator = (new SimpleTestCase())->provideBooleanValue();
+        $generator = $this->instance->provideBooleanValue();
         self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
     }
 
@@ -98,7 +100,7 @@ class BaseTestCaseTest extends BaseTestCase
             [new DateTime('tomorrow')],
         ];
 
-        $generator = (new SimpleTestCase())->provideDateTimeInstance();
+        $generator = $this->instance->provideDateTimeInstance();
         $generatedElements = GeneratorUtility::getGeneratorElements($generator);
 
         /** @var DateTime $instance1 */
@@ -136,7 +138,7 @@ class BaseTestCaseTest extends BaseTestCase
             ['Y-m-d 10:00'],
         ];
 
-        $generator = (new SimpleTestCase())->provideDateTimeRelativeFormat();
+        $generator = $this->instance->provideDateTimeRelativeFormat();
         self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
     }
 
@@ -145,13 +147,14 @@ class BaseTestCaseTest extends BaseTestCase
         $elements = [
             [''],
             ['   '],
-            [null],
+            ['0'],
             [0],
             [false],
+            [null],
             [[]],
         ];
 
-        $generator = (new SimpleTestCase())->provideEmptyValue();
+        $generator = $this->instance->provideEmptyValue();
         self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
     }
 
@@ -163,8 +166,14 @@ class BaseTestCaseTest extends BaseTestCase
             ['surprise/me/one/more/time.txt'],
         ];
 
-        $generator = (new SimpleTestCase())->provideNotExistingFilePath();
+        $generator = $this->instance->provideNotExistingFilePath();
         self::assertEquals($elements, GeneratorUtility::getGeneratorElements($generator));
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->instance = new SimpleTestCase();
     }
 }
 

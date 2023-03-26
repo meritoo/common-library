@@ -24,6 +24,9 @@ use Meritoo\Common\ValueObject\Human;
  */
 class HumanTest extends BaseTestCase
 {
+    private Human $emptyHuman;
+    private Human $human;
+
     public function provideHuman()
     {
         yield [
@@ -63,47 +66,33 @@ class HumanTest extends BaseTestCase
 
     public function testGetBirthDate()
     {
-        $empty = new Human('', '');
-        static::assertNull($empty->getBirthDate());
-
-        $human = new Human('John', 'Scott', '', new DateTime('2001-01-01'));
-        static::assertEquals(new DateTime('2001-01-01'), $human->getBirthDate());
+        static::assertNull($this->emptyHuman->getBirthDate());
+        static::assertEquals(new DateTime('2001-01-01'), $this->human->getBirthDate());
     }
 
     public function testGetEmail()
     {
-        $empty = new Human('', '');
-        static::assertNull($empty->getEmail());
-
-        $human = new Human('John', 'Scott', 'john@scott.com');
-        static::assertSame('john@scott.com', $human->getEmail());
+        static::assertNull($this->emptyHuman->getEmail());
+        static::assertSame('john@scott.com', $this->human->getEmail());
     }
 
     public function testGetFirstName()
     {
-        $empty = new Human('', '');
-        static::assertSame('', $empty->getFirstName());
+        static::assertSame('', $this->emptyHuman->getFirstName());
 
-        $human = new Human('John', 'Scott');
-        static::assertSame('John', $human->getFirstName());
+        static::assertSame('John', $this->human->getFirstName());
     }
 
     public function testGetFullName()
     {
-        $empty = new Human('', '');
-        static::assertSame('', $empty->getFullName());
-
-        $human = new Human('John', 'Scott', '', new DateTime('2001-01-01'));
-        static::assertSame('John Scott', $human->getFullName());
+        static::assertSame('', $this->emptyHuman->getFullName());
+        static::assertSame('John Scott', $this->human->getFullName());
     }
 
     public function testGetLastName()
     {
-        $empty = new Human('', '');
-        static::assertSame('', $empty->getLastName());
-
-        $human = new Human('John', 'Scott');
-        static::assertSame('Scott', $human->getLastName());
+        static::assertSame('', $this->emptyHuman->getLastName());
+        static::assertSame('Scott', $this->human->getLastName());
     }
 
     /**
@@ -116,5 +105,13 @@ class HumanTest extends BaseTestCase
     public function testToString($description, Human $human, $expected)
     {
         static::assertSame($expected, (string) $human, $description);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->emptyHuman = new Human('', '');
+        $this->human = new Human('John', 'Scott', 'john@scott.com', new DateTime('2001-01-01'));
     }
 }

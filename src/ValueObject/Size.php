@@ -23,48 +23,13 @@ use Meritoo\Common\Utilities\Regex;
  */
 class Size
 {
-    /**
-     * The width
-     *
-     * @var int
-     */
-    protected $width;
+    protected int $width;
+    protected int $height;
+    protected string $unit;
+    protected string $separator = ' x ';
 
-    /**
-     * The height
-     *
-     * @var int
-     */
-    protected $height;
-
-    /**
-     * Unit used when width or height should be returned with unit
-     *
-     * @var string
-     */
-    protected $unit;
-
-    /**
-     * Separator used when converting to string
-     *
-     * @var string
-     */
-    protected $separator = ' x ';
-
-    /**
-     * Class constructor
-     *
-     * @param int    $width  (optional) The width
-     * @param int    $height (optional) The height
-     * @param string $unit   (optional) Unit used when width or height should be returned with unit. Default: "px".
-     *
-     * @throws InvalidSizeDimensionsException
-     */
-    private function __construct($width = null, $height = null, $unit = 'px')
+    private function __construct(int $width = 0, int $height = 0, string $unit = 'px')
     {
-        $width = (int) $width;
-        $height = (int) $height;
-
         if ($width < 0 || $height < 0) {
             throw new InvalidSizeDimensionsException($width, $height);
         }
@@ -77,11 +42,6 @@ class Size
         $this->unit = $unit;
     }
 
-    /**
-     * Returns string representation of instance of this class in human readable format, e.g. '200 x 100'
-     *
-     * @return string
-     */
     public function __toString()
     {
         return $this->toString();
@@ -95,13 +55,15 @@ class Size
      *
      * @param array  $array The size represented as array
      * @param string $unit  (optional) Unit used when width or height should be returned with unit. Default: "px".
+     *
      * @return null|Size
+     * @throws InvalidSizeDimensionsException
      */
-    public static function fromArray(array $array, $unit = 'px')
+    public static function fromArray(array $array, string $unit = 'px'): ?Size
     {
         // Requirements for given array:
         // - indexes "0" and "1"
-        // - should contains exactly 2 elements
+        // - should contain exactly 2 elements
         if (
             array_key_exists(0, $array)
             && array_key_exists(1, $array)
@@ -109,7 +71,7 @@ class Size
         ) {
             [$width, $height] = $array;
 
-            return new self($width, $height, $unit);
+            return new self((int) $width, (int) $height, $unit);
         }
 
         return null;
@@ -121,34 +83,26 @@ class Size
      * @param string $size      The size represented as string (width and height separated by given separator)
      * @param string $unit      (optional) Unit used when width or height should be returned with unit. Default: "px".
      * @param string $separator (optional) Separator used to split width and height. Default: " x ".
+     *
      * @return null|Size
+     * @throws InvalidSizeDimensionsException
      */
-    public static function fromString($size, $unit = 'px', $separator = ' x ')
+    public static function fromString(string $size, string $unit = 'px', string $separator = ' x '): ?Size
     {
-        if (is_string($size)) {
-            $matches = [];
-            $pattern = Regex::getSizePattern($separator);
+        $matches = [];
+        $pattern = Regex::getSizePattern($separator);
 
-            if ((bool) preg_match($pattern, $size, $matches)) {
-                $width = (int) $matches[1];
-                $height = (int) $matches[2];
-                $sizeObject = new self($width, $height, $unit);
+        if (preg_match($pattern, $size, $matches)) {
+            $width = (int) $matches[1];
+            $height = (int) $matches[2];
 
-                return $sizeObject->setSeparator($separator);
-            }
+            return (new self($width, $height, $unit))->setSeparator($separator);
         }
 
         return null;
     }
 
-    /**
-     * Returns the height
-     *
-     * @param bool $withUnit (optional) If is set to true, height is returned with unit ("px"). Otherwise - without
-     *                       (default behaviour).
-     * @return int|string
-     */
-    public function getHeight($withUnit = false)
+    public function getHeight(bool $withUnit = false)
     {
         if ($withUnit) {
             return sprintf('%d %s', $this->height, $this->unit);
@@ -157,27 +111,14 @@ class Size
         return $this->height;
     }
 
-    /**
-     * Sets the height
-     *
-     * @param int $height The height
-     * @return Size
-     */
-    public function setHeight($height)
+    public function setHeight(int $height): Size
     {
-        $this->height = (int) $height;
+        $this->height = $height;
 
         return $this;
     }
 
-    /**
-     * Returns the width
-     *
-     * @param bool $withUnit (optional) If is set to true, width is returned with unit ("px"). Otherwise - without
-     *                       (default behaviour).
-     * @return int|string
-     */
-    public function getWidth($withUnit = false)
+    public function getWidth(bool $withUnit = false)
     {
         if ($withUnit) {
             return sprintf('%d %s', $this->width, $this->unit);
@@ -186,41 +127,21 @@ class Size
         return $this->width;
     }
 
-    /**
-     * Sets the width
-     *
-     * @param int|string $width The width
-     * @return Size
-     */
-    public function setWidth($width)
+    public function setWidth(int $width): Size
     {
-        $this->width = (int) $width;
+        $this->width = $width;
 
         return $this;
     }
 
-    /**
-     * Sets separator used when converting to string
-     *
-     * @param string $separator The separator
-     * @return Size
-     */
-    public function setSeparator($separator)
+    public function setSeparator(string $separator): Size
     {
         $this->separator = $separator;
 
         return $this;
     }
 
-    /**
-     * Returns instance of this class as an array.
-     * Values of the array are width and height, eg. [800, 600] or ['800px', '600px'].
-     *
-     * @param bool $withUnits (optional) If is set to true, width and height are returned with unit ("px"). Otherwise
-     *                        - without (default behaviour).
-     * @return array
-     */
-    public function toArray($withUnits = false)
+    public function toArray(bool $withUnits = false): array
     {
         return [
             $this->getWidth($withUnits),
@@ -228,14 +149,7 @@ class Size
         ];
     }
 
-    /**
-     * Returns string representation of instance of this class, e.g. '200 x 100' or '200x100'
-     *
-     * @param bool $withUnit (optional) If is set to true, width and height are returned with unit ("px"). Otherwise
-     *                       - without (default behaviour).
-     * @return string
-     */
-    public function toString($withUnit = false)
+    public function toString(bool $withUnit = false): string
     {
         $width = $this->getWidth($withUnit);
         $height = $this->getHeight($withUnit);

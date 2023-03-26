@@ -787,28 +787,8 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeToSetHeight()
+    public function provideSizeToSetHeight(): Generator
     {
-        yield [
-            'Null as height',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            null,
-            0,
-        ];
-
-        yield [
-            'An empty string',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            '',
-            0,
-        ];
-
         yield [
             'Negative value',
             Size::fromArray([
@@ -816,16 +796,6 @@ class SizeTest extends BaseTestCase
                 100,
             ]),
             -1,
-            -1,
-        ];
-
-        yield [
-            'Negative value as string',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            '-1',
             -1,
         ];
 
@@ -848,40 +818,10 @@ class SizeTest extends BaseTestCase
             300,
             300,
         ];
-
-        yield [
-            'Positive value as string',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            '300',
-            300,
-        ];
     }
 
-    public function provideSizeToSetWidth()
+    public function provideSizeToSetWidth(): Generator
     {
-        yield [
-            'Null as width',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            null,
-            0,
-        ];
-
-        yield [
-            'An empty string',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            '',
-            0,
-        ];
-
         yield [
             'Negative value',
             Size::fromArray([
@@ -889,16 +829,6 @@ class SizeTest extends BaseTestCase
                 100,
             ]),
             -1,
-            -1,
-        ];
-
-        yield [
-            'Negative value as string',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            '-1',
             -1,
         ];
 
@@ -919,16 +849,6 @@ class SizeTest extends BaseTestCase
                 100,
             ]),
             300,
-            300,
-        ];
-
-        yield [
-            'Positive value as string',
-            Size::fromArray([
-                200,
-                100,
-            ]),
-            '300',
             300,
         ];
     }
@@ -981,9 +901,9 @@ class SizeTest extends BaseTestCase
 
     /**
      * @param mixed $emptySize Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideEmptyScalarValue
      */
-    public function testFromStringUsingEmptyValue($emptySize)
+    public function testFromStringUsingEmptyValue($emptySize): void
     {
         static::assertNull(Size::fromString($emptySize));
     }
@@ -1022,11 +942,9 @@ class SizeTest extends BaseTestCase
      *
      * @dataProvider provideSizeToSetHeight
      */
-    public function testSetHeight($description, Size $size, $height, $expected)
+    public function testSetHeight(string $description, Size $size, int $height, int $expected): void
     {
-        $result = $size->setHeight($height);
-
-        static::assertInstanceOf(Size::class, $result, $description);
+        $size->setHeight($height);
         static::assertSame($expected, $size->getHeight(), $description);
     }
 
@@ -1049,11 +967,9 @@ class SizeTest extends BaseTestCase
      *
      * @dataProvider provideSizeToSetWidth
      */
-    public function testSetWidth($description, Size $size, $width, $expected)
+    public function testSetWidth(string $description, Size $size, int $width, int $expected): void
     {
-        $result = $size->setWidth($width);
-
-        static::assertInstanceOf(Size::class, $result, $description);
+        $size->setWidth($width);
         static::assertSame($expected, $size->getWidth(), $description);
     }
 
@@ -1080,7 +996,7 @@ class SizeTest extends BaseTestCase
      *
      * @dataProvider provideSizeForToString
      */
-    public function testToString($description, Size $size, $withUnit, $expected)
+    public function testToString(string $description, Size $size, bool $withUnit, string $expected): void
     {
         static::assertSame($expected, $size->toString($withUnit), $description);
     }

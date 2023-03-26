@@ -18,45 +18,10 @@ use Meritoo\Common\Type\Base\BaseType;
  */
 class DatePartType extends BaseType
 {
-    /**
-     * The "day" date part
-     *
-     * @var string
-     */
     public const DAY = 'day';
-
-    /**
-     * The "hour" date part
-     *
-     * @var string
-     */
     public const HOUR = 'hour';
-
-    /**
-     * The "minute" date part
-     *
-     * @var string
-     */
     public const MINUTE = 'minute';
-
-    /**
-     * The "month" date part
-     *
-     * @var string
-     */
     public const MONTH = 'month';
-
-    /**
-     * The "second" date part
-     *
-     * @var string
-     */
     public const SECOND = 'second';
-
-    /**
-     * The "year" date part
-     *
-     * @var string
-     */
     public const YEAR = 'year';
 }

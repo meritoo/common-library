@@ -24,7 +24,7 @@ class InvalidColorHexValueException extends Exception
      * @param string $color Invalid hexadecimal value of color
      * @return InvalidColorHexValueException
      */
-    public static function create($color)
+    public static function create(string $color): InvalidColorHexValueException
     {
         $message = sprintf('Hexadecimal value of color \'%s\' is invalid. Is there everything ok?', $color);
 

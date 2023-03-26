@@ -20,6 +20,11 @@ class SimpleTestCase
 {
     use BaseTestCaseTrait;
 
+    public function changeTestsDataDirPath(): void
+    {
+        self::setTestsDataDirPath('just testing');
+    }
+
     private function thePrivateMethod(): void
     {
     }

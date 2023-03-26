@@ -16,6 +16,7 @@ use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
 use ReflectionMethod;
 use stdClass;
@@ -32,6 +33,8 @@ use stdClass;
 class BaseTestCaseTraitTest extends BaseTestCase
 {
     use BaseTestCaseTrait;
+
+    private SimpleTestCase $instance;
 
     public function testAssertConstructorVisibilityAndArgumentsUsingClassWithoutConstructor(): void
     {
@@ -64,10 +67,17 @@ class BaseTestCaseTraitTest extends BaseTestCase
         static::assertMethodVisibility($method, OopVisibilityType::IS_PRIVATE);
     }
 
+    public function testSetTestsDataDirPath(): void
+    {
+        $this->instance->changeTestsDataDirPath();
+
+        $value = Reflection::getPropertyValue($this->instance, 'testsDataDirPath');
+        self::assertSame('just testing', $value);
+    }
+
     public function testProvideBooleanValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideBooleanValue();
+        $values = $this->instance->provideBooleanValue();
 
         $expected = [
             [false],
@@ -81,8 +91,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideDateTimeInstance(): void
     {
-        $testCase = new SimpleTestCase();
-        $instances = $testCase->provideDateTimeInstance();
+        $instances = $this->instance->provideDateTimeInstance();
 
         $expected = [
             [new DateTime()],
@@ -105,8 +114,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideDateTimeRelativeFormatInstance(): void
     {
-        $testCase = new SimpleTestCase();
-        $formats = $testCase->provideDateTimeRelativeFormat();
+        $formats = $this->instance->provideDateTimeRelativeFormat();
 
         $expected = [
             ['now'],
@@ -129,13 +137,12 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideEmptyScalarValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideEmptyScalarValue();
+        $values = $this->instance->provideEmptyScalarValue();
 
         $expected = [
             [''],
             ['   '],
-            [null],
+            ['0'],
             [0],
             [false],
         ];
@@ -147,15 +154,15 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideEmptyValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideEmptyValue();
+        $values = $this->instance->provideEmptyValue();
 
         $expected = [
             [''],
             ['   '],
-            [null],
+            ['0'],
             [0],
             [false],
+            [null],
             [[]],
         ];
 
@@ -166,8 +173,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideNonScalarValue(): void
     {
-        $testCase = new SimpleTestCase();
-        $values = $testCase->provideNonScalarValue();
+        $values = $this->instance->provideNonScalarValue();
 
         $expected = [
             [[]],
@@ -182,8 +188,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testProvideNotExistingFilePath(): void
     {
-        $testCase = new SimpleTestCase();
-        $paths = $testCase->provideNotExistingFilePath();
+        $paths = $this->instance->provideNotExistingFilePath();
 
         $expected = [
             ['lets-test.doc'],
@@ -194,5 +199,11 @@ class BaseTestCaseTraitTest extends BaseTestCase
         foreach ($paths as $index => $path) {
             static::assertSame($expected[$index], $path);
         }
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->instance = new SimpleTestCase();
     }
 }

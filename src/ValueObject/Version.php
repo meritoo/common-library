@@ -16,50 +16,18 @@ namespace Meritoo\Common\ValueObject;
  */
 class Version
 {
-    /**
-     * The "major" part.
-     * Incremented when you make incompatible API changes.
-     *
-     * @var int
-     */
-    protected $majorPart;
+    protected int $majorPart;
+    protected int $minorPart;
+    protected int $patchPart;
 
-    /**
-     * The "minor" part.
-     * Incremented when you add functionality in a backwards-compatible manner.
-     *
-     * @var int
-     */
-    protected $minorPart;
-
-    /**
-     * The "patch" part.
-     * Incremented when you make backwards-compatible bug fixes.
-     *
-     * @var int
-     */
-    protected $patchPart;
-
-    /**
-     * Class constructor
-     *
-     * @param int $majorPart The "major" part. Incremented when you make incompatible API changes.
-     * @param int $minorPart The "minor" part. Incremented when you add functionality in a backwards-compatible manner.
-     * @param int $patchPart The "patch" part. Incremented when you make backwards-compatible bug fixes.
-     */
-    public function __construct($majorPart, $minorPart, $patchPart)
+    public function __construct(int $majorPart, int $minorPart, int $patchPart)
     {
         $this->majorPart = $majorPart;
         $this->minorPart = $minorPart;
         $this->patchPart = $patchPart;
     }
 
-    /**
-     * Returns representation of object as string
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%d.%d.%d', $this->getMajorPart(), $this->getMinorPart(), $this->getPatchPart());
     }
@@ -75,7 +43,7 @@ class Version
      * @param array $version The version
      * @return null|Version
      */
-    public static function fromArray(array $version)
+    public static function fromArray(array $version): ?Version
     {
         /*
          * No version provided?
@@ -113,7 +81,7 @@ class Version
      * @param string $version The version
      * @return null|Version
      */
-    public static function fromString(string $version)
+    public static function fromString(string $version): ?Version
     {
         $version = trim($version);
 
@@ -144,35 +112,17 @@ class Version
         return new static($majorPart, $minorPart, $patchPart);
     }
 
-    /**
-     * Returns the "major" part.
-     * Incremented when you make incompatible API changes.
-     *
-     * @return int
-     */
-    public function getMajorPart()
+    public function getMajorPart(): int
     {
         return $this->majorPart;
     }
 
-    /**
-     * Returns the "minor" part.
-     * Incremented when you add functionality in a backwards-compatible manner.
-     *
-     * @return int
-     */
-    public function getMinorPart()
+    public function getMinorPart(): int
     {
         return $this->minorPart;
     }
 
-    /**
-     * Returns the "patch" part.
-     * Incremented when you make backwards-compatible bug fixes.
-     *
-     * @return int
-     */
-    public function getPatchPart()
+    public function getPatchPart(): int
     {
         return $this->patchPart;
     }
