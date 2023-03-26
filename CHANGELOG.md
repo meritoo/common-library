@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.2.0
+
+1. Support PHP `8.0`+
+
 # 1.1.9
 
 1. Remove old, unnecessary methods. Implement setUp() methods. Increase code coverage.
