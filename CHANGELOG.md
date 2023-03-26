@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.2.1
+
+1. Bump packages versions to the latest stable and supported by PHP `8.0`+
+
 # 1.2.0
 
 1. Support PHP `8.0`+
