@@ -230,7 +230,7 @@ abstract class BaseCollection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if ($this->exists($offset)) {
             return $this->elements[$offset];
