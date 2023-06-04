@@ -41,7 +41,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideBooleanValue(): ?Generator
+    public function provideBooleanValue(): Generator
     {
         yield [false];
         yield [true];
@@ -52,7 +52,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideDateTimeInstance(): ?Generator
+    public function provideDateTimeInstance(): Generator
     {
         yield [new DateTime()];
         yield [new DateTime('yesterday')];
@@ -65,7 +65,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideDateTimeRelativeFormat(): ?Generator
+    public function provideDateTimeRelativeFormat(): Generator
     {
         yield ['now'];
         yield ['yesterday'];
@@ -85,7 +85,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideEmptyScalarValue(): ?Generator
+    public function provideEmptyScalarValue(): Generator
     {
         yield [''];
         yield ['   '];
@@ -99,7 +99,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideEmptyValue(): ?Generator
+    public function provideEmptyValue(): Generator
     {
         yield [''];
         yield ['   '];
@@ -115,7 +115,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideNonScalarValue(): ?Generator
+    public function provideNonScalarValue(): Generator
     {
         yield [[]];
         yield [null];
@@ -127,7 +127,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideNotExistingFilePath(): ?Generator
+    public function provideNotExistingFilePath(): Generator
     {
         yield ['lets-test.doc'];
         yield ['lorem/ipsum.jpg'];
@@ -233,7 +233,7 @@ trait BaseTestCaseTrait
      * @param string $directoryPath (optional) Path of directory containing the file
      * @return string
      */
-    protected function getFilePathForTesting(string $fileName, string $directoryPath = ''): string
+    protected static function getFilePathForTesting(string $fileName, string $directoryPath = ''): string
     {
         $rootPath = Miscellaneous::getProjectRootPath();
 

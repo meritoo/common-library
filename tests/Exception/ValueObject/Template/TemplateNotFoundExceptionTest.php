@@ -24,7 +24,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class TemplateNotFoundExceptionTest extends BaseTestCase
 {
-    public function provideIndexAndException(): ?Generator
+    public static function provideIndexAndException(): Generator
     {
         $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
 

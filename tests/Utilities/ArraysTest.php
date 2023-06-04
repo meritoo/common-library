@@ -31,7 +31,7 @@ class ArraysTest extends BaseTestCase
     private array $complexArray;
     private array $superComplexArray;
 
-    public function provideArrayToQuoteStrings()
+    public static function provideArrayToQuoteStrings(): Generator
     {
         yield [
             'An empty array',
@@ -104,7 +104,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideArrayToRemoveMarginalElement(): Generator
+    public static function provideArrayToRemoveMarginalElement(): Generator
     {
         yield [
             'An empty array - remove last element',
@@ -259,7 +259,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideArrayToReplaceKeys(): Generator
+    public static function provideArrayToReplaceKeys(): Generator
     {
         yield [
             'An empty array',
@@ -311,7 +311,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideArrayToVerifyIfContainsEmptyStringsOnly(): ?Generator
+    public static function provideArrayToVerifyIfContainsEmptyStringsOnly(): Generator
     {
         yield [
             [],
@@ -353,7 +353,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideArrayValues2csv(): ?Generator
+    public static function provideArrayValues2csv(): Generator
     {
         yield [
             'An empty array',
@@ -552,7 +552,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideArrayValues2string()
+    public static function provideArrayValues2string(): Generator
     {
         yield [
             'An empty array',
@@ -736,7 +736,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideArrayValuesKeysConverted2string()
+    public static function provideArrayValuesKeysConverted2string(): Generator
     {
         yield [
             'An empty array',
@@ -819,7 +819,7 @@ class ArraysTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideArrayWithDuplicatedValuesToSetKeysAsValues()
+    public static function provideArrayWithDuplicatedValuesToSetKeysAsValues(): Generator
     {
         yield [
             [
@@ -872,7 +872,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideFirstElement(): ?Generator
+    public static function provideFirstElement(): Generator
     {
         yield [
             'An empty array (first level only)',
@@ -946,7 +946,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideIsFirstElement(): ?Generator
+    public static function provideIsFirstElement(): Generator
     {
         yield [
             'An empty array (first level only)',
@@ -1183,7 +1183,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideIsLastElement(): ?Generator
+    public static function provideIsLastElement(): Generator
     {
         yield [
             'An empty array (first level only)',
@@ -1420,7 +1420,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideLastElement(): ?Generator
+    public static function provideLastElement(): Generator
     {
         yield [
             'An empty array (first level only)',
@@ -1516,7 +1516,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideLastRow(): ?Generator
+    public static function provideLastRow(): Generator
     {
         yield [
             'An empty array',
@@ -1595,7 +1595,7 @@ class ArraysTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideSimpleArrayToSetKeysAsValues()
+    public static function provideSimpleArrayToSetKeysAsValues(): Generator
     {
         yield [
             [
@@ -1636,7 +1636,7 @@ class ArraysTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideStopIfMatchedByForGetLastElementsPaths(): ?Generator
+    public static function provideStopIfMatchedByForGetLastElementsPaths(): Generator
     {
         // Special exception: do not use, stop recursive on the "diam" key
         yield [
@@ -1845,7 +1845,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideValueToIsEmptyArray(): ?Generator
+    public static function provideValueToIsEmptyArray(): Generator
     {
         yield [
             'An empty string',
@@ -1892,7 +1892,7 @@ class ArraysTest extends BaseTestCase
         ];
     }
 
-    public function provideValueToIsNotEmptyArray(): ?Generator
+    public static function provideValueToIsNotEmptyArray(): Generator
     {
         yield [
             'An empty string',
@@ -1944,7 +1944,7 @@ class ArraysTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideValuesToFilterNonEmpty(): ?Generator
+    public static function provideValuesToFilterNonEmpty(): Generator
     {
         $simpleObject = new SimpleToString('1234');
 
@@ -2038,7 +2038,7 @@ class ArraysTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideValuesToFilterNonEmptyAsString()
+    public static function provideValuesToFilterNonEmptyAsString(): Generator
     {
         yield [
             'An empty array (no values to filter)',
@@ -2120,7 +2120,7 @@ class ArraysTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideValuesToFilterNonEmptyAsStringUsingDefaultSeparator()
+    public static function provideValuesToFilterNonEmptyAsStringUsingDefaultSeparator(): Generator
     {
         yield [
             'An empty array (no values to filter)',

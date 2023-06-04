@@ -28,7 +28,7 @@ class CssSelectorTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFormNameAndSelector()
+    public static function provideFormNameAndSelector(): Generator
     {
         yield [
             'test',
@@ -51,7 +51,7 @@ class CssSelectorTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFormNameFieldIdAndLabelSelector()
+    public static function provideFormNameFieldIdAndLabelSelector(): Generator
     {
         yield [
             'test',
@@ -77,7 +77,7 @@ class CssSelectorTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFormNameFieldIdAndSelector()
+    public static function provideFormNameFieldIdAndSelector(): Generator
     {
         yield [
             'test',
@@ -103,7 +103,7 @@ class CssSelectorTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFormNameFieldNameAndSelector()
+    public static function provideFormNameFieldNameAndSelector(): Generator
     {
         yield [
             'test',
@@ -129,7 +129,7 @@ class CssSelectorTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFormNameFieldSetIndexAndSelector()
+    public static function provideFormNameFieldSetIndexAndSelector(): Generator
     {
         yield [
             'test',

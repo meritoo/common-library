@@ -26,7 +26,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class IntegerCollectionTest extends BaseTestCase
 {
-    public function provideDifferentTypesOfElements(): ?Generator
+    public static function provideDifferentTypesOfElements(): Generator
     {
         yield [
             'An empty array',

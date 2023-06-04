@@ -31,7 +31,7 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideParentAndChildClasses(): ?Generator
+    public static function provideParentAndChildClasses(): Generator
     {
         $template = "The '%s' class requires one child class at most who will extend her, but more than one child"
             ." class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";

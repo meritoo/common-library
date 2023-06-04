@@ -24,7 +24,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class MissingPlaceholdersInValuesExceptionTest extends BaseTestCase
 {
-    public function provideContentAndMissingPlaceholders(): ?Generator
+    public static function provideContentAndMissingPlaceholders(): Generator
     {
         $template = 'Cannot fill template \'%s\', because of missing values for placeholder(s): %s. Did you provide all'
             .' required values?';

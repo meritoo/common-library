@@ -34,7 +34,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideArraysWithExtremePosition()
+    public static function provideArraysWithExtremePosition(): Generator
     {
         yield [
             [
@@ -130,7 +130,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideArraysWithExtremePositionToGetExtremePosition()
+    public static function provideArraysWithExtremePositionToGetExtremePosition(): Generator
     {
         yield [
             [
@@ -216,7 +216,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideArraysWithoutExtremePosition()
+    public static function provideArraysWithoutExtremePosition(): Generator
     {
         yield [
             [
@@ -316,7 +316,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideArraysWithoutExtremePositionToGetExtremePosition()
+    public static function provideArraysWithoutExtremePositionToGetExtremePosition(): Generator
     {
         yield [
             [],
@@ -370,7 +370,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideObjectsWithExtremePosition()
+    public static function provideObjectsWithExtremePosition(): Generator
     {
         yield [
             [
@@ -420,7 +420,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideObjectsWithExtremePositionToGetExtremePosition()
+    public static function provideObjectsWithExtremePositionToGetExtremePosition(): Generator
     {
         yield [
             [
@@ -448,7 +448,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideObjectsWithoutExtremePosition()
+    public static function provideObjectsWithoutExtremePosition(): Generator
     {
         yield [
             [
@@ -484,7 +484,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideObjectsWithoutExtremePositionToGetExtremePosition()
+    public static function provideObjectsWithoutExtremePositionToGetExtremePosition(): Generator
     {
         yield [
             [],
@@ -524,7 +524,7 @@ class RepositoryTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePropertyAndDirectionToGetEntityOrderedQueryBuilder()
+    public static function providePropertyAndDirectionToGetEntityOrderedQueryBuilder(): Generator
     {
         yield [
             '',
@@ -563,7 +563,7 @@ class RepositoryTest extends BaseTestCase
         ];
     }
 
-    public function provideSortedItems()
+    public static function provideSortedItems(): Generator
     {
         $sortable1 = new Sortable();
         $sortable1->setPosition(1);

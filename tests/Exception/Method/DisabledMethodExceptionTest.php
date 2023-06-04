@@ -29,7 +29,7 @@ class DisabledMethodExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideMethodsNames()
+    public static function provideMethodsNames(): Generator
     {
         $templateShort = 'Method %s() cannot be called, because is disabled.';
         $templateLong = $templateShort.' Use %s() instead.';

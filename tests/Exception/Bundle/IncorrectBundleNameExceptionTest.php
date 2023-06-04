@@ -24,7 +24,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class IncorrectBundleNameExceptionTest extends BaseTestCase
 {
-    public function provideBundleNameAndMessage(): Generator
+    public static function provideBundleNameAndMessage(): Generator
     {
         $template = 'Name of bundle \'%s\' is incorrect. It should start with big letter and end with "Bundle". Is'
             .' there everything ok?';

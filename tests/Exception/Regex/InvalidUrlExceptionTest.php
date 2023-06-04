@@ -29,7 +29,7 @@ class InvalidUrlExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideUrl()
+    public static function provideUrl(): Generator
     {
         $template = 'Url \'%s\' is invalid. Is there everything ok?';
 

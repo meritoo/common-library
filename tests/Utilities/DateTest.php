@@ -33,7 +33,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideCorrectPeriod()
+    public static function provideCorrectPeriod(): Generator
     {
         yield [
             DatePeriod::LAST_WEEK,
@@ -131,7 +131,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideDataOfRandomDate()
+    public static function provideDataOfRandomDate(): Generator
     {
         yield [
             new DateTime('2000-01-01'),
@@ -174,7 +174,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideDataOfRandomDateIncorrectEnd()
+    public static function provideDataOfRandomDateIncorrectEnd(): Generator
     {
         yield [
             new DateTime('2000-01-01'),
@@ -188,7 +188,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideEmptyDatesForDateDifference()
+    public static function provideEmptyDatesForDateDifference(): Generator
     {
         yield [
             null,
@@ -216,7 +216,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideIncorrectDateTimeValue()
+    public static function provideIncorrectDateTimeValue(): Generator
     {
         // Incorrect one-character values
         yield ['a'];
@@ -256,7 +256,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideIncorrectPeriod()
+    public static function provideIncorrectPeriod(): Generator
     {
         yield [-1];
         yield [0];
@@ -268,7 +268,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideIncorrectYearMonthDay(): Generator
+    public static function provideIncorrectYearMonthDay(): Generator
     {
         yield [
             0,
@@ -306,7 +306,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideInvalidDateFormats()
+    public static function provideInvalidDateFormats(): Generator
     {
         yield [0];
         yield [9];
@@ -324,7 +324,7 @@ class DateTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideYearMonthDay()
+    public static function provideYearMonthDay(): Generator
     {
         yield [
             2000,

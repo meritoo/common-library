@@ -28,7 +28,7 @@ class UriTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideDataForSecuredUrl()
+    public static function provideDataForSecuredUrl(): Generator
     {
         yield [
             '',
@@ -73,7 +73,7 @@ class UriTest extends BaseTestCase
         ];
     }
 
-    public function provideRootUrlAndUrlParts(): ?Generator
+    public static function provideRootUrlAndUrlParts(): Generator
     {
         yield [
             '',
@@ -130,7 +130,7 @@ class UriTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideUrlToReplenishProtocol()
+    public static function provideUrlToReplenishProtocol(): Generator
     {
         yield [
             'http://test',
@@ -150,7 +150,7 @@ class UriTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideUrlToVerifyIfIsExternal()
+    public static function provideUrlToVerifyIfIsExternal(): Generator
     {
         yield [
             '',

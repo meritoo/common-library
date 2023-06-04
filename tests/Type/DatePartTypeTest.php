@@ -27,7 +27,7 @@ class DatePartTypeTest extends BaseTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function provideTypeToVerify(): Generator
+    public static function provideTypeToVerify(): Generator
     {
         yield [
             DatePartType::isCorrectType(''),

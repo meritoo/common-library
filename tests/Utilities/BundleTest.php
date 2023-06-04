@@ -29,7 +29,7 @@ class BundleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideEmptyViewPathAndBundle()
+    public static function provideEmptyViewPathAndBundle(): Generator
     {
         yield [
             '',
@@ -52,7 +52,7 @@ class BundleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFullAndShortBundleName()
+    public static function provideFullAndShortBundleName(): Generator
     {
         yield [
             'MyExtraBundle',
@@ -70,7 +70,7 @@ class BundleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideIncorrectBundleName()
+    public static function provideIncorrectBundleName(): Generator
     {
         yield [
             'myExtra',
@@ -90,7 +90,7 @@ class BundleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideViewPathAndBundle()
+    public static function provideViewPathAndBundle(): Generator
     {
         yield [
             'User',
@@ -116,7 +116,7 @@ class BundleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideViewPathAndBundleAndExtension()
+    public static function provideViewPathAndBundleAndExtension(): Generator
     {
         yield [
             'User:Active',
@@ -138,7 +138,7 @@ class BundleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideViewPathAndIncorrectBundleName()
+    public static function provideViewPathAndIncorrectBundleName(): Generator
     {
         yield [
             'User:Active',

@@ -31,7 +31,7 @@ class MiscellaneousTest extends BaseTestCase
     private $stringCommaSeparated;
     private $stringWithoutSpaces;
 
-    public function provideDataToReplaceWithQuoteStrings()
+    public static function provideDataToReplaceWithQuoteStrings(): Generator
     {
         yield [
             'An empty string as subject',
@@ -123,7 +123,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideEmptyValueToFillMissingZeros()
+    public static function provideEmptyValueToFillMissingZeros(): Generator
     {
         yield [''];
         yield ['   '];
@@ -132,7 +132,7 @@ class MiscellaneousTest extends BaseTestCase
         yield [[]];
     }
 
-    public function provideEmptyValuesToReplace()
+    public static function provideEmptyValuesToReplace(): Generator
     {
         yield [
             'An empty string as subject',
@@ -212,7 +212,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFileNames()
+    public static function provideFileNames(): Generator
     {
         yield [
             'Lorem.ipsum-dolor.sit.JPG',
@@ -235,7 +235,7 @@ class MiscellaneousTest extends BaseTestCase
         ];
     }
 
-    public function provideFilePath(): ?Generator
+    public static function provideFilePath(): Generator
     {
         yield [
             'Path with file',
@@ -268,7 +268,7 @@ class MiscellaneousTest extends BaseTestCase
         ];
     }
 
-    public function provideGreatestCommonDivisor(): ?Generator
+    public static function provideGreatestCommonDivisor(): Generator
     {
         yield [
             0,
@@ -313,7 +313,7 @@ class MiscellaneousTest extends BaseTestCase
         ];
     }
 
-    public function provideLastElementOfString(): ?Generator
+    public static function provideLastElementOfString(): Generator
     {
         yield [
             'An empty string',
@@ -363,7 +363,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideNumberToFillMissingZeros()
+    public static function provideNumberToFillMissingZeros(): Generator
     {
         yield [
             0,
@@ -427,7 +427,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePathsToRemoveEndingDirectorySeparator()
+    public static function providePathsToRemoveEndingDirectorySeparator(): Generator
     {
         yield [
             'lorem/ipsum/dolor/',
@@ -471,7 +471,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePathsToRemoveStartingDirectorySeparator()
+    public static function providePathsToRemoveStartingDirectorySeparator(): Generator
     {
         yield [
             '/lorem/ipsum/dolor',
@@ -510,7 +510,7 @@ class MiscellaneousTest extends BaseTestCase
         ];
     }
 
-    public function provideRegexToReplace()
+    public static function provideRegexToReplace(): Generator
     {
         yield [
             'Different count of strings to search and replace - 1st part',
@@ -597,7 +597,7 @@ class MiscellaneousTest extends BaseTestCase
         ];
     }
 
-    public function provideStringElements(): ?Generator
+    public static function provideStringElements(): Generator
     {
         yield [
             'An empty string',
@@ -663,7 +663,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideStringToCamelCase()
+    public static function provideStringToCamelCase(): Generator
     {
         yield [
             'lorem ipsum',
@@ -689,7 +689,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideStringToLatinLowerCaseHuman()
+    public static function provideStringToLatinLowerCaseHuman(): Generator
     {
         yield [
             'asuo',
@@ -784,7 +784,7 @@ class MiscellaneousTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideStringToLatinNotLowerCaseHuman(): ?Generator
+    public static function provideStringToLatinNotLowerCaseHuman(): Generator
     {
         yield [
             'asuo',
@@ -874,7 +874,7 @@ class MiscellaneousTest extends BaseTestCase
         ];
     }
 
-    public function provideStringToRemoveMarginalCharacter(): ?Generator
+    public static function provideStringToRemoveMarginalCharacter(): Generator
     {
         yield [
             'An empty string - remove last character',
@@ -919,7 +919,7 @@ class MiscellaneousTest extends BaseTestCase
         ];
     }
 
-    public function provideStringsToReplace()
+    public static function provideStringsToReplace(): Generator
     {
         yield [
             'Different count of strings to search and replace - 1st part',

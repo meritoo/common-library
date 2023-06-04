@@ -36,7 +36,7 @@ class BaseCollectionTest extends BaseTestCase
     private StringCollection $simpleCollection;
     private array $simpleElements;
 
-    public function provideElementGetByIndex(): ?Generator
+    public static function provideElementGetByIndex(): Generator
     {
         yield [
             'An empty collection and empty index',
@@ -104,7 +104,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    public function provideElementToAdd(): ?Generator
+    public static function provideElementToAdd(): Generator
     {
         yield [
             'This is test 1',
@@ -133,7 +133,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    public function provideElementToAddWithIndex(): Generator
+    public static function provideElementToAddWithIndex(): Generator
     {
         yield [
             'This is test 1',
@@ -203,7 +203,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    public function provideElementToAddWithInvalidType(): ?Generator
+    public static function provideElementToAddWithInvalidType(): Generator
     {
         yield [
             ['test'],
@@ -221,7 +221,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    public function provideElementsToValidateType(): ?Generator
+    public static function provideElementsToValidateType(): Generator
     {
         yield [
             'An empty array',
@@ -260,7 +260,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    public function provideResultOfLimit(): ?Generator
+    public static function provideResultOfLimit(): Generator
     {
         yield 'Negative value of maximum & negative offset' => [
             [],
@@ -318,7 +318,7 @@ class BaseCollectionTest extends BaseTestCase
         ];
     }
 
-    public function provideResultOfLimitWithDefaultOffset(): ?Generator
+    public static function provideResultOfLimitWithDefaultOffset(): Generator
     {
         yield 'Negative value of maximum' => [
             [],

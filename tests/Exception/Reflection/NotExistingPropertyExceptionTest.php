@@ -25,7 +25,7 @@ use stdClass;
  */
 class NotExistingPropertyExceptionTest extends BaseTestCase
 {
-    public function provideObjectPropertyAndMessage(): ?Generator
+    public static function provideObjectPropertyAndMessage(): Generator
     {
         $template = 'Property \'%s\' does not exist in instance of class \'%s\'. Did you use proper name of property?';
 

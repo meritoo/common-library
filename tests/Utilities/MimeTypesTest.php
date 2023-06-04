@@ -28,15 +28,15 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideExistingFilePathToCheckIsImagePath()
+    public static function provideExistingFilePathToCheckIsImagePath(): Generator
     {
         yield [
-            $this->getFilePathForTesting('minion.jpg'),
+            self::getFilePathForTesting('minion.jpg'),
             true,
         ];
 
         yield [
-            $this->getFilePathForTesting('lorem-ipsum.txt'),
+            self::getFilePathForTesting('lorem-ipsum.txt'),
             false,
         ];
     }
@@ -46,15 +46,15 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFilePathToGetMimeTypeOfRealFile()
+    public static function provideFilePathToGetMimeTypeOfRealFile(): Generator
     {
         yield [
-            $this->getFilePathForTesting('minion.jpg'),
+            self::getFilePathForTesting('minion.jpg'),
             'image/jpeg',
         ];
 
         yield [
-            $this->getFilePathForTesting('lorem-ipsum.txt'),
+            self::getFilePathForTesting('lorem-ipsum.txt'),
             'text/plain',
         ];
     }
@@ -64,7 +64,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideImageMimeType()
+    public static function provideImageMimeType(): Generator
     {
         yield ['image/bmp'];
         yield ['image/jpeg'];
@@ -79,7 +79,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideMimeTypeToGetMultipleExtension()
+    public static function provideMimeTypeToGetMultipleExtension(): Generator
     {
         yield [
             'application/postscript',
@@ -146,7 +146,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideMimeTypeToGetSingleExtension()
+    public static function provideMimeTypeToGetSingleExtension(): Generator
     {
         yield [
             'application/x-7z-compressed',
@@ -169,7 +169,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideMimesTypesToGetExtensions()
+    public static function provideMimesTypesToGetExtensions(): Generator
     {
         yield [
             [
@@ -215,7 +215,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideMimesTypesToGetExtensionsUpperCase()
+    public static function provideMimesTypesToGetExtensionsUpperCase(): Generator
     {
         yield [
             [
@@ -260,7 +260,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideNonImageMimeType()
+    public static function provideNonImageMimeType(): Generator
     {
         yield ['application/rtf'];
         yield ['audio/mp4'];
@@ -273,7 +273,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideNotExistingMimeType()
+    public static function provideNotExistingMimeType(): Generator
     {
         yield ['lorem/ipsum'];
         yield ['dolor'];
@@ -285,7 +285,7 @@ class MimeTypesTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideNotExistingMimeTypes()
+    public static function provideNotExistingMimeTypes(): Generator
     {
         yield [
             [],

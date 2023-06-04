@@ -30,7 +30,7 @@ class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideUnknownType(): Generator
+    public static function provideUnknownType(): Generator
     {
         $allTypes = (new OopVisibilityType())->getAll();
 

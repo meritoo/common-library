@@ -31,7 +31,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return Generator
      */
-    public function provideDatePeriod(): Generator
+    public static function provideDatePeriod(): Generator
     {
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
@@ -64,7 +64,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return Generator
      */
-    public function provideDatePeriodAndDateFormat(): Generator
+    public static function provideDatePeriodAndDateFormat(): Generator
     {
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
@@ -133,7 +133,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return Generator
      */
-    public function provideDatePeriodAndDateFormatUsingStartDateOnly(): Generator
+    public static function provideDatePeriodAndDateFormatUsingStartDateOnly(): Generator
     {
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
@@ -168,7 +168,7 @@ class DatePeriodTest extends BaseTypeTestCase
      *
      * @return Generator
      */
-    public function provideDatePeriodAndIncorrectDateFormat(): Generator
+    public static function provideDatePeriodAndIncorrectDateFormat(): Generator
     {
         $startDate = new DateTime('2001-01-01');
         $endDate = new DateTime('2002-02-02');
@@ -184,7 +184,7 @@ class DatePeriodTest extends BaseTypeTestCase
         ];
     }
 
-    public function provideDatePeriodAndUnknownDate(): ?Generator
+    public static function provideDatePeriodAndUnknownDate(): Generator
     {
         $date = new DateTime('2001-01-01');
 
@@ -216,7 +216,7 @@ class DatePeriodTest extends BaseTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function provideTypeToVerify(): Generator
+    public static function provideTypeToVerify(): Generator
     {
         yield [
             DatePeriod::isCorrectType(''),

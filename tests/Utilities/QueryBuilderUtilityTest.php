@@ -17,6 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\QueryBuilderUtility;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 /**
@@ -32,28 +33,9 @@ class QueryBuilderUtilityTest extends BaseTestCase
 {
     private QueryBuilder $queryBuilder;
 
-    /**
-     * Provides query builder and criteria used in WHERE clause
-     *
-     * @return Generator
-     */
-    public function provideQueryBuilderAndCriteria()
+    public static function provideQueryBuilderAndCriteria(): Generator
     {
-        $entityManager = $this
-            ->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getExpressionBuilder'])
-            ->getMock()
-        ;
-
-        $entityManager
-            ->expects(static::any())
-            ->method('getExpressionBuilder')
-            ->willReturn(new Expr())
-        ;
-
         yield [
-            (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm'),
             [
                 'lorem' => 11,
                 'ipsum' => 22,
@@ -62,7 +44,6 @@ class QueryBuilderUtilityTest extends BaseTestCase
         ];
 
         yield [
-            (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm'),
             [
                 'lorem' => [
                     11,
@@ -77,27 +58,17 @@ class QueryBuilderUtilityTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides query builder and parameters to add to given query builder
-     *
-     * @return Generator
-     */
-    public function provideQueryBuilderAndParameters()
+    public static function provideQueryBuilderAndParameters(): Generator
     {
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-
         yield [
-            new QueryBuilder($entityManager),
             [],
         ];
 
         yield [
-            new QueryBuilder($entityManager),
             new ArrayCollection(),
         ];
 
         yield [
-            new QueryBuilder($entityManager),
             [
                 'lorem' => 11,
                 'ipsum' => 22,
@@ -105,7 +76,6 @@ class QueryBuilderUtilityTest extends BaseTestCase
         ];
 
         yield [
-            new QueryBuilder($entityManager),
             new ArrayCollection([
                 'lorem' => 11,
                 'ipsum' => 22,
@@ -113,7 +83,6 @@ class QueryBuilderUtilityTest extends BaseTestCase
         ];
 
         yield [
-            new QueryBuilder($entityManager),
             [
                 new Parameter('lorem', 11),
                 new Parameter('ipsum', 22),
@@ -121,7 +90,6 @@ class QueryBuilderUtilityTest extends BaseTestCase
         ];
 
         yield [
-            new QueryBuilder($entityManager),
             new ArrayCollection([
                 new Parameter('lorem', 11),
                 new Parameter('ipsum', 22),
@@ -129,105 +97,40 @@ class QueryBuilderUtilityTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Provides query builder, name of property and expected alias of given property
-     *
-     * @return Generator
-     */
-    public function provideQueryBuilderAndPropertyAlias()
+    public static function provideQueryBuilderAndPropertyAlias(): Generator
     {
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-
         yield [
-            new QueryBuilder($entityManager),
             '',
-            null,
         ];
 
         yield [
-            new QueryBuilder($entityManager),
             'lorem',
-            null,
         ];
+    }
 
+    public static function provideQueryBuilderAndPropertyAlias2(): Generator
+    {
         yield [
-            (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm'),
-            'lm',
-            null,
-        ];
-
-        yield [
-            (new QueryBuilder($entityManager))
-                ->from('lorem', 'l')
-                ->leftJoin('l.ipsum', 'i'),
-            'ipsum',
-            'i',
-        ];
-
-        yield [
-            (new QueryBuilder($entityManager))
-                ->from('lorem', 'l')
-                ->leftJoin('l.ipsum', 'i')
-                ->innerJoin('i.dolor', 'd'),
             'ipsum1',
             null,
         ];
 
         yield [
-            (new QueryBuilder($entityManager))
-                ->from('lorem', 'l')
-                ->leftJoin('l.ipsum', 'i')
-                ->innerJoin('i.dolor', 'd'),
             'ipsum',
             'i',
         ];
 
         yield [
-            (new QueryBuilder($entityManager))
-                ->from('lorem', 'l')
-                ->leftJoin('l.ipsum', 'i')
-                ->innerJoin('i.dolor', 'd'),
             'dolor',
             'd',
         ];
     }
 
-    /**
-     * Provides query builder to retrieve root alias and expected root alias
-     *
-     * @return Generator
-     */
-    public function provideQueryBuilderAndRootAlias()
+    #[DataProvider('provideQueryBuilderAndParameters')]
+    public function testAddParameters(array|ArrayCollection $parameters): void
     {
         $entityManager = $this->createMock(EntityManagerInterface::class);
-
-        yield [
-            new QueryBuilder($entityManager),
-            null,
-        ];
-
-        yield [
-            (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm'),
-            'lm',
-        ];
-
-        yield [
-            (new QueryBuilder($entityManager))
-                ->from('lorem', 'l')
-                ->leftJoin('l.ipsum', 'i'),
-            'l',
-        ];
-    }
-
-    /**
-     * @param QueryBuilder          $queryBuilder The query builder
-     * @param array|ArrayCollection $parameters   Parameters to add. Collection of Doctrine\ORM\Query\Parameter
-     *                                            instances or an array with key-value pairs.
-     *
-     * @dataProvider provideQueryBuilderAndParameters
-     */
-    public function testAddParameters(QueryBuilder $queryBuilder, $parameters)
-    {
+        $queryBuilder = new QueryBuilder($entityManager);
         $newQueryBuilder = QueryBuilderUtility::addParameters($queryBuilder, $parameters);
 
         static::assertSame($queryBuilder, $newQueryBuilder);
@@ -287,38 +190,102 @@ class QueryBuilderUtilityTest extends BaseTestCase
         static::assertTrue(QueryBuilderUtility::deleteEntities($entityManager, $entities2, false));
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder  The query builder to verify
-     * @param string       $propertyName  Name of property that maybe is joined
-     * @param null|string  $propertyAlias Expected alias of given property joined in given query builder
-     *
-     * @dataProvider provideQueryBuilderAndPropertyAlias
-     */
-    public function testGetJoinedPropertyAlias(QueryBuilder $queryBuilder, $propertyName, $propertyAlias)
+    #[DataProvider('provideQueryBuilderAndPropertyAlias')]
+    public function testGetJoinedPropertyAlias(string $propertyName): void
     {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $queryBuilder = new QueryBuilder($entityManager);
+
+        static::assertNull(QueryBuilderUtility::getJoinedPropertyAlias($queryBuilder, $propertyName));
+    }
+
+    #[DataProvider('provideQueryBuilderAndPropertyAlias2')]
+    // TODO (kn) Replace number with appropriate description
+    public function testGetJoinedPropertyAlias2(string $propertyName, ?string $propertyAlias): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+
+        $queryBuilder = (new QueryBuilder($entityManager))
+            ->from('lorem', 'l')
+            ->leftJoin('l.ipsum', 'i')
+            ->innerJoin('i.dolor', 'd')
+        ;
+
         static::assertSame($propertyAlias, QueryBuilderUtility::getJoinedPropertyAlias($queryBuilder, $propertyName));
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder The query builder to retrieve root alias
-     * @param null|string  $rootAlias    Expected root alias of given query builder
-     *
-     * @dataProvider provideQueryBuilderAndRootAlias
-     */
-    public function testGetRootAlias(QueryBuilder $queryBuilder, $rootAlias)
+    // TODO (kn) Replace number with appropriate description
+    public function testGetJoinedPropertyAlias3(): void
     {
-        static::assertSame($rootAlias, QueryBuilderUtility::getRootAlias($queryBuilder));
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $queryBuilder = (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm');
+
+        static::assertNull(QueryBuilderUtility::getJoinedPropertyAlias($queryBuilder, 'lm'));
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder The query builder
-     * @param array        $criteria     The criteria used in WHERE clause
-     *
-     * @dataProvider provideQueryBuilderAndCriteria
-     */
-    public function testSetCriteria(QueryBuilder $queryBuilder, array $criteria)
+    // TODO (kn) Replace number with appropriate description
+    public function testGetJoinedPropertyAlias4(): void
     {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+
+        $queryBuilder = (new QueryBuilder($entityManager))
+            ->from('lorem', 'l')
+            ->leftJoin('l.ipsum', 'i')
+        ;
+
+        static::assertSame('i', QueryBuilderUtility::getJoinedPropertyAlias($queryBuilder, 'ipsum'));
+    }
+
+    // TODO (kn) Replace number with appropriate description
+    public function testGetRootAlias1(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $queryBuilder = new QueryBuilder($entityManager);
+
+        static::assertNull(QueryBuilderUtility::getRootAlias($queryBuilder));
+    }
+
+    // TODO (kn) Replace number with appropriate description
+    public function testGetRootAlias2(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $queryBuilder = (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm');
+
+        static::assertSame('lm', QueryBuilderUtility::getRootAlias($queryBuilder));
+    }
+
+    // TODO (kn) Replace number with appropriate description
+    public function testGetRootAlias3(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+
+        $queryBuilder = (new QueryBuilder($entityManager))
+            ->from('lorem', 'l')
+            ->leftJoin('l.ipsum', 'i')
+        ;
+
+        static::assertSame('l', QueryBuilderUtility::getRootAlias($queryBuilder));
+    }
+
+    #[DataProvider('provideQueryBuilderAndCriteria')]
+    public function testSetCriteria(array $criteria): void
+    {
+        $entityManager = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getExpressionBuilder'])
+            ->getMock()
+        ;
+
+        $entityManager
+            ->expects(static::any())
+            ->method('getExpressionBuilder')
+            ->willReturn(new Expr())
+        ;
+
+        $queryBuilder = (new QueryBuilder($entityManager))->from('lorem_ipsum', 'lm');
         $newQueryBuilder = QueryBuilderUtility::setCriteria($queryBuilder, $criteria);
+
         $criteriaCount = count($criteria);
         $nullsCount = 0;
 

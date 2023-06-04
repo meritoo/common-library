@@ -29,7 +29,7 @@ class IncorrectColorHexLengthExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideColor()
+    public static function provideColor(): Generator
     {
         $template = 'Length of hexadecimal value of color \'%s\' is incorrect. It\'s %d, but it should be 3 or 6. Is there everything ok?';
 

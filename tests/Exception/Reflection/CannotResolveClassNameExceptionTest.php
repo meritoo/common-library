@@ -31,7 +31,7 @@ class CannotResolveClassNameExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideClassName(): Generator
+    public static function provideClassName(): Generator
     {
         yield [
             'Not\Existing\Class',

@@ -24,7 +24,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class InvalidContentExceptionTest extends BaseTestCase
 {
-    public function provideContent(): ?Generator
+    public static function provideContent(): Generator
     {
         $template = 'Content of template \'%s\' is invalid. Did you use string with 1 placeholder at least?';
 

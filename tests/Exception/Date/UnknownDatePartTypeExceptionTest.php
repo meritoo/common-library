@@ -30,7 +30,7 @@ class UnknownDatePartTypeExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideDatePartAndValue()
+    public static function provideDatePartAndValue(): Generator
     {
         $template = 'The \'%s\' type of date part (with value %s) is unknown. Probably doesn\'t exist or there is a'
             .' typo. You should use one of these types: day, hour, minute, month, second, year.';

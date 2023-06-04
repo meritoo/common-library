@@ -25,7 +25,7 @@ use Meritoo\Common\Utilities\Arrays;
  */
 class ClassWithoutConstructorExceptionTest extends BaseTestCase
 {
-    public function provideClassName(): Generator
+    public static function provideClassName(): Generator
     {
         $template = 'Oops, class \'%s\' hasn\'t constructor. Did you use proper class?';
 

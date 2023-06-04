@@ -29,7 +29,7 @@ class InvalidHtmlAttributesExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideHtmlAttributes()
+    public static function provideHtmlAttributes(): Generator
     {
         $template = 'HTML attributes \'%s\' are invalid. Is there everything ok?';
 

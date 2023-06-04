@@ -25,7 +25,7 @@ use stdClass;
  */
 class MissingChildClassesExceptionTest extends BaseTestCase
 {
-    public function provideParentClass(): ?Generator
+    public static function provideParentClass(): Generator
     {
         $template = 'The \'%s\' class requires one child class at least who will extend her (maybe is an abstract'
             .' class), but the child classes are missing. Did you forget to extend this class?';

@@ -30,7 +30,7 @@ class VersionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideAsArray()
+    public static function provideAsArray(): Generator
     {
         yield [
             [],
@@ -85,7 +85,7 @@ class VersionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideAsString()
+    public static function provideAsString(): Generator
     {
         yield [
             '',
@@ -123,7 +123,7 @@ class VersionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideConvertedToString()
+    public static function provideConvertedToString(): Generator
     {
         yield [
             new Version(0, 0, 0),

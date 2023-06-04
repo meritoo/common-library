@@ -23,7 +23,7 @@ class SimpleTestCase extends TestCase
 {
     use BaseTypeTestCaseTrait;
 
-    public function provideTypeToVerify(): Generator
+    public static function provideTypeToVerify(): Generator
     {
         yield [
             '',

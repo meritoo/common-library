@@ -29,7 +29,7 @@ class LocaleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideCategoryLanguageCodeAndExpectedLocale()
+    public static function provideCategoryLanguageCodeAndExpectedLocale(): Generator
     {
         yield [
             LC_ALL,
@@ -100,7 +100,7 @@ class LocaleTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideLanguageEncodingAndCountryCode()
+    public static function provideLanguageEncodingAndCountryCode(): Generator
     {
         yield [
             'fr',

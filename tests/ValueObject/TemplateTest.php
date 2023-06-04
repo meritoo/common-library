@@ -27,7 +27,7 @@ use Meritoo\Common\ValueObject\Template;
  */
 class TemplateTest extends BaseTestCase
 {
-    public function provideInvalidContent(): ?Generator
+    public static function provideInvalidContent(): Generator
     {
         $template = 'Content of template \'%s\' is invalid. Did you use string with 1 placeholder at least?';
 
@@ -52,7 +52,7 @@ class TemplateTest extends BaseTestCase
         ];
     }
 
-    public function provideTemplateToFill(): ?Generator
+    public static function provideTemplateToFill(): Generator
     {
         yield [
             'Template with 1 placeholder',
@@ -121,7 +121,7 @@ class TemplateTest extends BaseTestCase
         ];
     }
 
-    public function provideTemplateToFillUsingIncorrectValues(): ?Generator
+    public static function provideTemplateToFillUsingIncorrectValues(): Generator
     {
         $template = 'Cannot fill template \'%s\', because of missing values for placeholder(s): %s. Did you provide all'
             .' required values?';
@@ -186,7 +186,7 @@ class TemplateTest extends BaseTestCase
         ];
     }
 
-    public function provideValidContent(): ?Generator
+    public static function provideValidContent(): Generator
     {
         yield [
             'Template with 1 placeholder',

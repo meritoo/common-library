@@ -26,7 +26,7 @@ trait BaseTypeTestCaseTrait
      *
      * @return Generator
      */
-    abstract public function provideTypeToVerify(): Generator;
+    abstract public static function provideTypeToVerify(): Generator;
 
     /**
      * Verifies availability of all types

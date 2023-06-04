@@ -9,6 +9,7 @@
 namespace Meritoo\Test\Common\ValueObject;
 
 use DateTime;
+use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Human;
@@ -27,7 +28,7 @@ class HumanTest extends BaseTestCase
     private Human $emptyHuman;
     private Human $human;
 
-    public function provideHuman()
+    public static function provideHuman(): Generator
     {
         yield [
             'Without any data (an empty human)',

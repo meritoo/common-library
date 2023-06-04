@@ -8,6 +8,7 @@
 
 namespace Meritoo\Test\Common\Exception\ValueObject;
 
+use Generator;
 use Meritoo\Common\Exception\ValueObject\InvalidSizeDimensionsException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -23,7 +24,7 @@ use Meritoo\Common\Type\OopVisibilityType;
  */
 class InvalidSizeDimensionsExceptionTest extends BaseTestCase
 {
-    public function provideWidthAndHeight()
+    public static function provideWidthAndHeight(): Generator
     {
         $template = 'Dimensions of size should be positive, but they are not: %d, %d. Is there everything ok?';
 

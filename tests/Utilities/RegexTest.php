@@ -13,6 +13,7 @@ use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Utilities\Regex;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 /**
@@ -29,15 +30,10 @@ class RegexTest extends BaseTestCase
     private $simpleText;
     private $camelCaseText;
 
-    /**
-     * Provides value to verify if it is a binary value
-     *
-     * @return Generator
-     */
-    public function provideBinaryValue()
+    public static function provideBinaryValue(): Generator
     {
-        $file1Path = $this->getFilePathForTesting('lorem-ipsum.txt');
-        $file2Path = $this->getFilePathForTesting('minion.jpg');
+        $file1Path = self::getFilePathForTesting('lorem-ipsum.txt');
+        $file2Path = self::getFilePathForTesting('minion.jpg');
 
         yield [
             '',
@@ -75,12 +71,35 @@ class RegexTest extends BaseTestCase
         ];
     }
 
+    public static function provideBinaryValue1(): Generator
+    {
+        yield [
+            '',
+        ];
+
+        yield [
+            'abc',
+        ];
+
+        yield [
+            '1234',
+        ];
+
+        yield [
+            1234,
+        ];
+
+        yield [
+            12.34,
+        ];
+    }
+
     /**
      * Provides name of bundle and information if it's valid name
      *
      * @return Generator
      */
-    public function provideBundleName()
+    public static function provideBundleName(): Generator
     {
         yield [
             'something',
@@ -123,7 +142,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideColor()
+    public static function provideColor(): Generator
     {
         yield [
             '#1b0',
@@ -156,7 +175,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideColorEmptyValue()
+    public static function provideColorEmptyValue(): Generator
     {
         yield [
             '',
@@ -180,7 +199,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideColorIncorrectLength()
+    public static function provideColorIncorrectLength(): Generator
     {
         yield [
             '12',
@@ -212,7 +231,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideColorInvalidValue()
+    public static function provideColorInvalidValue(): Generator
     {
         yield [
             '#qwerty',
@@ -228,7 +247,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideEmail()
+    public static function provideEmail(): Generator
     {
         yield [
             '1',
@@ -266,7 +285,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideEmptyNonMoneyValue()
+    public static function provideEmptyNonMoneyValue(): Generator
     {
         yield [''];
         yield ['   '];
@@ -275,7 +294,7 @@ class RegexTest extends BaseTestCase
         yield [[]];
     }
 
-    public function provideFileName(): ?Generator
+    public static function provideFileName(): Generator
     {
         yield [
             'An empty string',
@@ -313,7 +332,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideHtmlAttribute()
+    public static function provideHtmlAttribute(): Generator
     {
         yield [
             'abc = def',
@@ -351,7 +370,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideHtmlAttributes()
+    public static function provideHtmlAttributes(): Generator
     {
         yield [
             'abc = def',
@@ -399,7 +418,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideMoneyValue()
+    public static function provideMoneyValue(): Generator
     {
         yield [
             'abc',
@@ -497,7 +516,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePatternForArrayKeys()
+    public static function providePatternForArrayKeys(): Generator
     {
         yield [
             '/\d/',
@@ -539,7 +558,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePatternForArrayValues()
+    public static function providePatternForArrayValues(): Generator
     {
         yield [
             '/\d/',
@@ -582,7 +601,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePatternsAndSubjectForPregMultiMatch()
+    public static function providePatternsAndSubjectForPregMultiMatch(): Generator
     {
         yield [
             '',
@@ -632,7 +651,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePatternsAndSubjectForPregMultiMatchWhenMustMatchAllPatterns()
+    public static function providePatternsAndSubjectForPregMultiMatchWhenMustMatchAllPatterns(): Generator
     {
         yield [
             '',
@@ -682,7 +701,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePhoneNumber()
+    public static function providePhoneNumber(): Generator
     {
         yield [
             'abc',
@@ -715,7 +734,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideRegularExpressionForArrayFiltering()
+    public static function provideRegularExpressionForArrayFiltering(): Generator
     {
         yield [
             [],
@@ -880,7 +899,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideSimpleExpressionForArrayFiltering()
+    public static function provideSimpleExpressionForArrayFiltering(): Generator
     {
         yield [
             [],
@@ -1073,7 +1092,7 @@ class RegexTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeToVerify()
+    public static function provideSizeToVerify(): Generator
     {
         yield [
             'One number only',
@@ -1258,7 +1277,7 @@ class RegexTest extends BaseTestCase
         ];
     }
 
-    public function provideStringToClearBeginningSlash(): ?Generator
+    public static function provideStringToClearBeginningSlash(): Generator
     {
         yield [
             '',
@@ -1361,7 +1380,7 @@ class RegexTest extends BaseTestCase
         ];
     }
 
-    public function provideStringToClearEndingSlash(): ?Generator
+    public static function provideStringToClearEndingSlash(): Generator
     {
         yield [
             '',
@@ -1469,7 +1488,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideTaxId()
+    public static function provideTaxId(): Generator
     {
         yield [
             '123',
@@ -1514,7 +1533,7 @@ class RegexTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideValueSlug()
+    public static function provideValueSlug(): Generator
     {
         yield [
             '',
@@ -1595,6 +1614,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideEmptyScalarValue
      */
     public static function testAreValidHtmlAttributesUsingEmptyValue($emptyValue)
@@ -1820,6 +1840,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideColorEmptyValue
      */
     public function testGetValidColorHexValueUsingEmptyValue($emptyValue)
@@ -1830,6 +1851,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideColorEmptyValue
      */
     public function testGetValidColorHexValueUsingEmptyValueWithoutException($emptyValue)
@@ -1839,6 +1861,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $incorrectColor Incorrect value of color
+     *
      * @dataProvider provideColorIncorrectLength
      */
     public function testGetValidColorHexValueUsingIncorrectValue($incorrectColor)
@@ -1849,6 +1872,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $incorrectColor Incorrect value of color
+     *
      * @dataProvider provideColorIncorrectLength
      */
     public function testGetValidColorHexValueUsingIncorrectValueWithoutException($incorrectColor)
@@ -1858,6 +1882,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $invalidColor Invalid value of color
+     *
      * @dataProvider provideColorInvalidValue
      */
     public function testGetValidColorHexValueUsingInvalidValue($invalidColor)
@@ -1868,6 +1893,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $invalidColor Invalid value of color
+     *
      * @dataProvider provideColorInvalidValue
      */
     public function testGetValidColorHexValueUsingInvalidValueWithoutException($invalidColor)
@@ -1875,13 +1901,8 @@ class RegexTest extends BaseTestCase
         self::assertFalse(Regex::getValidColorHexValue($invalidColor, false));
     }
 
-    /**
-     * @param string $value    Value to verify
-     * @param bool   $expected Information if value is a binary value
-     *
-     * @dataProvider provideBinaryValue
-     */
-    public static function testIsBinaryValue($value, $expected)
+    #[DataProvider('provideBinaryValue')]
+    public static function testIsBinaryValue(string|int|float $value, bool $expected): void
     {
         self::assertEquals($expected, Regex::isBinaryValue($value));
     }
@@ -1889,7 +1910,7 @@ class RegexTest extends BaseTestCase
     /**
      * @param string $description Description of test
      * @param string $fileName
-     * @param bool   $expected    Expected result
+     * @param bool $expected Expected result
      *
      * @dataProvider provideFileName
      */
@@ -1927,9 +1948,9 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $description Description of test
-     * @param string $value       Value to verify
-     * @param string $separator   Separator used to split width and height
-     * @param bool   $expected    Expected result of verification
+     * @param string $value Value to verify
+     * @param string $separator Separator used to split width and height
+     * @param bool $expected Expected result of verification
      *
      * @dataProvider provideSizeToVerify
      */
@@ -1940,6 +1961,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideEmptyScalarValue
      */
     public static function testIsSizeValueUsingEmptyValue($emptyValue)
@@ -1965,7 +1987,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $bundleName Full name of bundle to verify, e.g. "MyExtraBundle"
-     * @param bool   $expected   Information if it's valid name
+     * @param bool $expected Information if it's valid name
      *
      * @dataProvider provideBundleName
      */
@@ -1976,6 +1998,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideEmptyScalarValue
      */
     public function testIsValidBundleNameUsingEmptyValue($emptyValue)
@@ -1984,8 +2007,8 @@ class RegexTest extends BaseTestCase
     }
 
     /**
-     * @param string $email    E-mail address to validate / verify
-     * @param bool   $expected Information if e-mail is valid
+     * @param string $email E-mail address to validate / verify
+     * @param bool $expected Information if e-mail is valid
      *
      * @dataProvider provideEmail
      */
@@ -1996,6 +2019,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideEmptyScalarValue
      */
     public static function testIsValidEmailUsingEmptyValue($emptyValue)
@@ -2005,7 +2029,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $htmlAttribute The html attribute to verify
-     * @param bool   $expected      Information if it's valid attribute
+     * @param bool $expected Information if it's valid attribute
      *
      * @dataProvider provideHtmlAttribute
      */
@@ -2016,6 +2040,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideEmptyScalarValue
      */
     public function testIsValidHtmlAttributeUsingEmptyValue($emptyValue)
@@ -2024,8 +2049,8 @@ class RegexTest extends BaseTestCase
     }
 
     /**
-     * @param mixed $value    Value to verify
-     * @param bool  $expected Information if given value is a money value
+     * @param mixed $value Value to verify
+     * @param bool $expected Information if given value is a money value
      *
      * @dataProvider provideMoneyValue
      */
@@ -2036,6 +2061,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideEmptyNonMoneyValue
      */
     public function testIsValidMoneyValueUsingEmptyValue($emptyValue)
@@ -2060,7 +2086,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $phoneNumber The phone number to validate / verify
-     * @param bool   $expected    Information if phone number is valid
+     * @param bool $expected Information if phone number is valid
      *
      * @dataProvider providePhoneNumber
      */
@@ -2077,7 +2103,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param string $taxIdString Tax ID (NIP) string
-     * @param bool   $expected    Information if tax ID is valid
+     * @param bool $expected Information if tax ID is valid
      *
      * @dataProvider provideTaxId
      */
@@ -2088,6 +2114,7 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param mixed $emptyValue Empty value, e.g. ""
+     *
      * @dataProvider provideEmptyScalarValue
      */
     public static function testIsValidTaxIdUsingEmptyValue($emptyValue)
@@ -2147,8 +2174,8 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param array|string $patterns The patterns to match
-     * @param string       $subject  The string to check
-     * @param bool         $expected Information if given $subject matches given $patterns
+     * @param string $subject The string to check
+     * @param bool $expected Information if given $subject matches given $patterns
      *
      * @dataProvider providePatternsAndSubjectForPregMultiMatch
      */
@@ -2159,8 +2186,8 @@ class RegexTest extends BaseTestCase
 
     /**
      * @param array|string $patterns The patterns to match
-     * @param string       $subject  The string to check
-     * @param bool         $expected Information if given $subject matches given $patterns
+     * @param string $subject The string to check
+     * @param bool $expected Information if given $subject matches given $patterns
      *
      * @dataProvider providePatternsAndSubjectForPregMultiMatchWhenMustMatchAllPatterns
      */

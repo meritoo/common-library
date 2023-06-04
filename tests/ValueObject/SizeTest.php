@@ -30,7 +30,7 @@ class SizeTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideInvalidSizeAsArray()
+    public static function provideInvalidSizeAsArray(): Generator
     {
         yield [
             [
@@ -54,7 +54,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeForConvertingToString()
+    public static function provideSizeForConvertingToString(): Generator
     {
         yield [
             'Created using an empty array',
@@ -99,7 +99,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeForFromArray()
+    public static function provideSizeForFromArray(): Generator
     {
         yield [
             'An empty array',
@@ -157,7 +157,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeForFromString()
+    public static function provideSizeForFromString(): Generator
     {
         yield [
             'One number only',
@@ -390,7 +390,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeForToArray()
+    public static function provideSizeForToArray(): Generator
     {
         yield [
             'Created using an array with integers',
@@ -505,7 +505,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeForToString()
+    public static function provideSizeForToString(): Generator
     {
         yield [
             'With unknown dimensions',
@@ -617,7 +617,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeToGetHeight()
+    public static function provideSizeToGetHeight(): Generator
     {
         yield [
             'Created using an array with integers',
@@ -702,7 +702,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeToGetWidth()
+    public static function provideSizeToGetWidth(): Generator
     {
         yield [
             'Created using an array with integers',
@@ -787,7 +787,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeToSetHeight(): Generator
+    public static function provideSizeToSetHeight(): Generator
     {
         yield [
             'Negative value',
@@ -820,7 +820,7 @@ class SizeTest extends BaseTestCase
         ];
     }
 
-    public function provideSizeToSetWidth(): Generator
+    public static function provideSizeToSetWidth(): Generator
     {
         yield [
             'Negative value',

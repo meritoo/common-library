@@ -43,7 +43,7 @@ use stdClass;
  */
 class ReflectionTest extends BaseTestCase
 {
-    public function provideClassNameOfExistingClass(): Generator
+    public static function provideClassNameOfExistingClass(): Generator
     {
         yield [
             self::class,
@@ -78,7 +78,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    public function provideClassNamespaceOfExistingClass(): Generator
+    public static function provideClassNamespaceOfExistingClass(): Generator
     {
         yield [
             'Meritoo\Test\Common\Utilities',
@@ -96,7 +96,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    public function provideClassToGetConstants(): ?Generator
+    public static function provideClassToGetConstants(): Generator
     {
         yield [
             new stdClass(),
@@ -119,7 +119,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    public function provideInvalidClassAndTrait(): ?Generator
+    public static function provideInvalidClassAndTrait(): Generator
     {
         yield [
             '',
@@ -142,7 +142,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    public function provideObjectAndNotExistingProperties(): ?Generator
+    public static function provideObjectAndNotExistingProperties(): Generator
     {
         yield [
             new stdClass(),
@@ -166,7 +166,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    public function provideObjectAndNotExistingProperty(): ?Generator
+    public static function provideObjectAndNotExistingProperty(): Generator
     {
         yield [
             new stdClass(),
@@ -184,7 +184,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    public function provideObjectAndPropertiesValues(): ?Generator
+    public static function provideObjectAndPropertiesValues(): Generator
     {
         yield [
             new A(),
@@ -250,7 +250,7 @@ class ReflectionTest extends BaseTestCase
         ];
     }
 
-    public function provideObjectPropertyAndValue(): ?Generator
+    public static function provideObjectPropertyAndValue(): Generator
     {
         yield [
             new A(),

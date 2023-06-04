@@ -32,7 +32,7 @@ class BaseTestCaseTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideFileNameAndDirectoryPath()
+    public static function provideFileNameAndDirectoryPath(): Generator
     {
         yield [
             'abc.jpg',
@@ -73,7 +73,7 @@ class BaseTestCaseTest extends BaseTestCase
      */
     public function testGetFilePathForTesting($fileName, $directoryPath)
     {
-        $path = $this->instance->getFilePathForTesting($fileName, $directoryPath);
+        $path = BaseTestCase::getFilePathForTesting($fileName, $directoryPath);
 
         if (!empty($directoryPath)) {
             $directoryPath .= '/';

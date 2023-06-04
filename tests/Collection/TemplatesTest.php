@@ -26,7 +26,7 @@ use Meritoo\Common\ValueObject\Template;
  */
 class TemplatesTest extends BaseTestCase
 {
-    public function provideArrayWithTemplates(): ?Generator
+    public static function provideArrayWithTemplates(): Generator
     {
         yield [
             'An empty array',
@@ -59,7 +59,7 @@ class TemplatesTest extends BaseTestCase
         ];
     }
 
-    public function provideTemplatesToFind(): ?Generator
+    public static function provideTemplatesToFind(): Generator
     {
         yield [
             '2 templates only',
@@ -84,7 +84,7 @@ class TemplatesTest extends BaseTestCase
         ];
     }
 
-    public function provideTemplatesWithNotExistingIndex(): ?Generator
+    public static function provideTemplatesWithNotExistingIndex(): Generator
     {
         $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
 

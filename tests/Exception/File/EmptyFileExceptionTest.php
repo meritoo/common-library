@@ -29,7 +29,7 @@ class EmptyFileExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function providePathOfFile()
+    public static function providePathOfFile(): Generator
     {
         $template = 'File with path \'%s\' is empty (has no content). Did you provide path of proper file?';
 

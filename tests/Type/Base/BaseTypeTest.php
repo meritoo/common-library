@@ -28,7 +28,7 @@ class BaseTypeTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideType(): ?Generator
+    public static function provideType(): Generator
     {
         yield [
             new TestEmptyType(),
@@ -49,7 +49,7 @@ class BaseTypeTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideTypeToVerifyUsingTestEmptyType(): ?Generator
+    public static function provideTypeToVerifyUsingTestEmptyType(): Generator
     {
         yield [
             null,
@@ -97,7 +97,7 @@ class BaseTypeTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideTypeToVerifyUsingTestType(): ?Generator
+    public static function provideTypeToVerifyUsingTestType(): Generator
     {
         yield [
             null,

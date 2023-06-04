@@ -29,7 +29,7 @@ class InvalidColorHexValueExceptionTest extends BaseTestCase
      *
      * @return Generator
      */
-    public function provideColor()
+    public static function provideColor(): Generator
     {
         $template = 'Hexadecimal value of color \'%s\' is invalid. Is there everything ok?';
 
