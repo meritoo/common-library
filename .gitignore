@@ -186,6 +186,7 @@ fabric.properties
 ### PHPUnit
 # ------------------------------------------------------------------------------
 /phpunit.xml
+/.phpunit.cache
 /.phpunit.result.cache
 /tests/Resources/var
 

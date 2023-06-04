@@ -5,6 +5,7 @@ Common and useful classes, methods, exceptions etc.
 # 1.2.3
 
 1. Support PHP `8.1`
+2. Bump `PHPUnit` to the latest available version (`10.2`)
 
 # 1.2.2
 

@@ -46,6 +46,6 @@ class BaseTypeTestCaseTraitTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->instance = new SimpleTestCase();
+        $this->instance = new SimpleTestCase('simple_test_case');
     }
 }

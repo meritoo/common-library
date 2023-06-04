@@ -666,7 +666,7 @@ class RepositoryTest extends BaseTestCase
         $entityRepository = $this
             ->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods([
+            ->onlyMethods([
                 'createQueryBuilder',
             ])
             ->getMock()
@@ -710,7 +710,7 @@ class RepositoryTest extends BaseTestCase
         $entityRepository = $this
             ->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods([
+            ->onlyMethods([
                 'createQueryBuilder',
             ])
             ->getMock()

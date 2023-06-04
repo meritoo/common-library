@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- https://phpunit.readthedocs.io/en/8.2/configuration.html -->
+<!-- https://phpunit.readthedocs.io/en/10.2/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd"
          backupGlobals="false"
          bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache"
          colors="true"
          executionOrder="random"
          forceCoversAnnotation="true"
+         requireCoverageMetadata="true"
          verbose="true"
 >
-    <coverage>
+    <source>
         <include>
             <directory>src</directory>
         </include>
+    </source>
+    <coverage>
         <report>
             <clover outputFile="build/reports/coveralls/clover.xml" />
             <html outputDirectory="build/reports/phpunit-coverage/html" />

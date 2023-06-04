@@ -43,7 +43,6 @@
     <!-- Check target -->
     <target name="build:check"
             depends="check:cs,
-                    check:cpd,
                     check:phpstan,
                     check:psalm,
                     check:coveralls"
@@ -58,14 +57,6 @@
     <!-- PHP_CodeSniffer -->
     <target name="check:cs" depends="build:prepare">
         <exec command="${tests.code_sniffer.command}" passthru="true" />
-    </target>
-
-    <!-- copy/paste detector -->
-    <target name="check:cpd" depends="build:prepare">
-        <phpcpd>
-            <fileset refid="sourcecode" />
-            <formatter type="pmd" outfile="${dir.reports}/copy-paste-detector.xml" />
-        </phpcpd>
     </target>
 
     <!-- Run static analysis -->

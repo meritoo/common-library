@@ -1333,7 +1333,7 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals('double', Miscellaneous::getType(1.23));
         self::assertEquals('array', Miscellaneous::getType([]));
         self::assertEquals('stdClass', Miscellaneous::getType(new stdClass()));
-        self::assertEquals(__CLASS__, Miscellaneous::getType(new self()));
+        self::assertEquals(__CLASS__, Miscellaneous::getType(new self('miscellaneous_test')));
     }
 
     public function testGetUniqueFileName()

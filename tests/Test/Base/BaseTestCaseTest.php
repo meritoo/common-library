@@ -57,7 +57,12 @@ class BaseTestCaseTest extends BaseTestCase
 
     public function testConstructor()
     {
-        static::assertConstructorVisibilityAndArguments(BaseTestCase::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(
+            BaseTestCase::class,
+            OopVisibilityType::IS_PUBLIC,
+            1,
+            1
+        );
     }
 
     /**
@@ -173,7 +178,7 @@ class BaseTestCaseTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->instance = new SimpleTestCase();
+        $this->instance = new SimpleTestCase('simple_test_case');
     }
 }
 
