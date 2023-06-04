@@ -25,11 +25,6 @@ use stdClass;
  */
 class MissingChildClassesExceptionTest extends BaseTestCase
 {
-    /**
-     * Provides name of class that hasn't child classes, but it should, and expected exception's message
-     *
-     * @return Generator
-     */
     public function provideParentClass(): ?Generator
     {
         $template = 'The \'%s\' class requires one child class at least who will extend her (maybe is an abstract'
@@ -41,10 +36,7 @@ class MissingChildClassesExceptionTest extends BaseTestCase
         ];
 
         yield [
-            [
-                new stdClass(),
-                new stdClass(),
-            ],
+            new stdClass(),
             sprintf($template, stdClass::class),
         ];
     }
@@ -59,10 +51,6 @@ class MissingChildClassesExceptionTest extends BaseTestCase
     }
 
     /**
-     * @param array|object|string $parentClass     Class that hasn't child classes, but it should. An array of objects,
-     *                                             strings, object or string.
-     * @param string              $expectedMessage Expected exception's message
-     *
      * @dataProvider provideParentClass
      */
     public function testCreate($parentClass, string $expectedMessage): void
