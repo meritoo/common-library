@@ -43,6 +43,59 @@ use stdClass;
  */
 class ReflectionTest extends BaseTestCase
 {
+    public function provideClassNameOfExistingClass(): Generator
+    {
+        yield [
+            self::class,
+            self::class,
+        ];
+
+        yield [
+            'ReflectionTest',
+            self::class,
+            true,
+        ];
+
+        yield [
+            DateTime::class,
+            DateTime::class,
+        ];
+
+        yield [
+            DateTime::class,
+            new DateTime(),
+        ];
+
+        yield [
+            DateTime::class,
+            new DateTime(),
+            true,
+        ];
+
+        yield [
+            DateTime::class,
+            new DateTime('yesterday'),
+        ];
+    }
+
+    public function provideClassNamespaceOfExistingClass(): Generator
+    {
+        yield [
+            'Meritoo\Test\Common\Utilities',
+            self::class,
+        ];
+
+        yield [
+            DateTime::class,
+            new DateTime(),
+        ];
+
+        yield [
+            DateTime::class,
+            new DateTime('yesterday'),
+        ];
+    }
+
     public function provideClassToGetConstants(): ?Generator
     {
         yield [
@@ -74,13 +127,18 @@ class ReflectionTest extends BaseTestCase
         ];
 
         yield [
-            null,
-            null,
+            'abc',
+            'def',
         ];
 
         yield [
             0,
             0,
+        ];
+
+        yield [
+            123,
+            123.45,
         ];
     }
 
@@ -224,7 +282,7 @@ class ReflectionTest extends BaseTestCase
         static::assertHasNoConstructor(Reflection::class);
     }
 
-    public function testGetChildClassesExistingClass(): void
+    public function testGetChildClassesOfExistingClass(): void
     {
         /*
          * Attention. I have to create instances of these classes to load them and be available while using
@@ -250,69 +308,55 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed $invalidClass Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideInvalidClassAndTrait
      */
-    public function testGetChildClassesInvalidClass($invalidClass): void
+    public function testGetChildClassesOfInvalidClass(string|int|float $class): void
     {
         $this->expectException(CannotResolveClassNameException::class);
-
-        self::assertNull(Reflection::getChildClasses($invalidClass));
-        self::assertNull(Reflection::getChildClasses(123));
+        self::assertNull(Reflection::getChildClasses($class));
     }
 
-    public function testGetChildClassesNotExistingClass(): void
+    public function testGetChildClassesOfNotExistingClass(): void
     {
         $this->expectException(CannotResolveClassNameException::class);
         self::assertEquals('', Reflection::getChildClasses('xyz'));
     }
 
-    public function testGetClassNameExistingClass(): void
-    {
-        // Existing class
-        self::assertEquals(self::class, Reflection::getClassName(self::class));
-        self::assertEquals('ReflectionTest', Reflection::getClassName(self::class, true));
-        self::assertEquals(DateTime::class, Reflection::getClassName(new DateTime()));
-        self::assertEquals(DateTime::class, Reflection::getClassName(new DateTime(), true));
-
-        self::assertEquals(DateTime::class, Reflection::getClassName([
-            new DateTime(),
-            new DateTime('yesterday'),
-        ]));
+    /**
+     * @dataProvider provideClassNameOfExistingClass
+     */
+    public function testGetClassNameOfExistingClass(
+        string $expected,
+        object|string $source,
+        bool $withoutNamespace = false
+    ): void {
+        self::assertEquals($expected, Reflection::getClassName($source, $withoutNamespace));
     }
 
     /**
-     * @param mixed $invalidClass Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideInvalidClassAndTrait
      */
-    public function testGetClassNameInvalidClass($invalidClass): void
+    public function testGetClassNameOfInvalidClass(string|int|float $class): void
     {
-        self::assertNull(Reflection::getClassName($invalidClass));
-        self::assertNull(Reflection::getClassName(123));
+        self::assertNull(Reflection::getClassName($class));
     }
 
-    public function testGetClassNameNotExistingClass(): void
+    public function testGetClassNameOfNotExistingClass(): void
     {
-        // Not existing class
         self::assertEquals('', Reflection::getClassName('xyz'));
         self::assertEquals('', Reflection::getClassName('xyz', true));
     }
 
-    public function testGetClassNamespaceExistingClass(): void
+    /**
+     * @dataProvider provideClassNamespaceOfExistingClass
+     */
+    public function testGetClassNamespaceOfExistingClass(string $expected, object|string $class): void
     {
-        // Existing class
-        self::assertEquals('Meritoo\Test\Common\Utilities', Reflection::getClassNamespace(self::class));
-        self::assertEquals(DateTime::class, Reflection::getClassNamespace(new DateTime()));
-
-        self::assertEquals(DateTime::class, Reflection::getClassNamespace([
-            new DateTime(),
-            new DateTime('yesterday'),
-        ]));
+        self::assertEquals($expected, Reflection::getClassNamespace($class));
     }
 
-    public function testGetClassNamespaceNotExistingClass(): void
+    public function testGetClassNamespaceOfNotExistingClass(): void
     {
-        // Not existing class
         self::assertEquals('', Reflection::getClassNamespace('xyz'));
     }
 
@@ -354,9 +398,6 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * @param object|string $class    The object or name of object's class
-     * @param array         $expected Expected constants
-     *
      * @dataProvider provideClassToGetConstants
      */
     public function testGetConstants($class, array $expected): void
@@ -659,9 +700,6 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed $object           Object that should contains given property
-     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
-     *
      * @dataProvider provideObjectAndPropertiesValues
      */
     public function testSetPropertiesValues($object, array $propertiesValues): void
@@ -675,9 +713,6 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed $object           Object that should contains given property
-     * @param array $propertiesValues Key-value pairs, where key - name of the property, value - value of the property
-     *
      * @dataProvider provideObjectAndNotExistingProperties
      */
     public function testSetPropertiesValuesUsingNotExistingProperties($object, array $propertiesValues): void
@@ -696,10 +731,6 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed  $object   Object that should contains given property
-     * @param string $property Name of the property
-     * @param mixed  $value    Value of the property
-     *
      * @dataProvider provideObjectPropertyAndValue
      */
     public function testSetPropertyValue($object, $property, $value): void
@@ -713,9 +744,6 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * @param mixed  $object   Object that should contains given property
-     * @param string $property Name of the property
-     *
      * @dataProvider provideObjectAndNotExistingProperty
      */
     public function testSetPropertyValueUsingNotExistingProperty($object, $property): void
@@ -724,7 +752,7 @@ class ReflectionTest extends BaseTestCase
         Reflection::setPropertyValue($object, $property, 'test test test');
     }
 
-    public function testUsesTraitExistingClass(): void
+    public function testUsesTraitOfExistingClass(): void
     {
         self::assertTrue(Reflection::usesTrait(A::class, E::class));
         self::assertFalse(Reflection::usesTrait(B::class, E::class));
@@ -732,7 +760,7 @@ class ReflectionTest extends BaseTestCase
         self::assertFalse(Reflection::usesTrait(D::class, E::class));
     }
 
-    public function testUsesTraitExistingClassAndVerifyParents(): void
+    public function testUsesTraitOfExistingClassAndVerifyParents(): void
     {
         self::assertTrue(Reflection::usesTrait(A::class, E::class, true));
         self::assertTrue(Reflection::usesTrait(B::class, E::class, true));
@@ -741,22 +769,18 @@ class ReflectionTest extends BaseTestCase
     }
 
     /**
-     * @param array|object|string $class An array of objects, namespaces, object or namespace
-     * @param array|string        $trait An array of strings or string
-     *
      * @dataProvider provideInvalidClassAndTrait
      */
-    public function testUsesTraitInvalidClass($class, $trait): void
+    public function testUsesTraitOfInvalidClass(string|int|float $class, string|int|float $trait): void
     {
         $this->expectException(CannotResolveClassNameException::class);
         self::assertNull(Reflection::usesTrait($class, $trait));
     }
 
     /**
-     * @param mixed $trait Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
+     * @dataProvider provideInvalidClassAndTrait
      */
-    public function testUsesTraitInvalidTrait($trait): void
+    public function testUsesTraitOfInvalidTrait(string|int|float $trait): void
     {
         $this->expectException(CannotResolveClassNameException::class);
         Reflection::usesTrait(DateTime::class, $trait);
