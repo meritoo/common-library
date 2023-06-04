@@ -2,6 +2,10 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.2.2
+
+1. Refactor the `Reflection` class for PHP `8.0`+
+
 # 1.2.1
 
 1. Bump packages versions to the latest stable and supported by PHP `8.0`+
