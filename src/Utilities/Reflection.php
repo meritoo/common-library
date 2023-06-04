@@ -85,42 +85,16 @@ class Reflection
     /**
      * Returns a class name for given source
      *
-     * @param array|object|string $source           An array of objects, namespaces, object or namespace
-     * @param bool                $withoutNamespace (optional) If is set to true, namespace is omitted. Otherwise -
-     *                                              not, full name of class is returned, with namespace.
+     * @param object|string $source Instance of a class or namespace of the class
+     * @param bool $withoutNamespace (optional) If is set to true, namespace is omitted. Otherwise - Fully Qualified
+     * Class Name (FQCN) is returned.
+     *
      * @return null|string
      */
-    public static function getClassName($source, bool $withoutNamespace = false): ?string
+    public static function getClassName(object|string $source, bool $withoutNamespace = false): ?string
     {
-        /*
-         * First argument is not proper source of class?
-         * Nothing to do
-         */
-        if (empty($source) || (!is_array($source) && !is_object($source) && !is_string($source))) {
-            return null;
-        }
+        $name = self::findClassName($source);
 
-        $name = '';
-
-        /*
-         * An array of objects was provided?
-         * Let's use first of them
-         */
-        if (is_array($source)) {
-            $source = Arrays::getFirstElement($source);
-        }
-
-        // Let's prepare name of class
-        if (is_object($source)) {
-            $name = get_class($source);
-        } elseif (is_string($source) && (class_exists($source) || trait_exists($source))) {
-            $name = $source;
-        }
-
-        /*
-         * Name of class is still unknown?
-         * Nothing to do
-         */
         if (empty($name)) {
             return null;
         }
@@ -146,6 +120,7 @@ class Reflection
      * Returns namespace of class for given source
      *
      * @param array|object|string $source An array of objects, namespaces, object or namespace
+     *
      * @return string
      */
     public static function getClassNamespace($source): string
@@ -600,21 +575,22 @@ class Reflection
     }
 
     /**
-     * Returns information if given class / object uses / implements given trait
+     * Returns information if class uses given trait
      *
-     * @param array|object|string $class         An array of objects, namespaces, object or namespace
-     * @param array|string        $trait         An array of strings or string
-     * @param bool                $verifyParents If is set to true, parent classes are verified if they use given
-     *                                           trait. Otherwise - not.
+     * @param object|string $class Instance of a class or namespace of the class
+     * @param string $trait Trait which needs to be verified
+     * @param bool $verifyParents (optional) If is set to true, parent classes are verified too. Otherwise - not.
+     *
      * @return null|bool
-     * @throws CannotResolveClassNameException|ReflectionException
+     * @throws CannotResolveClassNameException
+     * @throws ReflectionException
      */
-    public static function usesTrait($class, $trait, bool $verifyParents = false): ?bool
+    public static function usesTrait(object|string $class, string $trait, bool $verifyParents = false): ?bool
     {
         $className = self::getClassName($class);
         $traitName = self::getClassName($trait);
 
-        // Oops, cannot resolve class
+        // Oops, cannot resolve trait
         if (null === $className || '' === $className) {
             throw CannotResolveClassNameException::create('');
         }
@@ -625,15 +601,14 @@ class Reflection
         }
 
         $reflection = new ReflectionClass($className);
-        $traitsNames = $reflection->getTraitNames();
-
-        $uses = in_array($traitName, $traitsNames, true);
+        $traits = $reflection->getTraitNames();
+        $uses = in_array($traitName, $traits, true);
 
         if (!$uses && $verifyParents) {
-            $parentClassName = self::getParentClassName($className);
+            $parentClass = self::getParentClassName($className);
 
-            if (null !== $parentClassName) {
-                return self::usesTrait($parentClassName, $trait, true);
+            if (null !== $parentClass) {
+                return self::usesTrait($parentClass, $traitName, true);
             }
         }
 
@@ -836,5 +811,18 @@ class Reflection
         }
 
         return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
+    }
+
+    private static function findClassName(object|string $source): string
+    {
+        if (is_object($source)) {
+            return get_class($source);
+        }
+
+        if (is_string($source) && (class_exists($source) || trait_exists($source))) {
+            return $source;
+        }
+
+        return '';
     }
 }
