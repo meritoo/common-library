@@ -9,20 +9,23 @@
 namespace Meritoo\Test\Common\Exception\Type;
 
 use Generator;
+use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Arrays;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of an exception used while the visibility of a property, a method or (as of PHP 7.1.0) a constant is
- * unknown
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException
- */
+#[CoversClass(UnknownOopVisibilityTypeException::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(UnknownTypeException::class)]
 class UnknownOopVisibilityTypeExceptionTest extends BaseTestCase
 {
     /**

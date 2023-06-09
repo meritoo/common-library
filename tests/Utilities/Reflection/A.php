@@ -8,16 +8,9 @@
 
 namespace Meritoo\Test\Common\Utilities\Reflection;
 
-/**
- * The A class.
- * Used for testing the Reflection class.
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @coversNothing
- */
+use PHPUnit\Framework\Attributes\CoversNothing;
+
+#[CoversNothing]
 class A
 {
     use E;

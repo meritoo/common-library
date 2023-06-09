@@ -10,17 +10,19 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Utilities\Arrays;
+use Meritoo\Common\Utilities\Miscellaneous;
+use Meritoo\Common\Utilities\Regex;
 use Meritoo\Common\Utilities\Uri;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful uri methods (only static functions)
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Uri
- */
+#[CoversClass(Uri::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Regex::class)]
+#[UsesClass(Miscellaneous::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class UriTest extends BaseTestCase
 {
     /**

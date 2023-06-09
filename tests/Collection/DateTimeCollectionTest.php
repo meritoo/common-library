@@ -12,19 +12,21 @@ namespace Meritoo\Test\Common\Collection;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Collection\DateTimeCollection;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the collection of DateTime instances
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Collection\DateTimeCollection
- */
+#[CoversClass(DateTimeCollection::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(SimpleTestCase::class)]
+#[UsesClass(BaseCollection::class)]
 class DateTimeCollectionTest extends BaseTestCase
 {
     public static function provideDifferentTypesOfElements(): Generator

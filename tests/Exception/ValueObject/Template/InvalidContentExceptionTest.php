@@ -11,17 +11,17 @@ namespace Meritoo\Test\Common\Exception\ValueObject\Template;
 use Generator;
 use Meritoo\Common\Exception\ValueObject\Template\InvalidContentException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of an exception used while content of template is invalid
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\ValueObject\Template\InvalidContentException
- */
+#[CoversClass(InvalidContentException::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
 class InvalidContentExceptionTest extends BaseTestCase
 {
     public static function provideContent(): Generator

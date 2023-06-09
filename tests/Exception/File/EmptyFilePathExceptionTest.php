@@ -10,26 +10,26 @@ namespace Meritoo\Test\Common\Exception\File;
 
 use Meritoo\Common\Exception\File\EmptyFilePathException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of an exception used while path of given file is empty
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\File\EmptyFilePathException
- */
+#[CoversClass(EmptyFilePathException::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class EmptyFilePathExceptionTest extends BaseTestCase
 {
-    public function testConstructorMessage()
+    public function testConstructorMessage(): void
     {
         $exception = EmptyFilePathException::create();
         static::assertSame('Path of the file is empty. Did you provide path of proper file?', $exception->getMessage());
     }
 
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(EmptyFilePathException::class, OopVisibilityType::IS_PUBLIC, 3);
     }

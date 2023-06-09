@@ -8,16 +8,9 @@
 
 namespace Meritoo\Test\Common\Utilities\Repository;
 
-/**
- * Sortable object/entity.
- * Used for testing the Repository class.
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @coversNothing
- */
+use PHPUnit\Framework\Attributes\CoversNothing;
+
+#[CoversNothing]
 class Sortable
 {
     /**

@@ -11,18 +11,20 @@ namespace Meritoo\Test\Common\ValueObject;
 use DateTime;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Common\ValueObject\Human;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case for the human
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\ValueObject\Human
- */
+#[CoversClass(Human::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseTypeTestCaseTrait::class)]
+#[UsesClass(Reflection::class)]
 class HumanTest extends BaseTestCase
 {
     private Human $emptyHuman;

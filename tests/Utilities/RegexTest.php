@@ -12,23 +12,21 @@ use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\Regex;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * Test case of the useful regular expressions methods
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Regex
- */
+#[CoversClass(Regex::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class RegexTest extends BaseTestCase
 {
-    private $simpleText;
-    private $camelCaseText;
+    private string $simpleText;
+    private string $camelCaseText;
 
     public static function provideBinaryValue(): Generator
     {

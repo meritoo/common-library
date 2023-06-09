@@ -10,26 +10,27 @@ namespace Meritoo\Test\Common\Exception\Base;
 
 use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Arrays;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the exception used while type of something is unknown
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Base\UnknownTypeException
- */
+#[CoversClass(UnknownTypeException::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(Arrays::class)]
 class UnknownTypeExceptionTest extends BaseTestCase
 {
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(UnknownTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
-    public function testTheException()
+    public function testTheException(): void
     {
         $this->expectException(UnknownTestTypeException::class);
         self::assertEmpty((new TestService())->getTranslatedType('test_3'));
@@ -54,15 +55,7 @@ class TestType extends BaseType
     public const TEST_2 = 'test_2';
 }
 
-/**
- * An exception used while type of something is unknown (for testing purposes)
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Base\UnknownTypeException
- */
+#[CoversClass(UnknownTypeException::class)]
 class UnknownTestTypeException extends UnknownTypeException
 {
     /**

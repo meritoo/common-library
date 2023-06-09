@@ -11,18 +11,18 @@ namespace Meritoo\Test\Common\Exception\Reflection;
 use Generator;
 use Meritoo\Common\Exception\Reflection\CannotResolveClassNameException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * Test case of an exception used while name of class or trait cannot be resolved
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Reflection\CannotResolveClassNameException
- */
+#[CoversClass(CannotResolveClassNameException::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(BaseType::class)]
 class CannotResolveClassNameExceptionTest extends BaseTestCase
 {
     /**

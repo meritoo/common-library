@@ -9,17 +9,13 @@
 namespace Meritoo\Test\Common\Utilities;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Utilities\GeneratorUtility;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful methods for the Generator class
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\GeneratorUtility
- */
+#[CoversClass(GeneratorUtility::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class GeneratorUtilityTest extends BaseTestCase
 {
     public function testConstructor()

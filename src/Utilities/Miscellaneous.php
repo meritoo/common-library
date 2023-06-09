@@ -163,11 +163,10 @@ class Miscellaneous
      * - concatenatePaths(['path/first', 'path/second', 'path/third']);
      * - concatenatePaths('path/first', 'path/second', 'path/third');
      *
-     * @param array|string $paths Paths co concatenate. As described above: an array of paths / strings or strings
-     *                            passed as following arguments.
-     * @return string
+     * @param string|string[] $paths Paths co concatenate. As described above: an array of paths / strings or strings
+     *                               passed as following arguments.
      */
-    public static function concatenatePaths($paths): string
+    public static function concatenatePaths(array|string $paths): string
     {
         // If paths are not provided as array, get the paths from methods' arguments
         if (!is_array($paths)) {

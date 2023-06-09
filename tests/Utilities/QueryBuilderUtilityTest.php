@@ -16,19 +16,17 @@ use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\QueryBuilderUtility;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * Test case of the useful methods for query builder (the Doctrine's QueryBuilder class)
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\QueryBuilderUtility
- */
+#[CoversClass(QueryBuilderUtility::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class QueryBuilderUtilityTest extends BaseTestCase
 {
     private QueryBuilder $queryBuilder;

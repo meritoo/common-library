@@ -11,18 +11,18 @@ namespace Meritoo\Test\Common\Exception\Reflection;
 use Generator;
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * Class NotExistingPropertyExceptionTest
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Reflection\NotExistingPropertyException
- */
+#[CoversClass(NotExistingPropertyException::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
 class NotExistingPropertyExceptionTest extends BaseTestCase
 {
     public static function provideObjectPropertyAndMessage(): Generator

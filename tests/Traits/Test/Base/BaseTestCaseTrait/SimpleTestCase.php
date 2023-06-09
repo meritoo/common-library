@@ -11,11 +11,9 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait;
 
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @internal
- * @coversNothing
- */
+#[CoversNothing]
 class SimpleTestCase
 {
     use BaseTestCaseTrait;

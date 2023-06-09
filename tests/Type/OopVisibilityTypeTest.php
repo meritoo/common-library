@@ -10,18 +10,17 @@ namespace Meritoo\Test\Common\Type;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
 use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the visibility of a property, a method or (as of PHP 7.1.0) a constant
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Type\OopVisibilityType
- */
+#[CoversClass(OopVisibilityType::class)]
+#[UsesClass(BaseTypeTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
 class OopVisibilityTypeTest extends BaseTypeTestCase
 {
     /**

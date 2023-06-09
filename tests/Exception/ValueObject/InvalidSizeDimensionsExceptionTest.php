@@ -11,17 +11,17 @@ namespace Meritoo\Test\Common\Exception\ValueObject;
 use Generator;
 use Meritoo\Common\Exception\ValueObject\InvalidSizeDimensionsException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of an exception used while dimensions of size, passed to the instance of Size class, are invalid
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\ValueObject\InvalidSizeDimensionsException
- */
+#[CoversClass(InvalidSizeDimensionsException::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
 class InvalidSizeDimensionsExceptionTest extends BaseTestCase
 {
     public static function provideWidthAndHeight(): Generator

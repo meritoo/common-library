@@ -11,19 +11,22 @@ namespace Meritoo\Test\Common\Type;
 use DateTime;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
 use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\DatePeriod;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Date;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of date's period
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Type\DatePeriod
- */
+#[CoversClass(DatePeriod::class)]
+#[UsesClass(Date::class)]
+#[UsesClass(BaseTypeTestCaseTrait::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
 class DatePeriodTest extends BaseTypeTestCase
 {
     /**

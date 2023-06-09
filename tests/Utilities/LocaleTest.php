@@ -10,18 +10,13 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Utilities\Locale;
-use ReflectionException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful locale methods
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Locale
- */
+#[CoversClass(Locale::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class LocaleTest extends BaseTestCase
 {
     /**

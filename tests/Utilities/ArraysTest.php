@@ -10,19 +10,21 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\Locale;
+use Meritoo\Common\Utilities\Miscellaneous;
+use Meritoo\Common\Utilities\Regex;
 use Meritoo\Test\Common\Utilities\Arrays\SimpleToString;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful arrays methods
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Arrays
- */
+#[CoversClass(Arrays::class)]
+#[UsesClass(Locale::class)]
+#[UsesClass(Regex::class)]
+#[UsesClass(Miscellaneous::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class ArraysTest extends BaseTestCase
 {
     private array $simpleArray;
@@ -367,8 +369,7 @@ class ArraysTest extends BaseTestCase
             [
                 'test_1' => '',
                 'test_2' => [],
-                'test_3' => null,
-                'test_4' => [
+                'test_3' => [
                     'aa' => 1,
                     'bb' => 2,
                     'cc' => 3,
@@ -387,8 +388,7 @@ class ArraysTest extends BaseTestCase
             [
                 'test_1' => '',
                 'test_2' => [],
-                'test_3' => null,
-                'test_4' => [
+                'test_3' => [
                     'aa' => 1,
                     'bb' => 2,
                     'cc' => 3,
@@ -498,7 +498,7 @@ class ArraysTest extends BaseTestCase
                 [
                     'dd' => 5,
                     'ee' => 6,
-                    null,
+                    '',
                 ],
                 [
                     7,
@@ -522,7 +522,7 @@ class ArraysTest extends BaseTestCase
                 [
                     'dd' => 5,
                     'ee' => 6,
-                    null,
+                    '',
                 ],
                 [
                     7,
@@ -3794,14 +3794,7 @@ letsTest[2] = value_2;';
         self::assertEquals($result, Arrays::trimRecursive($array));
     }
 
-    /**
-     * @param string $description Description of test
-     * @param string $expected    Expected array converted to csv string
-     * @param array  $array       Data to be converted. It have to be an array that represents database table.
-     * @param string $separator   (optional) Separator used between values. Default: ",".
-     *
-     * @dataProvider provideArrayValues2csv
-     */
+    #[DataProvider('provideArrayValues2csv')]
     public function testValues2csv(string $description, ?string $expected, array $array, string $separator = ','): void
     {
         // Required to avoid failure:

@@ -14,19 +14,17 @@ use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Common\Utilities\Repository;
 use Meritoo\Test\Common\Utilities\Repository\Sortable;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * Test case of the useful methods for repository
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Repository
- */
+#[CoversClass(Repository::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class RepositoryTest extends BaseTestCase
 {
     /**

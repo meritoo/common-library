@@ -16,20 +16,23 @@ use Meritoo\Common\Collection\DateTimeCollection;
 use Meritoo\Common\Collection\StringCollection;
 use Meritoo\Common\Contract\Collection\CollectionInterface;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Arrays;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Test\Common\Collection\BaseCollection\FirstNamesCollection;
 use Meritoo\Test\Common\Collection\BaseCollection\User;
+use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use ReflectionClass;
 
-/**
- * Test case of the collection of elements
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Collection\BaseCollection
- */
+#[CoversClass(BaseCollection::class)]
+#[UsesClass(StringCollection::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(SimpleTestCase::class)]
 class BaseCollectionTest extends BaseTestCase
 {
     private StringCollection $emptyCollection;

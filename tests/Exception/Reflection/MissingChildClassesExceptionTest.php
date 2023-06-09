@@ -11,18 +11,19 @@ namespace Meritoo\Test\Common\Exception\Reflection;
 use Generator;
 use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * Test case of an exception used while given class has no child classes
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Reflection\MissingChildClassesException
- */
+#[CoversClass(MissingChildClassesException::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
 class MissingChildClassesExceptionTest extends BaseTestCase
 {
     public static function provideParentClass(): Generator
@@ -50,10 +51,8 @@ class MissingChildClassesExceptionTest extends BaseTestCase
         );
     }
 
-    /**
-     * @dataProvider provideParentClass
-     */
-    public function testCreate($parentClass, string $expectedMessage): void
+    #[DataProvider('provideParentClass')]
+    public function testCreate(string|stdClass $parentClass, string $expectedMessage): void
     {
         $exception = MissingChildClassesException::create($parentClass);
         static::assertSame($expectedMessage, $exception->getMessage());

@@ -11,17 +11,16 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Traits\Test\Base;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Test\Common\Traits\Test\Base\BaseTypeTestCaseTrait\SimpleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the trait for the base test case for the type of something
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait
- */
+#[CoversClass(BaseTypeTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
 class BaseTypeTestCaseTraitTest extends BaseTestCase
 {
     private SimpleTestCase $instance;

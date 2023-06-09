@@ -610,7 +610,8 @@ class Date
         $second = 0;
 
         $time = mktime($hour, $minute, $second, $month, $day, $year);
-        $name = strftime('%A', $time);
+        $formatter = new \IntlDateFormatter(null);
+        $name = $formatter->format($time);
 
         $encoding = mb_detect_encoding($name);
 

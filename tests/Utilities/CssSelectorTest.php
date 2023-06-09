@@ -10,17 +10,13 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Utilities\CssSelector;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful methods related to CSS selectors
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\CssSelector
- */
+#[CoversClass(CssSelector::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class CssSelectorTest extends BaseTestCase
 {
     /**

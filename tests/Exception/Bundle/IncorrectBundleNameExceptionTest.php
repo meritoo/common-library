@@ -11,17 +11,17 @@ namespace Meritoo\Test\Common\Exception\Bundle;
 use Generator;
 use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of an exception used while name of bundle is incorrect
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Bundle\IncorrectBundleNameException
- */
+#[CoversClass(IncorrectBundleNameException::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
 class IncorrectBundleNameExceptionTest extends BaseTestCase
 {
     public static function provideBundleNameAndMessage(): Generator

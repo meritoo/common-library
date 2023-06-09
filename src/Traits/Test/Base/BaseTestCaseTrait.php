@@ -41,7 +41,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideBooleanValue(): Generator
+    public static function provideBooleanValue(): Generator
     {
         yield [false];
         yield [true];
@@ -52,7 +52,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideDateTimeInstance(): Generator
+    public static function provideDateTimeInstance(): Generator
     {
         yield [new DateTime()];
         yield [new DateTime('yesterday')];
@@ -65,7 +65,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideDateTimeRelativeFormat(): Generator
+    public static function provideDateTimeRelativeFormat(): Generator
     {
         yield ['now'];
         yield ['yesterday'];
@@ -85,7 +85,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideEmptyScalarValue(): Generator
+    public static function provideEmptyScalarValue(): Generator
     {
         yield [''];
         yield ['   '];
@@ -99,7 +99,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideEmptyValue(): Generator
+    public static function provideEmptyValue(): Generator
     {
         yield [''];
         yield ['   '];
@@ -115,7 +115,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideNonScalarValue(): Generator
+    public static function provideNonScalarValue(): Generator
     {
         yield [[]];
         yield [null];
@@ -127,7 +127,7 @@ trait BaseTestCaseTrait
      *
      * @return Generator
      */
-    public function provideNotExistingFilePath(): Generator
+    public static function provideNotExistingFilePath(): Generator
     {
         yield ['lets-test.doc'];
         yield ['lorem/ipsum.jpg'];

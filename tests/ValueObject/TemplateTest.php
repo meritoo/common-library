@@ -12,19 +12,24 @@ use Generator;
 use Meritoo\Common\Exception\ValueObject\Template\InvalidContentException;
 use Meritoo\Common\Exception\ValueObject\Template\MissingPlaceholdersInValuesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Common\Utilities\Regex;
 use Meritoo\Common\ValueObject\Template;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case for the template with placeholders that may be filled by real data
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\ValueObject\Template
- */
+#[CoversClass(Template::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseTypeTestCaseTrait::class)]
+#[UsesClass(Regex::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(MissingPlaceholdersInValuesException::class)]
+#[UsesClass(InvalidContentException::class)]
 class TemplateTest extends BaseTestCase
 {
     public static function provideInvalidContent(): Generator

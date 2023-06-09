@@ -11,17 +11,18 @@ namespace Meritoo\Test\Common\Exception\File;
 use Generator;
 use Meritoo\Common\Exception\File\NotExistingFileException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of an exception used while file with given path does not exist
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\File\NotExistingFileException
- */
+#[CoversClass(NotExistingFileException::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class NotExistingFileExceptionTest extends BaseTestCase
 {
     /**
@@ -44,19 +45,14 @@ class NotExistingFileExceptionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @param string $notExistingFilePath Path of not existing (or not readable) file
-     * @param string $expectedMessage     Expected exception's message
-     *
-     * @dataProvider providePathOfFile
-     */
-    public function testConstructorMessage($notExistingFilePath, $expectedMessage)
+    #[DataProvider('providePathOfFile')]
+    public function testConstructorMessage(string $notExistingFilePath, string $expectedMessage): void
     {
         $exception = NotExistingFileException::create($notExistingFilePath);
         static::assertSame($expectedMessage, $exception->getMessage());
     }
 
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(NotExistingFileException::class, OopVisibilityType::IS_PUBLIC, 3);
     }

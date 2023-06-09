@@ -9,21 +9,25 @@
 namespace Meritoo\Test\Common\Collection;
 
 use Generator;
+use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Collection\Templates;
 use Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Common\ValueObject\Template;
+use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case for the collection/storage of templates
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Collection\Templates
- */
+#[CoversClass(Templates::class)]
+#[UsesClass(BaseCollection::class)]
+#[UsesClass(TemplateNotFoundException::class)]
+#[UsesClass(Template::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(SimpleTestCase::class)]
+#[UsesClass(Reflection::class)]
 class TemplatesTest extends BaseTestCase
 {
     public static function provideArrayWithTemplates(): Generator

@@ -11,19 +11,20 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Collection;
 
 use Generator;
+use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Collection\StringCollection;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * Test case of the collection of strings
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Collection\StringCollection
- */
+#[CoversClass(StringCollection::class)]
+#[CoversClass(BaseType::class)]
+#[CoversClass(Reflection::class)]
+#[CoversClass(SimpleTestCase::class)]
+#[CoversClass(BaseCollection::class)]
 class StringCollectionTest extends BaseTestCase
 {
     public static function provideDifferentTypesOfElements(): Generator

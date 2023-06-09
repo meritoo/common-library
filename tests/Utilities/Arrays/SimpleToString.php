@@ -8,16 +8,9 @@
 
 namespace Meritoo\Test\Common\Utilities\Arrays;
 
-/**
- * Simple class convertible to string.
- * Used for testing the Arrays class.
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @coversNothing
- */
+use PHPUnit\Framework\Attributes\CoversNothing;
+
+#[CoversNothing]
 class SimpleToString
 {
     /**

@@ -12,19 +12,23 @@ use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\Locale;
 use Meritoo\Common\Utilities\Miscellaneous;
+use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Common\Utilities\Regex;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * Test case of the Miscellaneous methods (only static functions)
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Miscellaneous
- */
+#[CoversClass(Miscellaneous::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Regex::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(Locale::class)]
+#[UsesClass(Reflection::class)]
 class MiscellaneousTest extends BaseTestCase
 {
     private $stringSmall;
@@ -116,6 +120,14 @@ class MiscellaneousTest extends BaseTestCase
             ],
             'Lorem \'commodo\' dolor sit \'egestas\'',
         ];
+    }
+
+    public static function provideEmptyPath(): Generator
+    {
+        yield [''];
+        yield ['   '];
+        yield ['0'];
+        yield [[]];
     }
 
     /**
@@ -1060,11 +1072,8 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(implode('\\', $paths2), Miscellaneous::concatenatePaths($paths2));
     }
 
-    /**
-     * @param mixed $emptyPaths Empty paths co concatenate
-     * @dataProvider provideEmptyValue
-     */
-    public function testConcatenatePathsWithEmptyPaths($emptyPaths)
+    #[DataProvider('provideEmptyPath')]
+    public function testConcatenatePathsWithEmptyPaths(array|string $emptyPaths): void
     {
         self::assertEquals('', Miscellaneous::concatenatePaths($emptyPaths));
     }

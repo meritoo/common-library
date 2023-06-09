@@ -10,32 +10,25 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\Composer;
+use Meritoo\Common\Utilities\Miscellaneous;
+use Meritoo\Common\Utilities\Regex;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful Composer-related methods
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Composer
- */
+#[CoversClass(Composer::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Miscellaneous::class)]
+#[UsesClass(Regex::class)]
 class ComposerTest extends BaseTestCase
 {
-    /**
-     * Path of existing composer.json used as source of data for tests
-     *
-     * @var string
-     */
-    private $composerJsonPath;
+    private string $composerJsonPath;
 
-    /**
-     * Provides names and values of existing nodes
-     *
-     * @return Generator
-     */
-    public function getExistingNode(): Generator
+    public static function getExistingNode(): Generator
     {
         yield [
             'name',
@@ -48,17 +41,12 @@ class ComposerTest extends BaseTestCase
         ];
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertHasNoConstructor(Composer::class);
     }
 
-    /**
-     * @param string $nodeName  Name of existing node
-     * @param string $nodeValue Value of existing node
-     *
-     * @dataProvider getExistingNode
-     */
+    #[DataProvider('getExistingNode')]
     public function testGetValueExistingNode(string $nodeName, string $nodeValue): void
     {
         self::assertEquals($nodeValue, Composer::getValue($this->composerJsonPath, $nodeName));
@@ -76,13 +64,10 @@ class ComposerTest extends BaseTestCase
         self::assertNull(Composer::getValue($this->composerJsonPath, 'not_existing_node'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->composerJsonPath = $this->getFilePathForTesting(Composer::FILE_NAME_MAIN);
+        $this->composerJsonPath = self::getFilePathForTesting(Composer::FILE_NAME_MAIN);
     }
 }

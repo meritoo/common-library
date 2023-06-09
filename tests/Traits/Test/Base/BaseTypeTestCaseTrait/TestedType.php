@@ -11,11 +11,9 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
 
 use Meritoo\Common\Type\Base\BaseType;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @internal
- * @coversNothing
- */
+#[CoversNothing]
 class TestedType extends BaseType
 {
     public const A = 'a';

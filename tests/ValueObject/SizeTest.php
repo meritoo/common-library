@@ -11,18 +11,22 @@ namespace Meritoo\Test\Common\ValueObject;
 use Generator;
 use Meritoo\Common\Exception\ValueObject\InvalidSizeDimensionsException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Common\Utilities\Regex;
 use Meritoo\Common\ValueObject\Size;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test of the Size class
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\ValueObject\Size
- */
+#[CoversClass(Size::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseTypeTestCaseTrait::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(Regex::class)]
 class SizeTest extends BaseTestCase
 {
     /**

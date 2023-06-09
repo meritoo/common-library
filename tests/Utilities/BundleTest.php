@@ -11,17 +11,16 @@ namespace Meritoo\Test\Common\Utilities;
 use Generator;
 use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Utilities\Bundle;
+use Meritoo\Common\Utilities\Regex;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful methods for bundle
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Bundle
- */
+#[CoversClass(Bundle::class)]
+#[UsesClass(Regex::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(IncorrectBundleNameException::class)]
 class BundleTest extends BaseTestCase
 {
     /**

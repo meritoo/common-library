@@ -46,7 +46,7 @@ dir.tests = ${project.basedir}/tests
 #
 dir.build = ${project.basedir}/build
 dir.reports = ${dir.build}/reports
-dir.reports.coverage = ${dir.reports}/phpunit-coverage
+dir.reports.coverage = ${dir.reports}/phpunit
 dir.reports.code_sniffer = ${dir.reports}/code_sniffer
 
 # Data directories
@@ -61,7 +61,7 @@ dir.data.temporary = ${dir.data}/tmp
 # Paths of frameworks used to run analysis:
 # - PHPStan
 #
-check.phpstan.command = ./vendor/bin/phpstan analyse
+check.phpstan.command = ./vendor/bin/phpstan analyse --memory-limit=-1
 check.psalm.command = ./vendor/bin/psalm --report=build/reports/psalm.json
 check.php_coveralls.command = ./vendor/bin/php-coveralls --ansi -v
 
@@ -85,5 +85,5 @@ tests.database = ${dir.data.temporary}/database.sqlite
 # - PHPUnit (unit tests)
 # - Infection (mutation tests)
 #
-tests.phpunit.command = ./vendor/bin/phpunit --verbose
-tests.mutation.command = ./vendor/bin/infection --ansi --threads=$(nproc) --coverage=build/reports/infection
+tests.phpunit.command = XDEBUG_MODE=coverage ./vendor/bin/phpunit
+tests.mutation.command = ./vendor/bin/infection --ansi --threads=$(nproc) --no-progress --coverage=build/reports/phpunit/xml

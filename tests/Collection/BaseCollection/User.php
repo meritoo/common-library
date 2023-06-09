@@ -10,15 +10,9 @@ declare(strict_types=1);
 
 namespace Meritoo\Test\Common\Collection\BaseCollection;
 
-/**
- * User. Element of collection.
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @coversNothing
- */
+use PHPUnit\Framework\Attributes\CoversNothing;
+
+#[CoversNothing]
 final class User
 {
     private string $firstName;

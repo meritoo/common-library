@@ -11,19 +11,22 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Collection;
 
 use Generator;
+use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Collection\IntegerCollection;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the collection of integers
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Collection\IntegerCollection
- */
+#[CoversClass(IntegerCollection::class)]
+#[UsesClass(BaseCollection::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(SimpleTestCase::class)]
 class IntegerCollectionTest extends BaseTestCase
 {
     public static function provideDifferentTypesOfElements(): Generator
@@ -74,9 +77,7 @@ class IntegerCollectionTest extends BaseTestCase
         );
     }
 
-    /**
-     * @dataProvider provideDifferentTypesOfElements
-     */
+    #[DataProvider('provideDifferentTypesOfElements')]
     public function testCreateWithDifferentTypesOfElements(
         string $description,
         array $elements,

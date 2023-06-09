@@ -11,16 +11,9 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Collection\BaseCollection;
 
 use Meritoo\Common\Collection\BaseCollection;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * Collection of first names
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @coversNothing
- */
+#[CoversNothing]
 class FirstNamesCollection extends BaseCollection
 {
     protected function isValidType($element): bool

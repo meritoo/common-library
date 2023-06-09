@@ -10,17 +10,15 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\CssSelector\FormCssSelector;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Utilities\Bootstrap4CssSelector;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful methods related to CSS selectors and the Bootstrap4 (front-end component library)
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Bootstrap4CssSelector
- */
+#[CoversClass(Bootstrap4CssSelector::class)]
+#[UsesClass(FormCssSelector::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class Bootstrap4CssSelectorTest extends BaseTestCase
 {
     /**

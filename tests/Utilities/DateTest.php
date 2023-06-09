@@ -11,21 +11,29 @@ namespace Meritoo\Test\Common\Utilities;
 use DateInterval;
 use DateTime;
 use Generator;
+use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\DatePeriod;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\Date;
 use Meritoo\Common\Utilities\Locale;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the Date methods (only static functions)
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Date
- */
+#[CoversClass(Date::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(DatePeriod::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(Locale::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(UnknownTypeException::class)]
+#[UsesClass(UnknownDatePartTypeException::class)]
 class DateTest extends BaseTestCase
 {
     /**
@@ -144,6 +152,7 @@ class DateTest extends BaseTestCase
             1,
             100,
         ];
+
         yield [
             new DateTime('2000-01-01'),
             '1',
@@ -389,10 +398,7 @@ class DateTest extends BaseTestCase
         self::assertMatchesRegularExpression('/\d{2}:\d{2}:\d{2}/', Date::generateRandomTime());
     }
 
-    /**
-     * @param mixed $value Empty value, e.g. ""
-     * @dataProvider provideEmptyScalarValue
-     */
+    #[DataProvider('provideEmptyScalarValue')]
     public function testGenerateRandomTimeEmptyFormat($value): void
     {
         self::assertNull(Date::generateRandomTime($value));
@@ -434,12 +440,7 @@ class DateTest extends BaseTestCase
         self::assertMatchesRegularExpression($pattern, Date::getCurrentDayOfWeekName());
     }
 
-    /**
-     * @param DateTime|string $dateStart The start date
-     * @param DateTime|string $dateEnd   The end date
-     *
-     * @dataProvider provideEmptyDatesForDateDifference
-     */
+    #[DataProvider('provideEmptyDatesForDateDifference')]
     public function testGetDateDifferenceEmptyDates($dateStart, $dateEnd): void
     {
         self::assertNull(Date::getDateDifference($dateStart, $dateEnd));
@@ -726,10 +727,7 @@ class DateTest extends BaseTestCase
         self::assertEquals(30, Date::getDateDifference(new DateTime($dateStart), new DateTime($dateEnd), Date::DATE_DIFFERENCE_UNIT_MINUTES));
     }
 
-    /**
-     * @param bool $value The value which maybe is a date
-     * @dataProvider provideBooleanValue
-     */
+    #[DataProvider('provideBooleanValue')]
     public function testGetDateTimeBoolean($value): void
     {
         self::assertFalse(Date::getDateTime($value));
@@ -745,37 +743,25 @@ class DateTest extends BaseTestCase
         self::assertInstanceOf(DateTime::class, Date::getDateTime('20.03.2015', false, 'd.m.Y'));
     }
 
-    /**
-     * @param mixed $value Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
+    #[DataProvider('provideEmptyValue')]
     public function testGetDateTimeEmptyValue($value): void
     {
         self::assertFalse(Date::getDateTime($value));
     }
 
-    /**
-     * @param mixed $value Incorrect source of DateTime
-     * @dataProvider provideIncorrectDateTimeValue
-     */
+    #[DataProvider('provideIncorrectDateTimeValue')]
     public function testGetDateTimeIncorrectValue($value): void
     {
         self::assertFalse(Date::getDateTime($value));
     }
 
-    /**
-     * @param DateTime $dateTime Instance of DateTime class
-     * @dataProvider provideDateTimeInstance
-     */
-    public function testGetDateTimeInstanceDateTime(DateTime $dateTime): void
+    #[DataProvider('provideDateTimeInstance')]
+    public function testGetDateTimeInstanceDateTime(\DateTime $dateTime): void
     {
         self::assertInstanceOf(DateTime::class, Date::getDateTime($dateTime));
     }
 
-    /**
-     * @param string $relativeFormat Relative / compound format of DateTime
-     * @dataProvider provideDateTimeRelativeFormat
-     */
+    #[DataProvider('provideDateTimeRelativeFormat')]
     public function testGetDateTimeRelativeFormats($relativeFormat): void
     {
         /*
@@ -835,10 +821,7 @@ class DateTest extends BaseTestCase
         self::assertEquals([], Date::getDatesCollection(new DateTime(), -1));
     }
 
-    /**
-     * @param mixed $invalidInterval Empty value, e.g. ""
-     * @dataProvider provideEmptyScalarValue
-     */
+    #[DataProvider('provideEmptyScalarValue')]
     public function testGetDatesCollectionInvalidInterval($invalidInterval): void
     {
         self::assertEquals([], Date::getDatesCollection(new DateTime(), 2, $invalidInterval));
@@ -846,13 +829,7 @@ class DateTest extends BaseTestCase
         self::assertEquals([], Date::getDatesCollection(new DateTime(), 2, '%d'));
     }
 
-    /**
-     * @param int        $period   The period, type of period. One of DatePeriod class constants, e.g.
-     *                             DatePeriod::LAST_WEEK.
-     * @param DatePeriod $expected Expected start and end date for given period
-     *
-     * @dataProvider provideCorrectPeriod
-     */
+    #[DataProvider('provideCorrectPeriod')]
     public function testGetDatesForPeriod($period, DatePeriod $expected): void
     {
         self::assertEquals($expected, Date::getDatesForPeriod($period));
@@ -863,48 +840,27 @@ class DateTest extends BaseTestCase
         self::assertNull(Date::getDatesForPeriod(''));
     }
 
-    /**
-     * @param int $period Incorrect period to verify
-     * @dataProvider provideIncorrectPeriod
-     */
+    #[DataProvider('provideIncorrectPeriod')]
     public function testGetDatesForPeriodUsingIncorrectPeriod($period): void
     {
         self::assertNull(Date::getDatesForPeriod($period));
     }
 
-    /**
-     * @param int $year  The year value
-     * @param int $month The month value
-     * @param int $day   The day value
-     *
-     * @dataProvider provideYearMonthDay
-     */
+    #[DataProvider('provideYearMonthDay')]
     public function testGetDayOfWeek(int $year, int $month, int $day): void
     {
         self::assertMatchesRegularExpression('/^[0-6]{1}$/', (string) Date::getDayOfWeek($year, $month, $day));
     }
 
-    /**
-     * @param int $year  The year value
-     * @param int $month The month value
-     * @param int $day   The day value
-     *
-     * @dataProvider provideIncorrectYearMonthDay
-     */
+    #[DataProvider('provideIncorrectYearMonthDay')]
     public function testGetDayOfWeekIncorrectValues(int $year, int $month, int $day): void
     {
         $this->expectException(UnknownDatePartTypeException::class);
         self::assertEmpty(Date::getDayOfWeek($year, $month, $day));
     }
 
-    /**
-     * @param DateTime $startDate The start date. Start of the random date.
-     * @param int      $start     Start of random partition
-     * @param int      $end       End of random partition
-     *
-     * @dataProvider provideDataOfRandomDate
-     */
-    public function testGetRandomDate(DateTime $startDate, $start, $end): void
+    #[DataProvider('provideDataOfRandomDate')]
+    public function testGetRandomDate(\DateTime $startDate, $start, $end): void
     {
         $randomDate = Date::getRandomDate($startDate, $start, $end);
 
@@ -917,14 +873,8 @@ class DateTest extends BaseTestCase
         self::assertTrue($randomDate >= $intervalMinDate && $randomDate <= $intervalMaxDate);
     }
 
-    /**
-     * @param DateTime $startDate The start date. Start of the random date.
-     * @param int      $start     Start of random partition
-     * @param int      $end       End of random partition
-     *
-     * @dataProvider provideDataOfRandomDateIncorrectEnd
-     */
-    public function testGetRandomDateIncorrectEnd(DateTime $startDate, $start, $end): void
+    #[DataProvider('provideDataOfRandomDateIncorrectEnd')]
+    public function testGetRandomDateIncorrectEnd(\DateTime $startDate, $start, $end): void
     {
         $randomDate = Date::getRandomDate($startDate, $start, $end);
 
@@ -950,28 +900,19 @@ class DateTest extends BaseTestCase
         self::assertTrue($randomDate >= $intervalMinDate && $randomDate <= $intervalMaxDate);
     }
 
-    /**
-     * @param mixed $value Empty value, e.g. ""
-     * @dataProvider provideEmptyValue
-     */
+    #[DataProvider('provideEmptyValue')]
     public function testIsValidDateEmptyDates($value): void
     {
         self::assertFalse(Date::isValidDate($value));
     }
 
-    /**
-     * @param mixed $value Empty source of date format
-     * @dataProvider provideEmptyScalarValue
-     */
+    #[DataProvider('provideEmptyScalarValue')]
     public function testIsValidDateFormatEmptyFormats($value): void
     {
         self::assertFalse(Date::isValidDateFormat($value));
     }
 
-    /**
-     * @param mixed $format Invalid format of date
-     * @dataProvider provideInvalidDateFormats
-     */
+    #[DataProvider('provideInvalidDateFormats')]
     public function testIsValidDateFormatInvalidFormats($format): void
     {
         self::assertFalse(Date::isValidDateFormat($format));
@@ -990,10 +931,7 @@ class DateTest extends BaseTestCase
         self::assertTrue(Date::isValidDateFormat('Y/m/d H:i:s'));
     }
 
-    /**
-     * @param mixed $value Incorrect source of DateTime
-     * @dataProvider provideIncorrectDateTimeValue
-     */
+    #[DataProvider('provideIncorrectDateTimeValue')]
     public function testIsValidDateIncorrectDates($value): void
     {
         self::assertFalse(Date::isValidDate($value));

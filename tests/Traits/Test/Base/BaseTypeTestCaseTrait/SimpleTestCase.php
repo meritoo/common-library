@@ -13,12 +13,10 @@ namespace Meritoo\Test\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
 use Generator;
 use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
 use Meritoo\Common\Type\Base\BaseType;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- * @coversNothing
- */
+#[CoversNothing]
 class SimpleTestCase extends TestCase
 {
     use BaseTypeTestCaseTrait;

@@ -9,26 +9,29 @@
 namespace Meritoo\Test\Common\Exception\Date;
 
 use Generator;
+use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\DatePartType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Arrays;
+use Meritoo\Common\Utilities\Reflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of an exception used while type of date part, e.g. "year", is unknown
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Exception\Type\UnknownDatePartTypeException
- */
+#[CoversClass(UnknownDatePartTypeException::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(UnknownTypeException::class)]
 class UnknownDatePartTypeExceptionTest extends BaseTestCase
 {
     /**
      * Provides type of date part, incorrect value and expected exception's message
-     *
-     * @return Generator
      */
     public static function provideDatePartAndValue(): Generator
     {
@@ -54,19 +57,13 @@ class UnknownDatePartTypeExceptionTest extends BaseTestCase
         ];
     }
 
-    public function testConstructorVisibilityAndArguments()
+    public function testConstructorVisibilityAndArguments(): void
     {
         static::assertConstructorVisibilityAndArguments(UnknownDatePartTypeException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
-    /**
-     * @param string $unknownDatePart Type of date part, e.g. "year". One of DatePartType class constants.
-     * @param string $value           Incorrect value
-     * @param string $expectedMessage Expected exception's message
-     *
-     * @dataProvider provideDatePartAndValue
-     */
-    public function testMessage($unknownDatePart, $value, $expectedMessage)
+    #[DataProvider('provideDatePartAndValue')]
+    public function testMessage(string $unknownDatePart, string $value, string $expectedMessage): void
     {
         $exception = UnknownDatePartTypeException::createException($unknownDatePart, $value);
         static::assertSame($expectedMessage, $exception->getMessage());

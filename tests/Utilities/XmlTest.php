@@ -9,24 +9,20 @@
 namespace Meritoo\Test\Common\Utilities;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Utilities\Xml;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use SimpleXMLElement;
 
-/**
- * Test case of the useful XML-related methods (only static functions)
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Xml
- */
+#[CoversClass(Xml::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class XmlTest extends BaseTestCase
 {
-    private $simpleXml;
-    private $advancedXml;
+    private string $simpleXml;
+    private string $advancedXml;
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertHasNoConstructor(Xml::class);
     }

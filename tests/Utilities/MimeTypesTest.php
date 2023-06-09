@@ -10,17 +10,15 @@ namespace Meritoo\Test\Common\Utilities;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\MimeTypes;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the useful methods for mime types of files
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\MimeTypes
- */
+#[CoversClass(MimeTypes::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(Arrays::class)]
 class MimeTypesTest extends BaseTestCase
 {
     /**

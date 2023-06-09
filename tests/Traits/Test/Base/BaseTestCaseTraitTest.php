@@ -11,25 +11,30 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Traits\Test\Base;
 
 use DateTime;
+use Meritoo\Common\Exception\Base\UnknownTypeException;
 use Meritoo\Common\Exception\Reflection\ClassWithoutConstructorException;
 use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Common\Utilities\Regex;
 use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use ReflectionMethod;
 use stdClass;
 
-/**
- * Test case of the trait for the base test case
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait
- */
+#[CoversClass(BaseTestCaseTrait::class)]
+#[UsesClass(ClassWithoutConstructorException::class)]
+#[UsesClass(UnknownTypeException::class)]
+#[UsesClass(UnknownOopVisibilityTypeException::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(Regex::class)]
 class BaseTestCaseTraitTest extends BaseTestCase
 {
     use BaseTestCaseTrait;
@@ -65,14 +70,6 @@ class BaseTestCaseTraitTest extends BaseTestCase
     {
         $method = new ReflectionMethod(SimpleTestCase::class, 'thePrivateMethod');
         static::assertMethodVisibility($method, OopVisibilityType::IS_PRIVATE);
-    }
-
-    public function testSetTestsDataDirPath(): void
-    {
-        $this->instance->changeTestsDataDirPath();
-
-        $value = Reflection::getPropertyValue($this->instance, 'testsDataDirPath');
-        self::assertSame('just testing', $value);
     }
 
     public function testProvideBooleanValue(): void
@@ -199,6 +196,14 @@ class BaseTestCaseTraitTest extends BaseTestCase
         foreach ($paths as $index => $path) {
             static::assertSame($expected[$index], $path);
         }
+    }
+
+    public function testSetTestsDataDirPath(): void
+    {
+        $this->instance->changeTestsDataDirPath();
+
+        $value = Reflection::getPropertyValue($this->instance, 'testsDataDirPath');
+        self::assertSame('just testing', $value);
     }
 
     protected function setUp(): void

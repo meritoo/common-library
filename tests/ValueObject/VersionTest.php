@@ -10,19 +10,20 @@ namespace Meritoo\Test\Common\ValueObject;
 
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Common\Utilities\Regex;
 use Meritoo\Common\ValueObject\Version;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case for the version of software
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\ValueObject\Version
- */
+#[CoversClass(Version::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(Regex::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
 class VersionTest extends BaseTestCase
 {
     /**

@@ -11,18 +11,23 @@ namespace Meritoo\Test\Common\Test\Base;
 use DateTime;
 use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\Base\BaseType;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Arrays;
 use Meritoo\Common\Utilities\GeneratorUtility;
+use Meritoo\Common\Utilities\Miscellaneous;
+use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Common\Utilities\Regex;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * Test case of the base test case with common methods and data providers
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Test\Base\BaseTestCase
- */
+#[CoversClass(BaseTestCase::class)]
+#[UsesClass(BaseType::class)]
+#[UsesClass(Reflection::class)]
+#[UsesClass(GeneratorUtility::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Miscellaneous::class)]
+#[UsesClass(Regex::class)]
 class BaseTestCaseTest extends BaseTestCase
 {
     private SimpleTestCase $instance;

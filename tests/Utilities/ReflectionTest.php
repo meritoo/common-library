@@ -17,7 +17,12 @@ use Meritoo\Common\Exception\Reflection\MissingChildClassesException;
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait;
+use Meritoo\Common\Utilities\Arrays;
+use Meritoo\Common\Utilities\Miscellaneous;
 use Meritoo\Common\Utilities\Reflection;
+use Meritoo\Common\Utilities\Regex;
 use Meritoo\Test\Common\Utilities\Reflection\A;
 use Meritoo\Test\Common\Utilities\Reflection\B;
 use Meritoo\Test\Common\Utilities\Reflection\C;
@@ -29,18 +34,22 @@ use Meritoo\Test\Common\Utilities\Reflection\H;
 use Meritoo\Test\Common\Utilities\Reflection\I;
 use Meritoo\Test\Common\Utilities\Reflection\J;
 use Meritoo\Test\Common\Utilities\Reflection\ObjectsCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use ReflectionProperty;
 use stdClass;
 
-/**
- * Test case of the useful reflection methods
- *
- * @author    Meritoo <github@meritoo.pl>
- * @copyright Meritoo <http://www.meritoo.pl>
- *
- * @internal
- * @covers    \Meritoo\Common\Utilities\Reflection
- */
+#[CoversClass(Reflection::class)]
+#[UsesClass(Arrays::class)]
+#[UsesClass(Miscellaneous::class)]
+#[UsesClass(Regex::class)]
+#[UsesClass(BaseCollection::class)]
+#[UsesClass(BaseTypeTestCaseTrait::class)]
+#[UsesClass(BaseTestCaseTrait::class)]
+#[UsesClass(CannotResolveClassNameException::class)]
+#[UsesClass(TooManyChildClassesException::class)]
+#[UsesClass(MissingChildClassesException::class)]
+#[UsesClass(NotExistingPropertyException::class)]
 class ReflectionTest extends BaseTestCase
 {
     public static function provideClassNameOfExistingClass(): Generator
