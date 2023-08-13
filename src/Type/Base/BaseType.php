@@ -30,7 +30,7 @@ abstract class BaseType
         return $this->all;
     }
 
-    public static function isCorrectType(?string $type): bool
+    public static function isCorrectType(null|string|int $type): bool
     {
         return in_array($type, (new static())->getAll(), true);
     }
