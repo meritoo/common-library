@@ -42,6 +42,6 @@ class CannotResolveClassNameException extends Exception
         $template = 'Name of %s from given \'%s\'%s cannot be resolved. Is there everything ok?';
         $message = sprintf($template, $forWho, gettype($source), $value);
 
-        return new static($message);
+        return new self($message);
     }
 }

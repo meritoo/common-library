@@ -29,6 +29,6 @@ class NotExistingFileException extends Exception
         $template = 'File with path \'%s\' does not exist (or is not readable). Did you provide path of proper file?';
         $message = sprintf($template, $notExistingFilePath);
 
-        return new static($message);
+        return new self($message);
     }
 }

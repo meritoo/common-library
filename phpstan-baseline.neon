@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Exception/Base/UnknownTypeException.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Type/Base/BaseType.php
+
+		-
+			message: "#^Undefined variable\\: \\$isEqual$#"
+			count: 1
+			path: src/Utilities/Regex.php

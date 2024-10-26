@@ -5,6 +5,8 @@ Common and useful classes, methods, exceptions etc.
 # 1.2.3
 
 1. Support integers by the `BaseType::isCorrectType()` method
+2. Add PHPStan to GitHub Actions
+3. Fix PHPStan errors - level `1`
 
 # 1.2.2
 

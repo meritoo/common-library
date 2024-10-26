@@ -65,7 +65,7 @@ class ArraysTest extends BaseTestCase
                 [
                     'x' => [
                         0,
-                        '\'0\'',
+                        'a' => '\'0\'',
                         1 => '\'1\'',
                         2 => 2,
                     ],
@@ -86,7 +86,7 @@ class ArraysTest extends BaseTestCase
                 [
                     'x' => [
                         0,
-                        '0',
+                        'a' => '0',
                         1 => '1',
                         2 => 2,
                     ],

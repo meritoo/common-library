@@ -35,6 +35,6 @@ class TooManyChildClassesException extends Exception
         $parentClassName = Reflection::getClassName($parentClass) ?? '[unknown class]';
         $message = sprintf($template, $parentClassName, implode("\n- ", $childClasses), $parentClassName);
 
-        return new static($message);
+        return new self($message);
     }
 }
