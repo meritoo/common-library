@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  Validate:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -59,7 +59,7 @@ jobs:
           php_version: ${{ matrix.php-versions }}
           php_extensions: intl
           dev: no
-  phpstan:
+  PHPStan:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -67,8 +67,8 @@ jobs:
     env:
       extensions: dom, fileinfo, intl, json, pcre, simplexml
       key: cache-v1 # can be any string, change to clear the extension cache.
-    needs: [ validate ]
-    if: needs.validate.result == 'success'
+    needs: [ Validate ]
+    if: needs.Validate.result == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -91,7 +91,7 @@ jobs:
           php_extensions: intl
       - name: Analyse code with PHPStan
         run: vendor/bin/phpstan analyse --memory-limit 256M
-  phpunit:
+  PHPUnit:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -99,8 +99,8 @@ jobs:
     env:
       extensions: dom, fileinfo, intl, json, pcre, simplexml
       key: cache-v1 # can be any string, change to clear the extension cache.
-    needs: [ phpstan ]
-    if: needs.phpstan.result == 'success'
+    needs: [ PHPStan ]
+    if: needs.PHPStan.result == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
