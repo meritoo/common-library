@@ -2,11 +2,28 @@
 
 Common and useful classes, methods, exceptions etc.
 
-# 1.2.3
+# 1.3.0
 
 1. Support integers by the `BaseType::isCorrectType()` method
 2. Add PHPStan to GitHub Actions
 3. Fix PHPStan errors - level `1`
+4. Make the `BaseType::isCorrectType()` static method non-static
+
+   Before:
+
+   ```php
+   if (DatePartType::isCorrectType('day')) {
+       // ...
+   }
+   ```
+
+   After:
+
+   ```php
+   if ((new DatePartType())->isCorrectType('day')) {
+       // ...
+   }
+   ```
 
 # 1.2.2
 

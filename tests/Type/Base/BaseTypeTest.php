@@ -202,7 +202,7 @@ class BaseTypeTest extends BaseTestCase
      */
     public function testIsCorrectTypeUsingTestEmptyType(null|string|int $toVerifyType, bool $isCorrect): void
     {
-        self::assertEquals($isCorrect, TestEmptyType::isCorrectType($toVerifyType));
+        self::assertEquals($isCorrect, (new TestEmptyType())->isCorrectType($toVerifyType));
     }
 
     /**
@@ -213,7 +213,7 @@ class BaseTypeTest extends BaseTestCase
      */
     public function testIsCorrectTypeUsingTestType(null|string|int $toVerifyType, bool $isCorrect): void
     {
-        self::assertEquals($isCorrect, TestType::isCorrectType($toVerifyType));
+        self::assertEquals($isCorrect, (new TestType())->isCorrectType($toVerifyType));
     }
 }
 

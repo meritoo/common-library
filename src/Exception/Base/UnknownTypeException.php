@@ -28,15 +28,14 @@ abstract class UnknownTypeException extends Exception
      * @param string   $typeName     Name of the something
      * @return UnknownTypeException
      */
-    protected static function create($unknownType, BaseType $typeInstance, string $typeName): UnknownTypeException
+    protected static function createMessage($unknownType, BaseType $typeInstance, string $typeName): string
     {
         $template = 'The \'%s\' type of %s is unknown. Probably doesn\'t exist or there is a typo. You should use one'
             .' of these types: %s.';
 
         $allTypes = $typeInstance->getAll();
         $types = Arrays::values2string($allTypes, '', ', ') ?? '[types not found]';
-        $message = sprintf($template, $unknownType, $typeName, $types);
 
-        return new static($message);
+        return sprintf($template, $unknownType, $typeName, $types);
     }
 }
