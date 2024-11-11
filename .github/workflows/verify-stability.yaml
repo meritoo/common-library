@@ -59,7 +59,7 @@ jobs:
           php_version: ${{ matrix.php-versions }}
           php_extensions: intl
           dev: no
-  phpunit:
+  phpstan:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -69,6 +69,38 @@ jobs:
       key: cache-v1 # can be any string, change to clear the extension cache.
     needs: [ validate ]
     if: needs.validate.result == 'success'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+      - name: Install Composer dependencies
+        uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php-versions }}
+          php_extensions: intl
+      - name: Analyse code with PHPStan
+        run: vendor/bin/phpstan analyse --memory-limit 256M
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: [ '8.0', '8.1', '8.2' ]
+    env:
+      extensions: dom, fileinfo, intl, json, pcre, simplexml
+      key: cache-v1 # can be any string, change to clear the extension cache.
+    needs: [ phpstan ]
+    if: needs.phpstan.result == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
