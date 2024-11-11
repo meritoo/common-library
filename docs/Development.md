@@ -148,6 +148,20 @@ Metrics:
 * `build/reports/infection/infection-log.txt`
 * `build/reports/infection/summary-log.txt`
 
+# PHPStan
+
+### Running analysis
+
+```bash
+docker-compose exec php vendor/bin/phpstan analyse --memory-limit 256M
+```
+
+### Generating the baseline file
+
+```bash
+docker-compose exec php vendor/bin/phpstan --generate-baseline
+```
+
 # Other
 
 Rebuild project and run tests by running command:
