@@ -4,7 +4,7 @@
 
 ### Fix PHPStan errors
 
-- [ ] `Undefined variable: $isEqual` - replace `eval()` with callable
+- [x] `Undefined variable: $isEqual` - replace `eval()` with callable
   in [src/Utilities/Regex.php:151](./src/Utilities/Regex.php)
 - [x] `Unsafe usage of new static()` - chose one
   of [possible solutions](https://phpstan.org/blog/solving-phpstan-error-unsafe-usage-of-new-static) -
@@ -12,7 +12,7 @@
 - [x] `Unsafe usage of new static()` - chose one
   of [possible solutions](https://phpstan.org/blog/solving-phpstan-error-unsafe-usage-of-new-static) -
   in [src/Exception/Base/UnknownTypeException.php:40](./src/Exception/Base/UnknownTypeException.php)
-- [ ] Clean and remove the [phpstan-baseline.neon](phpstan-baseline.neon) file finally
+- [x] Clean and remove the [phpstan-baseline.neon](phpstan-baseline.neon) file finally
 
 ### Refactoring
 

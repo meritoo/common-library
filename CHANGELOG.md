@@ -25,6 +25,22 @@ Common and useful classes, methods, exceptions etc.
    }
    ```
 
+5. Change of `Meritoo\Common\Utilities\Regex::arrayFilter()` method signature:
+   1. 3rd argument, the filter, is now a `\Closure|string`. Previously it was `string`.
+   2. 4th argument has been removed (not necessary).
+
+   Before:
+
+   ```php
+   public static function arrayFilter(array $array, string $arrayColumnKey, string $filterExpression, bool $itsRegularExpression = false): array
+   ```
+
+   After:
+
+   ```php
+   public static function arrayFilter(array $array, string $arrayColumnKey, \Closure|string $filter): array
+   ```
+
 # 1.2.2
 
 1. Refactor the `Reflection` class for PHP `8.0`+
