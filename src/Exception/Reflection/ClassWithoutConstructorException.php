@@ -29,6 +29,6 @@ class ClassWithoutConstructorException extends Exception
         $template = 'Oops, class \'%s\' hasn\'t constructor. Did you use proper class?';
         $message = sprintf($template, $className);
 
-        return new static($message);
+        return new self($message);
     }
 }

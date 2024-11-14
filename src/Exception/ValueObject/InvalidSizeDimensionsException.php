@@ -30,6 +30,6 @@ class InvalidSizeDimensionsException extends Exception
         $template = 'Dimensions of size should be positive, but they are not: %d, %d. Is there everything ok?';
         $message = sprintf($template, $width, $height);
 
-        return new static($message);
+        return new self($message);
     }
 }

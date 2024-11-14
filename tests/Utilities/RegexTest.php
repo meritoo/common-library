@@ -8,7 +8,6 @@
 
 namespace Meritoo\Test\Common\Utilities;
 
-use Generator;
 use Meritoo\Common\Exception\Regex\IncorrectColorHexLengthException;
 use Meritoo\Common\Exception\Regex\InvalidColorHexValueException;
 use Meritoo\Common\Test\Base\BaseTestCase;
@@ -32,9 +31,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides value to verify if it is a binary value
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideBinaryValue()
+    public function provideBinaryValue(): \Generator
     {
         $file1Path = $this->getFilePathForTesting('lorem-ipsum.txt');
         $file2Path = $this->getFilePathForTesting('minion.jpg');
@@ -78,9 +77,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides name of bundle and information if it's valid name
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideBundleName()
+    public function provideBundleName(): \Generator
     {
         yield [
             'something',
@@ -121,9 +120,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides value of color
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideColor()
+    public function provideColor(): \Generator
     {
         yield [
             '#1b0',
@@ -154,9 +153,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides empty non color-related value
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideColorEmptyValue()
+    public function provideColorEmptyValue(): \Generator
     {
         yield [
             '',
@@ -178,9 +177,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides value of color with incorrect length
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideColorIncorrectLength()
+    public function provideColorIncorrectLength(): \Generator
     {
         yield [
             '12',
@@ -210,9 +209,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides invalid value of color
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideColorInvalidValue()
+    public function provideColorInvalidValue(): \Generator
     {
         yield [
             '#qwerty',
@@ -226,9 +225,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides e-mail and information if it's valid
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideEmail()
+    public function provideEmail(): \Generator
     {
         yield [
             '1',
@@ -264,9 +263,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides empty non money-related value
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideEmptyNonMoneyValue()
+    public function provideEmptyNonMoneyValue(): \Generator
     {
         yield [''];
         yield ['   '];
@@ -275,7 +274,7 @@ class RegexTest extends BaseTestCase
         yield [[]];
     }
 
-    public function provideFileName(): ?Generator
+    public function provideFileName(): \Generator
     {
         yield [
             'An empty string',
@@ -311,9 +310,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides html attribute and information if it's valid
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideHtmlAttribute()
+    public function provideHtmlAttribute(): \Generator
     {
         yield [
             'abc = def',
@@ -349,9 +348,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides html attribute and information if attributes are valid
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideHtmlAttributes()
+    public function provideHtmlAttributes(): \Generator
     {
         yield [
             'abc = def',
@@ -397,9 +396,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides money-related value and information if the value is valid
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideMoneyValue()
+    public function provideMoneyValue(): \Generator
     {
         yield [
             'abc',
@@ -495,9 +494,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides pattern and array with keys that should match that pattern
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function providePatternForArrayKeys()
+    public function providePatternForArrayKeys(): \Generator
     {
         yield [
             '/\d/',
@@ -537,9 +536,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides pattern and array with values that should match that pattern
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function providePatternForArrayValues()
+    public function providePatternForArrayValues(): \Generator
     {
         yield [
             '/\d/',
@@ -580,9 +579,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides patterns and subject for the pregMultiMatch() method
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function providePatternsAndSubjectForPregMultiMatch()
+    public function providePatternsAndSubjectForPregMultiMatch(): \Generator
     {
         yield [
             '',
@@ -630,9 +629,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides patterns and subject for the pregMultiMatch() method when must match all patterns
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function providePatternsAndSubjectForPregMultiMatchWhenMustMatchAllPatterns()
+    public function providePatternsAndSubjectForPregMultiMatchWhenMustMatchAllPatterns(): \Generator
     {
         yield [
             '',
@@ -680,9 +679,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides phone number and information if it's valid
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function providePhoneNumber()
+    public function providePhoneNumber(): \Generator
     {
         yield [
             'abc',
@@ -711,11 +710,11 @@ class RegexTest extends BaseTestCase
     }
 
     /**
-     * Provides regular expression for array filtering and the array
+     * Provides regular expression for array filtering
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideRegularExpressionForArrayFiltering()
+    public function provideRegularExpressionForArrayFiltering(): \Generator
     {
         yield [
             [],
@@ -876,20 +875,20 @@ class RegexTest extends BaseTestCase
     }
 
     /**
-     * Provides simple compare expression for array filtering and the array
+     * Provides Closure for array filtering
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideSimpleExpressionForArrayFiltering()
+    public function provideClosureForArrayFiltering(): \Generator
     {
-        yield [
+        yield 'an empty array' => [
             [],
             'id',
-            ' == 2',
+            fn($value) => $value == 2,
             [],
         ];
 
-        yield [
+        yield 'not existing column' => [
             [
                 [
                     'id' => 1,
@@ -911,7 +910,7 @@ class RegexTest extends BaseTestCase
                 ],
             ],
             'birth_date',
-            ' == 2',
+            fn($value) => $value == 2,
             [
                 [
                     'id' => 1,
@@ -934,7 +933,7 @@ class RegexTest extends BaseTestCase
             ],
         ];
 
-        yield [
+        yield 'non-strict equals 2' => [
             [
                 [
                     'id' => 1,
@@ -943,7 +942,7 @@ class RegexTest extends BaseTestCase
                     'is_active' => true,
                 ],
                 [
-                    'id' => 2,
+                    'id' => '2',
                     'first_name' => 'George',
                     'last_name' => 'Brown',
                     'is_active' => true,
@@ -954,20 +953,71 @@ class RegexTest extends BaseTestCase
                     'last_name' => 'Green',
                     'is_active' => false,
                 ],
+                [
+                    'id' => 2,
+                    'first_name' => 'Kate',
+                    'last_name' => 'Ryan',
+                    'is_active' => false,
+                ],
             ],
             'id',
-            ' == 2',
+            fn($value) => $value == 2,
             [
                 1 => [
-                    'id' => 2,
+                    'id' => '2',
                     'first_name' => 'George',
                     'last_name' => 'Brown',
                     'is_active' => true,
                 ],
+                3 => [
+                    'id' => 2,
+                    'first_name' => 'Kate',
+                    'last_name' => 'Ryan',
+                    'is_active' => false,
+                ],
             ],
         ];
 
-        yield [
+        yield 'strict equals 2' => [
+            [
+                [
+                    'id' => 1,
+                    'first_name' => 'Jane',
+                    'last_name' => 'Scott',
+                    'is_active' => true,
+                ],
+                [
+                    'id' => '2',
+                    'first_name' => 'George',
+                    'last_name' => 'Brown',
+                    'is_active' => true,
+                ],
+                [
+                    'id' => 3,
+                    'first_name' => 'Mike',
+                    'last_name' => 'Green',
+                    'is_active' => false,
+                ],
+                [
+                    'id' => 2,
+                    'first_name' => 'Kate',
+                    'last_name' => 'Ryan',
+                    'is_active' => false,
+                ],
+            ],
+            'id',
+            fn($value) => $value === 2,
+            [
+                3 => [
+                    'id' => 2,
+                    'first_name' => 'Kate',
+                    'last_name' => 'Ryan',
+                    'is_active' => false,
+                ],
+            ],
+        ];
+
+        yield 'greater than or equals 2' => [
             [
                 [
                     'id' => 1,
@@ -989,7 +1039,7 @@ class RegexTest extends BaseTestCase
                 ],
             ],
             'id',
-            ' >= 2',
+            fn($value) => $value >= 2,
             [
                 1 => [
                     'id' => 2,
@@ -1006,7 +1056,7 @@ class RegexTest extends BaseTestCase
             ],
         ];
 
-        yield [
+        yield 'strict not equals `true`' => [
             [
                 [
                     'id' => 1,
@@ -1028,7 +1078,7 @@ class RegexTest extends BaseTestCase
                 ],
             ],
             'is_active',
-            ' !== true',
+            fn($value) => $value !== true,
             [
                 2 => [
                     'id' => 3,
@@ -1039,7 +1089,40 @@ class RegexTest extends BaseTestCase
             ],
         ];
 
-        yield [
+        yield 'not `true`' => [
+            [
+                [
+                    'id' => 1,
+                    'first_name' => 'Jane',
+                    'last_name' => 'Scott',
+                    'is_active' => true,
+                ],
+                [
+                    'id' => 2,
+                    'first_name' => 'George',
+                    'last_name' => 'Brown',
+                    'is_active' => true,
+                ],
+                [
+                    'id' => 3,
+                    'first_name' => 'Mike',
+                    'last_name' => 'Green',
+                    'is_active' => false,
+                ],
+            ],
+            'is_active',
+            fn($value) => !$value,
+            [
+                2 => [
+                    'id' => 3,
+                    'first_name' => 'Mike',
+                    'last_name' => 'Green',
+                    'is_active' => false,
+                ],
+            ],
+        ];
+
+        yield 'equals `Mike`' => [
             [
                 [
                     'id' => 1,
@@ -1061,7 +1144,7 @@ class RegexTest extends BaseTestCase
                 ],
             ],
             'first_name',
-            ' == \'Mike\'',
+            fn($value) => $value === 'Mike',
             [
                 2 => [
                     'id' => 3,
@@ -1258,7 +1341,7 @@ class RegexTest extends BaseTestCase
         ];
     }
 
-    public function provideStringToClearBeginningSlash(): ?Generator
+    public function provideStringToClearBeginningSlash(): \Generator
     {
         yield [
             '',
@@ -1361,7 +1444,7 @@ class RegexTest extends BaseTestCase
         ];
     }
 
-    public function provideStringToClearEndingSlash(): ?Generator
+    public function provideStringToClearEndingSlash(): \Generator
     {
         yield [
             '',
@@ -1467,9 +1550,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provides tax ID and information if it's valid
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideTaxId()
+    public function provideTaxId(): \Generator
     {
         yield [
             '123',
@@ -1512,9 +1595,9 @@ class RegexTest extends BaseTestCase
     /**
      * Provide value to create slug
      *
-     * @return Generator
+     * @return \Generator
      */
-    public function provideValueSlug()
+    public function provideValueSlug(): \Generator
     {
         yield [
             '',
@@ -1602,30 +1685,24 @@ class RegexTest extends BaseTestCase
         self::assertFalse(Regex::areValidHtmlAttributes($emptyValue));
     }
 
-    /**
-     * @param array  $array            The array that should be filtered
-     * @param string $arrayColumnKey   Column name
-     * @param string $filterExpression Regular expression, e.g. "/\d+/" or "/[a-z]+[,;]{2,}/"
-     * @param array  $expected         Expected array
-     *
-     * @dataProvider provideRegularExpressionForArrayFiltering
-     */
-    public function testArrayFilterUsingRegularExpression($array, $arrayColumnKey, $filterExpression, $expected)
-    {
-        self::assertEquals($expected, Regex::arrayFilter($array, $arrayColumnKey, $filterExpression, true));
+    /** @dataProvider provideRegularExpressionForArrayFiltering */
+    public function testArrayFilterUsingRegularExpression(
+        array $array,
+        string $arrayColumnKey,
+        string $filterExpression,
+        array $expected,
+    ): void {
+        self::assertEquals($expected, Regex::arrayFilter($array, $arrayColumnKey, $filterExpression));
     }
 
-    /**
-     * @param array  $array            The array that should be filtered
-     * @param string $arrayColumnKey   Column name
-     * @param string $filterExpression Simple filter expression, e.g. "== 2" or "!= \'home\'"
-     * @param array  $expected         Expected array
-     *
-     * @dataProvider provideSimpleExpressionForArrayFiltering
-     */
-    public function testArrayFilterUsingSimpleExpression($array, $arrayColumnKey, $filterExpression, $expected)
-    {
-        self::assertEquals($expected, Regex::arrayFilter($array, $arrayColumnKey, $filterExpression));
+    /** @dataProvider provideClosureForArrayFiltering */
+    public function testArrayFilterUsingSimpleExpression(
+        array $array,
+        string $arrayColumnKey,
+        \Closure $filter,
+        array $expected,
+    ): void {
+        self::assertEquals($expected, Regex::arrayFilter($array, $arrayColumnKey, $filter));
     }
 
     public function testCamelCase2humanReadable()

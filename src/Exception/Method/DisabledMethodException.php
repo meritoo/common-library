@@ -35,6 +35,6 @@ class DisabledMethodException extends Exception
             $message = sprintf($template, $message, $alternativeMethod);
         }
 
-        return new static($message);
+        return new self($message);
     }
 }

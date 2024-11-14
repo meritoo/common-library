@@ -28,6 +28,6 @@ class InvalidUrlException extends Exception
     {
         $message = sprintf('Url \'%s\' is invalid. Is there everything ok?', $url);
 
-        return new static($message);
+        return new self($message);
     }
 }

@@ -31,6 +31,6 @@ class TemplateNotFoundException extends Exception
         $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
         $message = sprintf($template, $index);
 
-        return new static($message);
+        return new self($message);
     }
 }

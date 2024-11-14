@@ -205,7 +205,7 @@ trait BaseTestCaseTrait
     protected static function assertMethodVisibility(ReflectionMethod $method, string $visibilityType): void
     {
         // Type of visibility is not correct?
-        if (!OopVisibilityType::isCorrectType($visibilityType)) {
+        if (!(new OopVisibilityType())->isCorrectType($visibilityType)) {
             throw UnknownOopVisibilityTypeException::createException($visibilityType);
         }
 

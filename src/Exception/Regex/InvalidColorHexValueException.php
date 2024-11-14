@@ -28,6 +28,6 @@ class InvalidColorHexValueException extends Exception
     {
         $message = sprintf('Hexadecimal value of color \'%s\' is invalid. Is there everything ok?', $color);
 
-        return new static($message);
+        return new self($message);
     }
 }
