@@ -29,6 +29,6 @@ class EmptyFileException extends Exception
         $template = 'File with path \'%s\' is empty (has no content). Did you provide path of proper file?';
         $message = sprintf($template, $emptyFilePath);
 
-        return new static($message);
+        return new self($message);
     }
 }

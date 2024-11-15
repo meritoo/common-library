@@ -67,7 +67,7 @@ class Version
         $minorPart = (int) $version[1];
         $patchPart = (int) $version[2];
 
-        return new static($majorPart, $minorPart, $patchPart);
+        return new self($majorPart, $minorPart, $patchPart);
     }
 
     /**
@@ -109,7 +109,7 @@ class Version
         $minorPart = (int) $matches[2];
         $patchPart = (int) $matches[3];
 
-        return new static($majorPart, $minorPart, $patchPart);
+        return new self($majorPart, $minorPart, $patchPart);
     }
 
     public function getMajorPart(): int

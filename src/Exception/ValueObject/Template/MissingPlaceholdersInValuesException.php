@@ -31,6 +31,6 @@ class MissingPlaceholdersInValuesException extends Exception
             .' required values?';
         $message = sprintf($template, $content, implode(', ', $missingPlaceholders));
 
-        return new static($message);
+        return new self($message);
     }
 }

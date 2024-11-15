@@ -28,6 +28,6 @@ class InvalidHtmlAttributesException extends Exception
     {
         $message = sprintf('HTML attributes \'%s\' are invalid. Is there everything ok?', $htmlAttributes);
 
-        return new static($message);
+        return new self($message);
     }
 }

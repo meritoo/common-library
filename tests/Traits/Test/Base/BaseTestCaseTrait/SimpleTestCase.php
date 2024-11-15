@@ -11,12 +11,13 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait;
 
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  * @coversNothing
  */
-class SimpleTestCase
+class SimpleTestCase extends TestCase
 {
     use BaseTestCaseTrait;
 

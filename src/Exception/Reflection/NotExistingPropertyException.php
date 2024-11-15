@@ -30,6 +30,6 @@ class NotExistingPropertyException extends Exception
         $template = 'Property \'%s\' does not exist in instance of class \'%s\'. Did you use proper name of property?';
         $message = sprintf($template, $property, get_class($object));
 
-        return new static($message);
+        return new self($message);
     }
 }

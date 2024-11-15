@@ -50,10 +50,10 @@ class Templates extends BaseCollection
     {
         // No templates. Nothing to do.
         if (empty($templates)) {
-            return new static();
+            return new self();
         }
 
-        $result = new static();
+        $result = new self();
 
         foreach ($templates as $index => $template) {
             $result->add(new Template($template), $index);

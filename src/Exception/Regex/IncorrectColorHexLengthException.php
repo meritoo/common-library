@@ -31,6 +31,6 @@ class IncorrectColorHexLengthException extends Exception
 
         $message = sprintf($template, $color, strlen($color));
 
-        return new static($message);
+        return new self($message);
     }
 }

@@ -30,32 +30,32 @@ class OopVisibilityTypeTest extends BaseTypeTestCase
     public function provideTypeToVerify(): Generator
     {
         yield [
-            OopVisibilityType::isCorrectType(''),
+            (new OopVisibilityType())->isCorrectType(''),
             false,
         ];
 
         yield [
-            OopVisibilityType::isCorrectType(null),
+            (new OopVisibilityType())->isCorrectType(null),
             false,
         ];
 
         yield [
-            OopVisibilityType::isCorrectType('-1'),
+            (new OopVisibilityType())->isCorrectType('-1'),
             false,
         ];
 
         yield [
-            OopVisibilityType::isCorrectType('1'),
+            (new OopVisibilityType())->isCorrectType('1'),
             true,
         ];
 
         yield [
-            OopVisibilityType::isCorrectType('2'),
+            (new OopVisibilityType())->isCorrectType('2'),
             true,
         ];
 
         yield [
-            OopVisibilityType::isCorrectType('3'),
+            (new OopVisibilityType())->isCorrectType('3'),
             true,
         ];
     }

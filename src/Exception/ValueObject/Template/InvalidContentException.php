@@ -31,6 +31,6 @@ class InvalidContentException extends Exception
         $template = 'Content of template \'%s\' is invalid. Did you use string with 1 placeholder at least?';
         $message = sprintf($template, $content);
 
-        return new static($message);
+        return new self($message);
     }
 }
