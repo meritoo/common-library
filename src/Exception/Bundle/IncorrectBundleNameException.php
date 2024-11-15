@@ -31,6 +31,6 @@ class IncorrectBundleNameException extends Exception
 
         $message = sprintf($template, $bundleName);
 
-        return new static($message);
+        return new self($message);
     }
 }

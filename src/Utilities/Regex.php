@@ -102,19 +102,15 @@ class Regex
      * Expression can be simple compare expression, like " == 2", or regular expression.
      * Returns filtered array.
      *
-     * @param array  $array                The 2-dimensional array that should be filtered
-     * @param string $arrayColumnKey       Column name
-     * @param string $filterExpression     Simple filter expression (e.g. "== 2" or "!= \'home\'") or regular
-     *                                     expression (e.g. "/\d+/" or "/[a-z]+[,;]{2,}/")
-     * @param bool   $itsRegularExpression (optional) If is set to true, means that filter expression is a regular
-     *                                     expression. Otherwise - not (default behaviour).
+     * @param array $array The 2-dimensional array that should be filtered
+     * @param string $arrayColumnKey Column name which value is verified by the filter
+     * @param \Closure|string $filter A filter that might be regular expression (string) or anonymous function (closure)
      * @return array
      */
     public static function arrayFilter(
         array $array,
         string $arrayColumnKey,
-        string $filterExpression,
-        bool $itsRegularExpression = false
+        \Closure|string $filter,
     ): array {
         /*
          * No elements?
@@ -132,25 +128,13 @@ class Regex
             }
 
             $value = $item[$arrayColumnKey];
+            $itsRegularExpression = \is_string($filter);
 
             if ($itsRegularExpression) {
-                $matchesCount = preg_match($filterExpression, $value);
+                $matchesCount = preg_match($filter, $value);
                 $remove = 0 === $matchesCount;
             } else {
-                if (is_string($value)) {
-                    $value = sprintf('\'%s\'', $value);
-                } elseif (is_bool($value)) {
-                    if (true === $value) {
-                        $value = 'true';
-                    } else {
-                        $value = 'false';
-                    }
-                }
-
-                eval(sprintf('$isEqual = %s%s;', $value, $filterExpression));
-
-                /** @var bool $isEqual */
-                $remove = !$isEqual;
+                $remove = !$filter($value);
             }
 
             if ($remove) {

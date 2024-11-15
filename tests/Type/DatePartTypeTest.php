@@ -30,52 +30,52 @@ class DatePartTypeTest extends BaseTypeTestCase
     public function provideTypeToVerify(): Generator
     {
         yield [
-            DatePartType::isCorrectType(''),
+            (new DatePartType())->isCorrectType(''),
             false,
         ];
 
         yield [
-            DatePartType::isCorrectType(null),
+            (new DatePartType())->isCorrectType(null),
             false,
         ];
 
         yield [
-            DatePartType::isCorrectType('0'),
+            (new DatePartType())->isCorrectType('0'),
             false,
         ];
 
         yield [
-            DatePartType::isCorrectType('1'),
+            (new DatePartType())->isCorrectType('1'),
             false,
         ];
 
         yield [
-            DatePartType::isCorrectType('day'),
+            (new DatePartType())->isCorrectType('day'),
             true,
         ];
 
         yield [
-            DatePartType::isCorrectType('hour'),
+            (new DatePartType())->isCorrectType('hour'),
             true,
         ];
 
         yield [
-            DatePartType::isCorrectType('minute'),
+            (new DatePartType())->isCorrectType('minute'),
             true,
         ];
 
         yield [
-            DatePartType::isCorrectType('month'),
+            (new DatePartType())->isCorrectType('month'),
             true,
         ];
 
         yield [
-            DatePartType::isCorrectType('second'),
+            (new DatePartType())->isCorrectType('second'),
             true,
         ];
 
         yield [
-            DatePartType::isCorrectType('year'),
+            (new DatePartType())->isCorrectType('year'),
             true,
         ];
     }

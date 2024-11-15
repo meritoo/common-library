@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Traits\Test\Base;
 
 use DateTime;
-use Meritoo\Common\Exception\Reflection\ClassWithoutConstructorException;
 use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
@@ -38,13 +37,7 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testAssertConstructorVisibilityAndArgumentsUsingClassWithoutConstructor(): void
     {
-        $this->expectException(ClassWithoutConstructorException::class);
-        static::assertConstructorVisibilityAndArguments(SimpleTestCase::class, OopVisibilityType::IS_PUBLIC);
-    }
-
-    public function testAssertHasNoConstructor(): void
-    {
-        static::assertHasNoConstructor(SimpleTestCase::class);
+        static::assertConstructorVisibilityAndArguments(SimpleTestCase::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     public function testAssertMethodVisibility(): void

@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Undefined variable\\: \\$isEqual$#"
+			count: 1
+			path: src/Utilities/Regex.php

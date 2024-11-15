@@ -40,6 +40,8 @@ class BaseTypeTest extends BaseTestCase
             [
                 'TEST_1' => TestType::TEST_1,
                 'TEST_2' => TestType::TEST_2,
+                'TEST_3' => 3,
+                'TEST_4' => 4,
             ],
         ];
     }
@@ -82,7 +84,17 @@ class BaseTypeTest extends BaseTestCase
         ];
 
         yield [
+            0,
+            false,
+        ];
+
+        yield [
             '1',
+            false,
+        ];
+
+        yield [
+            1,
             false,
         ];
 
@@ -153,6 +165,16 @@ class BaseTypeTest extends BaseTestCase
             'test_2',
             true,
         ];
+
+        yield [
+            3,
+            true,
+        ];
+
+        yield [
+            4,
+            true,
+        ];
     }
 
     public function testConstructor(): void
@@ -178,9 +200,9 @@ class BaseTypeTest extends BaseTestCase
      *
      * @dataProvider provideTypeToVerifyUsingTestEmptyType
      */
-    public function testIsCorrectTypeUsingTestEmptyType(?string $toVerifyType, bool $isCorrect): void
+    public function testIsCorrectTypeUsingTestEmptyType(null|string|int $toVerifyType, bool $isCorrect): void
     {
-        self::assertEquals($isCorrect, TestEmptyType::isCorrectType($toVerifyType));
+        self::assertEquals($isCorrect, (new TestEmptyType())->isCorrectType($toVerifyType));
     }
 
     /**
@@ -189,9 +211,9 @@ class BaseTypeTest extends BaseTestCase
      *
      * @dataProvider provideTypeToVerifyUsingTestType
      */
-    public function testIsCorrectTypeUsingTestType(?string $toVerifyType, bool $isCorrect): void
+    public function testIsCorrectTypeUsingTestType(null|string|int $toVerifyType, bool $isCorrect): void
     {
-        self::assertEquals($isCorrect, TestType::isCorrectType($toVerifyType));
+        self::assertEquals($isCorrect, (new TestType())->isCorrectType($toVerifyType));
     }
 }
 
@@ -214,6 +236,7 @@ class TestEmptyType extends BaseType
 class TestType extends BaseType
 {
     public const TEST_1 = 'test_1';
-
     public const TEST_2 = 'test_2';
+    public const TEST_3 = 3;
+    public const TEST_4 = 4;
 }
