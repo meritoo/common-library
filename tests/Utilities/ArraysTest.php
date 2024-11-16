@@ -3794,14 +3794,7 @@ letsTest[2] = value_2;';
         self::assertEquals($result, Arrays::trimRecursive($array));
     }
 
-    /**
-     * @param string $description Description of test
-     * @param string $expected    Expected array converted to csv string
-     * @param array  $array       Data to be converted. It have to be an array that represents database table.
-     * @param string $separator   (optional) Separator used between values. Default: ",".
-     *
-     * @dataProvider provideArrayValues2csv
-     */
+    /** @dataProvider provideArrayValues2csv */
     public function testValues2csv(string $description, ?string $expected, array $array, string $separator = ','): void
     {
         // Required to avoid failure:
