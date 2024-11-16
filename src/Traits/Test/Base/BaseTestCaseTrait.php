@@ -237,14 +237,12 @@ trait BaseTestCaseTrait
     {
         $rootPath = Miscellaneous::getProjectRootPath();
 
-        $paths = [
+        return Miscellaneous::concatenatePaths(
             $rootPath,
             self::$testsDataDirPath,
             $directoryPath,
             $fileName,
-        ];
-
-        return Miscellaneous::concatenatePaths($paths);
+        );
     }
 
     /**
