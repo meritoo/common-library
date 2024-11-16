@@ -2,6 +2,31 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.3.1
+
+1. Arguments passed to the `Meritoo\Common\Utilities\Miscellaneous::concatenatePaths()` should be `string`s. The method
+   does not accept `array` of strings anymore.
+
+   Before:
+
+   ```php
+   $result = Miscellaneous::concatenatePaths([
+       'first/directory',
+       'second/one',
+       'and/the/third',
+   ]);
+   ```
+
+   After:
+
+   ```php
+   $result = Miscellaneous::concatenatePaths(
+       'first/directory',
+       'second/one',
+       'and/the/third',
+   );
+   ```
+
 # 1.3.0
 
 1. Support integers by the `BaseType::isCorrectType()` method

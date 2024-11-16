@@ -153,33 +153,14 @@ class Miscellaneous
     }
 
     /**
-     * Returns concatenated given paths
+     * Returns given paths concatenated into one string
      *
-     * The paths may be passed as:
-     * - an array of paths / strings
-     * - strings passed as following arguments
+     * @param string ...$paths Paths to concatenate
      *
-     * Examples:
-     * - concatenatePaths(['path/first', 'path/second', 'path/third']);
-     * - concatenatePaths('path/first', 'path/second', 'path/third');
-     *
-     * @param array|string $paths Paths co concatenate. As described above: an array of paths / strings or strings
-     *                            passed as following arguments.
      * @return string
      */
-    public static function concatenatePaths($paths): string
+    public static function concatenatePaths(string ...$paths): string
     {
-        // If paths are not provided as array, get the paths from methods' arguments
-        if (!is_array($paths)) {
-            $paths = func_get_args();
-        }
-
-        // No paths provided?
-        // Nothing to do
-        if (empty($paths)) {
-            return '';
-        }
-
         $concatenated = '';
         $firstWindowsBased = false;
         $separator = DIRECTORY_SEPARATOR;

@@ -610,7 +610,7 @@ class Date
         $second = 0;
 
         $time = mktime($hour, $minute, $second, $month, $day, $year);
-        $name = strftime('%A', $time);
+        $name = \date('l', $time);
 
         $encoding = mb_detect_encoding($name);
 
