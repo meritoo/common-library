@@ -18,7 +18,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: [ '8.0', '8.1', '8.2' ]
+                php-versions: [ '8.2', '8.3' ]
         env:
             extensions: dom, fileinfo, intl, json, pcre, simplexml
             key: cache-v1 # can be any string, change to clear the extension cache.
@@ -43,7 +43,7 @@ jobs:
                 uses: php-actions/composer@v6
                 with:
                     php_version: ${{ matrix.php-versions }}
-                    php_extensions: intl
+                    #                    php_extensions: intl
                     command: validate --strict --no-check-publish
             -   name: Cache Composer dependencies
                 id: composer-cache
@@ -63,7 +63,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: [ '8.0', '8.1', '8.2' ]
+                php-versions: [ '8.2', '8.3' ]
         env:
             extensions: dom, fileinfo, intl, json, pcre, simplexml
             key: cache-v1 # can be any string, change to clear the extension cache.
@@ -95,7 +95,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: [ '8.0', '8.1', '8.2' ]
+                php-versions: [ '8.2', '8.3' ]
         env:
             extensions: dom, fileinfo, intl, json, pcre, simplexml
             key: cache-v1 # can be any string, change to clear the extension cache.
