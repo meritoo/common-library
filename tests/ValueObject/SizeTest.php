@@ -9,9 +9,9 @@
 namespace Meritoo\Test\Common\ValueObject;
 
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\ValueObject\InvalidSizeDimensionsException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Size;
 
 /**
@@ -857,7 +857,7 @@ class SizeTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             Size::class,
-            OopVisibilityType::IS_PRIVATE,
+            OopVisibility::Private,
             3
         );
     }

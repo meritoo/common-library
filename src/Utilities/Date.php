@@ -11,9 +11,10 @@ namespace Meritoo\Common\Utilities;
 use DateInterval;
 use DateTime;
 use Exception;
-use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
-use Meritoo\Common\Type\DatePartType;
-use Meritoo\Common\Type\DatePeriod;
+use Meritoo\Common\Enums\Date\DatePart;
+use Meritoo\Common\Enums\Date\DatePeriod as DatePeriodEnum;
+use Meritoo\Common\Exception\Date\InvalidDatePartException;
+use Meritoo\Common\ValueObject\DatePeriod;
 
 /**
  * Useful date methods
@@ -116,7 +117,7 @@ class Date
      * Returns current day of week
      *
      * @return int
-     * @throws UnknownDatePartTypeException
+     * @throws InvalidDatePartException
      */
     public static function getCurrentDayOfWeek(): int
     {
@@ -444,25 +445,19 @@ class Date
     /**
      * Returns date's period (that contains start and end date) for given period
      *
-     * @param string $period The period, type of period. One of DatePeriod class constants, e.g. DatePeriod::LAST_WEEK.
+     * @param DatePeriodEnum $period The date period
+     *
      * @return null|DatePeriod
-     * @throws Exception
+     * @throws \DateInvalidOperationException
+     * @throws \DateMalformedStringException
      */
-    public static function getDatesForPeriod(string $period): ?DatePeriod
+    public static function getDatesForPeriod(DatePeriodEnum $period): ?DatePeriod
     {
-        /*
-         * Type of period is incorrect?
-         * Nothing to do
-         */
-        if (!(new DatePeriod())->isCorrectType($period)) {
-            return null;
-        }
-
         $dateStart = null;
         $dateEnd = null;
 
         switch ($period) {
-            case DatePeriod::LAST_WEEK:
+            case DatePeriodEnum::LastWeek:
                 $thisWeekStart = new DateTime('this week');
 
                 $dateStart = clone $thisWeekStart;
@@ -472,14 +467,14 @@ class Date
                 $dateEnd->sub(new DateInterval('P1D'));
 
                 break;
-            case DatePeriod::THIS_WEEK:
+            case DatePeriodEnum::ThisWeek:
                 $dateStart = new DateTime('this week');
 
                 $dateEnd = clone $dateStart;
                 $dateEnd->add(new DateInterval('P6D'));
 
                 break;
-            case DatePeriod::NEXT_WEEK:
+            case DatePeriodEnum::NextWeek:
                 $dateStart = new DateTime('this week');
                 $dateStart->add(new DateInterval('P7D'));
 
@@ -487,14 +482,14 @@ class Date
                 $dateEnd->add(new DateInterval('P6D'));
 
                 break;
-            case DatePeriod::LAST_MONTH:
+            case DatePeriodEnum::LastMonth:
                 $dateStart = new DateTime('first day of last month');
                 $dateEnd = new DateTime('last day of last month');
 
                 break;
-            case DatePeriod::THIS_MONTH:
-                $lastMonth = self::getDatesForPeriod(DatePeriod::LAST_MONTH);
-                $nextMonth = self::getDatesForPeriod(DatePeriod::NEXT_MONTH);
+            case DatePeriodEnum::ThisMonth:
+                $lastMonth = self::getDatesForPeriod(DatePeriodEnum::LastMonth);
+                $nextMonth = self::getDatesForPeriod(DatePeriodEnum::NextMonth);
 
                 if (null !== $lastMonth) {
                     $dateStart = $lastMonth->getEndDate();
@@ -513,26 +508,26 @@ class Date
                 }
 
                 break;
-            case DatePeriod::NEXT_MONTH:
+            case DatePeriodEnum::NextMonth:
                 $dateStart = new DateTime('first day of next month');
                 $dateEnd = new DateTime('last day of next month');
 
                 break;
-            case DatePeriod::LAST_YEAR:
-            case DatePeriod::THIS_YEAR:
-            case DatePeriod::NEXT_YEAR:
+            case DatePeriodEnum::LastYear:
+            case DatePeriodEnum::ThisYear:
+            case DatePeriodEnum::NextYear:
                 $dateStart = new DateTime();
                 $dateEnd = new DateTime();
 
                 $yearPeriod = [
-                    DatePeriod::LAST_YEAR,
-                    DatePeriod::NEXT_YEAR,
+                    DatePeriodEnum::LastYear,
+                    DatePeriodEnum::NextYear,
                 ];
 
                 if (in_array($period, $yearPeriod, true)) {
                     $yearDifference = 1;
 
-                    if (DatePeriod::LAST_YEAR === $period) {
+                    if (DatePeriodEnum::LastYear === $period) {
                         $yearDifference *= -1;
                     }
 
@@ -571,13 +566,13 @@ class Date
      * @param int $day   The day value
      *
      * @return int
-     * @throws UnknownDatePartTypeException
+     * @throws InvalidDatePartException
      */
     public static function getDayOfWeek(int $year, int $month, int $day): int
     {
-        static::validateYear($year);
-        static::validateMonth($month);
-        static::validateDay($day);
+        self::validateYear($year);
+        self::validateMonth($month);
+        self::validateDay($day);
 
         if ($month < 3) {
             $count = 0;
@@ -706,47 +701,47 @@ class Date
      * Verifies/validates given day
      *
      * @param int $day Day to verify/validate
-     * @throws UnknownDatePartTypeException
+     *
+     * @throws InvalidDatePartException
      */
     private static function validateDay(int $day): void
     {
-        // Oops, given day is incorrect
         if ($day >= 1 && $day <= 31) {
             return;
         }
 
-        throw UnknownDatePartTypeException::createException(DatePartType::DAY, $day);
+        throw new InvalidDatePartException(DatePart::Day, $day);
     }
 
     /**
      * Verifies/validates given month
      *
      * @param int $month Month to verify/validate
-     * @throws UnknownDatePartTypeException
+     *
+     * @throws InvalidDatePartException
      */
     private static function validateMonth(int $month): void
     {
-        // Oops, given month is incorrect
         if ($month >= 1 && $month <= 12) {
             return;
         }
 
-        throw UnknownDatePartTypeException::createException(DatePartType::MONTH, $month);
+        throw new InvalidDatePartException(DatePart::Month, $month);
     }
 
     /**
      * Verifies/validates given year
      *
      * @param int $year Year to verify/validate
-     * @throws UnknownDatePartTypeException
+     *
+     * @throws InvalidDatePartException
      */
     private static function validateYear(int $year): void
     {
-        // Oops, given year is incorrect
         if ($year >= 0) {
             return;
         }
 
-        throw UnknownDatePartTypeException::createException(DatePartType::YEAR, $year);
+        throw new InvalidDatePartException(DatePart::Year, $year);
     }
 }

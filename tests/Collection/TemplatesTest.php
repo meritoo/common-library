@@ -6,13 +6,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Collection;
 
 use Generator;
 use Meritoo\Common\Collection\Templates;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Template;
 
 /**
@@ -126,7 +128,7 @@ class TemplatesTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             Templates::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             1
         );
     }

@@ -6,11 +6,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\ValueObject;
 
 use DateTime;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Human;
 
 /**
@@ -58,7 +60,7 @@ class HumanTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             Human::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             4,
             2
         );

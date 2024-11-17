@@ -15,8 +15,8 @@ use Meritoo\Common\Collection\BaseCollection;
 use Meritoo\Common\Collection\DateTimeCollection;
 use Meritoo\Common\Collection\StringCollection;
 use Meritoo\Common\Contract\Collection\CollectionInterface;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Test\Common\Collection\BaseCollection\FirstNamesCollection;
 use Meritoo\Test\Common\Collection\BaseCollection\User;
 use ReflectionClass;
@@ -511,7 +511,7 @@ class BaseCollectionTest extends BaseTestCase
         $reflectionClass = new ReflectionClass(BaseCollection::class);
         $method = $reflectionClass->getMethod('exists');
 
-        static::assertMethodVisibility($method, OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibility($method, OopVisibility::Private);
         static::assertMethodArgumentsCount($method, 1, 1);
     }
 

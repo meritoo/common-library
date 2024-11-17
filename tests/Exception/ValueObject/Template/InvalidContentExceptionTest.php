@@ -6,12 +6,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Exception\ValueObject\Template;
 
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\ValueObject\Template\InvalidContentException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of an exception used while content of template is invalid
@@ -51,7 +53,7 @@ class InvalidContentExceptionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             InvalidContentException::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             3
         );
     }

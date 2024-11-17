@@ -6,12 +6,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Test\Base;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\GeneratorUtility;
 
 /**
@@ -57,7 +59,7 @@ class BaseTestCaseTest extends BaseTestCase
 
     public function testConstructor()
     {
-        static::assertConstructorVisibilityAndArguments(BaseTestCase::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(BaseTestCase::class, OopVisibility::Public, 3);
     }
 
     /**

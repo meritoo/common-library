@@ -6,12 +6,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Exception\Reflection;
 
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\Reflection\TooManyChildClassesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Test\Common\ValueObject\AddressTest;
 use stdClass;
 
 /**
@@ -33,19 +36,18 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
      */
     public function provideParentAndChildClasses(): ?Generator
     {
-        $template = "The '%s' class requires one child class at most who will extend her, but more than one child"
-            ." class was found:\n- %s\n\nWhy did you create more than one classes that extend '%s' class?";
-
         yield [
             BaseTestCase::class,
             [
                 stdClass::class,
-                OopVisibilityType::class,
+                AddressTest::class,
             ],
-            sprintf($template, BaseTestCase::class, implode("\n- ", [
-                stdClass::class,
-                OopVisibilityType::class,
-            ]), BaseTestCase::class),
+            "The Meritoo\Common\Test\Base\BaseTestCase class requires one child class at most who will extend her,"
+            ." but more than one child class was found:\n"
+            ."- stdClass\n"
+            ."- Meritoo\Test\Common\ValueObject\AddressTest\n"
+            ."\n"
+            ."Why did you create more than one classes that extend Meritoo\Common\Test\Base\BaseTestCase class?",
         ];
 
         yield [
@@ -53,7 +55,11 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
             [
                 stdClass::class,
             ],
-            sprintf($template, TooManyChildClassesException::class, implode("\n- ", [stdClass::class]), TooManyChildClassesException::class),
+            "The Meritoo\Common\Exception\Reflection\TooManyChildClassesException class requires one child class at most who will extend her,"
+            ." but more than one child class was found:\n"
+            ."- stdClass\n"
+            ."\n"
+            ."Why did you create more than one classes that extend Meritoo\Common\Exception\Reflection\TooManyChildClassesException class?",
         ];
     }
 
@@ -61,20 +67,13 @@ class TooManyChildClassesExceptionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             TooManyChildClassesException::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             3
         );
     }
 
-    /**
-     * @param array|object|string $parentClass     Class that has more than one child class, but it shouldn't. An array
-     *                                             of objects, strings, object or string.
-     * @param array               $childClasses    Child classes
-     * @param string              $expectedMessage Expected exception's message
-     *
-     * @dataProvider provideParentAndChildClasses
-     */
-    public function testCreate($parentClass, array $childClasses, string $expectedMessage): void
+    /** @dataProvider provideParentAndChildClasses */
+    public function testCreate(object|string $parentClass, array $childClasses, string $expectedMessage): void
     {
         $exception = TooManyChildClassesException::create($parentClass, $childClasses);
         static::assertSame($expectedMessage, $exception->getMessage());

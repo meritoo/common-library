@@ -12,8 +12,8 @@ namespace Meritoo\Test\Common\Collection;
 
 use Generator;
 use Meritoo\Common\Collection\StringCollection;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of the collection of strings
@@ -70,7 +70,7 @@ class StringCollectionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             StringCollection::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             1
         );
     }
