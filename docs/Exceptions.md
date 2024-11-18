@@ -11,48 +11,10 @@ used to create instance of the exception. Example:
 
 ```php
 use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
+
+// ...
+
 throw IncorrectBundleNameException::create('RisusIpsum');
-```
-
-### Base exception for unknown type of something
-
-##### Short description
-
-It's a `Meritoo\Common\Exception\Base\UnknownTypeException` class. Related to `Meritoo\Common\Type\Base\BaseType` class
-that represents type of something, e.g. type of button, order.
-
-##### Usage
-
-You can extend `Meritoo\Common\Exception\Base\UnknownTypeException` class and create your own static method,
-e.g. `createException()`, which will be used create instance of the exception. Inside the `createException()` method you
-can call `parent::create()` method.
-
-##### Example
-
-```php
-<?php
-
-namespace Your\Package\Exception\Type;
-
-use Meritoo\Common\Exception\Base\UnknownTypeException;
-use Your\Package\Type\SimpleType;
-
-class UnknownSimpleTypeException extends UnknownTypeException
-{
-    /**
-     * Creates exception
-     *
-     * @param string $unknownType Unknown and simple type
-     * @return UnknownSimpleTypeException
-     */
-    public static function createException($unknownType)
-    {
-        /* @var UnknownSimpleTypeException $exception */
-        $exception = parent::create($unknownType, new SimpleType(), 'my simple type of something');
-
-        return $exception;
-    }
-}
 ```
 
 # More

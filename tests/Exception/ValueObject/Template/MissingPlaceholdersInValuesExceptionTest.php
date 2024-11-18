@@ -6,12 +6,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Exception\ValueObject\Template;
 
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\ValueObject\Template\MissingPlaceholdersInValuesException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of an exception used while there are missing values required to fill all placeholders in template
@@ -61,7 +63,7 @@ class MissingPlaceholdersInValuesExceptionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             MissingPlaceholdersInValuesException::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             3
         );
     }

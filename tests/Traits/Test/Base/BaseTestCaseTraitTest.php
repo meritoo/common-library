@@ -11,10 +11,9 @@ declare(strict_types=1);
 namespace Meritoo\Test\Common\Traits\Test\Base;
 
 use DateTime;
-use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Test\Common\Traits\Test\Base\BaseTestCaseTrait\SimpleTestCase;
 use ReflectionMethod;
@@ -37,27 +36,19 @@ class BaseTestCaseTraitTest extends BaseTestCase
 
     public function testAssertConstructorVisibilityAndArgumentsUsingClassWithoutConstructor(): void
     {
-        static::assertConstructorVisibilityAndArguments(SimpleTestCase::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(SimpleTestCase::class, OopVisibility::Public, 3);
     }
 
     public function testAssertMethodVisibility(): void
     {
         $method = new ReflectionMethod(SimpleTestCase::class, 'assertMethodVisibility');
-        static::assertMethodVisibility($method, OopVisibilityType::IS_PROTECTED);
-    }
-
-    public function testAssertMethodVisibilityUsingIncorrectVisibility(): void
-    {
-        $this->expectException(UnknownOopVisibilityTypeException::class);
-
-        $method = new ReflectionMethod(SimpleTestCase::class, 'assertMethodVisibility');
-        static::assertMethodVisibility($method, '4');
+        static::assertMethodVisibility($method, OopVisibility::Protected);
     }
 
     public function testAssertMethodVisibilityUsingPrivate(): void
     {
         $method = new ReflectionMethod(SimpleTestCase::class, 'thePrivateMethod');
-        static::assertMethodVisibility($method, OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibility($method, OopVisibility::Private);
     }
 
     public function testSetTestsDataDirPath(): void

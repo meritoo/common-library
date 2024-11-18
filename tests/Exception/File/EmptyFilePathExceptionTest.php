@@ -6,11 +6,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Exception\File;
 
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\File\EmptyFilePathException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of an exception used while path of given file is empty
@@ -31,6 +33,6 @@ class EmptyFilePathExceptionTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(EmptyFilePathException::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(EmptyFilePathException::class, OopVisibility::Public, 3);
     }
 }

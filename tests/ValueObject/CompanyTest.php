@@ -6,10 +6,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\ValueObject;
 
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Address;
 use Meritoo\Common\ValueObject\BankAccount;
 use Meritoo\Common\ValueObject\Company;
@@ -39,7 +41,7 @@ class CompanyTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             Company::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             3,
             2
         );
