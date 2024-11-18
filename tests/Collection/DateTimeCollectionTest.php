@@ -13,8 +13,8 @@ namespace Meritoo\Test\Common\Collection;
 use DateTime;
 use Generator;
 use Meritoo\Common\Collection\DateTimeCollection;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of the collection of DateTime instances
@@ -69,7 +69,7 @@ class DateTimeCollectionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             DateTimeCollection::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             1
         );
     }

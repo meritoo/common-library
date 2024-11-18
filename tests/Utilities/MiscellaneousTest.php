@@ -1035,54 +1035,53 @@ class MiscellaneousTest extends BaseTestCase
         self::assertEquals(0, Miscellaneous::checkboxValue2Integer('  off'));
     }
 
-    public function testConcatenatePathsInNixOs()
+    public function testConcatenatePathsInNixOs(): void
     {
         // For *nix operating system
-        $paths1 = [
+        $result = Miscellaneous::concatenatePaths(
             'first/directory',
             'second/one',
             'and/the/third',
-        ];
+        );
 
-        self::assertEquals('/'.implode('/', $paths1), Miscellaneous::concatenatePaths($paths1));
-        self::assertEquals('/'.implode('/', $paths1), Miscellaneous::concatenatePaths($paths1[0], $paths1[1], $paths1[2]));
+        self::assertEquals('/first/directory/second/one/and/the/third', $result);
     }
 
-    public function testConcatenatePathsInWindowsOs()
+    public function testConcatenatePathsInWindowsOs(): void
     {
         // For Windows operating system
-        $paths2 = [
+        $result = Miscellaneous::concatenatePaths(
             'C:\first\directory',
             'second\one',
             'and\the\third',
-        ];
+        );
 
-        self::assertEquals(implode('\\', $paths2), Miscellaneous::concatenatePaths($paths2));
+        self::assertEquals('C:\first\directory\second\one\and\the\third', $result);
     }
 
-    /**
-     * @param mixed $emptyPaths Empty paths co concatenate
-     * @dataProvider provideEmptyValue
-     */
-    public function testConcatenatePathsWithEmptyPaths($emptyPaths)
+    public function testConcatenatePathsWithEmptyPaths(): void
     {
-        self::assertEquals('', Miscellaneous::concatenatePaths($emptyPaths));
+        self::assertEquals('', Miscellaneous::concatenatePaths());
+
+        self::assertEquals('', Miscellaneous::concatenatePaths(''));
+        self::assertEquals('', Miscellaneous::concatenatePaths('', ''));
+        self::assertEquals('', Miscellaneous::concatenatePaths('', '', ''));
+
+        self::assertEquals('', Miscellaneous::concatenatePaths(' '));
+        self::assertEquals('', Miscellaneous::concatenatePaths(' ', ' '));
+        self::assertEquals('', Miscellaneous::concatenatePaths(' ', ' ', ' '));
     }
 
-    public function testConcatenatePathsWithOneEmptyPath()
+    public function testConcatenatePathsWithOneEmptyPath(): void
     {
-        $paths = [
+        $result = Miscellaneous::concatenatePaths(
             'first/directory',
             'second/one',
             '',
             'and/the/third',
-        ];
+        );
 
-        $concatenated = Miscellaneous::concatenatePaths($paths);
-        unset($paths[2]);
-        $imploded = implode('/', $paths);
-
-        self::assertEquals('/'.$imploded, $concatenated);
+        self::assertEquals('/first/directory/second/one/and/the/third', $result);
     }
 
     public function testConstructor()

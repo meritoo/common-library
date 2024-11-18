@@ -2,6 +2,51 @@
 
 Common and useful classes, methods, exceptions etc.
 
+# 1.3.2
+
+1. All the `*Type` classes, that extend `Meritoo\Common\Type\Base\BaseType` class, have been replaced by enumerations
+
+   | Before                                  | After                                  |
+      |-----------------------------------------|----------------------------------------|
+   | `Meritoo\Common\Type\DatePartType`      | `Meritoo\Common\Enums\Date\DatePart`   |
+   | `Meritoo\Common\Type\DatePeriod`        | `Meritoo\Common\Enums\Date\DatePeriod` |
+   | `Meritoo\Common\Type\OopVisibilityType` | `Meritoo\Common\Enums\OopVisibility`   |
+
+2. Other than that:
+
+- The `Meritoo\Common\Type\DatePartType` class has been moved to `Meritoo\Common\ValueObject\DatePeriod`
+- Exceptions that extend `Meritoo\Common\Exception\Base\UnknownTypeException` has been removed as not needed anymore
+- The following classes have been removed as not needed anymore:
+   - `Meritoo\Common\Exception\Base\UnknownTypeException`
+   - `Meritoo\Common\Test\Base\BaseTypeTestCase`
+   - `Meritoo\Common\Traits\Test\Base\BaseTypeTestCaseTrait`
+   - `Meritoo\Common\Type\Base\BaseType`
+
+# 1.3.1
+
+1. Arguments passed to the `Meritoo\Common\Utilities\Miscellaneous::concatenatePaths()` should be `string`s. The method
+   does not accept `array` of strings anymore.
+
+   Before:
+
+   ```php
+   $result = Miscellaneous::concatenatePaths([
+       'first/directory',
+       'second/one',
+       'and/the/third',
+   ]);
+   ```
+
+   After:
+
+   ```php
+   $result = Miscellaneous::concatenatePaths(
+       'first/directory',
+       'second/one',
+       'and/the/third',
+   );
+   ```
+
 # 1.3.0
 
 1. Support integers by the `BaseType::isCorrectType()` method

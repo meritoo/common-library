@@ -12,8 +12,8 @@ namespace Meritoo\Test\Common\Collection;
 
 use Generator;
 use Meritoo\Common\Collection\IntegerCollection;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of the collection of integers
@@ -69,7 +69,7 @@ class IntegerCollectionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             IntegerCollection::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             1
         );
     }

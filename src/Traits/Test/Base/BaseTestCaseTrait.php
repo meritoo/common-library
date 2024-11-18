@@ -12,9 +12,8 @@ namespace Meritoo\Common\Traits\Test\Base;
 
 use DateTime;
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\Reflection\ClassWithoutConstructorException;
-use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Miscellaneous;
 use ReflectionClass;
 use ReflectionMethod;
@@ -137,17 +136,17 @@ trait BaseTestCaseTrait
     /**
      * Verifies visibility and arguments of class constructor
      *
-     * @param string $className              Fully-qualified name of class that contains constructor to verify
-     * @param string $visibilityType         Expected visibility of verified method. One of OopVisibilityType class
-     *                                       constants.
-     * @param int    $argumentsCount         (optional) Expected count/amount of arguments of the verified method
-     * @param int    $requiredArgumentsCount (optional) Expected count/amount of required arguments of the verified
-     *                                       method
+     * @param string $className Fully-qualified name of class that contains constructor to verify
+     * @param OopVisibility $visibilityType Expected visibility of verified method
+     * @param int $argumentsCount (optional) Expected count/amount of arguments of the verified method
+     * @param int $requiredArgumentsCount (optional) Expected count/amount of required arguments of the verified method
+     *
      * @throws ClassWithoutConstructorException
+     * @throws \ReflectionException
      */
     protected static function assertConstructorVisibilityAndArguments(
         string $className,
-        string $visibilityType,
+        OopVisibility $visibilityType,
         int $argumentsCount = 0,
         int $requiredArgumentsCount = 0
     ): void {
@@ -196,29 +195,21 @@ trait BaseTestCaseTrait
     /**
      * Verifies visibility of method
      *
-     * @param ReflectionMethod $method                 Name of method or just the method to verify
-     * @param string           $visibilityType         Expected visibility of verified method. One of OopVisibilityType
-     *                                                 class constants.
-     * @throws UnknownOopVisibilityTypeException
-     * @throws RuntimeException
+     * @param ReflectionMethod $method Name of method or just the method to verify
+     * @param OopVisibility $visibilityType Expected visibility of verified method
      */
-    protected static function assertMethodVisibility(ReflectionMethod $method, string $visibilityType): void
+    protected static function assertMethodVisibility(ReflectionMethod $method, OopVisibility $visibilityType): void
     {
-        // Type of visibility is not correct?
-        if (!(new OopVisibilityType())->isCorrectType($visibilityType)) {
-            throw UnknownOopVisibilityTypeException::createException($visibilityType);
-        }
-
         switch ($visibilityType) {
-            case OopVisibilityType::IS_PUBLIC:
+            case OopVisibility::Public:
                 static::assertTrue($method->isPublic());
 
                 break;
-            case OopVisibilityType::IS_PROTECTED:
+            case OopVisibility::Protected:
                 static::assertTrue($method->isProtected());
 
                 break;
-            case OopVisibilityType::IS_PRIVATE:
+            case OopVisibility::Private:
                 static::assertTrue($method->isPrivate());
 
                 break;
@@ -237,14 +228,12 @@ trait BaseTestCaseTrait
     {
         $rootPath = Miscellaneous::getProjectRootPath();
 
-        $paths = [
+        return Miscellaneous::concatenatePaths(
             $rootPath,
             self::$testsDataDirPath,
             $directoryPath,
             $fileName,
-        ];
-
-        return Miscellaneous::concatenatePaths($paths);
+        );
     }
 
     /**

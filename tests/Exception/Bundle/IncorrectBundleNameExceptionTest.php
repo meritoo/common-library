@@ -6,12 +6,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Exception\Bundle;
 
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\Bundle\IncorrectBundleNameException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of an exception used while name of bundle is incorrect
@@ -52,7 +54,7 @@ class IncorrectBundleNameExceptionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             IncorrectBundleNameException::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             3
         );
     }

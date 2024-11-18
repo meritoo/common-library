@@ -6,12 +6,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Exception\File;
 
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\File\NotExistingFileException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 
 /**
  * Test case of an exception used while file with given path does not exist
@@ -58,6 +60,6 @@ class NotExistingFileExceptionTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(NotExistingFileException::class, OopVisibilityType::IS_PUBLIC, 3);
+        static::assertConstructorVisibilityAndArguments(NotExistingFileException::class, OopVisibility::Public, 3);
     }
 }

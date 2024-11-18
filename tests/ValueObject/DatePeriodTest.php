@@ -6,14 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Meritoo\Test\Common\Type;
+declare(strict_types=1);
+
+namespace Meritoo\Test\Common\ValueObject;
 
 use DateTime;
 use Generator;
-use Meritoo\Common\Test\Base\BaseTypeTestCase;
-use Meritoo\Common\Type\Base\BaseType;
-use Meritoo\Common\Type\DatePeriod;
-use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Enums\OopVisibility;
+use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\ValueObject\DatePeriod;
 
 /**
  * Test case of date's period
@@ -22,9 +23,9 @@ use Meritoo\Common\Type\OopVisibilityType;
  * @copyright Meritoo <http://www.meritoo.pl>
  *
  * @internal
- * @covers    \Meritoo\Common\Type\DatePeriod
+ * @covers    \Meritoo\Common\ValueObject\DatePeriod
  */
-class DatePeriodTest extends BaseTypeTestCase
+class DatePeriodTest extends BaseTestCase
 {
     /**
      * Provides the start and end date of date period
@@ -163,11 +164,6 @@ class DatePeriodTest extends BaseTypeTestCase
         ];
     }
 
-    /**
-     * Provides period and incorrect format of date to verify
-     *
-     * @return Generator
-     */
     public function provideDatePeriodAndIncorrectDateFormat(): Generator
     {
         $startDate = new DateTime('2001-01-01');
@@ -180,7 +176,12 @@ class DatePeriodTest extends BaseTypeTestCase
 
         yield [
             new DatePeriod($startDate, $endDate),
-            false,
+            'false',
+        ];
+
+        yield [
+            new DatePeriod($startDate, $endDate),
+            'xyz',
         ];
     }
 
@@ -214,37 +215,6 @@ class DatePeriodTest extends BaseTypeTestCase
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function provideTypeToVerify(): Generator
-    {
-        yield [
-            (new DatePeriod())->isCorrectType(''),
-            false,
-        ];
-
-        yield [
-            (new DatePeriod())->isCorrectType('-1'),
-            false,
-        ];
-
-        yield [
-            (new DatePeriod())->isCorrectType('4'),
-            true,
-        ];
-
-        yield [
-            (new DatePeriod())->isCorrectType('3'),
-            true,
-        ];
-
-        yield [
-            (new DatePeriod())->isCorrectType('8'),
-            true,
-        ];
-    }
-
-    /**
      * @param DateTime $startDate (optional) Start date of period
      * @param DateTime $endDate   (optional) End date of period
      *
@@ -262,7 +232,7 @@ class DatePeriodTest extends BaseTypeTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             DatePeriod::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             2
         );
     }
@@ -280,13 +250,8 @@ class DatePeriodTest extends BaseTypeTestCase
         self::assertEquals($expected, $period->getFormattedDate($format, $startDate));
     }
 
-    /**
-     * @param DatePeriod $period The date period to verify
-     * @param string     $format Format used to format the date
-     *
-     * @dataProvider provideDatePeriodAndIncorrectDateFormat
-     */
-    public function testGetFormattedDateUsingIncorrectDateFormat(DatePeriod $period, $format): void
+    /** @dataProvider provideDatePeriodAndIncorrectDateFormat */
+    public function testGetFormattedDateUsingIncorrectDateFormat(DatePeriod $period, string $format): void
     {
         self::assertEquals('', $period->getFormattedDate($format));
     }
@@ -315,12 +280,7 @@ class DatePeriodTest extends BaseTypeTestCase
         self::assertEquals('', $period->getFormattedDate($format, $startDate));
     }
 
-    /**
-     * @param DateTime $startDate (optional) Start date of period
-     * @param DateTime $endDate   (optional) End date of period
-     *
-     * @dataProvider provideDatePeriod
-     */
+    /** @dataProvider provideDatePeriod */
     public function testGettersAndSetters(DateTime $startDate = null, DateTime $endDate = null): void
     {
         $period = new DatePeriod();
@@ -330,33 +290,5 @@ class DatePeriodTest extends BaseTypeTestCase
 
         $period->setEndDate($endDate);
         self::assertEquals($endDate, $period->getEndDate());
-    }
-
-    /**
-     * Returns all expected types of the tested type
-     *
-     * @return array
-     */
-    protected function getAllExpectedTypes(): array
-    {
-        return [
-            'LAST_MONTH' => 4,
-            'LAST_WEEK' => 1,
-            'LAST_YEAR' => 7,
-            'NEXT_MONTH' => 6,
-            'NEXT_WEEK' => 3,
-            'NEXT_YEAR' => 9,
-            'THIS_MONTH' => 5,
-            'THIS_WEEK' => 2,
-            'THIS_YEAR' => 8,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTestedTypeInstance(): BaseType
-    {
-        return new DatePeriod();
     }
 }

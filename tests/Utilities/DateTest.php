@@ -11,11 +11,12 @@ namespace Meritoo\Test\Common\Utilities;
 use DateInterval;
 use DateTime;
 use Generator;
-use Meritoo\Common\Exception\Type\UnknownDatePartTypeException;
+use Meritoo\Common\Enums\Date\DatePeriod as DatePeriodEnum;
+use Meritoo\Common\Exception\Date\InvalidDatePartException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\DatePeriod;
 use Meritoo\Common\Utilities\Date;
 use Meritoo\Common\Utilities\Locale;
+use Meritoo\Common\ValueObject\DatePeriod;
 
 /**
  * Test case of the Date methods (only static functions)
@@ -36,7 +37,7 @@ class DateTest extends BaseTestCase
     public function provideCorrectPeriod()
     {
         yield [
-            DatePeriod::LAST_WEEK,
+            DatePeriodEnum::LastWeek,
             new DatePeriod(
                 (new DateTime('this week'))->sub(new DateInterval('P7D'))->setTime(0, 0, 0),
                 (new DateTime('this week'))->sub(new DateInterval('P1D'))->setTime(23, 59, 59)
@@ -44,7 +45,7 @@ class DateTest extends BaseTestCase
         ];
 
         yield [
-            DatePeriod::THIS_WEEK,
+            DatePeriodEnum::ThisWeek,
             new DatePeriod(
                 (new DateTime('this week'))->setTime(0, 0, 0),
                 (new DateTime('this week'))->add(new DateInterval('P6D'))->setTime(23, 59, 59)
@@ -52,7 +53,7 @@ class DateTest extends BaseTestCase
         ];
 
         yield [
-            DatePeriod::NEXT_WEEK,
+            DatePeriodEnum::NextWeek,
             new DatePeriod(
                 (new DateTime('this week'))->add(new DateInterval('P7D'))->setTime(0, 0, 0),
                 (new DateTime('this week'))->add(new DateInterval('P7D'))
@@ -62,7 +63,7 @@ class DateTest extends BaseTestCase
         ];
 
         yield [
-            DatePeriod::LAST_MONTH,
+            DatePeriodEnum::LastMonth,
             new DatePeriod(
                 (new DateTime('first day of last month'))->setTime(0, 0, 0),
                 (new DateTime('last day of last month'))->setTime(23, 59, 59)
@@ -70,13 +71,13 @@ class DateTest extends BaseTestCase
         ];
 
         yield [
-            DatePeriod::THIS_MONTH,
+            DatePeriodEnum::ThisMonth,
             new DatePeriod(
-                Date::getDatesForPeriod(DatePeriod::LAST_MONTH)
+                Date::getDatesForPeriod(DatePeriodEnum::LastMonth)
                     ->getEndDate()
                     ->add(new DateInterval('P1D'))
                     ->setTime(0, 0, 0),
-                Date::getDatesForPeriod(DatePeriod::NEXT_MONTH)
+                Date::getDatesForPeriod(DatePeriodEnum::NextMonth)
                     ->getStartDate()
                     ->sub(new DateInterval('P1D'))
                     ->setTime(23, 59, 59)
@@ -84,7 +85,7 @@ class DateTest extends BaseTestCase
         ];
 
         yield [
-            DatePeriod::NEXT_MONTH,
+            DatePeriodEnum::NextMonth,
             new DatePeriod(
                 (new DateTime('first day of next month'))->setTime(0, 0, 0),
                 (new DateTime('last day of next month'))->setTime(23, 59, 59)
@@ -96,7 +97,7 @@ class DateTest extends BaseTestCase
         $year = $lastYearStart->format('Y');
 
         yield [
-            DatePeriod::LAST_YEAR,
+            DatePeriodEnum::LastYear,
             new DatePeriod(
                 $lastYearStart->setDate($year, 1, 1)->setTime(0, 0, 0),
                 $lastYearEnd->setDate($year, 12, 31)->setTime(23, 59, 59)
@@ -106,7 +107,7 @@ class DateTest extends BaseTestCase
         $year = (new DateTime())->format('Y');
 
         yield [
-            DatePeriod::THIS_YEAR,
+            DatePeriodEnum::ThisYear,
             new DatePeriod(
                 (new DateTime())->setDate($year, 1, 1)->setTime(0, 0, 0),
                 (new DateTime())->setDate($year, 12, 31)->setTime(23, 59, 59)
@@ -118,7 +119,7 @@ class DateTest extends BaseTestCase
         $year = $nextYearStart->format('Y');
 
         yield [
-            DatePeriod::NEXT_YEAR,
+            DatePeriodEnum::NextYear,
             new DatePeriod(
                 $nextYearStart->setDate($year, 1, 1)->setTime(0, 0, 0),
                 $nextYearEnd->setDate($year, 12, 31)->setTime(23, 59, 59)
@@ -252,18 +253,6 @@ class DateTest extends BaseTestCase
     }
 
     /**
-     * Provides incorrect period
-     *
-     * @return Generator
-     */
-    public function provideIncorrectPeriod()
-    {
-        yield [-1];
-        yield [0];
-        yield [10];
-    }
-
-    /**
      * Provides incorrect values of year, month and day
      *
      * @return Generator
@@ -274,11 +263,15 @@ class DateTest extends BaseTestCase
             0,
             0,
             0,
+            'month',
+            0,
         ];
 
         yield [
             -1,
             -1,
+            -1,
+            'year',
             -1,
         ];
 
@@ -286,17 +279,23 @@ class DateTest extends BaseTestCase
             5000,
             50,
             50,
+            'month',
+            50,
         ];
 
         yield [
             2000,
             13,
             01,
+            'month',
+            13,
         ];
 
         yield [
             2000,
             01,
+            40,
+            'day',
             40,
         ];
     }
@@ -846,30 +845,10 @@ class DateTest extends BaseTestCase
         self::assertEquals([], Date::getDatesCollection(new DateTime(), 2, '%d'));
     }
 
-    /**
-     * @param int        $period   The period, type of period. One of DatePeriod class constants, e.g.
-     *                             DatePeriod::LAST_WEEK.
-     * @param DatePeriod $expected Expected start and end date for given period
-     *
-     * @dataProvider provideCorrectPeriod
-     */
-    public function testGetDatesForPeriod($period, DatePeriod $expected): void
+    /** @dataProvider provideCorrectPeriod */
+    public function testGetDatesForPeriod(DatePeriodEnum $period, DatePeriod $expected): void
     {
         self::assertEquals($expected, Date::getDatesForPeriod($period));
-    }
-
-    public function testGetDatesForPeriodUsingEmptyString(): void
-    {
-        self::assertNull(Date::getDatesForPeriod(''));
-    }
-
-    /**
-     * @param int $period Incorrect period to verify
-     * @dataProvider provideIncorrectPeriod
-     */
-    public function testGetDatesForPeriodUsingIncorrectPeriod($period): void
-    {
-        self::assertNull(Date::getDatesForPeriod($period));
     }
 
     /**
@@ -884,16 +863,17 @@ class DateTest extends BaseTestCase
         self::assertMatchesRegularExpression('/^[0-6]{1}$/', (string) Date::getDayOfWeek($year, $month, $day));
     }
 
-    /**
-     * @param int $year  The year value
-     * @param int $month The month value
-     * @param int $day   The day value
-     *
-     * @dataProvider provideIncorrectYearMonthDay
-     */
-    public function testGetDayOfWeekIncorrectValues(int $year, int $month, int $day): void
-    {
-        $this->expectException(UnknownDatePartTypeException::class);
+    /** @dataProvider provideIncorrectYearMonthDay */
+    public function testGetDayOfWeekIncorrectValues(
+        int $year,
+        int $month,
+        int $day,
+        string $invalidDatePart,
+        int $invalidValue,
+    ): void {
+        $this->expectException(InvalidDatePartException::class);
+        $this->expectExceptionMessage('Value of the \''.$invalidDatePart.'\' date part is invalid: '.$invalidValue);
+
         self::assertEmpty(Date::getDayOfWeek($year, $month, $day));
     }
 

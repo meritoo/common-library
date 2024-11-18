@@ -1572,8 +1572,9 @@ class Arrays
     /**
      * Converts given array's rows to csv string
      *
-     * @param array  $array     Data to be converted. It have to be an array that represents database table.
+     * @param array $array Data to be converted. It has to be an array that represents database table.
      * @param string $separator (optional) Separator used between values. Default: ",".
+     *
      * @return null|string
      */
     public static function values2csv(array $array, string $separator = ','): ?string
@@ -1594,6 +1595,10 @@ class Arrays
 
             if (is_array($row) && !empty($row)) {
                 foreach ($row as $key => $value) {
+                    if (empty($value)) {
+                        continue;
+                    }
+
                     $row[$key] = html_entity_decode($value);
                 }
 

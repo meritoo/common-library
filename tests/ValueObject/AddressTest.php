@@ -6,10 +6,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\ValueObject;
 
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Address;
 
 /**
@@ -42,7 +44,7 @@ class AddressTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             Address::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             5,
             4
         );

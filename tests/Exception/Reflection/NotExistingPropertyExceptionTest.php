@@ -6,12 +6,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Meritoo\Test\Common\Exception\Reflection;
 
 use Generator;
+use Meritoo\Common\Enums\OopVisibility;
 use Meritoo\Common\Exception\Reflection\NotExistingPropertyException;
 use Meritoo\Common\Test\Base\BaseTestCase;
-use Meritoo\Common\Type\OopVisibilityType;
 use stdClass;
 
 /**
@@ -62,7 +64,7 @@ class NotExistingPropertyExceptionTest extends BaseTestCase
     {
         static::assertConstructorVisibilityAndArguments(
             NotExistingPropertyException::class,
-            OopVisibilityType::IS_PUBLIC,
+            OopVisibility::Public,
             3
         );
     }
