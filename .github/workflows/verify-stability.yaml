@@ -43,7 +43,6 @@ jobs:
                 uses: php-actions/composer@v6
                 with:
                     php_version: ${{ matrix.php-versions }}
-                    #                    php_extensions: intl
                     command: validate --strict --no-check-publish
             -   name: Cache Composer dependencies
                 id: composer-cache
